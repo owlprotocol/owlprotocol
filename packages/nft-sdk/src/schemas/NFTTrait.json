@@ -1,0 +1,41 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "definitions": {
+    "NFTTrait": {
+      "additionalProperties": false,
+      "description": "NFTTrait Interface describing an asset's attribute",
+      "properties": {
+        "description": {
+          "type": "string"
+        },
+        "display_type": {
+          "$ref": "#/definitions/NFTTraitDisplayType"
+        },
+        "max_value": {
+          "type": "number"
+        },
+        "name": {
+          "description": "Name of attribute",
+          "type": "string"
+        },
+        "value": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "name",
+        "value"
+      ],
+      "type": "object"
+    },
+    "NFTTraitDisplayType": {
+      "enum": [
+        "number",
+        "boost_number",
+        "boost_percentage",
+        "date"
+      ],
+      "type": "string"
+    }
+  }
+}

@@ -1,0 +1,30 @@
+{
+    "name": "@owlprotocol/esbuild-config",
+    "version": "1.2.0",
+    "private": false,
+    "license": "MIT",
+    "exports": {
+        ".": {
+            "require": "./index.mjs",
+            "import": "./index.mjs"
+        }
+    },
+    "files": [
+        "index.mjs",
+        "LICENSE",
+        "README.md"
+    ],
+    "engines": {
+        "node": ">=16.0.0"
+    },
+    "scripts": {},
+    "devDependencies": {
+        "@esbuild-plugins/node-resolve": "^0.1.4",
+        "esbuild": "^0.14.25",
+        "esbuild-copy-static-files": "^0.1.0",
+        "esbuild-plugin-alias": "^0.2.1",
+        "esbuild-plugin-babel": "^0.2.3",
+        "esbuild-plugin-copy": "^1.1.0",
+        "glob": "^7.2.0"
+    }
+}

@@ -1,0 +1,51 @@
+{
+  "name": "Shapes NFT Child",
+  "description": "",
+  "external_link": "https://owlprotocol.xyz",
+  "seller_fee_basis_points": 1000,
+  "fee_recipient": "",
+  "generatedImageType": "svg",
+  "traits": {
+    "colormap": {
+      "name": "colormap",
+      "type": "colormap",
+      "options": [
+        {
+          "value": "white"
+        },
+        {
+          "value": "black"
+        }
+      ]
+    },
+    "imageFg": {
+      "name": "imageFg",
+      "type": "image",
+      "image_type": "svg",
+      "options": [
+        {
+          "value": "circle",
+          "image_url": "http://localhost:3000/shapesNested/input/fgCircle.svg"
+        },
+        {
+          "value": "square",
+          "image_url": "http://localhost:3000/shapesNested/input/fgSquare.svg"
+        }
+      ]
+    },
+    "strokeWidth": {
+      "name": "strokeWidth",
+      "type": "number"
+    },
+    "fillColor": {
+      "name": "fillColor",
+      "type": "color",
+      "colormap": "colormap"
+    },
+    "strokeColor": {
+      "name": "strokeColor",
+      "type": "color",
+      "colormap": "colormap"
+    }
+  }
+}

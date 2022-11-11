@@ -1,0 +1,24 @@
+{
+  "address": "0x5Be5713eF7149865a9B0B9288654a10e616de14B",
+  "abi": [
+    {
+      "stateMutability": "nonpayable",
+      "type": "fallback"
+    }
+  ],
+  "args": [],
+  "numDeployments": 7,
+  "solcInputHash": "2fe98e12c0031ec2a7dec3df9237bffc",
+  "metadata": "{\"compiler\":{\"version\":\"0.8.14+commit.80d49f37\"},\"language\":\"Solidity\",\"output\":{\"abi\":[{\"stateMutability\":\"nonpayable\",\"type\":\"fallback\"}],\"devdoc\":{\"kind\":\"dev\",\"methods\":{},\"version\":1},\"userdoc\":{\"kind\":\"user\",\"methods\":{},\"notice\":\"Fallback contract accepts all inputs. Used for unit testing routing contracts.\",\"version\":1}},\"settings\":{\"compilationTarget\":{\"contracts/utils/Fallback.sol\":\"Fallback\"},\"evmVersion\":\"london\",\"libraries\":{},\"metadata\":{\"bytecodeHash\":\"ipfs\",\"useLiteralContent\":true},\"optimizer\":{\"enabled\":true,\"runs\":200},\"remappings\":[],\"viaIR\":true},\"sources\":{\"contracts/utils/Fallback.sol\":{\"content\":\"//SPDX-License-Identifier: MIT\\npragma solidity ^0.8.0;\\n\\n/**\\n * Fallback contract accepts all inputs. Used for unit testing routing contracts.\\n */\\ncontract Fallback {\\n    fallback() external {}\\n}\\n\",\"keccak256\":\"0xa3d46e80e9f8a49dac8af8d5472d068ef363b467d2d7ab07f2a6336423b76efb\",\"license\":\"MIT\"}},\"version\":1}",
+  "bytecode": "0x608080604052346013576040908160198239f35b600080fdfe34600557005b600080fdfea264697066735822122006bebf11e4c49540ffe3bd472d19f5a1154676d9ff8e8a113037dcdfd363ca1e64736f6c634300080e0033",
+  "deployedBytecode": "0x34600557005b600080fdfea264697066735822122006bebf11e4c49540ffe3bd472d19f5a1154676d9ff8e8a113037dcdfd363ca1e64736f6c634300080e0033",
+  "devdoc": {
+    "kind": "dev",
+    "methods": {},
+    "version": 1
+  },
+  "storageLayout": {
+    "storage": [],
+    "types": null
+  }
+}

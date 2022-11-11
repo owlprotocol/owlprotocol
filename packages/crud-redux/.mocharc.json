@@ -1,0 +1,8 @@
+{
+  "parallel": false,
+  "jobs": 8,
+  "timeout": 20000,
+  "colors": true,
+  "recursive": false,
+  "require": "lib/esm/test/mochaHooks.js"
+}

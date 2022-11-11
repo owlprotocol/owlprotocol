@@ -1,0 +1,40 @@
+{
+  "$ref": "#/definitions/NFTCollection",
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "definitions": {
+    "NFTCollection": {
+      "additionalProperties": false,
+      "description": "NFTCollection Interface describing a collection on a marketplace",
+      "properties": {
+        "description": {
+          "description": "Collection description",
+          "type": "string"
+        },
+        "external_url": {
+          "description": "Allow users to leave marketplace and view the item on your site.",
+          "type": "string"
+        },
+        "fee_recipient": {
+          "description": "Where seller fees will be paid to.",
+          "type": "string"
+        },
+        "image": {
+          "description": "Image",
+          "type": "string"
+        },
+        "name": {
+          "description": "Collection name",
+          "type": "string"
+        },
+        "seller_fee_basis_points": {
+          "description": "Indicates a 1/10000 seller fee 100 = 1%.",
+          "type": "number"
+        }
+      },
+      "required": [
+        "name"
+      ],
+      "type": "object"
+    }
+  }
+}

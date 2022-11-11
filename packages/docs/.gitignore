@@ -1,0 +1,8 @@
+# TypeDoc Reference
+/docs-web3-redux/web3-redux-reference
+/docs-web3-redux/web3-redux-components-reference
+/docs-contracts/reference/*
+!/docs-contracts/reference/index.md
+# Generated files
+.docusaurus
+.cache-loader
