@@ -1,1 +1,1 @@
-{"name":"IERC20Mintable","interfaceId":"0x40c10f19","abi":"[{\"type\":\"function\",\"name\":\"mint\",\"constant\":false,\"payable\":false,\"inputs\":[{\"type\":\"address\",\"name\":\"to\"},{\"type\":\"uint256\",\"name\":\"amount\"}],\"outputs\":[]}]"}
+{"name":"IERC20Mintable","interfaceId":"0x40c10f19","abi":[{"type":"function","name":"mint","constant":false,"payable":false,"inputs":[{"type":"address","name":"to"},{"type":"uint256","name":"amount"}],"outputs":[]}]}

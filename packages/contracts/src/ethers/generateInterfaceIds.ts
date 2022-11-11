@@ -4,8 +4,8 @@ import { interfaces } from './interfaces.js';
 
 export function generateInterfaceIds() {
     Object.entries(interfaces).forEach(([name, value]) => {
-        const abi = value.interface.format(FormatTypes.json) as any[];
-        generateInterfaceId(value.interfaceId, name, abi);
+        const abi = value.interface.format(FormatTypes.json) as any;
+        generateInterfaceId(value.interfaceId, name, JSON.parse(abi));
     });
 
     const interfaceIds = Object.values(interfaces).map(({ interfaceId }) => interfaceId);
