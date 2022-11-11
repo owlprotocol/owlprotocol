@@ -1,0 +1,22 @@
+# default env
+!.env
+#hardhat
+typechain
+cache
+factory
+/src/typechain
+/src/artifacts
+/docs-contracts-reference/*
+!/docs-contracts-reference/index.md
+
+/deployments/anvil
+/deployments/hardhat
+!/deployments/anvil/.chainId
+!/deployments/hardhat/.chainId
+
+# forge
+forge-cache/
+out/
+soljson-v*.js
+.openzeppelin/unknown-*.json
+*.py

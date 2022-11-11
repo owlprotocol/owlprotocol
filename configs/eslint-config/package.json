@@ -1,0 +1,41 @@
+{
+  "name": "@owlprotocol/eslint-config",
+  "version": "1.2.0",
+  "private": false,
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/owlprotocol/eslint-config"
+  },
+  "copyright": "Copyright 2021 Owl Protocol",
+  "author": {
+    "name": "Leo Vigna",
+    "email": "leo.vigna@gmail.com",
+    "url": "https://github.com/leovigna/"
+  },
+  "license": "MIT",
+  "type": "commonjs",
+  "files": [
+    ".eslintrc.cjs"
+  ],
+  "engines": {
+    "node": ">=16.0.0"
+  },
+  "exports": {
+    ".": "./.eslintrc.cjs"
+  },
+  "devDependencies": {
+    "@typescript-eslint/eslint-plugin": "^5.14.0",
+    "@typescript-eslint/parser": "^5.14.0",
+    "eslint": "^8.10.0",
+    "eslint-config-prettier": "^8.5.0",
+    "eslint-import-resolver-typescript": "^2.5.0",
+    "eslint-plugin-import": "^2.25.4",
+    "eslint-plugin-prettier": "^4.0.0",
+    "eslint-plugin-node": "^11.1.0",
+    "eslint-plugin-react": "^7.29.3",
+    "eslint-plugin-react-hooks": "^4.3.0",
+    "eslint-plugin-storybook": "^0.5.7",
+    "prettier": "^2.5.1",
+    "typescript": "^4.8.3"
+  }
+}

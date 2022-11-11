@@ -1,0 +1,97 @@
+{
+  "$ref": "#/definitions/NFTAsset",
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "definitions": {
+    "NFTAsset": {
+      "additionalProperties": false,
+      "description": "NFTAsset Interface describing an asset on a marketplace",
+      "properties": {
+        "animation_url": {
+          "description": "A URL to a multi-media attachment for the item. The file extensions GLTF, GLB, WEBM, MP4, M4V, OGV, and OGG are supported, along with the audio-only extensions MP3, WAV, and OGA. Animation_url also supports HTML pages, allowing you to build rich experiences and interactive NFTs using JavaScript canvas, WebGL, and more. Scripts and relative paths within the HTML page are now supported. However, access to browser extensions is not supported.\n\n^(http|https|ipfs)://",
+          "type": "string"
+        },
+        "attributes": {
+          "description": "Asset attributes",
+          "items": {
+            "$ref": "#/definitions/NFTTrait"
+          },
+          "type": "array"
+        },
+        "background_color": {
+          "description": "Background color of the item on Marketplace. Must be a six-character hexadecimal without a pre-pended #.",
+          "type": "string"
+        },
+        "decimals": {
+          "description": "The number of decimal places that the token amount should display (ERC1155) e.g. 18, means to divide the token amount by 1000000000000000000 to get its user representation.",
+          "type": "number"
+        },
+        "description": {
+          "description": "Describes the asset to which this token represents",
+          "type": "string"
+        },
+        "external_url": {
+          "description": "Allow users to leave marketplace and view the item on your site.\n\n^(http|https|ipfs)://",
+          "type": "string"
+        },
+        "image": {
+          "description": "A URI pointing to a resource with mime type image representing the asset to which this token represents. Consider making any images at a width between 320 and 1080 pixels and aspect ratio between 1.91:1 and 4:5 inclusive.\n\n^(http|https|ipfs)://\",",
+          "type": "string"
+        },
+        "image_data": {
+          "description": "Raw SVG image data, if you want to generate images on the fly (not recommended). Only use this if you're not including the image parameter.",
+          "items": {},
+          "type": "array"
+        },
+        "name": {
+          "description": "Identifies the asset to which this token represents",
+          "type": "string"
+        },
+        "youtube_url": {
+          "description": "A URL to a YouTube video.\n\n^(http|https|ipfs)://",
+          "type": "string"
+        }
+      },
+      "required": [
+        "name",
+        "image"
+      ],
+      "type": "object"
+    },
+    "NFTTrait": {
+      "additionalProperties": false,
+      "description": "NFTTrait Interface describing an asset's attribute",
+      "properties": {
+        "description": {
+          "type": "string"
+        },
+        "display_type": {
+          "$ref": "#/definitions/NFTTraitDisplayType"
+        },
+        "max_value": {
+          "type": "number"
+        },
+        "name": {
+          "description": "Name of attribute",
+          "type": "string"
+        },
+        "value": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "name",
+        "value"
+      ],
+      "type": "object"
+    },
+    "NFTTraitDisplayType": {
+      "enum": [
+        "number",
+        "boost_number",
+        "boost_percentage",
+        "date"
+      ],
+      "type": "string"
+    }
+  }
+}

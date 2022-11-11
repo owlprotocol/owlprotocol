@@ -1,0 +1,60 @@
+{
+  "$ref": "#/definitions/IPFSImageUpload",
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "definitions": {
+    "IPFSImageUpload": {
+      "additionalProperties": false,
+      "properties": {
+        "image": {
+          "additionalProperties": {
+            "type": "number"
+          },
+          "description": "Upload an image for single upload only",
+          "properties": {
+            "BYTES_PER_ELEMENT": {
+              "type": "number"
+            },
+            "buffer": {
+              "additionalProperties": false,
+              "properties": {
+                "byteLength": {
+                  "type": "number"
+                }
+              },
+              "required": [
+                "byteLength"
+              ],
+              "type": "object"
+            },
+            "byteLength": {
+              "type": "number"
+            },
+            "byteOffset": {
+              "type": "number"
+            },
+            "length": {
+              "type": "number"
+            }
+          },
+          "required": [
+            "BYTES_PER_ELEMENT",
+            "buffer",
+            "byteLength",
+            "byteOffset",
+            "length"
+          ],
+          "type": "object"
+        },
+        "path": {
+          "description": "only necessary if wrapWithDirectory is true",
+          "type": "string"
+        },
+        "wrapWithDirectory": {
+          "description": "Wrap the file within a diectory",
+          "type": "boolean"
+        }
+      },
+      "type": "object"
+    }
+  }
+}

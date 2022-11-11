@@ -1,0 +1,13 @@
+@chainlink/=./node_modules/@chainlink/
+@opengsn/=./node_modules/@opengsn/
+@openzeppelin/=./node_modules/@openzeppelin/
+chainlink/=lib/chainlink/
+ds-test/=lib/forge-std/lib/ds-test/src/
+forge-std/=lib/forge-std/src/
+gsn/=lib/gsn/
+hardhat-deploy/=./node_modules/hardhat-deploy/
+hardhat/=./node_modules/hardhat/
+openzeppelin-contracts-upgradeable/=lib/openzeppelin-contracts-upgradeable/
+openzeppelin-contracts/=lib/openzeppelin-contracts/
+truffle/=./node_modules/truffle/
+contracts/=contracts/

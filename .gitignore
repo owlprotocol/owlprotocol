@@ -1,0 +1,50 @@
+# See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
+# Solidity VSCode extension binary output
+bin/
+cache/
+
+# dependencies
+node_modules
+.pnp
+.pnp.js
+
+# testing
+coverage
+
+# build outputs
+.next/
+out/
+build
+.build
+.esbuild
+dist
+dist-ssr
+lib
+.serverless
+storybook-static
+.docusaurus
+.cache-loader
+
+# misc
+.DS_Store
+*.pem
+.idea
+
+# debug
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+.pnpm-debug.log*
+logs
+*.log
+temp.*
+
+# local env files
+.env
+.env.*
+
+# other
+.turbo
+*.local
+.ipfs
+*.sqlite
