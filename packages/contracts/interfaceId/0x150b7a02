@@ -1,0 +1,1 @@
+{"name":"IERC721Receiver","interfaceId":"0x150b7a02","abi":"[{\"type\":\"function\",\"name\":\"onERC721Received\",\"constant\":false,\"payable\":false,\"inputs\":[{\"type\":\"address\",\"name\":\"operator\"},{\"type\":\"address\",\"name\":\"from\"},{\"type\":\"uint256\",\"name\":\"tokenId\"},{\"type\":\"bytes\",\"name\":\"data\"}],\"outputs\":[{\"type\":\"bytes4\"}]}]"}
