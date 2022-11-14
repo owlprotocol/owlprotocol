@@ -16,12 +16,8 @@
     --ifm-code-font-size: 95%;
 }
 
-.hero--primary {
-    --ifm-hero-background-color: var(--ifm-hero-background-color);
-}
-
 /* For readability concerns, you should choose a lighter palette in dark mode. */
-html[data-theme='dark'] {
+html[data-theme="light"] {
     --ifm-color-primary: #25c2a0;
     --ifm-color-primary-dark: #21af90;
     --ifm-color-primary-darker: #1fa588;
@@ -29,46 +25,50 @@ html[data-theme='dark'] {
     --ifm-color-primary-light: #29d5b0;
     --ifm-color-primary-lighter: #32d8b4;
     --ifm-color-primary-lightest: #4fddbf;
+
+    .homepage-hero,
+    .homepage-features {
+        background-color: #dbe4e6;
+    }
+
+    .footer {
+        background-color: #dbe4e6;
+        color: #000;
+    }
+
+    .features-section {
+        background-color: #92929d;
+    }
+
+    a,
+    .footer__title {
+        color: #000;
+    }
+
+    .menu,
+    main[class*="docMainContainer"] {
+        background-color: #dbe4e6;
+    }
+}
+
+html[data-theme="dark"] {
+    --ifm-color-primary: #25c2a0;
+    --ifm-color-primary-dark: #21af90;
+    --ifm-color-primary-darker: #1fa588;
+    --ifm-color-primary-darkest: #1a8870;
+    --ifm-color-primary-light: #29d5b0;
+    --ifm-color-primary-lighter: #32d8b4;
+    --ifm-color-primary-lightest: #4fddbf;
+
+    .homepage-hero {
+        // background-color: #dbe4e6;
+    }
 }
 
 @font-face {
-    font-family: Inter;
-    font-weight: 200;
-    src: url(../../static/fonts/Inter-Light.ttf);
-}
-
-@font-face {
-    font-family: Inter;
-    font-weight: 400;
-    src: url(../../static/fonts/Inter-Regular.ttf);
-}
-
-@font-face {
-    font-family: Inter;
-    font-weight: 600;
-    src: url(../../static/fonts/Inter-Medium.ttf);
-}
-
-@font-face {
-    font-family: Inter;
-    font-weight: 800;
-    src: url(../../static/fonts/Inter-SemiBold.ttf);
-}
-
-@font-face {
-    font-family: 'TitilliumWeb';
+    font-family: "TitilliumWeb";
     font-weight: 600;
     src: url(../../static/fonts/TitilliumWeb-SemiBold.ttf);
-}
-
-body,
-p,
-i,
-b,
-li,
-a {
-    font-family: Inter, sans-serif;
-    font-weight: 200;
 }
 
 h1,
@@ -77,14 +77,14 @@ h3,
 h4,
 h5,
 h6 {
-    font-family: 'TitilliumWeb', Inter, sans-serif;
+    font-family: "TitilliumWeb", Inter, sans-serif;
     font-weight: 600;
 }
 
-.navbar__items>a,
-.theme-doc-sidebar-menu>li a,
+.navbar__items > a,
+.theme-doc-sidebar-menu > li a,
 span.breadcrumbs__link {
-    font-family: 'TitilliumWeb', Inter, sans-serif;
+    font-family: "TitilliumWeb", Inter, sans-serif;
 }
 
 p,
@@ -102,7 +102,7 @@ a {
     padding: 0 var(--ifm-pre-padding);
 }
 
-html[data-theme='dark'] .docusaurus-highlight-code-line {
+html[data-theme="dark"] .docusaurus-highlight-code-line {
     background-color: rgba(0, 0, 0, 0.3);
 }
 
@@ -112,7 +112,7 @@ strong {
     font-weight: 600;
 }
 
-html[data-theme='dark'] strong {
+html[data-theme="dark"] strong {
     color: #e75dff;
 }
 
@@ -126,7 +126,7 @@ p {
     color: #222;
 }
 
-html[data-theme='dark'] p {
+html[data-theme="dark"] p {
     color: #fff;
     font-weight: 400;
 }
@@ -136,7 +136,7 @@ h1 {
     color: #333;
 }
 
-html[data-theme='dark'] h1 {
+html[data-theme="dark"] h1 {
     color: #ccc;
 }
 
@@ -145,7 +145,7 @@ h2 {
     color: #434343;
 }
 
-html[data-theme='dark'] h2 {
+html[data-theme="dark"] h2 {
     color: #fff;
 }
 
@@ -154,7 +154,7 @@ h3 {
     color: #5389ff;
 }
 
-html[data-theme='dark'] h3 {
+html[data-theme="dark"] h3 {
     color: #5389ff;
 }
 
@@ -164,7 +164,7 @@ table.table-grid-2-col {
     width: 100%;
 
     a:hover {
-        >div.cell-bg {
+        > div.cell-bg {
             box-shadow: inset 0 0 100px 100px rgba(255, 255, 255, 0.1);
         }
 
@@ -184,7 +184,7 @@ table.table-grid-2-col {
         padding: 1.5em;
         text-align: center;
 
-        >img {
+        > img {
             display: inline-block;
             height: 250px;
         }
@@ -203,6 +203,6 @@ table.table-grid-2-col {
 }
 
 // img
-div.markdown>img {
+div.markdown > img {
     border-radius: 16px;
 }

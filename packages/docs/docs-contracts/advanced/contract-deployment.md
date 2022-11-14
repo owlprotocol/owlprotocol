@@ -19,10 +19,10 @@ sidebar_position: 1
 [UpgradeableBeacon]: ../../owlprotocol-contracts/contracts/proxy/Beacon/UpgradeableBeacon.sol
 [BeaconProxy]: ../../owlprotocol-contracts/contracts/proxy/Beacon/BeaconProxy.sol
 
-[factories.ts]: ../../owlprotocol-contracts/src/ethers/factories.ts
-[deterministicFactories.ts]: ../../owlprotocol-contracts/src/ethers/deterministicFactories.ts
-[proxy1167Factories.ts]: ../../owlprotocol-contracts/src/ethers/proxy1167Factories.ts
-[beaconProxyFactories.ts]: ../../owlprotocol-contracts/src/ethers/beaconProxyFactories.ts
+* [factories.ts]: ../../owlprotocol-contracts/src/ethers/factories.ts
+* [deterministicFactories.ts]: ../../owlprotocol-contracts/src/ethers/deterministicFactories.ts
+* [proxy1167Factories.ts]: ../../owlprotocol-contracts/src/ethers/proxy1167Factories.ts
+* [beaconProxyFactories.ts]: ../../owlprotocol-contracts/src/ethers/beaconProxyFactories.ts
 
 Owl Protocol is designed to support the deployment of many smart contracts. As such we have designed 3 advanced deployment strategies to enable deterministic, cheap, and upgradeable smart contracts.
 

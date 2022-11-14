@@ -1,15 +1,14 @@
 {
   "name": "@owlprotocol/docs",
-  "version": "1.2.0",
+  "version": "1.1.0",
   "private": true,
   "browserslist": [
     "last 2 Chrome versions"
   ],
   "scripts": {
     "docusaurus": "docusaurus",
-    "cp:contracts-reference": "cp -r ../contracts/docs-contracts-reference/* docs-contracts/reference",
-    "start": "npm run cp:contracts-reference && TYPEDOC_WATCH=true docusaurus start",
-    "build": "npm run cp:contracts-reference && TYPEDOC_WATCH=false docusaurus build",
+    "start": "TYPEDOC_WATCH=true docusaurus start",
+    "build": "TYPEDOC_WATCH=false docusaurus build",
     "swizzle": "docusaurus swizzle",
     "deploy": "docusaurus deploy",
     "clear": "docusaurus clear",
@@ -19,6 +18,11 @@
     "typecheck": "tsc"
   },
   "dependencies": {
+    "@chakra-ui/react": "1.8.8",
+    "@emotion/react": "11.10.5",
+    "framer-motion": "6.5.1",
+    "@emotion/styled": "11.10.5",
+    "@fontsource/inter": "4.5.14",
     "@algolia/client-search": "^4.9.1",
     "@docusaurus/core": "2.2.0",
     "@docusaurus/preset-classic": "2.2.0",
