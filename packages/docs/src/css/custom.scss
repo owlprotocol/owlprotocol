@@ -41,6 +41,7 @@ html[data-theme="light"] {
     }
 
     a,
+    li,
     .footer__title {
         color: #000;
     }
@@ -60,8 +61,8 @@ html[data-theme="dark"] {
     --ifm-color-primary-lighter: #32d8b4;
     --ifm-color-primary-lightest: #4fddbf;
 
-    .homepage-hero {
-        // background-color: #dbe4e6;
+    li {
+        color: #fff;
     }
 }
 
