@@ -1,12 +1,13 @@
 import { useEffect, useMemo, useCallback } from 'react';
 import { useDispatch } from 'react-redux';
-import { BaseWeb3Contract } from '../model/index.js';
+import { BaseWeb3Contract, ContractWithObjects } from '../model/index.js';
 import { eventSubscribe, eventUnsubscribe, eventGetPast } from '../actions/index.js';
 import { EventGetPastActionInput } from '../actions/eventGetPast.js';
-import ContractCRUD from '../crud.js';
-import ContractEventCRUD from '../../contractevent/crud.js';
 import { ContractEvent } from '../../contractevent/model/index.js';
 import { ReduxError } from '@owlprotocol/crud-redux';
+import { useContract } from './useContract.js';
+import { isEmpty, isUndefined } from 'lodash-es';
+import { useEventsFiltered } from '../../contractevent/hooks/useEventsFiltered.js';
 
 //Contract Events
 /** @internal */
@@ -43,21 +44,13 @@ export function useEvents<
     const limit = options?.limit ?? 20;
 
     const dispatch = useDispatch();
-    const contract = ContractCRUD.hooks.useSelectByIdSingle({ networkId, address });
-    const web3Contract = contract?.web3Contract ?? contract?.web3SenderContract;
-    const web3ContractExists = !!web3Contract;
 
     //TODO: handle filter
-    const [events] = ContractEventCRUD.hooks.useWhere(
-        {
-            networkId,
-            address,
-            name: eventName as string | undefined,
-        },
-        { reverse, offset, limit },
+    const [events] = useEventsFiltered(networkId, address, eventName as string,
+        filter, { reverse, offset, limit }
     ) as [ContractEvent<U>[] | undefined, any];
 
-    const filterHash = filter ? JSON.stringify(filter) : '';
+    const filterHash = isUndefined(filter) || isEmpty(filter) ? '' : JSON.stringify(filter)
 
     //Actions
     const getPastAction = useMemo(() => {
@@ -112,15 +105,15 @@ export function useEvents<
 
     //Effects
     useEffect(() => {
-        if (past && web3ContractExists) dispatchGetPastAction();
-    }, [dispatchGetPastAction, past, web3ContractExists]);
+        if (past) dispatchGetPastAction();
+    }, [dispatchGetPastAction, past]);
 
     useEffect(() => {
-        if (sync && web3ContractExists) {
+        if (sync) {
             dispatchSubscribeAction();
             return dispatchUnsubscribeAction;
         }
-    }, [dispatchSubscribeAction, dispatchUnsubscribeAction, sync, web3ContractExists]);
+    }, [dispatchSubscribeAction, dispatchUnsubscribeAction, sync]);
 
     //Error
     const [getPastError] = ReduxError.hooks.useGet(getPastAction?.meta.uuid);

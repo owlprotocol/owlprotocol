@@ -7,14 +7,10 @@ export function mineBlock(web3: Web3) {
     });
 }
 
-export function mineBlocks(web3: Web3, count = 1) {
-    const promises: any[] = [];
+export async function mineBlocks(web3: Web3, count = 1) {
     for (let i = 0; i < count; i++) {
-        const p = mineBlock(web3);
-        promises.push(p);
+        const p = await mineBlock(web3);
     }
-
-    return Promise.all(promises);
 }
 
 export default mineBlocks;

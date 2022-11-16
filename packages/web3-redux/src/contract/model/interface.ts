@@ -72,7 +72,7 @@ export function toPrimaryKey({ networkId, address }: ContractId): [string, strin
 
 /** @internal */
 export function validate(contract: Contract): Contract {
-    const { abi } = contract;
+    const abi = contract.abi ?? (contract as ContractWithObjects).web3Contract?.options.jsonInterface;
     const { networkId, address } = validateId(contract);
     const eventAbis = filter(abi, (x) => x.type === 'event');
     const eventAbiBySignature = keyBy(eventAbis, (x) => coder.encodeEventSignature(x));
@@ -82,6 +82,7 @@ export function validate(contract: Contract): Contract {
             ...contract,
             address,
             id: toReduxOrmId(toPrimaryKey({ networkId, address })),
+            abi,
             eventAbiBySignature,
         },
         isUndefined,
@@ -148,7 +149,12 @@ export function hydrate(contract: Contract, sess: any): ContractWithObjects {
  * @param contract
  */
 export function encode(contract: ContractWithObjects): Contract {
-    return omit(contract, ['web3Contract', 'web3SenderContract', 'web3GSNSenderContract']);
+    const abi = contract.abi ?? contract.web3Contract?.options.jsonInterface
+    const data = omit(contract, ['web3Contract', 'web3SenderContract', 'web3GSNSenderContract']);
+    return {
+        ...data,
+        abi
+    }
 }
 
 export default Contract;

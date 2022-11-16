@@ -35,7 +35,7 @@ export function useContractCall<
     const [contract] = useContract(networkId, address, defaultContract)
 
     const web3Contract = (contract as ContractWithObjects | undefined)?.web3Contract;
-    const contractExists = !!web3Contract;
+    const web3ContractExists = !!web3Contract;
 
     const [ethCall, { isLoading: ethCallLoading }] = EthCallCRUD.hooks.useGet({
         networkId,
@@ -45,7 +45,7 @@ export function useContractCall<
     });
     const returnValue = ethCall?.returnValue as Await<ReturnType<ReturnType<T['methods'][K]>['call']>> | undefined;
     const refresh = !ethCall?.updatedAt || Date.now() - ethCall.updatedAt > maxCacheAge
-    const executeCall = contractExists && refresh;
+    const executeCall = web3ContractExists && refresh;
 
     //Actions
     const argsHash = JSON.stringify(args);

@@ -1,7 +1,6 @@
-import { v4 as uuidv4 } from 'uuid';
-import { createAction } from '@owlprotocol/crud-redux';
+import { createAction2 } from '@owlprotocol/crud-redux';
+import { isUndefined, omitBy } from 'lodash-es';
 import { name } from '../common.js';
-import { BaseWeb3Contract } from '../model/interface.js';
 
 /** @internal */
 export const EVENT_GET_PAST = `${name}/EVENT_GET_PAST`;
@@ -14,10 +13,13 @@ export interface EventGetPastActionInput {
     fromBlock?: number | 'earliest';
     toBlock?: number | 'latest';
     blocks?: number;
-    web3Contract?: BaseWeb3Contract;
+    //Max events
+    maxEvents?: number;
+    //Concurrent requests
+    maxConcurrentRequests?: number;
 }
 /** @category Actions */
-export const eventGetPast = createAction(EVENT_GET_PAST, (payload: EventGetPastActionInput, uuid?: string) => {
+export const eventGetPast = createAction2(EVENT_GET_PAST, (payload: EventGetPastActionInput) => {
     let fromBlock: number | undefined;
     if (payload.fromBlock == 'earliest') {
         fromBlock = 0;
@@ -32,12 +34,11 @@ export const eventGetPast = createAction(EVENT_GET_PAST, (payload: EventGetPastA
         toBlock = payload.toBlock;
     }
 
-    return {
-        payload: { ...payload, fromBlock, toBlock, blocks: payload.blocks },
-        meta: {
-            uuid: uuid ?? uuidv4(),
-        },
-    };
+    let maxEvents = payload.maxEvents ?? 100;
+    let maxConcurrentRequests = payload.maxConcurrentRequests ?? 6;
+
+    const result = { ...payload, fromBlock, toBlock, blocks: payload.blocks, maxEvents, maxConcurrentRequests }
+    return omitBy(result, isUndefined) as typeof result
 });
 /** @internal */
 export type EventGetPastAction = ReturnType<typeof eventGetPast>;

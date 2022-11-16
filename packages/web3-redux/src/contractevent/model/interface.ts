@@ -1,3 +1,5 @@
+import { isUndefined, omitBy } from 'lodash-es';
+import { EventData } from 'web3-eth-contract';
 import type { AbiItem } from 'web3-utils';
 
 export interface ContractEventId {
@@ -34,36 +36,35 @@ export interface ContractEvent<T extends Record<string, any> = Record<string, an
     /** Raw indexed data */
     readonly topics?: string[];
     /** Topics */
-    readonly topic0?: any;
-    readonly topic1?: any;
-    readonly topic2?: any;
-    readonly topic3?: any;
+    readonly topic0?: string;
+    readonly topic1?: string;
+    readonly topic2?: string;
+    readonly topic3?: string;
 }
 
 export type ContractEventIndexInput =
     | ContractEventId
     | { networkId: string; blockNumber: number }
     | { networkId: string }
-    | { networkId: string; blockHash: number; logIndex: number }
-    | { networkId: string; blockHash: number }
-    | { networkId: string; address: string; name: string }
-    | { networkId: string; address: string }
-    | { networkId: string; name: string }
-    | { name: string }
-    | { networkId: string; address: string; topic0: any; topic1: any; topic2: any; topic3: any }
-    | { networkId: string; address: string; topic0: any; topic1: any; topic2: any }
-    | { networkId: string; address: string; topic0: any; topic1: any }
-    | { networkId: string; address: string; topic0: any }
-    | { networkId: string; topic0: any; topic1: any; topic2: any; topic3: any }
-    | { networkId: string; topic0: any; topic1: any; topic2: any }
-    | { networkId: string; topic0: any; topic1: any }
-    | { networkId: string; topic0: any };
-//| { networkId: string; address: string; topic0: any; topic3: any; topic1: any }
-//| { networkId: string; address: string; topic0: any; topic2: any; topic3: any }
-//| { networkId: string; address: string; topic0: any; topic2: any }
-//| { networkId: string; address: string; topic0: any; topic3: any }
+    | { networkId: string; address: string; topic0: string, topic1: string; topic2: string; topic3: string } //topic0 = keccak256(name + args)
+    | { networkId: string; address: string, topic0: string, topic1: string, topic2: string }
+    | { networkId: string; address: string, topic0: string, topic2: string, topic3: string }
+    | { networkId: string; address: string, topic0: string, topic1: string, topic3: string }
+    | { networkId: string; address: string, topic0: string, topic1: string }
+    | { networkId: string; address: string, topic0: string, topic2: string }
+    | { networkId: string; address: string, topic0: string, topic3: string }
+    | { networkId: string; address: string, topic0: string }
 export const ContractEventIndex =
-    '[networkId+blockNumber+logIndex], [networkId+blockNumber+logIndex], [networkId+address+name], [networkId+name], name, [networkId+address+topic0+topic1+topic2+topic3], [networkId+topic0+topic1+topic2+topic3]';
+    '[networkId+blockNumber+logIndex],\
+[networkId+blockNumber],\
+[networkId+address+topic0+topic1+topic2+topic3],\
+[networkId+address+topic0+topic1+topic2],\
+[networkId+address+topic0+topic2+topic3],\
+[networkId+address+topic0+topic1+topic3],\
+[networkId+address+topic0+topic1],\
+[networkId+address+topic0+topic2],\
+[networkId+address+topic0+topic3],\
+[networkId+address+topic0]';
 
 /** @internal */
 export function validateId({ networkId, blockNumber, logIndex }: ContractEventId): ContractEventId {
@@ -93,6 +94,21 @@ export function validate(item: ContractEvent): ContractEvent {
         topic2,
         topic3,
     };
+}
+
+export function fromEventData(e: EventData, networkId: string): ContractEvent {
+    const topics = e.raw.topics;
+    const event = {
+        ...e,
+        networkId,
+        address: e.address.toLowerCase(),
+        name: e.event,
+        topic0: topics[0],
+        topic1: topics[1],
+        topic2: topics[2],
+        topic3: topics[3]
+    }
+    return omitBy(event, isUndefined) as any;
 }
 
 export default ContractEvent;

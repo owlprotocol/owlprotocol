@@ -6,30 +6,40 @@ import takeEveryBuffered from '../../sagas/takeEveryBuffered.js';
 import ContractCRUD from '../crud.js';
 import ContractEventCRUD from '../../contractevent/crud.js';
 import ContractEventQueryCRUD from '../../contracteventquery/crud.js';
-import { ContractEvent } from '../../contractevent/model/interface.js';
+import { ContractEvent, fromEventData } from '../../contractevent/model/interface.js';
 import { fetchSaga } from './fetch.js';
+import { NetworkWithObjects } from '../../network/index.js';
+import { ContractWithObjects } from '../model/interface.js';
+import { compact, isEmpty, isUndefined } from 'lodash-es';
 
-const EVENT_GET_PAST_RAW_ERROR = `${EVENT_GET_PAST_RAW}/ERROR`;
-
-export function* eventGetPastRaw(action: EventGetPastRawAction) {
+export function* eventGetPastRaw(action: EventGetPastRawAction): Generator<
+    any,
+    {
+        network: NetworkWithObjects,
+        contract: ContractWithObjects,
+        events?: ContractEvent[],
+        actions?: EventGetPastRawAction[]
+    }
+> {
     const { payload } = action;
     const { networkId, address, eventName, filter, fromBlock, toBlock } = payload;
 
-    try {
-        const { contract } = yield* call(fetchSaga, ContractCRUD.actions.fetch({ networkId, address }));
-        const web3Contract = contract.web3Contract!;
+    const { network, contract } = yield* call(fetchSaga, ContractCRUD.actions.fetch({ networkId, address }, action.meta.uuid, action.meta.ts));
+    const web3Contract = contract.web3Contract!;
 
-        const eventQuery = ContractEventQueryCRUD.validate({
-            networkId,
-            address,
-            name: eventName,
-            fromBlock,
-            toBlock,
-            filterHash: filter ? JSON.stringify(filter) : '',
-        });
+    const eventQuery = ContractEventQueryCRUD.validate({
+        networkId,
+        address,
+        name: eventName,
+        fromBlock,
+        toBlock,
+        filterHash: isUndefined(filter) || isEmpty(filter) ? '' : JSON.stringify(filter),
+    });
 
-        const existingEventQuery = yield* call(ContractEventQueryCRUD.db.get, eventQuery);
-        if (!existingEventQuery) {
+    const existingEventQuery = yield* call(ContractEventQueryCRUD.db.get, eventQuery);
+
+    if (!existingEventQuery) {
+        try {
             //No cached query
             let eventsData: EventData[];
             if (filter) {
@@ -54,17 +64,11 @@ export function* eventGetPastRaw(action: EventGetPastRawAction) {
                     events: eventIds,
                 },
                 action.meta.uuid,
+                action.meta.ts
             );
             yield* put(updateQuery);
 
-            const events = eventsData.map((event: any) => {
-                return {
-                    ...event,
-                    networkId,
-                    address,
-                    name: eventName,
-                };
-            }) as ContractEvent[];
+            const events = eventsData.map((e) => fromEventData(e, networkId));
 
             if (eventsData.length > 0) {
                 const batch = ContractEventCRUD.actions.putBatched(events, action.meta.uuid);
@@ -72,39 +76,31 @@ export function* eventGetPastRaw(action: EventGetPastRawAction) {
             }
 
             //Return event logs
-            return events;
-        }
+            return {
+                network,
+                contract,
+                events
+            };
+        } catch (error) {
+            const err = error as Error;
+            //Update query cache
+            const updateQuery = ContractEventQueryCRUD.actions.upsert(
+                {
+                    ...eventQuery,
+                    errorId: action.meta.uuid,
+                },
+                action.meta.uuid,
+                action.meta.ts
+            );
+            yield* put(updateQuery);
 
-        const events = yield* call(ContractEventCRUD.db.bulkGet, existingEventQuery.events ?? []);
-        return events as ContractEvent[];
-    } catch (error) {
-        const err = error as Error;
-        const eventQuery = ContractEventQueryCRUD.validate({
-            networkId,
-            address,
-            name: eventName,
-            fromBlock,
-            toBlock,
-            filterHash: JSON.stringify(filter),
-        });
-
-        //Update query cache
-        const updateQuery = ContractEventQueryCRUD.actions.upsert(
-            {
-                ...eventQuery,
-                errorId: action.meta.uuid,
-            },
-            action.meta.uuid,
-        );
-        yield* put(updateQuery);
-
-        //Returned error: query returned more than 10000 results
-        if (err.message === 'Returned error: query returned more than 10000 results') {
-            //Dispatch split block query
-            const gen = splitBucket(fromBlock, toBlock);
-            for (const { from, to } of gen) {
-                yield* put(
-                    eventGetPastRawAction(
+            //Returned error: query returned more than 10000 results
+            if (err.message === 'Returned error: query returned more than 10000 results') {
+                //Dispatch split block query
+                const gen = splitBucket(fromBlock, toBlock);
+                const actions: EventGetPastRawAction[] = []
+                for (const { from, to } of gen) {
+                    const a = eventGetPastRawAction(
                         {
                             networkId,
                             address,
@@ -114,11 +110,27 @@ export function* eventGetPastRaw(action: EventGetPastRawAction) {
                             toBlock: to,
                         },
                         action.meta.uuid,
-                    ),
-                );
+                        action.meta.ts
+                    )
+                    actions.push(a);
+                }
+
+                return {
+                    network,
+                    contract,
+                    actions
+                }
             }
+
+            throw err;
         }
-        return err;
+    }
+
+    const events = yield* call(ContractEventCRUD.db.bulkGet, existingEventQuery.events ?? []);
+    return {
+        network,
+        contract,
+        events: compact(events)
     }
 }
 

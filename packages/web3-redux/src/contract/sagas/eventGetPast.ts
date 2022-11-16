@@ -1,13 +1,13 @@
-import { put, call } from 'typed-redux-saga';
+import { call, all } from 'typed-redux-saga';
+import { ContractEvent } from '../../contractevent/model/interface.js';
 import {
     EventGetPastAction,
-    EVENT_GET_PAST,
     eventGetPastRawAction as eventGetPastRawAction,
 } from '../actions/index.js';
-import ContractCRUD from '../crud.js';
-import { fetchSaga } from './fetch.js';
-
-const EVENT_GET_PAST_ERROR = `${EVENT_GET_PAST}/ERROR`;
+import { ContractWithObjects } from '../model/interface.js';
+import { eventGetPastRaw } from './eventGetPastRaw.js';
+import { fetchSaga as fetchNetworkSaga } from '../../network/sagas/fetch.js';
+import { NetworkCRUD } from '../../network/crud.js';
 
 const sizes = [10000000, 5000000, 1000000, 500000, 100000, 50000, 10000, 5000, 1000, 500, 100, 50, 10];
 const minSize = sizes[sizes.length - 1];
@@ -51,56 +51,75 @@ export function* splitBucket(from: number, to: number) {
 }
 
 /** Batches event requests into EventGetPastRaw actions */
-export function* eventGetPast(action: EventGetPastAction) {
-    try {
-        const { payload } = action;
-        const { networkId, address, eventName, filter, fromBlock, toBlock, blocks } = payload;
+export function* eventGetPast(action: EventGetPastAction): Generator<
+    any,
+    ContractEvent[]
+> {
+    const { payload } = action;
+    const { networkId, address, eventName, filter, fromBlock, toBlock, blocks, maxEvents, maxConcurrentRequests } = payload;
 
-        const { network, contract } = yield* call(fetchSaga, ContractCRUD.actions.fetch({ networkId, address }));
-        const web3 = network.web3!
-        const web3Contract = contract.web3Contract!;
+    const { network } = yield* call(fetchNetworkSaga, NetworkCRUD.actions.fetch({ networkId }, action.meta.uuid, action.meta.ts));
+    const web3 = network.web3!
 
-        //Ranged queries
-        let toBlockInitial: number;
-        if (!toBlock || toBlock === 'latest') {
-            toBlockInitial = yield* call(web3.eth.getBlockNumber);
-        } else {
-            toBlockInitial = toBlock;
-        }
-
-        let fromBlockInitial: number;
-        if (fromBlock === undefined) {
-            if (blocks) fromBlockInitial = Math.max(toBlockInitial - blocks, 0);
-            else fromBlockInitial = 0;
-        } else {
-            fromBlockInitial = fromBlock;
-        }
-
-        const gen = findBuckets(fromBlockInitial, toBlockInitial);
-        for (const { from, to } of gen) {
-            yield* put(
-                eventGetPastRawAction(
-                    {
-                        networkId,
-                        address,
-                        eventName,
-                        filter,
-                        fromBlock: from,
-                        toBlock: to,
-                        web3Contract,
-                    },
-                    action.meta.uuid,
-                ),
-            );
-        }
-    } catch (error) {
-        yield* put({
-            id: action.meta.uuid,
-            stack: (error as Error).stack,
-            errorMessage: (error as Error).message,
-            type: EVENT_GET_PAST_ERROR,
-        });
+    //Ranged queries
+    let toBlockInitial: number;
+    if (!toBlock || toBlock === 'latest') {
+        toBlockInitial = yield* call(web3.eth.getBlockNumber);
+    } else {
+        toBlockInitial = toBlock;
     }
-}
 
-export default eventGetPast;
+    let fromBlockInitial: number;
+    if (fromBlock === undefined) {
+        if (blocks) fromBlockInitial = Math.max(toBlockInitial - blocks, 0);
+        else fromBlockInitial = 0;
+    } else {
+        fromBlockInitial = fromBlock;
+    }
+
+    const gen = findBuckets(fromBlockInitial, toBlockInitial);
+    let tasks: ReturnType<typeof eventGetPastRaw>[] = []
+    for (const { from, to } of gen) {
+        const a = eventGetPastRawAction(
+            {
+                networkId,
+                address,
+                eventName,
+                filter,
+                fromBlock: from,
+                toBlock: to,
+            },
+            action.meta.uuid,
+            action.meta.ts
+        )
+        const t = call(eventGetPastRaw, a);
+        tasks.push(t);
+    }
+
+    const events: ContractEvent[] = []
+    while (tasks.length > 0) {
+        let tasksBatch: ReturnType<typeof eventGetPastRaw>[] = []
+        //Create new batch
+        for (let i = 0; i < Math.min(tasks.length, maxConcurrentRequests); i++) {
+            const t = tasks.shift()
+            tasksBatch.push(t!)
+        }
+
+        const results = yield* all(tasksBatch);
+        for (const r of results) {
+            if (r.events) {
+                //Yield events, no recursive query needed
+                events.push(...events)
+                yield r.events;
+            } else if (r.actions) {
+                //No events, add to tasks array
+                r.actions.forEach((a) => {
+                    tasks.push(call(eventGetPastRaw, a));
+                });
+            }
+        }
+        if (events.length > maxEvents) break;
+    }
+
+    return events
+}

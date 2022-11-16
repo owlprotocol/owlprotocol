@@ -7,7 +7,6 @@ import { ContractCRUD } from '../crud.js';
 import { EthCallCRUD } from '../../ethcall/crud.js';
 import { NetworkWithObjects } from '../../network/model/interface.js';
 import { ContractWithObjects } from '../model/interface.js';
-import { fetchSaga as fetchEthCall } from '../../ethcall/sagas/fetch.js';
 import { EthCall } from '../../ethcall/model/interface.js';
 
 const ADDRESS_0 = '0x0000000000000000000000000000000000000000';

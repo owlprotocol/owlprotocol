@@ -497,7 +497,7 @@ export function createCRUDModel<
             if (idx && isDefinedRecord(idx) && !isLoading && refreshDB) {
                 dispatch(actions.fetch({ ...defaultItem, ...(idx as T_ID), maxCacheAge }));
             }
-        }, [idx, defaultItem, maxCacheAge, dispatch, refreshDB, isLoading])
+        }, [JSON.stringify(idx), defaultItem, maxCacheAge, dispatch, refreshDB, isLoading])
 
         //Redux Item
         //Load redux with id from db item
@@ -510,13 +510,11 @@ export function createCRUDModel<
         const refreshRedux = !itemRedux?.updatedAt || Date.now() - itemRedux.updatedAt > maxCacheAge
         useEffect(() => {
             //Fetch Redux item
-            if (loadRedux && id && isDefinedRecord(id)) {
-                //Fetch using idx as id
-                if (refreshRedux) {
-                    dispatch(actions.fetch({ ...defaultItem, ...id, maxCacheAge }));
-                }
+            //console.debug({ id, refreshRedux })
+            if (loadRedux && id && isDefinedRecord(id) && refreshRedux) {
+                dispatch(actions.fetch({ ...defaultItem, ...id, maxCacheAge }));
             }
-        }, [idx, defaultItem, maxCacheAge, loadRedux, dispatch, id, refreshRedux]);
+        }, [defaultItem, maxCacheAge, loadRedux, dispatch, JSON.stringify(id), refreshRedux]);
 
         const item = (itemRedux ?? itemDB) as T | undefined
         const exists = dbExists || reduxExists;
