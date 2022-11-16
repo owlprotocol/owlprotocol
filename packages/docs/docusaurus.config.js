@@ -158,8 +158,8 @@ const config = {
                             },
                             */
                             {
-                                label: "Twitter",
-                                href: "https://twitter.com/owlprotocol",
+                                label: 'Twitter',
+                                href: 'https://twitter.com/owlprotocol_xyz',
                             },
                         ],
                     },
@@ -168,7 +168,7 @@ const config = {
                         items: [
                             {
                                 label: "GitHub",
-                                href: "https://github.com/owlprotocol/web3-redux",
+                                href: "https://github.com/owlprotocol",
                             },
                         ],
                     },

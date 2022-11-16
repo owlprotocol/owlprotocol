@@ -29,9 +29,11 @@ function tokenURI(uint256 tokenId) public view override returns (string memory) 
 
 > As you can see we store this `dna` per `tokenId`: **`getDna( tokenId )`**
 
-:::info Terminology
-In our contracts, we refer to **`dna`** as the binary on-chain data specific to each NFT.
+:::info Detailed Docs
+**Visit our Contract Guide for in the detailed docs:** [IERC721Dna](/contracts/contract-guides/IERC721Dna)
 :::
+
+---
 
 ### Deciphering / Translating the NFT On-Chain Data (DNA)
 
@@ -57,6 +59,8 @@ the **Client-Side SDK**. This is intended as a fallback for when the application
 Typically, rather than calling the API Endpoint, a decentralized application should parse the **`ipfsSchemaHash`** and
 the **`dna`**, then pass that to the **client-side SDK** to generate the NFT's `metadata`, which will typically also include the
 NFT rendering/image either as a link or a base64 encoded image.
+
+---
 
 ### The IPFS Hosted Schema JSON
 
