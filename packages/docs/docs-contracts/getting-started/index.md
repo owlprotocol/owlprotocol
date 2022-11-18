@@ -22,7 +22,7 @@ This removes the dependency for the NFT on the game, and starts to enable decent
 
 ## Why It's Important
 
-Ensuring that the critical data about the NFT, such as its visual representation, parameters, and state
+It's important to ensure that the critical data about the NFT, such as its visual representation, parameters, and state are on-chain because:
 
 1. Marketplaces such as **Opensea, Blur, and Rarible** can render the full character with equipment, accessories, and cosmetics.
 

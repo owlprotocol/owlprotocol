@@ -121,54 +121,11 @@ In this example we have a Sword NFT with 3 traits:
 
 Therefore, if we had a "Level 5" sword, with a ruby enchantment the **`dna`** would be:
 
-<table>
-<thead>
-<tr>
-    <td>
-        &nbsp;
-    </td>
-    <td>
-        Item Level
-    </td>
-    <td>
-        Base Item
-    </td>
-    <td>
-        Enchantment
-    </td>
-</tr>
-</thead>
-<tbody>
-<tr>
-    <td>
-        bits
-    </td>
-    <td>
-        0000000000000101
-    </td>
-    <td>
-        00000000
-    </td>
-    <td>
-        00000001
-    </td>
-</tr>
-<tr>
-    <td>
-        value
-    </td>
-    <td>
-        5
-    </td>
-    <td>
-        0
-    </td>
-    <td>
-        1
-    </td>
-</tr>
-</tbody>
-</table>
+|       | Item Level       | Base Item | Enchantment |
+|-------|------------------|-----------|-------------|
+| bits  | 0000000000000101 | 00000000  | 00000001    |
+| value | 5                | 0         | 1           |
+
 
 > We encode from *left-to-right*, which is most intuitive to work with.
 

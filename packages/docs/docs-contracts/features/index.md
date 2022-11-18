@@ -16,7 +16,7 @@ The primary features supported by Owl Protocol are:
             <img src="/img/feature-dnft-v3.png"/>
             <br/>
             <strong>Dynamic NFTs</strong>
-            <p>NFTs that change over time, or when <br/>triggered by real-world/external data.</p>
+            <p>NFTs that change over time, or when triggered by real-world/external data.</p>
         </div>
     </a>
 </td>
@@ -26,7 +26,7 @@ The primary features supported by Owl Protocol are:
             <img src="/img/feature-equipment-v3.png"/>
             <br/>
             <strong>Attaching / Equipment</strong>
-            <p>Map attachable NFTs to upgrade or<br/>change certain traits or stats.</p>
+            <p>Map attachable NFTs to upgrade or change certain traits or stats.</p>
         </div>
     </a>
 </td>
@@ -38,7 +38,7 @@ The primary features supported by Owl Protocol are:
             <img src="/img/feature-combining-v3.png"/>
             <br/>
             <strong>Combining / Crafting / Breeding</strong>
-            <p>Input or whitelist NFTs that will output certain<br/>NFTs, <i>sometimes carrying over traits</i>.</p>
+            <p>Input or whitelist NFTs that will output certain NFTs, <i>sometimes carrying over traits</i>.</p>
         </div>
     </a>
 </td>
@@ -48,7 +48,7 @@ The primary features supported by Owl Protocol are:
             <img src="/img/feature-crosschain-v3.png"/>
             <br/>
             <strong>Cross Collection Interactions</strong>
-            <p>Create mechanics between multiple collections,<br/>including those you <strong>DO NOT</strong> own.</p>
+            <p>Create mechanics between multiple collections, including those you <strong>DO NOT</strong> own.</p>
         </div>
     </a>
 </td>

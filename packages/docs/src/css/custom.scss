@@ -16,6 +16,10 @@
     --ifm-code-font-size: 95%;
 }
 
+html, body {
+    background-color: transparent !important;
+}
+
 /* For readability concerns, you should choose a lighter palette in dark mode. */
 html[data-theme="light"] {
     --ifm-color-primary: #25c2a0;
@@ -45,11 +49,6 @@ html[data-theme="light"] {
     .footer__title {
         color: #000;
     }
-
-    .menu,
-    main[class*="docMainContainer"] {
-        background-color: #dbe4e6;
-    }
 }
 
 html[data-theme="dark"] {
@@ -62,8 +61,20 @@ html[data-theme="dark"] {
     --ifm-color-primary-lightest: #4fddbf;
 
     li {
-        color: #fff;
+        color: var(--ifm-font-color-base);
     }
+}
+
+@font-face {
+    font-family: "Inter";
+    font-weight: 200;
+    src: url(../../static/fonts/Inter-Light.ttf);
+}
+
+@font-face {
+    font-family: "Inter";
+    font-weight: 600;
+    src: url(../../static/fonts/Inter-Light.ttf);
 }
 
 @font-face {
@@ -72,138 +83,197 @@ html[data-theme="dark"] {
     src: url(../../static/fonts/TitilliumWeb-SemiBold.ttf);
 }
 
-h1,
-h2,
-h3,
-h4,
-h5,
-h6 {
-    font-family: "TitilliumWeb", Inter, sans-serif;
-    font-weight: 600;
-}
-
-.navbar__items > a,
-.theme-doc-sidebar-menu > li a,
-span.breadcrumbs__link {
-    font-family: "TitilliumWeb", Inter, sans-serif;
-}
-
-p,
-i,
-b,
-li,
-a {
-    font-weight: 200;
-}
-
-.docusaurus-highlight-code-line {
-    background-color: rgba(0, 0, 0, 0.1);
-    display: block;
-    margin: 0 calc(-1 * var(--ifm-pre-padding));
-    padding: 0 var(--ifm-pre-padding);
-}
-
-html[data-theme="dark"] .docusaurus-highlight-code-line {
-    background-color: rgba(0, 0, 0, 0.3);
-}
-
-// strong
-strong {
-    color: #9c00e3;
-    font-weight: 600;
-}
-
-html[data-theme="dark"] strong {
-    color: #e75dff;
-}
-
-// italic
-i {
-    font-weight: 600;
-}
-
-// default body paragraph
-p {
-    color: #222;
-}
-
-html[data-theme="dark"] p {
-    color: #fff;
-    font-weight: 400;
-}
-
-// h1
-h1 {
-    color: #333;
-}
-
-html[data-theme="dark"] h1 {
-    color: #ccc;
-}
-
-// h2
-h2 {
-    color: #434343;
-}
-
-html[data-theme="dark"] h2 {
-    color: #fff;
-}
-
-// h3
-h3 {
-    color: #5389ff;
-}
-
-html[data-theme="dark"] h3 {
-    color: #5389ff;
-}
-
-// .table-grid-2-col
-table.table-grid-2-col {
-    display: table;
-    width: 100%;
-
-    a:hover {
-        > div.cell-bg {
-            box-shadow: inset 0 0 100px 100px rgba(255, 255, 255, 0.1);
-        }
-
-        text-decoration: none;
+.markdown {
+    h1,
+    h2,
+    h3,
+    h4,
+    h5,
+    h6 {
+        font-family: "TitilliumWeb", Inter, sans-serif;
+        font-weight: 600;
     }
 
-    td,
-    tr {
-        background-color: transparent;
-        border: 0;
-        width: 50%;
+    h1 {
+        font-size: 3rem;
     }
 
-    td div.cell-bg {
-        background-color: #262835;
-        border-radius: 8px;
-        padding: 1.5em;
-        text-align: center;
+    h2 {
+        font-size: 2rem;
+    }
 
-        > img {
-            display: inline-block;
-            height: 250px;
+    h3 {
+        font-size: 1.5rem;
+    }
+
+    .navbar__items > a,
+    .theme-doc-sidebar-menu > li a,
+    span.breadcrumbs__link {
+        font-family: "TitilliumWeb", Inter, sans-serif;
+    }
+
+    ul, ol {
+        padding-left: var(--ifm-list-left-padding);
+    }
+
+    p,
+    i,
+    b,
+    li,
+    a {
+        font-weight: 200;
+    }
+
+    p, ul, ol {
+        line-height: 1.5em;
+        margin-block-start: 1.5em;
+        margin-block-end: 1.5em;
+    }
+
+    hr {
+        height: var(--ifm-hr-height);
+        margin-block-start: 4em;
+        margin-block-end: 1.5em;
+    }
+
+    .docusaurus-highlight-code-line {
+        background-color: rgba(0, 0, 0, 0.1);
+        display: block;
+        margin: 0 calc(-1 * var(--ifm-pre-padding));
+        padding: 0 var(--ifm-pre-padding);
+    }
+
+    // strong
+    strong {
+        color: #9c00e3;
+        font-weight: 600;
+    }
+
+    // italic
+    i {
+        font-weight: 600;
+    }
+
+    // default body paragraph
+    p {
+        color: #222;
+    }
+
+    // h1
+    h1 {
+        color: #333;
+    }
+
+    // h2
+    h2 {
+        color: #434343;
+    }
+
+    // h3
+    h3 {
+        color: #5389ff;
+    }
+
+    // .table-grid-2-col
+    table.table-grid-2-col {
+        display: table;
+        width: 100%;
+
+        a {
+            text-decoration: none !important;
         }
 
-        strong {
-            color: #e75dff;
+        a:hover {
+            > div.cell-bg {
+                box-shadow: inset 0 0 100px 100px rgba(255, 255, 255, 0.1);
+            }
         }
 
-        p {
-            font-size: 0.9em;
-            line-height: 1.2;
-            margin: 0;
-            color: #fff;
+        td,
+        tr {
+            background-color: transparent;
+            border: 0;
+            width: 50%;
         }
+
+        td a > div.cell-bg {
+            background-color: #262835;
+            border-radius: 8px;
+            padding: 1.5em;
+            text-align: center;
+
+            > img {
+                display: inline-block;
+                height: 250px;
+            }
+
+            strong {
+                font-size: 1.5rem;
+                color: #e75dff;
+            }
+
+            p {
+                font-size: 1.2em;
+                line-height: 1.2;
+                margin: 0;
+                color: #fff;
+            }
+        }
+    }
+
+    // img
+    img {
+        border-radius: 16px;
     }
 }
 
-// img
-div.markdown > img {
-    border-radius: 16px;
+html[data-theme="dark"] .markdown {
+
+    h1 {
+        color: #ccc;
+    }
+
+    h2 {
+        color: #fff;
+    }
+
+    h3 {
+        color: #5389ff;
+    }
+
+    p {
+        color: #fff;
+        font-weight: 400;
+    }
+
+    li p {
+        font-weight: 200;
+    }
+
+    a {
+        color: var(--ifm-link-color);
+        text-decoration: underline;
+        text-decoration-color: var(--ifm-alert-border-color);
+    }
+
+    strong {
+        color: #e75dff;
+    }
+
+    .docusaurus-highlight-code-line {
+        background-color: rgba(0, 0, 0, 0.3);
+    }
 }
+
+html[data-theme="light"] .markdown {
+
+    table th, td {
+        color: var(--ifm-font-color-base);
+    }
+
+}
+
+.pagination-nav__label {
+    color: var(--ifm-link-color) !important;
+}
+

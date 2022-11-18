@@ -21,15 +21,18 @@ Owl Protocol is creating a set of *open source* smart contracts, standards, and 
 <br/>
 <br/>
 
-Our aim is to improve the interoperability and composability of NFTs through these standards so that NFTs can be truly decentralized and exist in many worlds, virtual or real.
+Our aim is to improve the interoperability and composability of NFTs through these standards so that NFTs can be truly
+decentralized and exist in many worlds, virtual or real.
 
 :::info Visit Our Website
 You can learn more about us at https://owlprotocol.xyz, and our sister company Vulcan Link at https://vulcan.link.
 :::
 
-Our smart contracts add a number of features in a **modular** fashion to maximize the *backwards compatibility* and flexibility of what we call **Dynamic NFTs (dNFTs)**.
+Our smart contracts add a number of features in a **modular** fashion to maximize the *backwards compatibility* and
+flexibility of what we call **Dynamic NFTs (dNFTs)**.
 
-This makes common NFT mechanics such as *combining, bundling, crafting, breeding and more*, easier for developers and creators, so they can focus on what they do best: **making great games, projects, and partnerships happen**.
+This makes common NFT mechanics such as *combining, bundling, crafting, breeding and more*, easier for developers and
+creators, so they can focus on what they do best: **making great games, projects, and partnerships happen**.
 
 ---
 
@@ -46,7 +49,7 @@ The primary features supported by Owl Protocol are:
             <img src="/img/feature-dnft-v3.png"/>
             <br/>
             <strong>Dynamic NFTs</strong>
-            <p>NFTs that change over time, or when <br/>triggered by real-world/external data.</p>
+            <p>NFTs that change over time, or when triggered by real-world/external data.</p>
         </div>
     </a>
 </td>
@@ -56,7 +59,7 @@ The primary features supported by Owl Protocol are:
             <img src="/img/feature-equipment-v3.png"/>
             <br/>
             <strong>Attaching / Equipment</strong>
-            <p>Map attachable NFTs to upgrade or<br/>change certain traits or stats.</p>
+            <p>Map attachable NFTs to upgrade or change certain traits or stats.</p>
         </div>
     </a>
 </td>
@@ -68,7 +71,7 @@ The primary features supported by Owl Protocol are:
             <img src="/img/feature-combining-v3.png"/>
             <br/>
             <strong>Combining / Crafting / Breeding</strong>
-            <p>Input or whitelist NFTs that will output certain<br/>NFTs, <i>sometimes carrying over traits</i>.</p>
+            <p>Input or whitelist NFTs that will output certain NFTs, <i>sometimes carrying over traits</i>.</p>
         </div>
     </a>
 </td>
@@ -78,7 +81,7 @@ The primary features supported by Owl Protocol are:
             <img src="/img/feature-crosschain-v3.png"/>
             <br/>
             <strong>Cross Collection Interactions</strong>
-            <p>Create mechanics between multiple collections,<br/>including those you <strong>DO NOT</strong> own.</p>
+            <p>Create mechanics between multiple collections, including those you <strong>DO NOT</strong> own.</p>
         </div>
     </a>
 </td>
