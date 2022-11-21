@@ -76,6 +76,7 @@ describe(`${name}.sagas.eventSubscribe`, () => {
             const gas2 = await tx2.estimateGas();
             await tx2.send({ from: accounts[0], gas: gas2, gasPrice: '875000000' });
 
+            //@ts-ignore
             const events1 = await ContractEventCRUD.db.where({ networkId, address, name: 'NewValue' });
             assert.deepEqual(events1, expectedEvents);
         });
@@ -98,6 +99,7 @@ describe(`${name}.sagas.eventSubscribe`, () => {
             const gas2 = await tx2.estimateGas();
             await tx2.send({ from: accounts[0], gas: gas2, gasPrice: '875000000' });
 
+            //@ts-ignore
             const events1 = await ContractEventCRUD.db.where({ networkId, address, name: 'NewValue' });
             assert.deepEqual(events1, expectedEvents);
         });
@@ -118,6 +120,7 @@ describe(`${name}.sagas.eventSubscribe`, () => {
             await tx2.send({ from: accounts[0], gas: gas2, gasPrice: '875000000' });
 
             //Expect no event to be captured
+            //@ts-ignore
             const events1 = await ContractEventCRUD.db.where({ networkId, address, name: 'NewValue' });
             assert.deepEqual(events1, expectedEvents);
         });
@@ -153,14 +156,17 @@ describe(`${name}.sagas.eventSubscribe`, () => {
             const gas3 = await tx3.estimateGas();
             await tx3.send({ from: accounts[0], gas: gas3, gasPrice: '875000000' });
 
+            //@ts-ignore
             const events1 = await ContractEventCRUD.db.where({ networkId, address, name: 'NewValue' });
             assert.equal(events1?.length, expectedEvents.length, 'expectedEvents.length');
             assert.deepEqual(events1, expectedEvents, 'events value=any');
             //TODO: Index by return value
             //value=42
+            //@ts-ignore
             const events2 = await ContractEventCRUD.db.where({ networkId, address, name: 'NewValue' });
             assert.deepEqual(events2, [expectedEvents[0]], 'events value=42');
             //value=43
+            //@ts-ignore
             const events3 = await ContractEventCRUD.db.where({ networkId, address, name: 'NewValue' });
             assert.deepEqual(events3, [expectedEvents[1]], 'events value=43');
         });

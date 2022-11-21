@@ -146,6 +146,7 @@ describe(`${name}/sagas/eventGetPastRaw.test.ts`, () => {
 
             await sleep(2000);
 
+            //@ts-ignore
             const events1 = await ContractEventCRUD.db.where({ networkId, address, name: 'NewValue' });
             assert.deepEqual(events1, []);
         });
@@ -179,6 +180,8 @@ describe(`${name}/sagas/eventGetPastRaw.test.ts`, () => {
                     topic3: undefined,
                 }, isUndefined) as any;
             });
+
+            //@ts-ignore
             const events1 = (await ContractEventCRUD.db.where({ networkId, address, name: 'NewValue' })).map((e) => {
                 return omit(e, 'updatedAt')
             });
