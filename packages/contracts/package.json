@@ -32,7 +32,7 @@
   "scripts": {
     "build": "npm-run-all compile generate-types docs esbuild tsc build:interfaceIds",
     "build:watch": "npm-run-all -p tsc:watch esbuild:watch",
-    "build:interfaceIds": "node lib/cjs/ethers/generateInterfaceIds.js",
+    "build:interfaceIds": "rm interfaceId/* && node lib/cjs/ethers/generateInterfaceIds.js",
     "docs": "hardhat docgen",
     "esbuild": "node esbuild.config.mjs",
     "esbuild:watch": "ESBUILD_WATCH=true node esbuild.config.mjs",

@@ -1,4 +1,4 @@
-import { utils } from 'ethers';
+import {utils} from 'ethers';
 import type {
     IERC20Interface as IERC20InterfaceType,
     IERC20MetadataInterface as IERC20MetadataInterfaceType,
@@ -54,13 +54,15 @@ import {
     IAssetRouterInput,
     IAssetRouterOutput,
 } from '../artifacts.js';
-import { interfaceId } from '../utils/IERC165.js';
-import { Interface } from '@ethersproject/abi';
+import {interfaceId} from '../utils/IERC165.js';
+import {Interface} from '@ethersproject/abi';
 
+// ERC165
 export const IERC165Interface = new utils.Interface(IERC165.abi) as IERC165InterfaceType;
 const IERC165Sighashes = new Set(IERC165Interface.fragments.map(Interface.getSighash));
 export const IERC165InterfaceId = interfaceId(IERC165Interface.fragments);
 
+// ERC20
 export const IERC20Interface = new utils.Interface(IERC20.abi) as IERC20InterfaceType;
 const IERC20Sighashes = new Set(IERC20Interface.fragments.map(Interface.getSighash));
 export const IERC20InterfaceId = interfaceId(
@@ -78,6 +80,7 @@ export const IERC20MintableInterfaceId = interfaceId(
     IERC20MintableInterface.fragments.filter((f) => !IERC20MetadataSighashes.has(Interface.getSighash(f))),
 );
 
+// ERC2981
 export const IERC2981Interface = new utils.Interface(IERC2981.abi) as IERC2981InterfaceType;
 //const IERC2981Sighashes = new Set(IERC2981Interface.fragments.map(Interface.getSighash));
 export const IERC2981InterfaceId = interfaceId(
@@ -90,6 +93,7 @@ export const IERC2981SetterInterfaceId = interfaceId(
     IERC2981SetterInterface.fragments.filter((f) => !IERC165Sighashes.has(Interface.getSighash(f))),
 );
 
+// ERC721
 export const IERC721Interface = new utils.Interface(IERC721.abi) as IERC721InterfaceType;
 const IERC721Sighashes = new Set(IERC721Interface.fragments.map(Interface.getSighash));
 export const IERC721InterfaceId = interfaceId(
@@ -126,13 +130,19 @@ export const IERC721DnaInterfaceId = interfaceId(IERC721DnaInterface.fragments);
 export const IERC721ReceiverInterface = new utils.Interface(IERC721Receiver.abi) as IERC721ReceiverInterfaceType;
 export const IERC721ReceiverInterfaceId = interfaceId(IERC721ReceiverInterface.fragments);
 
+// ERC1155
 export const IERC1155Interface = new utils.Interface(IERC1155.abi) as IERC1155InterfaceType;
-export const IERC1155InterfaceId = interfaceId(IERC1155Interface.fragments);
+const IERC1155Sighashes = new Set(IERC1155Interface.fragments.map(Interface.getSighash));
+export const IERC1155InterfaceId = interfaceId(
+    IERC1155Interface.fragments.filter((f) => !IERC165Sighashes.has(Interface.getSighash(f))),
+);
 
 export const IERC1155MetadataURIInterface = new utils.Interface(
     IERC1155MetadataURI.abi,
 ) as IERC1155MetadataURIInterfaceType;
-export const IERC1155MetadataURIInterfaceId = interfaceId(IERC1155MetadataURIInterface.fragments);
+export const IERC1155MetadataURIInterfaceId = interfaceId(
+    IERC1155MetadataURIInterface.fragments.filter((f) => !IERC1155Sighashes.has(Interface.getSighash(f))),
+);
 
 export const IERC1155MintableInterface = new utils.Interface(IERC1155Mintable.abi) as IERC1155MintableInterfaceType;
 export const IERC1155MintableInterfaceId = interfaceId(IERC1155MintableInterface.fragments);
@@ -141,7 +151,9 @@ export const IERC1155DnaInterface = new utils.Interface(IERC1155Dna.abi) as IERC
 export const IERC1155DnaInterfaceId = interfaceId(IERC1155DnaInterface.fragments);
 
 export const IERC1155ReceiverInterface = new utils.Interface(IERC1155Receiver.abi) as IERC1155ReceiverInterfaceType;
-export const IERC1155ReceiverInterfaceId = interfaceId(IERC1155ReceiverInterface.fragments);
+export const IERC1155ReceiverInterfaceId = interfaceId(
+    IERC1155ReceiverInterface.fragments.filter((f) => !IERC165Sighashes.has(Interface.getSighash(f))),
+);
 
 export const IAccessControlInterface = new utils.Interface(IAccessControl.abi) as IAccessControlInterfaceType;
 export const IAccessControlInterfaceId = interfaceId(IAccessControlInterface.fragments);
