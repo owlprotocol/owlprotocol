@@ -1,7 +1,7 @@
-import { useState } from 'react';
-import { VStack, Box, Text, Button, useTheme } from '@chakra-ui/react';
-import { ERC721InstanceSelectWithState } from '../../../ERC721/ERC721InstanceSelect';
-import Icon from '../../../Icon';
+import { useState } from "react";
+import { VStack, Box, Text, Button, useTheme } from "@chakra-ui/react";
+import { ERC721InstanceSelectWithState } from "../../../ERC721/ERC721InstanceSelect";
+import Icon from "../../../Icon";
 
 export interface Props {
     tokens?: { name: string }[];
@@ -23,7 +23,7 @@ const EquipmentSideList = ({ tokens }: Props) => {
 
     return (
         <VStack gap={4}>
-            <Box maxH={'75vh'} overflowY={'auto'}>
+            <Box maxH={"75vh"} overflowY={"auto"}>
                 {items.map((item, key) => (
                     <Box key={key}>
                         <ERC721InstanceSelectWithState tokens={tokens} />
@@ -31,7 +31,12 @@ const EquipmentSideList = ({ tokens }: Props) => {
                 ))}
             </Box>
 
-            <Button onClick={handleAddItem} bg={themes.color5} borderRadius={12} p={2}>
+            <Button
+                onClick={handleAddItem}
+                bg={themes.color5}
+                borderRadius={12}
+                p={2}
+            >
                 <Icon icon="PlusRounded" />
                 <Text ml={3}>Add Item</Text>
             </Button>

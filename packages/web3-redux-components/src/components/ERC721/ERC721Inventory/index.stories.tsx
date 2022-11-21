@@ -1,15 +1,17 @@
-import { ComponentStory, ComponentMeta } from '@storybook/react';
-import { TestData } from '@owlprotocol/web3-redux';
-import { networkIdArgType } from '../../../test/storybookArgs.js';
-import { ERC721Inventory } from '.';
+import { ComponentStory, ComponentMeta } from "@storybook/react";
+import { TestData } from "@owlprotocol/web3-redux";
+import { networkIdArgType } from "../../../test/storybookArgs.js";
+import { ERC721Inventory } from ".";
 
 // eslint-disable-next-line import/no-default-export
 export default {
-    title: 'ERC721/ERC721Equipment/Inventory',
+    title: "ERC721/ERC721Equipment/Inventory",
     component: ERC721Inventory,
 } as ComponentMeta<typeof ERC721Inventory>;
 
-const Template: ComponentStory<typeof ERC721Inventory> = (args: any) => <ERC721Inventory {...args} />;
+const Template: ComponentStory<typeof ERC721Inventory> = (args: any) => (
+    <ERC721Inventory {...args} />
+);
 
 export const Main = Template.bind({});
 
@@ -18,12 +20,32 @@ Main.args = {
         {
             networkId: networkIdArgType.options[0],
             address: TestData.OZ_TEAM,
-            tokenId: '1',
+            tokenId: "1",
         },
         {
             networkId: networkIdArgType.options[0],
             address: TestData.OZ_TEAM,
-            tokenId: '2',
+            tokenId: "2",
+        },
+        {
+            networkId: networkIdArgType.options[0],
+            address: TestData.OZ_TEAM,
+            tokenId: "1",
+        },
+        {
+            networkId: networkIdArgType.options[0],
+            address: TestData.OZ_TEAM,
+            tokenId: "2",
+        },
+        {
+            networkId: networkIdArgType.options[0],
+            address: TestData.OZ_TEAM,
+            tokenId: "1",
+        },
+        {
+            networkId: networkIdArgType.options[0],
+            address: TestData.OZ_TEAM,
+            tokenId: "2",
         },
     ],
 };

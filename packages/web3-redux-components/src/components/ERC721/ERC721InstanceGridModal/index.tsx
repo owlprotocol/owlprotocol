@@ -7,11 +7,11 @@ import {
     ModalHeader,
     ModalCloseButton,
     useTheme,
-} from '@chakra-ui/react';
+} from "@chakra-ui/react";
 
-import { Token } from '../../../interfaces/Token.js';
-import { ERC721InstanceProps } from '../ERC721Instance/index.js';
-import { ERC721InstanceGrid } from '../ERC721InstanceGrid/index.js';
+import { Token } from "../../../interfaces/Token.js";
+import { ERC721InstanceProps } from "../ERC721Instance/index.js";
+import { ERC721InstanceGrid } from "../ERC721InstanceGrid/index.js";
 
 export interface ERC721InstanceGridModal {
     isOpen: boolean;
@@ -19,7 +19,11 @@ export interface ERC721InstanceGridModal {
     onClick?: ({ networkId, address, tokenId }: Partial<Token>) => any;
 }
 
-export const ERC721InstanceGridModal = ({ isOpen, tokens, onClick }: ERC721InstanceGridModal) => {
+export const ERC721InstanceGridModal = ({
+    isOpen,
+    tokens,
+    onClick,
+}: ERC721InstanceGridModal) => {
     const { themes } = useTheme();
     const { onClose } = useDisclosure();
     const handleAssetSelect = null;
@@ -30,7 +34,7 @@ export const ERC721InstanceGridModal = ({ isOpen, tokens, onClick }: ERC721Insta
         isOpen: isOpen,
         onClose: onClose,
         isCentered: true,
-        size: '2xl',
+        size: "2xl",
         autoFocus: false,
         trapFocus: false,
     };
@@ -39,13 +43,21 @@ export const ERC721InstanceGridModal = ({ isOpen, tokens, onClick }: ERC721Insta
         <>
             <Modal {...settings}>
                 <ModalOverlay />
-                <ModalContent bg={themes.color5} color={themes.color9} w={'100%'} maxW={'792px'}>
-                    <ModalHeader mb={6} borderBottom={`1px solid ${themes.color6}`}>
+                <ModalContent
+                    bg={themes.color5}
+                    color={themes.color9}
+                    w={"100%"}
+                    maxW={"792px"}
+                >
+                    <ModalHeader
+                        mb={6}
+                        borderBottom={`1px solid ${themes.color6}`}
+                    >
                         Select an asset
                     </ModalHeader>
 
                     <ModalCloseButton />
-                    <Box p={3}>
+                    <Box p={3} maxH={400} overflowY={"auto"}>
                         <ERC721InstanceGrid tokens={tokens} onClick={onClick} />
                     </Box>
                 </ModalContent>

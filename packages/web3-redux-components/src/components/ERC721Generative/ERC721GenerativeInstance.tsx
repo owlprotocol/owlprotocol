@@ -1,12 +1,16 @@
-import { useTheme, Box, HStack } from '@chakra-ui/react';
-import { Contract } from '@owlprotocol/web3-redux';
+import { useTheme, Box, HStack } from "@chakra-ui/react";
+import { Contract } from "@owlprotocol/web3-redux";
 
-import { NFTGenerativeItemId } from '@owlprotocol/web3-redux/src/nftgenerativeitem/model/interface.js';
-import { ERC721GenerativeImage, ERC721GenerativeImageProps } from './ERC721GenerativeImage.js';
-import { AddressLink } from '../Address/index.js';
-import NetworkIcon from '../NetworkIcon/index.js';
+import { NFTGenerativeItemId } from "@owlprotocol/web3-redux/src/nftgenerativeitem/model/interface.js";
+import {
+    ERC721GenerativeImage,
+    ERC721GenerativeImageProps,
+} from "./ERC721GenerativeImage.js";
+import { AddressLink } from "../Address/index.js";
+import NetworkIcon from "../NetworkIcon/index.js";
 
-export interface ERC721GenerativeInstanceProps extends ERC721GenerativeImageProps {
+export interface ERC721GenerativeInstanceProps
+    extends ERC721GenerativeImageProps {
     isSelected?: boolean;
     onSelected?: (token: NFTGenerativeItemId) => any;
 }
@@ -19,7 +23,11 @@ export const ERC721GenerativeInstance = ({
     isSelected,
     onSelected,
 }: ERC721GenerativeInstanceProps) => {
-    const [rootOwner] = Contract.hooks.useERC721TopDownRootOwnerOf(networkId, address, [tokenId]);
+    const [rootOwner] = Contract.hooks.useERC721TopDownRootOwnerOf(
+        networkId,
+        address,
+        [tokenId]
+    );
 
     const onClickDefined = onSelected ?? console.debug;
 
@@ -33,15 +41,20 @@ export const ERC721GenerativeInstance = ({
     return (
         <Box
             bg={themes.color5}
-            p={'16px 16px 12px 16px'}
+            p={"16px 16px 12px 16px"}
             borderRadius={12}
-            w={'100%'}
+            w={"100%"}
             maxW={264}
-            border={'2px solid'}
+            border={"2px solid"}
             borderColor={isSelected ? themes.color1 : themes.color5}
-            boxShadow={'md'}
+            boxShadow={"md"}
         >
-            <Box marginBottom={'16px'} w={'100%'} h={'100%'} overflow={'hidden'}>
+            <Box
+                marginBottom={"16px"}
+                w={"100%"}
+                h={"100%"}
+                overflow={"hidden"}
+            >
                 <ERC721GenerativeImage
                     networkId={networkId}
                     address={address}
@@ -49,7 +62,7 @@ export const ERC721GenerativeInstance = ({
                     status={status}
                     w="100%"
                     h="100%"
-                    objectFit={'scale-down'}
+                    objectFit={"scale-down"}
                     // @ts-ignore
                     onClick={clickHandler}
                     cursor="pointer"
@@ -57,18 +70,18 @@ export const ERC721GenerativeInstance = ({
             </Box>
             <Box
                 color={themes.color7}
-                p={'6px'}
-                marginBottom={'16px'}
+                p={"6px"}
+                marginBottom={"16px"}
                 border="2px solid"
                 borderColor={themes.color6}
                 borderRadius={16}
-                w={'100%'}
+                w={"100%"}
                 textAlign="center"
                 fontWeight={700}
                 fontSize={14}
                 // @ts-ignore
                 onClick={clickHandler}
-                cursor={'pointer'}
+                cursor={"pointer"}
             >
                 #{tokenId}
             </Box>
