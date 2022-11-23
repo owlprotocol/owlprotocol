@@ -1,0 +1,47 @@
+{
+  "name": "Thread Haus - Innovot NFT Facial Hair Sub-Collection",
+  "description": "These are the wearable or attachable glasses for the InnoVot NFT collection, they can be removed as well and traded as their own NFTs.",
+  "image": "http://localhost:3000/threadhaus/image.jpg",
+  "external_link": "https://tell.ie/threadhausCo/D5RQ6SBsgpAp",
+  "seller_fee_basis_points": 10000,
+  "fee_recipient": "0xCF28F97AbDfE1d0b9c51aDF6cF334f6489e080Fd",
+  "generatedImageType": "png",
+  "traits": {
+    "class": {
+      "name": "Class",
+      "type": "enum",
+      "options": [
+        "Designer",
+        "Party",
+        "Thread Haus"
+      ]
+    },
+    "facial_hair": {
+      "name": "Facial Hair",
+      "type": "image",
+      "image_type": "png",
+      "options": [
+        {
+          "value": "None",
+          "image_url": "https://leovigna.mypinata.cloud/ipfs/QmeYhQsx2PGeKoCco8Ck4gUcoSNN7ecShKcZaXDsHardQL"
+        },
+        {
+          "value": "Facial Hair - 1",
+          "image_url": "http://localhost:3000/threadhaus/input/facial_hair/1.png"
+        },
+        {
+          "value": "Facial Hair - 2",
+          "image_url": "http://localhost:3000/threadhaus/input/facial_hair/2.png"
+        },
+        {
+          "value": "Facial Hair - 3",
+          "image_url": "http://localhost:3000/threadhaus/input/facial_hair/3.png"
+        },
+        {
+          "value": "Facial Hair - 4",
+          "image_url": "http://localhost:3000/threadhaus/input/facial_hair/4.png"
+        }
+      ]
+    }
+  }
+}

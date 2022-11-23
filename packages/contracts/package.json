@@ -57,6 +57,7 @@
     "deploy": "npm run deploy:shapes",
     "deploy:beacons": "hardhat deploy --deploy-scripts lib/cjs/deploy-hre --tags UpgradeableBeacon --network anvil",
     "deploy:shapes": "hardhat deploy --deploy-scripts lib/cjs/deploy-hre --tags Shapes --network anvil",
+    "deploy:threadhaus": "hardhat deploy --deploy-scripts lib/cjs/deploy-hre --tags ThreadHaus --network anvil",
     "hardhat-cjs": "node_modules/hardhat-cjs/bin --version",
     "madge": "madge src/index.ts -c"
   },
