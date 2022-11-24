@@ -1,16 +1,16 @@
-import { ComponentStory, ComponentMeta } from '@storybook/react';
-import { TestData } from '@owlprotocol/web3-redux';
-import { ERC721GenerativeInstanceGridModal } from './ERC721GenerativeInstanceGridModal.js';
+import { ComponentStory, ComponentMeta } from "@storybook/react";
+import { TestData } from "@owlprotocol/web3-redux";
+import { ERC721GenerativeInstanceGridModal } from "./ERC721GenerativeInstanceGridModal.js";
 
 // eslint-disable-next-line import/no-default-export
 export default {
-    title: 'ERC721Generative/ERC721GenerativeInstanceGridModal',
+    title: "ERC721Generative/ERC721GenerativeInstanceGridModal",
     component: ERC721GenerativeInstanceGridModal,
 } as ComponentMeta<typeof ERC721GenerativeInstanceGridModal>;
 
-const Template: ComponentStory<typeof ERC721GenerativeInstanceGridModal> = (args: any) => (
-    <ERC721GenerativeInstanceGridModal {...args} />
-);
+const Template: ComponentStory<typeof ERC721GenerativeInstanceGridModal> = (
+    args: any
+) => <ERC721GenerativeInstanceGridModal {...args} />;
 
 export const Main = Template.bind({});
 
@@ -19,10 +19,100 @@ Main.args = {
     isOpen: true,
     tokens: [
         {
-            networkId: '31337',
+            networkId: "31337",
             address: TestData.SHAPES_NFT,
             tokenId: 1,
-            status: 'onchain',
+            status: "onchain",
+        },
+        {
+            networkId: "31337",
+            address: TestData.SHAPES_NFT,
+            tokenId: 1,
+            status: "onchain",
+        },
+        {
+            networkId: "31337",
+            address: TestData.SHAPES_NFT,
+            tokenId: 1,
+            status: "onchain",
+        },
+        {
+            networkId: "31337",
+            address: TestData.SHAPES_NFT,
+            tokenId: 1,
+            status: "onchain",
+        },
+        {
+            networkId: "31337",
+            address: TestData.SHAPES_NFT,
+            tokenId: 1,
+            status: "onchain",
+        },
+        {
+            networkId: "31337",
+            address: TestData.SHAPES_NFT,
+            tokenId: 1,
+            status: "onchain",
+        },
+        {
+            networkId: "31337",
+            address: TestData.SHAPES_NFT,
+            tokenId: 1,
+            status: "onchain",
+        },
+        {
+            networkId: "31337",
+            address: TestData.SHAPES_NFT,
+            tokenId: 1,
+            status: "onchain",
+        },
+        {
+            networkId: "31337",
+            address: TestData.SHAPES_NFT,
+            tokenId: 1,
+            status: "onchain",
+        },
+        {
+            networkId: "31337",
+            address: TestData.SHAPES_NFT,
+            tokenId: 1,
+            status: "onchain",
+        },
+        {
+            networkId: "31337",
+            address: TestData.SHAPES_NFT,
+            tokenId: 1,
+            status: "onchain",
+        },
+        {
+            networkId: "31337",
+            address: TestData.SHAPES_NFT,
+            tokenId: 1,
+            status: "onchain",
+        },
+        {
+            networkId: "31337",
+            address: TestData.SHAPES_NFT,
+            tokenId: 1,
+            status: "onchain",
+        },
+        {
+            networkId: "31337",
+            address: TestData.SHAPES_NFT,
+            tokenId: 1,
+            status: "onchain",
+        },
+        {
+            networkId: "31337",
+            address: TestData.SHAPES_NFT,
+            tokenId: 1,
+            status: "onchain",
+        },
+        {
+            networkId: "31337",
+            address: TestData.SHAPES_NFT,
+            tokenId: 1,
+            status: "onchain",
         },
         /*
         {

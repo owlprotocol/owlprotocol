@@ -1,11 +1,11 @@
 import { SimpleGrid, Box, Flex, useTheme } from "@chakra-ui/react";
 import {
-    ERC721Instance,
-    ERC721InstanceProps,
-} from "../ERC721Instance/index.js";
+    ERC721GenerativeInstance,
+    ERC721GenerativeInstanceProps,
+} from "../../ERC721Generative/ERC721GenerativeInstance";
 
 export interface ERC721InventoryProps {
-    inventoryItems?: ERC721InstanceProps[];
+    inventoryItems?: ERC721GenerativeInstanceProps[];
 }
 
 export const ERC721Inventory = ({
@@ -14,28 +14,20 @@ export const ERC721Inventory = ({
     const { themes } = useTheme();
 
     return (
-        <Flex
-            bg={themes.color5}
-            borderRadius={12}
-            gap={4}
-            wrap={"wrap"}
+        <Box
             p={6}
             maxH={600}
+            borderRadius={12}
             overflowY={"auto"}
+            bg={themes.color3}
         >
-            <SimpleGrid columns={[1, 2, 3]} spacing={4}>
-                {inventoryItems.map((item: ERC721InstanceProps, key: any) => (
-                    <Box
-                        key={key}
-                        borderRadius={12}
-                        bg={"rgba(255, 255, 255, 0.04)"}
-                        _hover={{ opacity: 0.6 }}
-                        transition={"300ms"}
-                    >
-                        <ERC721Instance {...item} />
-                    </Box>
-                ))}
+            <SimpleGrid spacing={4} columns={{ base: 4, md: 4, lg: 2, xl: 3 }}>
+                {inventoryItems.map(
+                    (item: ERC721GenerativeInstanceProps, key: any) => (
+                        <ERC721GenerativeInstance {...item} />
+                    )
+                )}
             </SimpleGrid>
-        </Flex>
+        </Box>
     );
 };

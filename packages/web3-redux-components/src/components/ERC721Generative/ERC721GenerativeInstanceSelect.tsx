@@ -1,8 +1,14 @@
-import { Button } from '@chakra-ui/react';
-import { useCallback, useState } from 'react';
-import { NFTGenerativeItemId } from '@owlprotocol/web3-redux/src/nftgenerativeitem/model/interface.js';
-import { ERC721GenerativeInstance, ERC721GenerativeInstanceProps } from './ERC721GenerativeInstance.js';
-import { ERC721GenerativeInstanceGridModal } from './ERC721GenerativeInstanceGridModal.js';
+import { Box, Button, HStack, useTheme } from "@chakra-ui/react";
+import { useCallback, useState } from "react";
+import { NFTGenerativeItemId } from "@owlprotocol/web3-redux/src/nftgenerativeitem/model/interface.js";
+import {
+    ERC721GenerativeInstance,
+    ERC721GenerativeInstanceProps,
+} from "./ERC721GenerativeInstance.js";
+import { ERC721GenerativeInstanceGridModal } from "./ERC721GenerativeInstanceGridModal.js";
+import Icon from "../Icon/index.js";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faTrashAlt } from "@fortawesome/free-solid-svg-icons";
 
 export interface ERC721GenerativeInstanceSelect {
     selecting: boolean;
@@ -19,40 +25,86 @@ export const ERC721GenerativeInstanceSelect = ({
     setSelecting,
     onSelect,
 }: ERC721GenerativeInstanceSelect) => {
+    const { themes } = useTheme();
+
     const setSelected = useCallback(
         (token: NFTGenerativeItemId | undefined) => {
             onSelect(token);
             setSelecting(!selecting);
         },
-        [selecting, setSelecting, onSelect],
+        [selecting, setSelecting, onSelect]
     );
 
     if (!selecting) {
         if (token) {
             return (
-                <>
+                <Box my={4}>
                     <ERC721GenerativeInstance
                         networkId={token.networkId}
                         address={token.address}
                         tokenId={token.tokenId}
                         status={token.status}
+                        InstanceMenu={() => (
+                            <HStack spacing={-5} float={"right"}>
+                                <Button
+                                    onClick={(e) => setSelected(undefined)}
+                                    variant={"ghost"}
+                                >
+                                    <Icon icon="pencil" size={18} />
+                                </Button>
+                                <Button
+                                    onClick={() => onSelect(undefined)}
+                                    variant={"ghost"}
+                                >
+                                    <FontAwesomeIcon
+                                        icon={faTrashAlt}
+                                        size={"sm"}
+                                    />
+                                </Button>
+                            </HStack>
+                        )}
                     />
-                    <Button onClick={() => setSelected(undefined)}>Change</Button>
-                    <Button onClick={() => onSelect(undefined)}>Remove</Button>
-                </>
+                </Box>
             );
         } else {
             return (
-                <>
-                    <Button onClick={() => setSelected(undefined)}>Select</Button>
-                </>
+                <Box
+                    onClick={(e) => setSelected(undefined)}
+                    w={"138px"}
+                    h={"138px"}
+                    bg={themes.color5}
+                    justify={"center"}
+                    align={"center"}
+                    my={4}
+                    p={2}
+                    mx={"auto"}
+                    borderRadius={12}
+                    cursor={"pointer"}
+                >
+                    <Box mb={2} bg={themes.color6} borderRadius={12} py={6}>
+                        <Icon icon="AddRounded" size={40} />
+                    </Box>
+                    <Box
+                        border={"2px solid"}
+                        borderColor={themes.color6}
+                        borderRadius={12}
+                        textAlign={"center"}
+                        fontWeight={400}
+                        fontSize={10}
+                        p={1}
+                    >
+                        Select Item
+                    </Box>
+                </Box>
             );
         }
     } else {
         return (
-            <>
-                <ERC721GenerativeInstanceGridModal isOpen={!token} tokens={tokens} onClick={setSelected} />
-            </>
+            <ERC721GenerativeInstanceGridModal
+                isOpen={!token}
+                tokens={tokens}
+                onClick={setSelected}
+            />
         );
     }
 };
@@ -60,7 +112,9 @@ export const ERC721GenerativeInstanceSelect = ({
 export interface ERC721GenerativeInstanceSelectWithState {
     tokens: NFTGenerativeItemId[];
 }
-export const ERC721GenerativeInstanceSelectWithState = ({ tokens }: ERC721GenerativeInstanceSelectWithState) => {
+export const ERC721GenerativeInstanceSelectWithState = ({
+    tokens,
+}: ERC721GenerativeInstanceSelectWithState) => {
     const [selecting, setSelecting] = useState(false);
     const [selected, setSelected] = useState<NFTGenerativeItemId | undefined>();
 

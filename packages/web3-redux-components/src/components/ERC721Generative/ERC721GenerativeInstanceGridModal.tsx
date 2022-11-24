@@ -1,14 +1,16 @@
 import {
-    useDisclosure,
+    Box,
     Modal,
     ModalOverlay,
     ModalContent,
     ModalHeader,
     ModalCloseButton,
+    useDisclosure,
     useTheme,
-} from '@chakra-ui/react';
-import { NFTGenerativeItemId } from '@owlprotocol/web3-redux/src/nftgenerativeitem/model/interface.js';
-import { ERC721GenerativeInstanceGrid } from './ERC721GenerativeInstanceGrid.js';
+    Button,
+} from "@chakra-ui/react";
+import { NFTGenerativeItemId } from "@owlprotocol/web3-redux/src/nftgenerativeitem/model/interface.js";
+import { ERC721GenerativeInstanceGrid } from "./ERC721GenerativeInstanceGrid.js";
 
 export interface ERC721GenerativeInstanceGridModal {
     isOpen: boolean;
@@ -16,18 +18,22 @@ export interface ERC721GenerativeInstanceGridModal {
     onClick?: (token: NFTGenerativeItemId) => any;
 }
 
-export const ERC721GenerativeInstanceGridModal = ({ isOpen, tokens, onClick }: ERC721GenerativeInstanceGridModal) => {
+export const ERC721GenerativeInstanceGridModal = ({
+    isOpen,
+    tokens,
+    onClick,
+}: ERC721GenerativeInstanceGridModal) => {
     const { themes } = useTheme();
     const { onClose } = useDisclosure();
     const handleAssetSelect = null;
 
     const settings = {
-        closeOnEsc: false,
-        closeOnOverlayClick: false,
+        onClose,
         isOpen: isOpen,
-        onClose: onClose,
+        closeOnEsc: true,
+        closeOnOverlayClick: true,
         isCentered: true,
-        size: '2xl',
+        size: "2xl",
         autoFocus: false,
         trapFocus: false,
     };
@@ -36,13 +42,27 @@ export const ERC721GenerativeInstanceGridModal = ({ isOpen, tokens, onClick }: E
         <>
             <Modal {...settings}>
                 <ModalOverlay />
-                <ModalContent bg={themes.color5} color={themes.color9} w={'100%'} maxW={'792px'}>
-                    <ModalHeader mb={6} borderBottom={`1px solid ${themes.color6}`}>
+                <ModalContent
+                    bg={themes.color5}
+                    color={themes.color9}
+                    w={"100%"}
+                    maxW={"1100px"}
+                >
+                    <ModalHeader
+                        mb={6}
+                        borderBottom={`1px solid ${themes.color6}`}
+                    >
                         Select an asset
                     </ModalHeader>
 
                     <ModalCloseButton />
-                    <ERC721GenerativeInstanceGrid tokens={tokens} onClick={onClick} />
+
+                    <Box p={3} maxH={400} overflowY={"auto"}>
+                        <ERC721GenerativeInstanceGrid
+                            tokens={tokens}
+                            onClick={onClick}
+                        />
+                    </Box>
                 </ModalContent>
             </Modal>
         </>

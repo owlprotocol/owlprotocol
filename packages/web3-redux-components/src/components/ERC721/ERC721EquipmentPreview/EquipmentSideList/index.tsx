@@ -1,12 +1,14 @@
 import { useState } from "react";
 import { VStack, Box, Text, Button, useTheme } from "@chakra-ui/react";
-import { ERC721InstanceSelectWithState } from "../../../ERC721/ERC721InstanceSelect";
+import { ERC721GenerativeInstanceSelectWithState } from "../../../ERC721Generative/ERC721GenerativeInstanceSelect";
 import Icon from "../../../Icon";
 
 export interface Props {
     tokens?: { name: string }[];
 }
 
+// POC for choosing an NFT as an equipment for the generative app.
+//
 const EquipmentSideList = ({ tokens }: Props) => {
     const { themes } = useTheme();
 
@@ -14,7 +16,9 @@ const EquipmentSideList = ({ tokens }: Props) => {
 
     const handleAddItem = () => {
         setItems([
+            // @ts-ignore
             ...items,
+            // @ts-ignore
             {
                 itemId: 1,
             },
@@ -26,7 +30,9 @@ const EquipmentSideList = ({ tokens }: Props) => {
             <Box maxH={"75vh"} overflowY={"auto"}>
                 {items.map((item, key) => (
                     <Box key={key}>
-                        <ERC721InstanceSelectWithState tokens={tokens} />
+                        <ERC721GenerativeInstanceSelectWithState
+                            tokens={tokens}
+                        />
                     </Box>
                 ))}
             </Box>
@@ -34,32 +40,12 @@ const EquipmentSideList = ({ tokens }: Props) => {
             <Button
                 onClick={handleAddItem}
                 bg={themes.color5}
-                borderRadius={12}
-                p={2}
+                borderRadius={20}
+                p={4}
             >
                 <Icon icon="PlusRounded" />
                 <Text ml={3}>Add Item</Text>
             </Button>
-
-            {/* {items.map((item, key) => (
-                <Box key={key} bg={themes.color5} borderRadius={12} p={2} w={'138px'}>
-                    <Button float={'right'} bg={'transparent'} boxSize={'28px'} p={0} mr={-1.5} onClick={handleRemove}>
-                        <XIcon />
-                    </Button>
-                    <Box h={'98px'} bg={themes.color6} borderRadius={12} mb={2} />
-                    <Box
-                        border={'2px solid'}
-                        borderColor={themes.color6}
-                        borderRadius={12}
-                        textAlign={'center'}
-                        fontWeight={400}
-                        fontSize={10}
-                        p={1}
-                    >
-                        {item?.name}
-                    </Box>
-                </Box>
-            ))} */}
         </VStack>
     );
 };

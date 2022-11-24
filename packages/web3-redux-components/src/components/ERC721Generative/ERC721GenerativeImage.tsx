@@ -1,3 +1,4 @@
+import { Skeleton } from "@chakra-ui/react";
 import { NFTGenerativeItem } from "@owlprotocol/web3-redux";
 import { add, omit } from "lodash-es";
 //import { ImageProps } from '@chakra-ui/react';
@@ -22,6 +23,9 @@ export const ERC721GenerativeImage = (props: ERC721GenerativeImageProps) => {
     );
     const nft = status == "onchain" ? nftOnchain.item : nftLocal.item;
 
-    if (!nft) return <>Loading...</>;
-    return <NFTGenerativeItemImageDisplay {...imageProps} item={nft} />;
+    if (nft) {
+        return <NFTGenerativeItemImageDisplay {...imageProps} item={nft} />;
+    } else {
+        return <Skeleton w={"100%"} h={"100%"} speed={1} />;
+    }
 };

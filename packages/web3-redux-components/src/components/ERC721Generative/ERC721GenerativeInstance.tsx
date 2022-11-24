@@ -8,11 +8,13 @@ import {
 } from "./ERC721GenerativeImage.js";
 import { AddressLink } from "../Address/index.js";
 import NetworkIcon from "../NetworkIcon/index.js";
+import { JSXElementConstructor } from "react";
 
 export interface ERC721GenerativeInstanceProps
     extends ERC721GenerativeImageProps {
     isSelected?: boolean;
     onSelected?: (token: NFTGenerativeItemId) => any;
+    InstanceMenu?: JSXElementConstructor<any> | null;
 }
 
 export const ERC721GenerativeInstance = ({
@@ -22,6 +24,7 @@ export const ERC721GenerativeInstance = ({
     status,
     isSelected,
     onSelected,
+    InstanceMenu = null,
 }: ERC721GenerativeInstanceProps) => {
     const [rootOwner] = Contract.hooks.useERC721TopDownRootOwnerOf(
         networkId,
@@ -48,11 +51,18 @@ export const ERC721GenerativeInstance = ({
             border={"2px solid"}
             borderColor={isSelected ? themes.color1 : themes.color5}
             boxShadow={"md"}
+            pos={"relative"}
         >
+            {InstanceMenu && (
+                <Box float={"right"} m={-1} pos={"absolute"} right={0} top={0}>
+                    {/* @ts-ignore */}
+                    <InstanceMenu />
+                </Box>
+            )}
             <Box
                 marginBottom={"16px"}
                 w={"100%"}
-                h={"100%"}
+                h={"200px"}
                 overflow={"hidden"}
             >
                 <ERC721GenerativeImage
@@ -60,9 +70,6 @@ export const ERC721GenerativeInstance = ({
                     address={address}
                     tokenId={tokenId}
                     status={status}
-                    w="100%"
-                    h="100%"
-                    objectFit={"scale-down"}
                     // @ts-ignore
                     onClick={clickHandler}
                     cursor="pointer"

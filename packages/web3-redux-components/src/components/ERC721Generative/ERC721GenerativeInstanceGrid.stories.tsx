@@ -23,6 +23,48 @@ Main.args = {
             tokenId: 1,
             status: "onchain",
         },
+        {
+            networkId: "31337",
+            address: TestData.SHAPES_NFT,
+            tokenId: 1,
+            status: "onchain",
+        },
+        {
+            networkId: "31337",
+            address: TestData.SHAPES_NFT,
+            tokenId: 1,
+            status: "onchain",
+        },
+        {
+            networkId: "31337",
+            address: TestData.SHAPES_NFT,
+            tokenId: 1,
+            status: "onchain",
+        },
+        {
+            networkId: "31337",
+            address: TestData.SHAPES_NFT,
+            tokenId: 1,
+            status: "onchain",
+        },
+        {
+            networkId: "31337",
+            address: TestData.SHAPES_NFT,
+            tokenId: 1,
+            status: "onchain",
+        },
+        {
+            networkId: "31337",
+            address: TestData.SHAPES_NFT,
+            tokenId: 1,
+            status: "onchain",
+        },
+        {
+            networkId: "31337",
+            address: TestData.SHAPES_NFT,
+            tokenId: 1,
+            status: "onchain",
+        },
         /*
         {
             networkId: '31337',
