@@ -12,6 +12,33 @@ import {AssetBasketOutput} from './IAsset.sol';
  */
 interface IAssetRouterOutput {
     /**
+     * @dev Event for adding a supported asset.
+     * This enables filtering the blockchain for contracts that support an asset.
+     * @param contractAddr Address of asset
+     * @param tokenId TokenId of asset (for ERC1155, otherwise 0)
+     * @param basketIdx Basket this asset is part of
+     */
+    event SupportsAsset(address indexed contractAddr, uint256 indexed tokenId, uint256 basketIdx);
+
+    /**
+     * @dev Event for tracking route events from user to output router
+     * This enables filtering the blockchain for route events made by a user or to a specific target
+     * @param from Address input router
+     * @param to Target address
+     * @param amount Amount of time used
+     * @param basketIdx Basket index
+     */
+    event RouteBasket(address indexed from, address indexed to, uint256 indexed basketIdx, uint256 amount);
+
+    /**
+     * @dev Event for tracking basket updates (deposit/withdrawals)
+     * @param basketIdx Basket index
+     * @param amountChange Change + for deposit, - for withdrawal
+     */
+    event UpdateBasket(uint256 indexed basketIdx, int256 amountChange);
+
+
+    /**
      * @dev Returns all inputs
      * @param basketIdx Index of selected input basket
      */
