@@ -8,6 +8,7 @@ factory
 /src/artifacts
 /docs-contracts-reference/*
 !/docs-contracts-reference/index.md
+/scripts
 
 /deployments/anvil
 /deployments/hardhat

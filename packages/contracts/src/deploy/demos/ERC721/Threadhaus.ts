@@ -268,6 +268,7 @@ const deploy = async ({ provider, signers, network }: RunTimeEnvironment) => {
 
     const mints = zipObject(Object.keys(promisesMints), await Promise.all(Object.values(promisesMints)));
 
+    console.debug(contracts);
     console.debug(mints);
 
     return { contracts, mints };
