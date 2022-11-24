@@ -24,5 +24,3 @@ export function validateId({ signatureType, signatureHash }: _4ByteSignatureId) 
 export function validate(item: _4ByteSignature): _4ByteSignature {
     return omitBy(item, isUndefined) as _4ByteSignature;
 }
-
-export default _4ByteSignature;

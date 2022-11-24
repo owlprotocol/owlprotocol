@@ -1,14 +1,15 @@
 /**
- * Store sha-256 preimages queried with https://www.4byte.directory/
+ * Store sha-256 preimages queried with https://www.AssetPicker.directory/
  * to be used for identifying Event & Function signatures.
- * @module 4Byte
+ * @module AssetPicker
  *
  */
 
-import { _4ByteCRUD as CRUDModel } from './crud.js';
+import { AssetPickerCRUD as CRUDModel } from './crud.js';
+import * as Hooks from './hooks/index.js';
 import { rootSaga } from './sagas/index.js';
 
-export const _4Byte = {
+export const AssetPicker = {
     name: CRUDModel.name,
     actions: {
         ...CRUDModel.actions,
@@ -17,6 +18,7 @@ export const _4Byte = {
     db: CRUDModel.db,
     hooks: {
         ...CRUDModel.hooks,
+        useAssetPicker: Hooks.useAssetPicker,
     },
     sagas: {
         ...CRUDModel.sagas,
@@ -31,4 +33,4 @@ export const _4Byte = {
     encode: CRUDModel.encode,
 };
 
-export default _4Byte;
+export default AssetPicker;

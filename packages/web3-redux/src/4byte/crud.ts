@@ -1,7 +1,7 @@
 import { name } from './common.js';
-import { _4ByteSignature, _4ByteSignatureId } from './model/index.js';
+import { validate, validateId, _4ByteSignature, _4ByteSignatureId } from './model/index.js';
 import { createCRUDModel } from '@owlprotocol/crud-redux';
-import getDB, { Web3ReduxDexie } from '../db.js';
+import { getDB, Web3ReduxDexie } from '../db.js';
 
 export const _4ByteCRUD = createCRUDModel<
     typeof name,
@@ -10,6 +10,4 @@ export const _4ByteCRUD = createCRUDModel<
     _4ByteSignature,
     _4ByteSignatureId,
     Web3ReduxDexie
->(name, getDB);
-
-export default _4ByteCRUD;
+>(name, getDB, { validate, validateId });

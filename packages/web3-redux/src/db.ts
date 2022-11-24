@@ -3,6 +3,7 @@ import Dexie, { Table } from 'dexie';
 import { REDUX_ROOT } from './common.js';
 
 import { _4ByteSignature, _4ByteIndex } from './4byte/model/index.js';
+import { AssetPicker, AssetPickerIndex } from './assetpicker/model/index.js';
 import { BlockTransaction, BlockIndex } from './block/model/index.js';
 import { Config, ConfigIndex } from './config/model/index.js';
 import { Contract, ContractIndex } from './contract/model/index.js';
@@ -20,6 +21,7 @@ import { NFTGenerativeCollection, NFTGenerativeCollectionIndex } from './nftgene
 import { NFTGenerativeItem, NFTGenerativeItemIndex } from './nftgenerativeitem/model/index.js';
 
 import { name as _4ByteName } from './4byte/common.js';
+import { name as AssetPickerName } from './assetpicker/common.js'
 import { name as BlockName } from './block/common.js';
 import { name as ConfigName } from './config/common.js';
 import { name as ContractName } from './contract/common.js';
@@ -41,6 +43,7 @@ import isClient from './utils/isClient.js';
 
 export class Web3ReduxDexie extends Dexie {
     [_4ByteName]!: Table<_4ByteSignature>;
+    [AssetPickerName]!: Table<AssetPicker>
     [BlockName]!: Table<BlockTransaction>;
     [ConfigName]!: Table<Config>;
     [ContractName]!: Table<Contract>;
@@ -62,6 +65,7 @@ export class Web3ReduxDexie extends Dexie {
         super(REDUX_ROOT);
         this.version(1).stores({
             [_4ByteName]: _4ByteIndex,
+            [AssetPickerName]: AssetPickerIndex,
             [BlockName]: BlockIndex,
             [ConfigName]: ConfigIndex,
             [ContractName]: ContractIndex,
@@ -83,6 +87,7 @@ export class Web3ReduxDexie extends Dexie {
     async clear() {
         const promises = [
             this[_4ByteName].clear(),
+            this[AssetPickerName].clear(),
             this[BlockName].clear(),
             this[ConfigName].clear(),
             this[ContractName].clear(),

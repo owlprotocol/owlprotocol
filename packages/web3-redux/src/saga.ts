@@ -3,6 +3,7 @@ import { all, spawn } from 'typed-redux-saga';
 import { ReduxError } from '@owlprotocol/crud-redux';
 
 import { rootSaga as _4ByteSaga } from './4byte/sagas/index.js';
+import { rootSaga as assetPickerSaga } from './assetpicker/sagas/index.js';
 import { rootSaga as blockSaga } from './block/sagas/index.js';
 import { rootSaga as configSaga } from './config/sagas/index.js';
 import { rootSaga as contractSaga } from './contract/sagas/index.js';
@@ -27,6 +28,7 @@ import Web3ReduxSaga from './web3Redux/sagas/index.js';
 export function* rootSaga() {
     yield* all([
         spawn(_4ByteSaga),
+        spawn(assetPickerSaga),
         spawn(blockSaga),
         spawn(configSaga),
         spawn(contractSaga),

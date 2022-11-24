@@ -1,6 +1,6 @@
-import { put as putSaga, call, select, put } from 'typed-redux-saga';
-import _4ByteCRUD from '../crud.js';
-import _4ByteSignature from '../model/interface.js';
+import { call, put } from 'typed-redux-saga';
+import { _4ByteCRUD } from '../crud.js';
+import { _4ByteSignature } from '../model/interface.js';
 import { fetchSaga as fetchConfig } from '../../config/sagas/fetch.js';
 import { AxiosResponse } from 'axios';
 import ConfigCRUD from '../../config/crud.js';

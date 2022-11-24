@@ -1,12 +1,12 @@
 import { all, takeEvery, spawn } from 'typed-redux-saga';
 import { wrapSagaWithErrorHandler } from '@owlprotocol/crud-redux'
-import { _4ByteCRUD } from '../crud.js';
+import { AssetPickerCRUD } from '../crud.js';
 import { fetchSaga } from './fetch.js';
 
 /** @internal */
 export function* rootSaga() {
     yield* all([
-        spawn(_4ByteCRUD.sagas.crudRootSaga),
-        takeEvery(_4ByteCRUD.actionTypes.FETCH, wrapSagaWithErrorHandler(fetchSaga, _4ByteCRUD.actionTypes.FETCH)),
+        spawn(AssetPickerCRUD.sagas.crudRootSaga),
+        takeEvery(AssetPickerCRUD.actionTypes.FETCH, wrapSagaWithErrorHandler(fetchSaga, AssetPickerCRUD.actionTypes.FETCH)),
     ]);
 }

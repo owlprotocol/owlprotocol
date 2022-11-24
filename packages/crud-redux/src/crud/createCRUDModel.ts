@@ -518,7 +518,7 @@ export function createCRUDModel<
 
         const item = (itemRedux ?? itemDB) as T | undefined
         const exists = dbExists || reduxExists;
-        const options = { exists, dbExists, reduxExists }
+        const options = { exists, dbExists, reduxExists, isLoading }
         return [item, options] as [typeof item, typeof options];
     };
 
