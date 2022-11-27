@@ -3,6 +3,8 @@ import {expect} from 'chai';
 //@ts-expect-error
 import hre, { ethers } from 'hardhat';
 import { ERC721TopDownDna } from '../ethers/types.js';
+
+// TODO: Figure out how to update HH so we can use ES modules
 //import SDK from '@owlprotocol/nft-sdk';
 import {Factories, InitializeFactories} from '../ethers';
 import {ERC721TopDownDnaInitializeArgs} from '../utils/ERC721TopDownDna';
