@@ -82,7 +82,31 @@ html[data-theme="dark"] {
     font-weight: 600;
     src: url(../../static/fonts/TitilliumWeb-SemiBold.ttf);
 }
+/**
+Homepage
+ */
+html[data-theme="light"] .homepage-hero {
+    h1, h2 {
+        color: #333;
+    }
 
+}
+
+.homepage-features:hover {
+    a, h2, p {
+        text-decoration: none !important;
+    }
+}
+
+html[data-theme="dark"] .homepage-features {
+    a, h2, p {
+        color: #eee;
+    }
+}
+
+    /**
+    Internal Pages (Markdown)
+     */
 .markdown {
     h1,
     h2,

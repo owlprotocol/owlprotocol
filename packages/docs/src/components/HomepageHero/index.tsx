@@ -21,10 +21,10 @@ function HomepageHero() {
                         alt={"Owl Protocol"}
                         src={useBaseUrl("/img/owl_banner.svg")}
                     />
-                    <Heading as="h1" size={"2xl"} mb={4}>
+                    <Heading as="h1" size={"2xl"} mb={4} fontWeight={600}>
                         Owl Protocol
                     </Heading>
-                    <Heading as="h2" size={"lg"}>
+                    <Heading as="h2" size={"lg"} fontWeight={200}>
                         No-Code, Platform for Dynamic NFTs
                     </Heading>
                 </Box>

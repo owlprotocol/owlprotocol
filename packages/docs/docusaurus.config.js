@@ -120,7 +120,7 @@ const config = {
                     },
                     */
                     {
-                        href: "https://github.com/owlprotocol",
+                        href: "https://github.com/owlprotocol/owlprotocol",
                         label: "GitHub",
                         position: "right",
                     },
@@ -168,7 +168,7 @@ const config = {
                         items: [
                             {
                                 label: "GitHub",
-                                href: "https://github.com/owlprotocol",
+                                href: "https://github.com/owlprotocol/owlprotocol",
                             },
                         ],
                     },

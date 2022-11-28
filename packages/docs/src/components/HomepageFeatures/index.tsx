@@ -60,17 +60,17 @@ function Feature({ title, image, description, link }: FeatureItem) {
                 transform: "scale(1.1)",
             }}
         >
-            <Center boxSize={200} mx={"auto"} mb={10}>
-                <Image alt={title} src={useBaseUrl(image)} borderRadius={12} />
-            </Center>
-            <Box textAlign={"center"} mx={"auto"} px={"10%"}>
-                <Link href={link}>
+            <Link href={link}>
+                <Center boxSize={200} mx={"auto"} mb={10} bg={'black'} p={4} borderRadius={'5%'}>
+                    <Image alt={title} src={useBaseUrl(image)} borderRadius={12} />
+                </Center>
+                <Box textAlign={"center"} mx={"auto"} px={"10%"}>
                     <Heading size={"md"} mb={6}>
                         {title}
                     </Heading>
-                </Link>
-                <Text>{description}</Text>
-            </Box>
+                    <Text>{description}</Text>
+                </Box>
+            </Link>
         </Box>
     );
 }
