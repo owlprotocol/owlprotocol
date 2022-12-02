@@ -87,13 +87,13 @@ Homepage
  */
 html[data-theme="light"] .homepage-hero {
     h1, h2 {
-        color: #333;
+        color: #222;
     }
 }
 
 .homepage-hero {
     background: linear-gradient(217deg, rgba(38,40,53,.8), rgba(38,40,53,0) 70.71%),
-    linear-gradient(127deg, rgba(93,94,158,.8), rgba(93,94,158,0) 70.71%),
+    linear-gradient(127deg, rgba(93,94,158,1), rgba(93,94,158,0) 70.71%),
     linear-gradient(336deg, rgba(62,64,78,.8), rgba(62,64,78,0) 70.71%);
 }
 
@@ -132,6 +132,7 @@ Internal Pages (Markdown)
     }
 
     h3 {
+        margin-top: 48px;
         font-size: 1.5rem;
     }
 

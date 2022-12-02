@@ -31,7 +31,7 @@ to integrate and render the NFT, **without relying on a back-end server.**
 
 ### Rendering a Dynamic NFT Step-By-Step
 
-<img src="/img/rendering-swimlanes.jpg"/>
+![Rendering Diagram](/img/rendering-swimlanes.jpg)
 
 1. We start with a Webapp (dApp), Web3 Game, or NFT Marketplace, that wants to render the Dynamic NFT.
 
@@ -44,5 +44,3 @@ to integrate and render the NFT, **without relying on a back-end server.**
 5. In either case, a **metadata.json** is produced with the base64 encoded image for rendering, and the list of traits as usual.
     In more advanced cases where the rendering is 3D, we recommend taking a static 2D snapshot of the 3D model, but you can
     conceivably also return 3D graphics files, and or an animated MP4/GIF/video which is supported by some marketplaces.
-
-## Example - NFT Rendering

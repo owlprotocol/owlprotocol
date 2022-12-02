@@ -28,7 +28,7 @@ To make the dynamic properties possible, we have added the following:
 2. **Collection Schema JSON** that describes and corresponds to the above data format.
 3. **Client-Side SDK** that allows apps, marketplaces, and games to translate the above to meaningful data, such as the rendered NFT visual/image.
 
-<img src="/img/basics-1-v4.jpg"/>
+![NFT Data Basics 1](/img/basics-1-v4.jpg)
 
 <br/>
 <br/>
