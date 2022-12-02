@@ -50,7 +50,7 @@ function Feature({ title, image, description, link }: FeatureItem) {
 
     return (
         <Box
-            bg={themes.color3}
+            bg={themes.color4}
             boxShadow="lg"
             p={10}
             borderRadius={12}

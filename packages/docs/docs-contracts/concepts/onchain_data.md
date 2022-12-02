@@ -1,7 +1,7 @@
 ---
 sidebar_position: 1
 ---
-# NFT On-Chain Data
+# Dynamic NFT Data
 
 ### To maximize the flexibility of NFT on-chain data, we only add a `bytes` data named `dna` to the NFT.
 

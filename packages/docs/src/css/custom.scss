@@ -89,7 +89,12 @@ html[data-theme="light"] .homepage-hero {
     h1, h2 {
         color: #333;
     }
+}
 
+.homepage-hero {
+    background: linear-gradient(217deg, rgba(38,40,53,.8), rgba(38,40,53,0) 70.71%),
+    linear-gradient(127deg, rgba(93,94,158,.8), rgba(93,94,158,0) 70.71%),
+    linear-gradient(336deg, rgba(62,64,78,.8), rgba(62,64,78,0) 70.71%);
 }
 
 .homepage-features:hover {
@@ -98,15 +103,15 @@ html[data-theme="light"] .homepage-hero {
     }
 }
 
-html[data-theme="dark"] .homepage-features {
+.homepage-features {
     a, h2, p {
-        color: #eee;
+        color: #333;
     }
 }
 
-    /**
-    Internal Pages (Markdown)
-     */
+/**
+Internal Pages (Markdown)
+ */
 .markdown {
     h1,
     h2,
@@ -152,6 +157,16 @@ html[data-theme="dark"] .homepage-features {
         line-height: 1.5em;
         margin-block-start: 1.5em;
         margin-block-end: 1.5em;
+    }
+
+    ol li {
+        p:first-child {
+            margin-bottom: 4px;
+        }
+
+        p:first-child + p {
+            margin-top: 4px;
+        }
     }
 
     hr {

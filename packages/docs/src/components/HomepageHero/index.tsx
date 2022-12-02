@@ -10,7 +10,6 @@ function HomepageHero() {
             <Center
                 textAlign={"center"}
                 h={"60vh"}
-                bg={themes.color6}
                 className="homepage-hero"
             >
                 <Box>
@@ -21,11 +20,11 @@ function HomepageHero() {
                         alt={"Owl Protocol"}
                         src={useBaseUrl("/img/owl_banner.svg")}
                     />
-                    <Heading as="h1" size={"2xl"} mb={4} fontWeight={600}>
+                    <Heading as="h1" size={"2xl"} mb={4} color={'white'} fontWeight={600}>
                         Owl Protocol
                     </Heading>
                     <Heading as="h2" size={"lg"} fontWeight={200}>
-                        No-Code, Platform for Dynamic NFTs
+                        No-Code, <span style={{"fontWeight": 400}}>Dynamic NFT</span> Workshop
                     </Heading>
                 </Box>
             </Center>

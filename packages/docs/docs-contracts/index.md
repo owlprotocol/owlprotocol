@@ -1,5 +1,6 @@
 ---
 sidebar_position: 1
+sidebar_label: 'Introduction'
 slug: '/'
 keywords:
     - NFT
@@ -8,18 +9,73 @@ keywords:
     - dNFTs
 ---
 
-# Introduction
+# Owl Protocol
 
-Owl Protocol is creating a set of *open source* smart contracts, standards, and APIs for creators and developers to easily:
+## Our **standards** are Smart Contract **Primitives** that can be combined to create amazing use cases for Dynamic NFTs.
 
-1. Create Dynamic NFTs, such as those that change over time, or in response to certain **decentralized oracles** or triggers.
+### 1. Dynamic NFT Data
 
-2. Deploy **"recipes"** or **"interactions"** between different NFTs, to enable complex mechanics such as crafting, combining, breeding and more.
+The most basic requirement for Dynamic NFTs is a standardized way to *encode data* in a way that is:
 
-<img src="/img/crafting-v2.png"/>
+1. **Gas-Efficient**
 
-<br/>
-<br/>
+    We use a compressed binary format *on-chain* similar to [MsgPack](https://msgpack.org), with a schema JSON file hosted
+    *off-chain* in an immutable store, such as [IPFS](https://ipfs.tech).
+
+2. **Flexible**
+
+    For our Dynamic NFT data standard we extend ERC721 with only the minimal methods necessary to store a single arbitrary
+    length byte array of data per NFT.
+
+    Instead of adding many non-standard methods like other custom implementations, we reuse existing methods such as
+    `baseURI` and `tokenURI` to expose a standard JSON schema for the Dynamic NFT binary data.
+
+    > By combining the Dynamic NFT Data JSON schema and data, any developer can translate it into usable data.
+
+3. **Decentralized**
+
+    Everything needed to translate and render the NFT is stored on *immutable/decentralized datasources*, such as on-chain or on IPFS.
+
+    We also provide an open-source client-side SDK, which can be adapted to any platform or medium to allow fully
+    decentralized ownership of NFTs and the data in a usable format.
+
+> *For more information on how we store Dynamic NFT Data on-chain read:* [Key Concepts: Dynamic NFT Data](/contracts/concepts/onchain_data)
+
+
+### 2. Dynamic NFT Logic
+
+![dNFT Logic](/img/dnft_logic-v3.png)
+
+NFT Logic smart contracts govern how NFTs interact with one another, **Logic** is implemented by external smart contracts that can be used
+to create and **chain** rules about how certain NFTs behave when they interact or combine.
+
+> *For more information on these mechanics, read:* [Features: Combining / Crafting / Breeding](/contracts/features/crafting/)
+
+### 3. Dynamic NFT Inheritance
+
+When combining Dynamic NFT Data and Logic, a crucial requirement arises, how is the NFT data preserved or passed on to
+successive NFTs? There are many possibilities here, and all of them have good use cases:
+
+1. **Upgrading NFTs** - in this scenario the input NFT's dynamic data is modified. However, this is difficult to implement
+    in a decentralized manner. One approach is to pre-define specific **Upgrade NFT Logic** smart contracts that have access
+    to only modify specific traits, then revoke further approvals for such access.
+
+    We'd expect access to these upgrade be gated in one of the following ways:
+
+    - **Consumable Upgrades** - an NFT is consumed (burned) to activate an upgrade mechanic, this consumable NFT can be
+   either purchased, or crafted by combining NFTs obtained by completing various tasks.
+
+    - **Catalysts** - an NFT that is defined to be can be usable more than once or take part in multiple NFT Logic recipes,
+   but we recommend putting a maximum number of uses to limit supply of higher tier NFTs.
+
+2. **Breeding NFTs** - the best example of this are games such as Aavegotchi or CryptoKitties, but combining NFTs are also
+    useful in many real-world use cases. Our smart contracts support creating various rules about what data is preserved,
+    changed, or mutated. In Web3 games the NFT breeding mutations can follow set rarity distributions or probabilities.
+
+
+This also controls how Dynamic NFT Data is preserved, combined, or inherited by the output or new generation of NFTs
+
+## Open Source Smart Contracts and APIs/SDKs
 
 Our aim is to improve the interoperability and composability of NFTs through these standards so that NFTs can be truly
 decentralized and exist in many worlds, virtual or real.

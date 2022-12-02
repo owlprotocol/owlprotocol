@@ -2,7 +2,7 @@
 sidebar_position: 2
 ---
 
-# NFT Rendering
+# Dynamic NFT Rendering
 
 :::caution Do Not Support Centralization!
 One of the key goals at Owl Protocol is to ensure that the user has full ownership of their NFT, including the graphical

@@ -1,9 +1,12 @@
 ---
 sidebar_position: 2
+sidebar_label: 'Key Concepts'
 slug: '/concepts'
 ---
 
-# Dynamic NFT Concepts
+# Dynamic NFTs - Key Concepts
+
+![Crafting](/img/crafting-v2.png)
 
 ### Owl Protocol groups Dynamic NFTs into 3 categories/types:
 
