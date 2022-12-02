@@ -214,9 +214,7 @@ Internal Pages (Markdown)
         color: #5389ff;
     }
 
-    // .table-grid-2-col
-    table.table-grid-2-col {
-        display: table;
+    .features-grid {
         width: 100%;
 
         a {
@@ -229,14 +227,7 @@ Internal Pages (Markdown)
             }
         }
 
-        td,
-        tr {
-            background-color: transparent;
-            border: 0;
-            width: 50%;
-        }
-
-        td a > div.cell-bg {
+        div.cell-bg {
             background-color: #262835;
             border-radius: 8px;
             padding: 1.5em;
