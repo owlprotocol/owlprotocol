@@ -17,7 +17,7 @@ export const ERC1167FactoryImplementation = (ethers: Signer) => {
 };
 
 /***** Deterministic Deployment *****/
-interface DeterministicFactoryArgs<
+export interface DeterministicFactoryArgs<
     Factory extends ContractFactory = ContractFactory,
     //@ts-expect-error
     ContractTyped extends BaseContract = ReturnType<Factory['attach']>,
@@ -106,7 +106,7 @@ export function deterministicFactory<
     return factory;
 }
 
-/***** Cloning *****/
+/***** EIP1167 Proxy *****/
 
 interface ProxyFactoryArgs<
     Factory extends ContractFactory = ContractFactory,

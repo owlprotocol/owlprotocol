@@ -5,8 +5,7 @@ import { logDeployment, RunTimeEnvironment } from '../../utils.js';
 import { getFactories } from '../../../ethers/factories.js';
 import { getDeterministicFactories } from '../../../ethers/deterministicFactories.js';
 import { getProxy1167InitializeFactories } from '../../../ethers/proxy1167Factories.js';
-import { ERC721Mintable } from '../../../ethers/types.js';
-import { ERC721MintableInitializeArgs } from '../../../utils/ERC721Mintable.js';
+import { ERC721MintableInitializeArgs, flattenInitArgsERC721Mintable } from '../../../utils/ERC721Mintable.js';
 
 const deploy = async ({ provider, signers, network }: RunTimeEnvironment) => {
     const signer = signers[0];
@@ -33,17 +32,7 @@ const deploy = async ({ provider, signers, network }: RunTimeEnvironment) => {
     };
 
     const promises = mapValues(deployments, async (initArgs) => {
-        const { admin, contractUri, gsnForwarder, name, symbol, initBaseURI, feeReceiver, feeNumerator } = initArgs;
-        const args = [
-            admin,
-            contractUri,
-            gsnForwarder,
-            name,
-            symbol,
-            initBaseURI,
-            feeReceiver,
-            feeNumerator,
-        ] as Parameters<ERC721Mintable['initialize']>;
+        const args = flattenInitArgsERC721Mintable(initArgs);
         const address = ERC721MintableFactory.getAddress(...args);
 
         try {

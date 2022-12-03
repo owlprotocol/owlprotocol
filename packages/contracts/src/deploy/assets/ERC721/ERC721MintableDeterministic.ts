@@ -2,8 +2,7 @@ import { logDeployment, RunTimeEnvironment } from '../../utils';
 import { mapValues } from '../../../lodash.js';
 import { getFactories } from '../../../ethers/factories';
 import { getDeterministicInitializeFactories } from '../../../ethers/deterministicFactories';
-import { ERC721Mintable } from '../../../ethers/types';
-import { ERC721MintableInitializeArgs } from '../../../utils/ERC721Mintable';
+import { ERC721MintableInitializeArgs, flattenInitArgsERC721Mintable } from '../../../utils/ERC721Mintable';
 import { constants } from 'ethers';
 
 const deploy = async ({ provider, signers, network }: RunTimeEnvironment) => {
@@ -30,17 +29,7 @@ const deploy = async ({ provider, signers, network }: RunTimeEnvironment) => {
     };
 
     const promises = mapValues(deployments, async (initArgs) => {
-        const { admin, contractUri, gsnForwarder, name, symbol, initBaseURI, feeReceiver, feeNumerator } = initArgs;
-        const args = [
-            admin,
-            contractUri,
-            gsnForwarder,
-            name,
-            symbol,
-            initBaseURI,
-            feeReceiver,
-            feeNumerator,
-        ] as Parameters<ERC721Mintable['initialize']>;
+        const args = flattenInitArgsERC721Mintable(initArgs);
         const address = ERC721MintableFactory.getAddress(...args);
 
         try {

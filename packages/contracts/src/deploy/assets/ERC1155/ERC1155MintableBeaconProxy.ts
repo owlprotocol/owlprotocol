@@ -2,7 +2,7 @@ import { logDeployment, RunTimeEnvironment } from '../../utils';
 import { mapValues } from '../../../lodash.js';
 import { getFactories } from '../../../ethers/factories';
 import { getDeterministicFactories, getDeterministicInitializeFactories } from '../../../ethers/deterministicFactories';
-import { ERC721MintableInitializeArgs, flattenInitArgsERC721Mintable } from '../../../utils/ERC721Mintable';
+import { ERC1155MintableInitializeArgs, flattenInitArgsERC1155Mintable } from '../../../utils/ERC1155Mintable';
 import { constants } from 'ethers';
 import { getBeaconProxyFactories } from '../../../ethers/beaconProxyFactories';
 
@@ -16,38 +16,36 @@ const deploy = async ({ provider, signers, network }: RunTimeEnvironment) => {
     const deterministicInitializeFactories = getDeterministicInitializeFactories(signer, factories, signerAddress);
     const beaconFactory = deterministicInitializeFactories.UpgradeableBeacon;
     const beconProxyFactories = getBeaconProxyFactories(signer, deterministicFactories, beaconFactory, signerAddress);
-    const ERC721MintableFactory = beconProxyFactories.ERC721Mintable;
+    const ERC1155MintableFactory = beconProxyFactories.ERC1155Mintable;
 
     //Contracts
-    const deployments: { [key: string]: ERC721MintableInitializeArgs } = {
-        test: {
+    const deployments: { [key: string]: ERC1155MintableInitializeArgs } = {
+        erc1155_0: {
             admin: signerAddress,
             contractUri: '',
             gsnForwarder: constants.AddressZero,
-            name: 'test',
-            symbol: 'TEST',
-            initBaseURI: '',
+            uri: '',
             feeReceiver: signerAddress,
             feeNumerator: 0,
         },
     };
 
     const promises = mapValues(deployments, async (initArgs) => {
-        const args = flattenInitArgsERC721Mintable(initArgs);
-        const address = ERC721MintableFactory.getAddress(...args);
+        const args = flattenInitArgsERC1155Mintable(initArgs);
+        const address = ERC1155MintableFactory.getAddress(...args);
 
         try {
             //Compute Deployment Address
-            if (await ERC721MintableFactory.exists(...args)) {
+            if (await ERC1155MintableFactory.exists(...args)) {
                 return {
                     address,
-                    contract: ERC721MintableFactory.attach(address),
+                    contract: ERC1155MintableFactory.attach(address),
                     deployed: false,
                 };
             } else {
                 return {
                     address,
-                    contract: await ERC721MintableFactory.deploy(...args, { nonce: nonce++, gasLimit: 10e6 }),
+                    contract: await ERC1155MintableFactory.deploy(...args, { nonce: nonce++, gasLimit: 10e6 }),
                     deployed: true,
                 };
             }
@@ -70,6 +68,6 @@ const deploy = async ({ provider, signers, network }: RunTimeEnvironment) => {
     });
 };
 
-deploy.tags = ['ERC721MintableBeaconProxy'];
+deploy.tags = ['ERC1155MintableBeaconProxy'];
 deploy.dependencies = ['Implementations', 'ERC1820', 'UpgradeableBeacon'];
 export default deploy;
