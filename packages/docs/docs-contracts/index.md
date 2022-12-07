@@ -26,13 +26,21 @@ The most basic requirement for Dynamic NFTs is a standardized way to *encode dat
 
 2. **Flexible**
 
-    For our Dynamic NFT data standard we extend ERC721 with only the minimal methods necessary to store a single arbitrary
-    length byte array of data per NFT.
+    For our Dynamic NFT data standard we extend ERC721 with only the minimal methods necessary to implement Dynamic NFTs. a single arbitrary
+
+    Our data standard uses only a **single** arbitrary length byte array of data per NFT.
 
     Instead of adding many non-standard methods like other custom implementations, we reuse existing methods such as
     `baseURI` and `tokenURI` to expose a standard JSON schema for the Dynamic NFT binary data.
 
-    > By combining the Dynamic NFT Data JSON schema and data, any developer can translate it into usable data.
+    By combining the Dynamic NFT Data JSON schema and data, any developer can translate it into usable data.
+
+    :::info
+    Many other custom dNFT projects add multiple methods to manage all the dynamic aspects of their NFT, but this makes
+    it extremely difficult to integrate when all NFTs have a different interface. By moving complexity to a standard
+    **JSON Schema**, that can be parsed by any application and used programmatically.
+    :::
+
 
 3. **Decentralized**
 
@@ -46,7 +54,7 @@ The most basic requirement for Dynamic NFTs is a standardized way to *encode dat
 
 ### 2. Dynamic NFT Logic
 
-![dNFT Logic](/img/dnft_logic-v3.png)
+![dNFT Logic](/img/dnft_logic-v4.png)
 
 NFT Logic smart contracts govern how NFTs interact with one another, **Logic** is implemented by external smart contracts that can be used
 to create and **chain** rules about how certain NFTs behave when they interact or combine.

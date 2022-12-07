@@ -20,14 +20,34 @@ smart contract.
 
 Within the crafting smart contract the deployer can define whether the inputs are **burned (consumed)** or **preserved**.
 
-Both options are valid depending on how the deployer wants to design their NFTs:
+Both options are valid depending on how the deployer wants to design their NFTs recipes:
 
-1. Burning the input NFTs means that the NFT can be only used once to create the output, this makes the input and
-    output NFTs more rare.
+1. **Burning** - this destroys the NFT or allows a limited number of uses in the recipe.
 
-2. Preserving the input NFT means that the NFT owners can create multiple outputted NFTs, which diminishes the value of
-    the outputted NFT, but may make the input NFTs more valuable because they can be used multiple times to create value.
-    Alternatively, the crafting contract deployer can also specify a set number of times a specific input NFT can be used.
+    This mechanic is useful for:
+
+    - **Consumables** - commonly seen in games, items such as potions, food, or other items can be used to enhance a
+        character or another item. In the case of Dynamic NFTs, we see this useful for extending an NFT's expiry,
+        upgrading an NFT, or feeding a pet NFT.
+    - **Subscription Renewals** - for Loyalty Programs, DAO membership NFTs, or VIP passes, a consumable NFT is a great
+        way to create creative ways to stay active. Users can attend events, participate, and more to collect special
+        one-time use NFTs to extend or renew their subscriptions or passes.
+    - **Crafting** - perhaps the most common use case, crafting NFTs is a great way to create cross-game/metaverse
+        mechanics. For example having players collect NFTs from multiple games to *craft* a special NFT can connect
+        different worlds like never before.
+
+2. **Preserving** - this leaves the original NFT untouched, in fact we only require that the user sign to verify ownership.
+    This may make the input NFTs more valuable because they can be used multiple times.
+
+    Usually you want to preserve the NFT, for example in use cases such as:
+
+    - **NFT Passes/Memberships** - communities, DAOs, and collections may use NFTs as an access pass to content or events.
+        Usually these NFTs are preserved, and even better, with Owl's Dynamic NFT Data standards, you can add parameters
+        to track activity, time the token has been held, expiry dates and more.
+    - **Upgrading/Enchanting** - in games' crafting systems we commonly see weapons, armor, or other valuable equipment
+        preserved, but upgradeable, though this is not always the case. Because Owl's Dynamic NFT Logic contracts are
+        external, you can change the recipe for each item as you choose.
+
 
 ### Types of Crafting/Combining Outputs Including Breeding
 
