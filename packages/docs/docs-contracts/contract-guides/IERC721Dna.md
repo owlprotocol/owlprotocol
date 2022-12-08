@@ -36,7 +36,7 @@
 [IAsset.sol]: ../../../owlprotocol-contracts/contracts/plugins/AssetRouter/IAsset.sol
 [IAssetRouterInput.sol]: ../../../owlprotocol-contracts/contracts/plugins/AssetRouter/IAssetRouterInput.sol
 [IAssetRouterOutput.sol]: ../../../owlprotocol-contracts/contracts/plugins/AssetRouter/IAssetRouterOutput.sol
-[IERC721Dna.sol]: ../../../owlprotocol-contracts/contracts/assets/ERC721/IERC721Dna.sol
+[IERC721Dna.sol]: https://github.com/owlprotocol/owlprotocol/blob/main/packages/contracts/contracts/assets/ERC721/IERC721Dna.sol
 [IERC721TopDown.sol]: ../../../owlprotocol-contracts/contracts/assets/ERC721/IERC721TopDown.sol
 [IERC721TopDownDna.sol]: ../../../owlprotocol-contracts/contracts/assets/ERC721/IERC721TopDownDna.sol
 
@@ -73,7 +73,7 @@ Owl Protocol's [IERC721Dna.sol] interface does **not necessarily** specify **how
 Before, you use Owl Protocol DNA standard, you should think about **what** data is relevant to store on-chain. We recommend a hybrid model. **Not all** data should be stored on-chain. Only data with **execution value**, meaning that it is relevant to the logic of other smart contracts (eg. DAO, staking, crafting), should be used on-chain.
 
 ### Image Layers
-Images shouid **not** be encoded on-chain. Storing an image on-chain can be prohibitively expensive or imposible. Instead **pointers** to images should be stored in the form of numbers. For example, if an NFT can have 4 background images (eg. circle, triangle, triangle, pentagon), an `number` trait from `0-3` should be stored on-chain. The `collection.json` encoding spec can then define how each number points to a different image and can be used to create a truly generative NFT (see later section). The `collection.json` and associated image resources can then be uploaded to IPFS and referenced by the `contraryURI()` function extending the [contract-level-metadata] standard. See later sections for more info on how to use generative image layers using "Image Traits".
+Images should **not** be encoded on-chain. Storing an image on-chain can be prohibitively expensive or imposible. Instead **pointers** to images should be stored in the form of numbers. For example, if an NFT can have 4 background images (eg. circle, triangle, triangle, pentagon), an `number` trait from `0-3` should be stored on-chain. The `collection.json` encoding spec can then define how each number points to a different image and can be used to create a truly generative NFT (see later section). The `collection.json` and associated image resources can then be uploaded to IPFS and referenced by the `contraryURI()` function extending the [contract-level-metadata] standard. See later sections for more info on how to use generative image layers using "Image Traits".
 
 ### Nested DNA Encoding
 We define the following recommended encoding standard for [IERC721Dna.sol] NFTs.

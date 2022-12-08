@@ -12,6 +12,7 @@
 # Generated files
 .docusaurus
 .cache-loader
+docs-contracts/reference/**/*
 
 # Misc
 .DS_Store

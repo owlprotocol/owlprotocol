@@ -6,7 +6,7 @@ Owl Protocol's NFT SDK designed for generative NFTs with on-chain encoding.
 For the purposes of this project, we use the following naming conventions:
 
 ### `NFTGenerativeCollection`
-A generative NFT collection that is hybrid, storing it's data both on and off-chain. On-chain through the smart contract's storage `mapping(uint256 tokenId => uint256 dna)`, and off-chain through the rendering client side using the `@owlprotocol/nft-sdk` itself or using the associated `@owlprotocol/nft-metadata-generator` API.
+A generative NFT collection that is hybrid, storing its data both on and off-chain. On-chain through the smart contract's storage `mapping(uint256 tokenId => uint256 dna)`, and off-chain through the rendering client side using the `@owlprotocol/nft-sdk` itself or using the associated `@owlprotocol/nft-sdk-api`.
 
 On-chain encoding is important as it enables other smart contracts to access the NFT's metadata directly in trustless fashion. However, it must be compact, and we therefore store the encoding (aka `dna`) conciseuly using a single `uint256` storage slot.
 

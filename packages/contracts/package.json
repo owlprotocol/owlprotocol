@@ -33,7 +33,7 @@
     "build": "npm-run-all compile generate-types docs esbuild tsc build:interfaceIds",
     "build:watch": "npm-run-all -p tsc:watch esbuild:watch",
     "build:interfaceIds": "rm interfaceId/* && node lib/cjs/ethers/generateInterfaceIds.js",
-    "docs": "hardhat docgen",
+    "docs": "hardhat docgen && cp -R docs-contracts-reference/* ../docs/docs-contracts/reference",
     "esbuild": "node esbuild.config.mjs",
     "esbuild:watch": "ESBUILD_WATCH=true node esbuild.config.mjs",
     "tsc": "mkdir -p lib/types && cp -r src/typechain lib/types && tsc --project tsconfig.build.json",

@@ -41,6 +41,9 @@ The most basic requirement for Dynamic NFTs is a standardized way to *encode dat
     **JSON Schema**, that can be parsed by any application and used programmatically.
     :::
 
+    > Read the source code: [ERC721TopDownDna.sol](https://github.com/owlprotocol/owlprotocol/blob/main/packages/contracts/contracts/assets/ERC721/ERC721TopDownDna.sol)
+    > and read more in-depth on the implementation at [Contract Guides/IERC721Dna](/contracts/contract-guides/IERC721Dna)
+
 
 3. **Decentralized**
 
