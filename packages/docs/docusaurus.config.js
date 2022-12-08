@@ -11,9 +11,67 @@ const { announcementConfig } = require("./config/announcement");
 /** @type {import('@docusaurus/types').Config} */
 const config = {
     title: "Owl Protocol",
-    tagline: "Dynamic NFT & Smart Contract Tooling",
-    url: "https://owlprotocol.github.io",
+    tagline: "Dynamic NFT Standards & Smart Contract Tooling",
+    url: "https://docs.owlprotocol.xyz",
     baseUrl: "/",
+    headTags: [
+        {
+            tagName: 'meta',
+            attributes: {
+                content: 'Dynamic NFT Standards & Smart Contract Tooling',
+                property: 'og:title'
+            }
+        },
+        {
+            tagName: 'meta',
+            attributes: {
+                name: 'description',
+                content: 'Owl Protocol is Building the No-Code, Dynamic NFT Workshop for the Next Generation of NFT Utilities, Crafting, Breeding, and more. All open-source standards and working with 10+ blockchains.'
+            }
+        },
+        {
+            tagName: 'meta',
+            attributes: {
+                content: 'Owl Protocol is Building the No-Code, Dynamic NFT Workshop for the Next Generation of NFT Utilities, Crafting, Breeding, and more. All open-source standards and working with 10+ blockchains.',
+                property: 'twitter:description'
+            }
+        },
+        {
+            tagName: 'meta',
+            attributes: {
+                content: 'https://assets.website-files.com/62909cbd1d1a8e706926609e/630c8f8e37e745108c8751d3_seo_graph_image.jpg',
+                property: 'og:image'
+            }
+        },
+        {
+            tagName: 'meta',
+            attributes: {
+                content: 'https://assets.website-files.com/62909cbd1d1a8e706926609e/630c8f8e37e745108c8751d3_seo_graph_image.jpg',
+                property: 'twitter:image'
+            }
+        },
+        {
+            tagName: 'meta',
+            attributes: {
+                content: 'Owl Protocol - Dynamic NFT Documentation',
+                property: 'og:title'
+            }
+        },
+        {
+            tagName: 'meta',
+            attributes: {
+                content: 'Owl Protocol - Dynamic NFT Documentation',
+                property: 'twitter:title'
+            }
+        },
+        {
+            tagName: 'meta',
+            attributes: {
+                content: 'website',
+                property: 'og:type'
+            }
+        },
+    ],
     deploymentBranch: "gh-pages",
     onBrokenLinks: "warn",
     onBrokenMarkdownLinks: "warn",
