@@ -1,9 +1,12 @@
 ---
 sidebar_position: 1
 ---
+
+import { Box } from '@chakra-ui/react'
+
 # Dynamic NFT Data
 
-### To maximize the flexibility of NFT on-chain data, we only add a `bytes` data named `dna` to the NFT.
+### To maximize the flexibility of NFT on-chain data, we only add a `bytes` data named `dna` to the NFT - **this is the NFT Data**
 
 Many other NFT projects may add additional methods to their NFT token contract, which is difficult for integration,
 because they are non-standard, requiring developers to customize integrations for each NFT collection.
@@ -11,7 +14,7 @@ because they are non-standard, requiring developers to customize integrations fo
 Our approach is to expose the dynamic features through the standard `tokenURI` method.
 
 ```
-/***** Dna *****/
+/***** Dna (NFT Data) *****/
 /**
  * @dev returns uri for token metadata. If no baseURI, returns Dna as string
  * @param tokenId tokenId metadata to fetch
@@ -26,12 +29,17 @@ function tokenURI(uint256 tokenId) public view override returns (string memory) 
     return bytes(baseURI).length > 0 ? string(abi.encodePacked(baseURI, dnaString)) : dnaString;
 }
 ```
+[ERC721TopDownDna.sol](https://github.com/owlprotocol/owlprotocol/blob/main/packages/contracts/contracts/assets/ERC721/ERC721TopDownDna.sol)
 
 > As you can see we store this `dna` per `tokenId`: **`getDna( tokenId )`**
 
 :::info Detailed Docs
 **Visit our Contract Guide for in the detailed docs:** [IERC721Dna](/contracts/contract-guides/IERC721Dna)
 :::
+
+<Box p={4} bgColor='white' borderRadius={4}>
+    <img src="/img/data_breakdown.png" alt="data_breakdown"/>
+</Box>
 
 ---
 

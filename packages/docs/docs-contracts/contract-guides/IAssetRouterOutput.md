@@ -1,3 +1,10 @@
+---
+sidebar_position: 3
+sidebar_label: 'IAssetRouterOutput'
+---
+
+# IAssetRouterOutput - NFT Output Router
+
 [EIP-20]: https://eips.ethereum.org/EIPS/eip-20
 [EIP-721]: https://eips.ethereum.org/EIPS/eip-721
 [EIP-1155]: https://eips.ethereum.org/EIPS/eip-1155
@@ -23,12 +30,10 @@
 [IAssetRouterInput.md]: ./IAssetRouterInput.md
 [IAssetRouterOutput.md]: ./IAssetRouterOutput.md
 
-[IAsset.sol]: ../../../owlprotocol-contracts/contracts/plugins/AssetRouter/IAsset.sol
-[IAssetRouterInput.sol]: ../../../owlprotocol-contracts/contracts/plugins/AssetRouter/IAssetRouterInput.sol
-[IAssetRouterOutput.sol]: ../../../owlprotocol-contracts/contracts/plugins/AssetRouter/IAssetRouterOutput.sol
-[IERC721Dna.sol]: ../../../owlprotocol-contracts/contracts/assets/ERC721/IERC721Dna.sol
+[IAsset.sol]: ../reference/plugins/AssetRouter/IAsset
+[IAssetRouterInput.sol]: ../reference/plugins/AssetRouter/IAssetRouterInput
+[IAssetRouterOutput.sol]: ../reference/plugins/AssetRouter/IAssetRouterOutput
 
-# [IAssetRouterOutput.sol]
 [IAssetRouterOutput.sol] defines a contract that outputs assets. All calls come from a set of trusted forwarders, usually [IAssetRouterInput.sol].
 
 The [IAssetRouterOutput.sol] contract stores a set of `AssetOutputBasket` from which the `forwarder` can chose from. Any basket in the contract can then be used to mint assets.

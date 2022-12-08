@@ -1,3 +1,10 @@
+---
+sidebar_position: 1
+sidebar_label: 'IAsset'
+---
+
+# IAsset - Asset Interface
+
 [EIP-20]: https://eips.ethereum.org/EIPS/eip-20
 [EIP-721]: https://eips.ethereum.org/EIPS/eip-721
 [EIP-1155]: https://eips.ethereum.org/EIPS/eip-1155
@@ -22,12 +29,10 @@
 [IAssetRouterInput.md]: ./IAssetRouterInput.md
 [IAssetRouterOutput.md]: ./IAssetRouterOutput.md
 
-[IAsset.sol]: ../../../owlprotocol-contracts/contracts/plugins/AssetRouter/IAsset.sol
-[IAssetRouterInput.sol]: ../../../owlprotocol-contracts/contracts/plugins/AssetRouter/IAssetRouterInput.sol
-[IAssetRouterOutput.sol]: ../../../owlprotocol-contracts/contracts/plugins/AssetRouter/IAssetRouterOutput.sol
-[IERC721Dna.sol]: ../../../owlprotocol-contracts/contracts/assets/ERC721/IERC721Dna.sol
+[IAsset.sol]: ../reference/plugins/AssetRouter/IAsset
+[IAssetRouterInput.sol]: ../reference/plugins/AssetRouter/IAssetRouterInput
+[IAssetRouterOutput.sol]: ../reference/plugins/AssetRouter/IAssetRouterOutput
 
-# [IAsset.sol]
 A library for batched [EIP-20], [EIP-721], and [EIP-1155] interactions such as transfers, mints, and ownership checks. [IAsset.sol] is used by [IAssetRouterInput.md] and [IAssetRouterOutput.md] to enable dynamic NFT mechanics that combine, mint, and burn NFTs with flexible logic.
 
 See the reference [here](#) **TODO**

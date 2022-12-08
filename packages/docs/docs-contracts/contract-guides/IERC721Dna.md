@@ -1,3 +1,10 @@
+---
+sidebar_position: 4
+sidebar_label: 'IERC721Dna'
+---
+
+# IERC721Dna - Metadata Encoding Standard
+
 [EIP-20]: https://eips.ethereum.org/EIPS/eip-20
 [EIP-721]: https://eips.ethereum.org/EIPS/eip-721
 [EIP-1155]: https://eips.ethereum.org/EIPS/eip-1155
@@ -33,15 +40,13 @@
 
 [@owlprotocol/nft-sdk]: ../../../../../nft-sdk/
 
-[IAsset.sol]: ../../../owlprotocol-contracts/contracts/plugins/AssetRouter/IAsset.sol
-[IAssetRouterInput.sol]: ../../../owlprotocol-contracts/contracts/plugins/AssetRouter/IAssetRouterInput.sol
-[IAssetRouterOutput.sol]: ../../../owlprotocol-contracts/contracts/plugins/AssetRouter/IAssetRouterOutput.sol
-[IERC721Dna.sol]: https://github.com/owlprotocol/owlprotocol/blob/main/packages/contracts/contracts/assets/ERC721/IERC721Dna.sol
-[IERC721TopDown.sol]: ../../../owlprotocol-contracts/contracts/assets/ERC721/IERC721TopDown.sol
-[IERC721TopDownDna.sol]: ../../../owlprotocol-contracts/contracts/assets/ERC721/IERC721TopDownDna.sol
+[IAsset.sol]: ../reference/plugins/AssetRouter/IAsset
+[IAssetRouterInput.sol]: ../reference/plugins/AssetRouter/IAssetRouterInput
+[IAssetRouterOutput.sol]: ../reference/plugins/AssetRouter/IAssetRouterOutput
+[IERC721Dna.sol]: ../reference/assets/ERC721/IERC721Dna
+[IERC721TopDown.sol]: ../reference/assets/ERC721/IERC721TopDown
+[IERC721TopDownDna.sol]: ../reference/assets/ERC721/IERC721TopDownDna
 
-
-# [IERC721Dna.sol] Metadata Encoding Standard
 The [IERC721Dna.sol] contract defines a standard for efficiently encoding on-chain NFT metadata. This enables powerful on-chain mechanics combining NFTs such as Crafting, Breeding or other decentralized incentives. The standard is inspired by ideas first pioneered by [cryptokitties.co] which encoded "DNA" into their kitty NFTs for the purpose of gamified breeding. However, Owl Protocol's NFT trait encoding mechanic is fundamentally different as it is designed with standardisation and composability in mind.
 
 The goal of the `IERC721Dna.sol` standard is to be as flexible as possible. As such, the `dna` of an NFT is returned as an arbitrary `bytes` array which can be used to encode any data.
