@@ -14,6 +14,8 @@ export const THEME_COLORS = {
         color10: "#A10A1D",
         color11: "#EE015F",
         color12: "#77C875",
+        color13: "#E4A951",
+        color14: "#41C4A5",
     },
 };
 
