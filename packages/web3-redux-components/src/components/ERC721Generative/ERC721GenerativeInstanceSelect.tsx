@@ -1,4 +1,11 @@
-import { Box, Button, HStack, useTheme } from "@chakra-ui/react";
+import {
+    Box,
+    Button,
+    VStack,
+    HStack,
+    useTheme,
+    Center,
+} from "@chakra-ui/react";
 import { useCallback, useState } from "react";
 import { NFTGenerativeItemId } from "@owlprotocol/web3-redux/src/nftgenerativeitem/model/interface.js";
 import {
@@ -68,23 +75,24 @@ export const ERC721GenerativeInstanceSelect = ({
             );
         } else {
             return (
-                <Box
+                <VStack
                     onClick={(e) => setSelected(undefined)}
                     w={"138px"}
                     h={"138px"}
                     bg={themes.color5}
                     justify={"center"}
                     align={"center"}
-                    my={4}
-                    p={2}
-                    mx={"auto"}
                     borderRadius={12}
                     cursor={"pointer"}
+                    p={2}
                 >
-                    <Box mb={2} bg={themes.color6} borderRadius={12} py={6}>
-                        <Icon icon="AddRounded" size={40} />
+                    <Box w={"100%"} bg={themes.color6} borderRadius={12} py={6}>
+                        <Center>
+                            <Icon icon="AddRounded" size={40} />
+                        </Center>
                     </Box>
                     <Box
+                        w={"100%"}
                         border={"2px solid"}
                         borderColor={themes.color6}
                         borderRadius={12}
@@ -95,7 +103,7 @@ export const ERC721GenerativeInstanceSelect = ({
                     >
                         Select Item
                     </Box>
-                </Box>
+                </VStack>
             );
         }
     } else {
