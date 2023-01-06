@@ -68,7 +68,11 @@ export const NFTInstancePresenter = ({
             p={"2px"}
             h={"100%"}
             borderRadius={12}
-            bg={"linear-gradient(99.23deg, #F30059 1.6%, #6E1DF5 97.94%);"}
+            bg={
+                isLegendary
+                    ? "linear-gradient(99.23deg, #F30059 1.6%, #6E1DF5 97.94%);"
+                    : ""
+            }
         >
             <Box
                 bg={themes.color5}

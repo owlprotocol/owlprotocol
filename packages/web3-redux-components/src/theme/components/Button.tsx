@@ -1,16 +1,19 @@
-import { THEME_COLORS } from '../../constants/index.js';
+import { THEME_COLORS } from "../../constants/index.js";
 
 const Button = (CURRENT_THEME: string) => {
     // @ts-ignore
-    const { color1, color2, color3, color7, color10 } = THEME_COLORS[CURRENT_THEME];
+    const { color1, color2, color3, color7, color10 } =
+        THEME_COLORS[CURRENT_THEME];
 
     return {
         baseStyle: {
-            w: ['100%', 'auto'],
+            h: "40px",
+            w: ["100%", "auto"],
+            px: 10,
             borderRadius: 20,
-            fontWeight: 'bold',
+            fontWeight: "bold",
             color: color7,
-            backgroundColor: 'transparent',
+            backgroundColor: "transparent",
             _hover: {
                 color: color1,
             },
@@ -27,8 +30,6 @@ const Button = (CURRENT_THEME: string) => {
             form: {
                 color: color7,
                 backgroundColor: color1,
-                borderRadius: 12,
-                px: 10,
                 _hover: {
                     color: color7,
                     opacity: 0.8,
@@ -46,13 +47,11 @@ const Button = (CURRENT_THEME: string) => {
                 },
             },
             hollow: {
-                bg: 'transparent',
+                bg: "transparent",
                 color: color1,
                 borderWidth: 1,
-                borderStyle: 'solid',
+                borderStyle: "solid",
                 borderColor: color1,
-                px: 6,
-                h: '40px',
                 _hover: {
                     bg: color1,
                     color: color7,

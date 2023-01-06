@@ -1,33 +1,36 @@
-import Button from './Button';
-import { THEME_COLORS } from '../../constants/index.js';
+import Button from "./Button";
+import { THEME_COLORS } from "../../constants/index.js";
 
 const components = (CURRENT_THEME: string) => {
     // @ts-ignore
-    const { color1, color6, color7, color9, color11 } = THEME_COLORS[CURRENT_THEME];
+    const { color1, color6, color7, color9, color11 } =
+        THEME_COLORS[CURRENT_THEME];
 
     return {
         Button: Button(CURRENT_THEME),
         Text: {
             baseStyle: {
                 color: color9,
+                fontSize: 14,
+                fontWeight: 400,
             },
             variants: {
-                'form-label': {
+                "form-label": {
                     fontSize: 18,
                     fontWeight: 600,
                     color: color9,
                     mb: 4,
                 },
-                'grad-1': {
-                    bg: 'linear-gradient(99.23deg, #942457 1.6%, #8318DD 97.94%)',
-                    backgroundClip: 'text',
+                "grad-1": {
+                    bg: "linear-gradient(99.23deg, #942457 1.6%, #8318DD 97.94%)",
+                    backgroundClip: "text",
                 },
             },
         },
         Container: {
             baseStyle: {
-                w: '100%',
-                maxW: '1200px',
+                w: "100%",
+                maxW: "1200px",
             },
         },
         Divider: {
@@ -37,9 +40,9 @@ const components = (CURRENT_THEME: string) => {
         },
         AccordionIcon: {
             baseStyle: {
-                w: '26px',
-                h: '26px',
-                marginLeft: 'auto',
+                w: "26px",
+                h: "26px",
+                marginLeft: "auto",
             },
         },
         AccordionButton: {
@@ -65,7 +68,7 @@ const components = (CURRENT_THEME: string) => {
             variants: {
                 form: {
                     field: {
-                        height: '52px',
+                        height: "52px",
                         color: color7,
                         borderRadius: 8,
                         backgroundColor: color6,
@@ -86,7 +89,7 @@ const components = (CURRENT_THEME: string) => {
         Textarea: {
             variants: {
                 form: {
-                    minHeight: '104px',
+                    minHeight: "104px",
                     color: color7,
                     borderRadius: 8,
                     backgroundColor: color6,
@@ -116,7 +119,7 @@ const components = (CURRENT_THEME: string) => {
                     fontWeight: 700,
                     _hover: {
                         color: color11,
-                        textDecor: 'none',
+                        textDecor: "none",
                     },
                 },
             },
@@ -129,11 +132,11 @@ const components = (CURRENT_THEME: string) => {
             variants: {
                 form: {
                     borderRadius: 12,
-                    height: '54px',
+                    height: "54px",
                     color: color7,
-                    backgroundColor: 'transparent',
+                    backgroundColor: "transparent",
                     borderWidth: 1,
-                    borderStyle: 'solid',
+                    borderStyle: "solid",
                     borderColor: color6,
                     outline: 0,
                     _placeholder: {
@@ -147,12 +150,12 @@ const components = (CURRENT_THEME: string) => {
                     },
                 },
                 hollow: {
-                    h: '27px',
-                    bg: 'transparent',
+                    h: "27px",
+                    bg: "transparent",
                     color: color9,
                     borderRadius: 8,
                     borderWidth: 1,
-                    borderStyle: 'solid',
+                    borderStyle: "solid",
                     borderColor: color9,
                 },
             },
