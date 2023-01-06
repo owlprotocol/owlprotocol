@@ -1,13 +1,14 @@
 import { call, all } from 'typed-redux-saga';
+import { Web3 } from '@owlprotocol/contracts';
+
 import { ContractEvent } from '../../contractevent/model/interface.js';
 import {
     EventGetPastAction,
     eventGetPastRawAction as eventGetPastRawAction,
 } from '../actions/index.js';
-import { ContractWithObjects } from '../model/interface.js';
 import { eventGetPastRaw } from './eventGetPastRaw.js';
-import { fetchSaga as fetchNetworkSaga } from '../../network/sagas/fetch.js';
-import { NetworkCRUD } from '../../network/crud.js';
+import { getBlockNumber } from '../../network/sagas/getBlockNumber.js';
+import { getBlockNumberAction } from '../../network/actions/getBlockNumber.js';
 
 const sizes = [10000000, 5000000, 1000000, 500000, 100000, 50000, 10000, 5000, 1000, 500, 100, 50, 10];
 const minSize = sizes[sizes.length - 1];
@@ -58,13 +59,11 @@ export function* eventGetPast(action: EventGetPastAction): Generator<
     const { payload } = action;
     const { networkId, address, eventName, filter, fromBlock, toBlock, blocks, maxEvents, maxConcurrentRequests } = payload;
 
-    const { network } = yield* call(fetchNetworkSaga, NetworkCRUD.actions.fetch({ networkId }, action.meta.uuid, action.meta.ts));
-    const web3 = network.web3!
-
     //Ranged queries
     let toBlockInitial: number;
     if (!toBlock || toBlock === 'latest') {
-        toBlockInitial = yield* call(web3.eth.getBlockNumber);
+        const { latestBlockNumber } = yield* call(getBlockNumber, getBlockNumberAction({ networkId }, action.meta.uuid));
+        toBlockInitial = latestBlockNumber;
     } else {
         toBlockInitial = toBlock;
     }
@@ -123,3 +122,29 @@ export function* eventGetPast(action: EventGetPastAction): Generator<
 
     return events
 }
+
+/**
+ * Create version of eventGetPastSaga with typed event signature, and default event name.
+ * @param eventName
+ * @returns
+ */
+export function eventGetPastFactory<T extends Record<string, any> = Record<string, any>>(eventName: string) {
+    return (action: EventGetPastAction): Generator<
+        any,
+        ContractEvent<T>[]
+    > => {
+        const payload = { ...action.payload, eventName }
+        return eventGetPast({ type: action.type, payload, meta: { ...action.meta } }) as Generator<
+            any,
+            ContractEvent<T>[]
+        >
+    }
+}
+
+export const eventGetPastInterfaceImplementerSet = eventGetPastFactory<Web3.InterfaceImplementerSetEvent['returnValues']>('InterfaceImplementerSet')
+export const eventGetPastIERC20Transfer = eventGetPastFactory<Web3.IERC20TransferEvent['returnValues']>('Transfer')
+export const eventGetPastIERC721Transfer = eventGetPastFactory<Web3.IERC721TransferEvent['returnValues']>('Transfer')
+export const eventGetPastIERC1155TransferSingle = eventGetPastFactory<Web3.IERC1155TransferSingleEvent['returnValues']>('TransferSingle')
+export const eventGetPastIERC1155TransferBatch = eventGetPastFactory<Web3.IERC1155TransferBatchEvent['returnValues']>('TransferBatch')
+export const eventGetPastAssetRouterSupportsAsset = eventGetPastFactory<Web3.SupportsAsset['returnValues']>('SupportsAsset')
+export const eventGetPastAssetRouterRouteBasket = eventGetPastFactory<Web3.RouteBasket['returnValues']>('RouteBasket')

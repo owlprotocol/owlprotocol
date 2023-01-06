@@ -1,6 +1,7 @@
 import Web3 from 'web3';
 import type { Contract as Web3Contract } from 'web3-eth-contract';
 import { Axios } from 'axios';
+import { T_Encoded_Base } from '@owlprotocol/crud-redux';
 
 /** @internal */
 export interface NetworkId {
@@ -14,7 +15,7 @@ export interface NetworkId {
  * Other objects are indexed on its networkId, and use it to fetch it to make requests using its web3.js connection.
  *
  */
-export interface Network extends NetworkId {
+export interface Network extends NetworkId, T_Encoded_Base {
     /** Human readable name for the network */
     readonly name?: string;
     /** Native currency */

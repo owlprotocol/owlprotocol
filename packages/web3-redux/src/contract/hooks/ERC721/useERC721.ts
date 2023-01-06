@@ -27,7 +27,7 @@ export function useERC721(
     useContract(networkId, address, { abi: Artifacts.IERC721Metadata.abi });
     //Static values
     const [name] = useERC721Name(networkId, address);
-    const [symbol] = useERC721Symbol(networkId, name)
+    const [symbol] = useERC721Symbol(networkId, address)
     //if ownerOf is 'Transfer' we disable hook sync and dispatch our own custom solution
     const [ownerOf] = useERC721OwnerOf(networkId, address, [tokenId])
     const [tokenURI] = useERC721TokenURI(networkId, address, [tokenId]);

@@ -1,20 +1,29 @@
 import { put, call } from 'typed-redux-saga';
-import loadNetwork from './loadNetwork.js';
+import { fetchSaga as fetchNetwork } from './fetch.js';
 import { GetBlockNumberAction } from '../actions/index.js';
 import NetworkCRUD from '../crud.js';
+import { NetworkWithObjects } from '../model/interface.js';
 
-function* getBlockNumber(action: GetBlockNumberAction) {
+export function* getBlockNumber(action: GetBlockNumberAction): Generator<
+    any,
+    {
+        network: NetworkWithObjects;
+        latestBlockNumber: number;
+    }
+> {
     const { payload } = action;
-    const networkId = payload;
+    const { networkId, maxCacheAge } = payload;
 
-    const network = yield* call(loadNetwork, networkId, action.meta.uuid);
-    if (!network) throw new Error(`Network ${networkId} undefined`);
+    const { network } = yield* call(fetchNetwork, NetworkCRUD.actions.fetch({ networkId }, action.meta.uuid));
+    if (network.latestBlockNumber && network?.updatedAt && Date.now() - network.updatedAt < maxCacheAge) {
+        return { network, latestBlockNumber: network.latestBlockNumber }
+    }
 
-    const web3 = network.web3 ?? network.web3Sender;
-    if (!web3) throw new Error(`Network ${networkId} missing web3 or web3Sender`);
+    const web3 = network.web3;
+    if (!web3) throw new Error(`Network ${networkId} missing web3`);
 
     const latestBlockNumber = yield* call(web3.eth.getBlockNumber);
     yield* put(NetworkCRUD.actions.update({ networkId, latestBlockNumber }, action.meta.uuid));
-}
 
-export default getBlockNumber;
+    return { network, latestBlockNumber }
+}

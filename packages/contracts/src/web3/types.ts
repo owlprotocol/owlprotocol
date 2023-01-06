@@ -43,6 +43,7 @@ export type { ERC1155Mintable } from '../typechain/web3/ERC1155Mintable.js';
 //export type { IERC4907 } from '../typechain/web3/IERC4907.js';
 
 //Plugins
+export type { SupportsAsset, RouteBasket } from '../typechain/web3/IAssetRouter.js';
 export type { IAssetRouterInput } from '../typechain/web3/IAssetRouterInput.js';
 export type { IAssetRouterOutput } from '../typechain/web3/IAssetRouterOutput.js';
 export type { AssetRouterInput } from '../typechain/web3/AssetRouterInput.js';

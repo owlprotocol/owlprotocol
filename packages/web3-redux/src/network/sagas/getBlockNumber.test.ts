@@ -2,7 +2,7 @@ import { testSaga } from 'redux-saga-test-plan';
 
 import { assert } from 'chai';
 import Web3 from 'web3';
-import getBlockNumber from './getBlockNumber.js';
+import { getBlockNumber } from './getBlockNumber.js';
 import loadNetwork from './loadNetwork.js';
 import { getBlockNumberAction } from '../actions/index.js';
 import { name } from '../common.js';
@@ -13,7 +13,7 @@ import sleep from '../../utils/sleep.js';
 
 const networkId = network1336.networkId;
 const web3 = network1336.web3;
-const action = getBlockNumberAction(networkId, '');
+const action = getBlockNumberAction({ networkId }, '');
 
 describe(`${name}/sagas/getBlockNumber.test.ts`, () => {
     describe('unit', () => {

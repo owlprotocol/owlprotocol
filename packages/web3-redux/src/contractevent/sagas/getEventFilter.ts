@@ -1,4 +1,4 @@
-import { isEmpty, isUndefined, omitBy } from 'lodash-es';
+import { isEmpty, isNull, omitBy } from 'lodash-es';
 import { call } from 'typed-redux-saga';
 import type { AbiInput, AbiItem } from 'web3-utils';
 import { ContractCRUD } from '../../contract/crud.js';
@@ -25,6 +25,7 @@ export interface EventFilter {
 }
 
 export function getEventFilter({ networkId, address, filter }: Omit<GetEventFilter, 'name'>, event: AbiItem): EventFilter {
+    //console.debug({ networkId, address, filter, event })
     //Topic0 based on event signature
     const topic0 = coder.encodeEventSignature(event)
 
@@ -40,10 +41,12 @@ export function getEventFilter({ networkId, address, filter }: Omit<GetEventFilt
         })
 
         //Additional topics
-        const topics = [topic0]
-        topicInputs.map((a) => {
-            const encoded = coder.encodeParameter(a.type, filter[a.name])
-            topics.push(encoded)
+        const topics: [string, string | null, string | null, string | null] = [topic0, null, null, null]
+        topicInputs.map((a, i) => {
+            if (filter[a.name]) {
+                const encoded = coder.encodeParameter(a.type, filter[a.name])
+                topics[i + 1] = encoded
+            }
         })
 
         const index = {
@@ -54,7 +57,7 @@ export function getEventFilter({ networkId, address, filter }: Omit<GetEventFilt
             topic2: topics[2],
             topic3: topics[3],
         }
-        const indexDefined = omitBy(index, isUndefined) as typeof index
+        const indexDefined = omitBy(index, isNull) as EventFilter['index']
 
         return {
             index: indexDefined,

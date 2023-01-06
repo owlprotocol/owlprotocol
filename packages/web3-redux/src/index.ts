@@ -1,4 +1,5 @@
 export * from './4byte/index.js';
+export * from './assetpicker/index.js';
 export * from './block/index.js';
 export * from './config/index.js';
 export * from './contract/index.js';

@@ -8,6 +8,7 @@
 import { AssetPickerCRUD as CRUDModel } from './crud.js';
 import * as Hooks from './hooks/index.js';
 import { rootSaga } from './sagas/index.js';
+export type { Asset } from './model/index.js'
 
 export const AssetPicker = {
     name: CRUDModel.name,

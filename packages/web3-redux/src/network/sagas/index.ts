@@ -1,7 +1,7 @@
 import { all, takeEvery, spawn } from 'typed-redux-saga';
 import { wrapSagaWithErrorHandler } from '@owlprotocol/crud-redux'
 
-import getBlockNumber from './getBlockNumber.js';
+import { getBlockNumber } from './getBlockNumber.js';
 import getChainId from './getChainId.js';
 import { GET_BLOCK_NUMBER, GET_CHAIN_ID } from '../actions/index.js';
 import NetworkCRUD from '../crud.js';

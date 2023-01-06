@@ -4,6 +4,7 @@ import { filter, isUndefined, keyBy, omit, omitBy } from 'lodash-es';
 import { AbiItem } from '../../utils/web3-utils/index.js';
 import { NetworkWithObjects } from '../../network/model/interface.js';
 import toReduxOrmId from '../../utils/toReduxORMId.js';
+import { T_Encoded_Base } from '@owlprotocol/crud-redux';
 
 /**
  * Contract Id object.
@@ -25,7 +26,7 @@ export type BaseWeb3Contract = Omit<Web3Contract, 'once' | 'clone' | '_address' 
  * @typeParam T
  * [TypeChain](https://github.com/dethcrypto/TypeChain) web3.js contract. Enables getting type inference for calls and events. Defaults to standard Web3.js contract interface.
  */
-export interface Contract extends ContractId {
+export interface Contract extends ContractId, T_Encoded_Base {
     /** Contract ABI */
     readonly abi?: AbiItem[];
     /** ERC165 or ERC1820 interfaceIds */

@@ -8,7 +8,7 @@ export const EVENT_GET_PAST = `${name}/EVENT_GET_PAST`;
 export interface EventGetPastActionInput {
     networkId: string;
     address: string;
-    eventName: string;
+    eventName?: string;
     filter?: { [key: string]: any };
     fromBlock?: number | 'earliest';
     toBlock?: number | 'latest';
