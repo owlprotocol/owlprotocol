@@ -45,7 +45,7 @@ const deploy = async ({ provider, signers, network }: RunTimeEnvironment) => {
     //Contracts
     const thGlassesChild = {
         admin: signerAddress,
-        contractUri: 'http://localhost:3000/threadhaus/collection-child-glasses.json',
+        contractUri: 'http://localhost:3000/innovot/collection-child-glasses.json',
         gsnForwarder: constants.AddressZero,
         name: 'Thread Haus - Innovot NFT Glasses Sub-Collection',
         symbol: 'ThreadHaus-Child-Glasses',
@@ -58,7 +58,7 @@ const deploy = async ({ provider, signers, network }: RunTimeEnvironment) => {
 
     const thHatsChild = {
         admin: signerAddress,
-        contractUri: 'http://localhost:3000/threadhaus/collection-child-hats.json',
+        contractUri: 'http://localhost:3000/innovot/collection-child-hats.json',
         gsnForwarder: constants.AddressZero,
         name: 'Thread Haus - Innovot NFT Hats Sub-Collection',
         symbol: 'ThreadHaus-Child-Glasses',
@@ -71,7 +71,7 @@ const deploy = async ({ provider, signers, network }: RunTimeEnvironment) => {
 
     const thDressChild = {
         admin: signerAddress,
-        contractUri: 'http://localhost:3000/threadhaus/collection-child-dress.json',
+        contractUri: 'http://localhost:3000/innovot/collection-child-dress.json',
         gsnForwarder: constants.AddressZero,
         name: 'Thread Haus - Innovot NFT Glasses Sub-Collection',
         symbol: 'ThreadHaus-Child-Glasses',
@@ -84,7 +84,7 @@ const deploy = async ({ provider, signers, network }: RunTimeEnvironment) => {
 
     const thFacialHairChild = {
         admin: signerAddress,
-        contractUri: 'http://localhost:3000/threadhaus/collection-child-facial_hair.json',
+        contractUri: 'http://localhost:3000/innovot/collection-child-facial_hair.json',
         gsnForwarder: constants.AddressZero,
         name: 'Thread Haus - Innovot NFT Glasses Sub-Collection',
         symbol: 'ThreadHaus-Child-Glasses',
@@ -121,7 +121,7 @@ const deploy = async ({ provider, signers, network }: RunTimeEnvironment) => {
 
     const thColl = {
         admin: signerAddress,
-        contractUri: 'http://localhost:3000/threadhaus/collection.json',
+        contractUri: 'http://localhost:3000/innovot/collection.json',
         gsnForwarder: constants.AddressZero,
         name: 'Thread Haus - Innovot NFT Collection',
         symbol: 'ThreadHaus',
