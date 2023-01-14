@@ -144,14 +144,17 @@ export class NFTGenerativeItemClass<
         console.log('Entered getJsonMetadata');
         const imageBuff = await this.getImage(mergeOptions, width, height);
         const attributesRaw = this.attributesFormatted();
-        console.log(attributesRaw);
-        const attributes = _.map(attributesRaw, ((attr, traitIndex) => {
+
+        // TODO: temp fix for enums, which are not structs (can't map them)
+        const attributes = _.map(_.pickBy(attributesRaw, (val) => _.isObject(val)), ((attr, traitIndex) => {
             let attribute: any = attr;
 
             if (!!(attr as NFTGenerativeTraitImageOption).image_url) {
                 attribute = omit(attribute as any, ['image', 'image_url']);
             }
+
             attribute.name = this.collection.traits[traitIndex].name;
+
             return attribute;
         }));
 
