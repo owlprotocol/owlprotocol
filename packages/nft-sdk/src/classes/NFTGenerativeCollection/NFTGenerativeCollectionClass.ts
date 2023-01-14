@@ -655,6 +655,9 @@ export class NFTGenerativeCollectionClass<
         width = 800,
         height = 800,
     ): Promise<string | undefined> {
+
+        console.log('Entered getImage');
+
         if (!this.generatedImageType) return undefined;
 
         //TODO: Cache
@@ -665,6 +668,7 @@ export class NFTGenerativeCollectionClass<
             }
             return undefined;
         });
+        console.log(imageLayers);
         const layers = compact(values(imageLayers));
 
         if ('svg' == this.generatedImageType) {

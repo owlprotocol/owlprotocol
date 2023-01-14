@@ -1,8 +1,9 @@
 import { Options as MergeImagesOptions } from 'merge-images';
-import { mapValues } from 'lodash-es';
+import _, { mapValues, omit, omitBy, isUndefined } from 'lodash-es';
 import type { NFTGenerativeItemInterface } from './NFTGenerativeItemInterface.js';
-import type { AttributeValue, NFTGenerativeItem } from '../../types/index.js';
+import type { AttributeValue, JSONEncodable, NFTGenerativeItem, NFTGenerativeTraitImageOption } from '../../types/index.js';
 import type { NFTGenerativeCollectionInterface } from '../NFTGenerativeCollection/NFTGenerativeCollectionInterface.js';
+
 
 export class NFTGenerativeItemClass<
     Collection extends NFTGenerativeCollectionInterface = NFTGenerativeCollectionInterface,
@@ -139,11 +140,12 @@ export class NFTGenerativeItemClass<
         );
     }
 
-    /*
     async getJsonMetadata(mergeOptions?: MergeImagesOptions, width = 800, height = 800) {
+        console.log('Entered getJsonMetadata');
         const imageBuff = await this.getImage(mergeOptions, width, height);
         const attributesRaw = this.attributesFormatted();
-        const attributes = attributesRaw.map((attr, traitIndex) => {
+        console.log(attributesRaw);
+        const attributes = _.map(attributesRaw, ((attr, traitIndex) => {
             let attribute: any = attr;
 
             if (!!(attr as NFTGenerativeTraitImageOption).image_url) {
@@ -151,13 +153,15 @@ export class NFTGenerativeItemClass<
             }
             attribute.name = this.collection.traits[traitIndex].name;
             return attribute;
-        });
+        }));
 
-        const imageType = this.collection.getImageType();
+        const imageType = this.collection.generatedImageType;
+
         const asJson = omitBy(
             {
                 name: this.collection.name,
                 traits: attributes,
+                // @ts-ignore
                 image: `${imageType === 'png' ? 'data:image/png;base64, ' : ''}${imageBuff.toString('base64')}`,
             },
             isUndefined,
@@ -165,5 +169,4 @@ export class NFTGenerativeItemClass<
 
         return asJson;
     }
-    */
 }
