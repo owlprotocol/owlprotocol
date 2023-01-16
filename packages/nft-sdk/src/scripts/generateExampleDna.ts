@@ -37,10 +37,12 @@ async function main(){
 
     console.log(nftParent.dnaWithChildren());
 
+
+
 }
 
 async function fetchParentCollectionClass(): Promise<NFTGenerativeCollectionClass> {
-    const resp = await fetch('https://leovigna.mypinata.cloud/ipfs/QmXG7Eg6dp8rEzHw4TKhkYs2A8nLx6b2L3NeoMnDPZqYC1');
+    const resp = await fetch('https://leovigna.mypinata.cloud/ipfs/QmYzizfhuUX64rwdaEqunQxSxd8p4uXkpVE2zFpq14cvSM');
     const data = await resp.json();
 
     const collection = <NFTGenerativeCollection>data;
@@ -60,8 +62,6 @@ async function getHat(): Promise<NFTGenerativeItemClass> {
         collection: <NFTGenerativeCollectionInterface>collectionClass,
         attributes: { class: 'Designer', hats: 'Designer - Cap 5' }
     });
-
-    console.log(nftHat.genes());
 
     return nftHat;
 }

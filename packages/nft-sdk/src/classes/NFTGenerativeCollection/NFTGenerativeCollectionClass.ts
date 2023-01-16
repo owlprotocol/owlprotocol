@@ -1,6 +1,6 @@
 import type { IPFS } from 'ipfs-core-types';
 import type { CID } from 'ipfs-http-client';
-import { omitBy, isUndefined, mapValues, values, compact, isEmpty, uniq } from 'lodash-es';
+import { pick, omitBy, isUndefined, mapValues, keys, values, compact, isEmpty, uniq } from 'lodash-es';
 import mergeImages, { Options as MergeImagesOptions } from 'merge-images';
 import { BytesLike } from '@ethersproject/bytes';
 import { ethers } from 'ethers';
@@ -471,9 +471,11 @@ export class NFTGenerativeCollectionClass<
         : undefined;
     }) {
         const dna = this.attributesToDna(attributes);
+        // @ts-ignore
+        const existingChildren = pick(this.children, keys(omitBy(children, isUndefined))) as Record<string, NFTGenerativeCollectionInterface>;
         const dnaChildren =
             this.children && children
-                ? mapValues(this.children, (c, k) => {
+                ? mapValues(existingChildren, (c, k) => {
                     return c.attributesToDnaWithChildren(children[k]);
                 })
                 : undefined;

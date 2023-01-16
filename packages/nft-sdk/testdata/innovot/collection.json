@@ -297,7 +297,7 @@
       "fee_recipient": "0xCF28F97AbDfE1d0b9c51aDF6cF334f6489e080Fd",
       "generatedImage": "png",
       "traits": {
-        "image": {
+        "dress": {
           "name": "Dress/Shirt",
           "type": "image",
           "image_type": "png",
@@ -434,7 +434,7 @@
       "fee_recipient": "0xCF28F97AbDfE1d0b9c51aDF6cF334f6489e080Fd",
       "generatedImage": "png",
       "traits": {
-        "image": {
+        "hats": {
           "name": "Hats",
           "type": "image",
           "image_type": "png",
@@ -675,7 +675,7 @@
       "fee_recipient": "0xCF28F97AbDfE1d0b9c51aDF6cF334f6489e080Fd",
       "generatedImage": "png",
       "traits": {
-        "image": {
+        "facial_hair": {
           "name": "Facial Hair",
           "type": "image",
           "image_type": "png",
