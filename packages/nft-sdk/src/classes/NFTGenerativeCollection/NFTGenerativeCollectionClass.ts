@@ -668,7 +668,7 @@ export class NFTGenerativeCollectionClass<
             }
             return undefined;
         });
-        console.log(imageLayers);
+
         const layers = compact(values(imageLayers));
 
         if ('svg' == this.generatedImageType) {
