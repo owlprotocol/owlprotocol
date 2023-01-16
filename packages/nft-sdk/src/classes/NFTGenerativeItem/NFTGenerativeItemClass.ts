@@ -93,6 +93,7 @@ export class NFTGenerativeItemClass<
         return this.collection.attributesToDna(this.attributes) as ReturnType<Collection['attributesToDna']>;
     }
     dnaWithChildren(): ReturnType<Collection['attributesToDnaWithChildren']> {
+        console.log(this.attributes);
         return this.collection.attributesToDnaWithChildren({
             attributes: this.attributes,
             children: this.children as any,

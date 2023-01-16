@@ -84,6 +84,7 @@
     "mocha": "^9.2.2",
     "mockipfs": "^0.2.0",
     "mockttp": "^3.1.0",
+    "node-fetch": "^3.3.0",
     "npm-run-all": "^4.1.5",
     "rimraf": "^3.0.2",
     "s3rver": "^3.7.1",
