@@ -1,5 +1,6 @@
-import styled from '@emotion/styled';
+import styled from "@emotion/styled";
 
+// @ts-ignore
 const TableWrapper = styled.div`
     table {
         border-spacing: 0;

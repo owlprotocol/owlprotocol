@@ -1,15 +1,24 @@
-import { ComponentStory, ComponentMeta } from '@storybook/react';
-import { networkIdArgType } from '../../test/storybookArgs.js';
-import NetworkIcon from '.';
+import { ComponentStory, ComponentMeta } from "@storybook/react";
+import { networkIdArgType } from "../../test/storybookArgs.js";
+import NetworkIcon from ".";
 
 export default {
-    title: 'Graphics/NetworkIcon',
+    title: "Graphics/NetworkIcon",
     component: NetworkIcon,
     args: { networkId: networkIdArgType.options[0], size: 62 },
     argTypes: {
         networkId: networkIdArgType,
     },
+    parameters: {
+        docs: {
+            description: {
+                component: "A network's icon",
+            },
+        },
+    },
 } as ComponentMeta<typeof NetworkIcon>;
 
-const Template: ComponentStory<typeof NetworkIcon> = (args: any) => <NetworkIcon {...args} />;
+const Template: ComponentStory<typeof NetworkIcon> = (args: any) => (
+    <NetworkIcon {...args} />
+);
 export const Main = Template.bind({});

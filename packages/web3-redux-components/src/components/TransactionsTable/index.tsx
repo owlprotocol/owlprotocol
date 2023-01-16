@@ -1,7 +1,15 @@
-import { useTheme, TableContainer, Table, Thead, Tbody, Tr, Th } from '@chakra-ui/react';
-import TableWrapper from './TableStyleOverrides';
-import Default from './Default';
-import NFTTransactions from './NFTTransactions';
+import {
+    useTheme,
+    TableContainer,
+    Table,
+    Thead,
+    Tbody,
+    Tr,
+    Th,
+} from "@chakra-ui/react";
+import TableWrapper from "../../theme/TableStyleOverrides";
+import Default from "./Default";
+import NFTTransactions from "./NFTTransactions";
 
 export interface ItemProps {
     txHash?: string;
@@ -20,22 +28,31 @@ export interface ItemProps {
 
 export interface Props {
     items?: ItemProps[];
-    type?: 'DEFAULT' | 'NFT_TXS';
+    type?: "DEFAULT" | "NFT_TXS";
 }
 
-export const TransactionsTable = ({ items = [], type = 'DEFAULT' }: Props) => {
+export const TransactionsTable = ({ items = [], type = "DEFAULT" }: Props) => {
     const { themes } = useTheme();
 
-    let THEAD_LABELS = ['txn hash', 'method', 'block', 'age', 'from', 'to', 'value', 'txn fee'];
+    let THEAD_LABELS = [
+        "txn hash",
+        "method",
+        "block",
+        "age",
+        "from",
+        "to",
+        "value",
+        "txn fee",
+    ];
     let TableItemsByType = Default;
 
     switch (type) {
-        case 'DEFAULT':
+        case "DEFAULT":
             TableItemsByType = Default;
             break;
-        case 'NFT_TXS':
+        case "NFT_TXS":
             TableItemsByType = NFTTransactions;
-            THEAD_LABELS = ['Event', 'Price', 'From', 'To', 'Date'];
+            THEAD_LABELS = ["Event", "Price", "From", "To", "Date"];
             break;
 
         default:
@@ -50,7 +67,7 @@ export const TransactionsTable = ({ items = [], type = 'DEFAULT' }: Props) => {
                     <Thead>
                         <Tr bg={themes.color5}>
                             {THEAD_LABELS.map((header, key) => (
-                                <Th textTransform={'capitalize'} key={key}>
+                                <Th textTransform={"capitalize"} key={key}>
                                     {header}
                                 </Th>
                             ))}

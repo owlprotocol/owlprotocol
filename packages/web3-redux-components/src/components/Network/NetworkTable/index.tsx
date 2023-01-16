@@ -1,5 +1,16 @@
-import { Network, NetworkData } from '@owlprotocol/web3-redux';
-import { Button, Table, Tbody, Tfoot, Th, Thead, Tr } from '@chakra-ui/react';
+import { Network, NetworkData } from "@owlprotocol/web3-redux";
+import {
+    Button,
+    Table,
+    TableContainer,
+    Tbody,
+    Td,
+    Tfoot,
+    Th,
+    Thead,
+    Tr,
+    useTheme,
+} from "@chakra-ui/react";
 import {
     ColumnDef,
     createColumnHelper,
@@ -7,16 +18,17 @@ import {
     getCoreRowModel,
     useReactTable,
     RowData,
-} from '@tanstack/react-table';
-import { useEffect, useState } from 'react';
-import { useDispatch } from 'react-redux';
-import { omit } from 'lodash-es';
+} from "@tanstack/react-table";
+import { useEffect, useState } from "react";
+import { useDispatch } from "react-redux";
+import { omit } from "lodash-es";
+import TableWrapper from "../../../theme/TableStyleOverrides";
 
 interface NetworkCell extends NetworkData {
     edit?: boolean;
 }
 
-declare module '@tanstack/react-table' {
+declare module "@tanstack/react-table" {
     interface TableMeta<TData extends RowData> {
         setEditData: (data: Partial<NetworkCell>) => void;
         saveData: (networkId: string) => void;
@@ -25,15 +37,15 @@ declare module '@tanstack/react-table' {
 
 const columnHelper = createColumnHelper<NetworkCell>();
 const columns: ColumnDef<NetworkCell, any>[] = [
-    columnHelper.accessor('networkId', {
+    columnHelper.accessor("networkId", {
         cell: (info) => info.getValue(),
     }),
-    columnHelper.accessor('name', {
+    columnHelper.accessor("name", {
         cell: (info) => info.getValue(),
     }),
     {
         accessorFn: (row) => row,
-        id: 'web3Rpc',
+        id: "web3Rpc",
         cell: ({ getValue, table }) => {
             const network = getValue() as NetworkCell;
             const { edit, web3Rpc } = network;
@@ -52,12 +64,18 @@ const columns: ColumnDef<NetworkCell, any>[] = [
             };
 
             if (!edit) return <>{web3Rpc}</>;
-            return <input value={value} onChange={(e) => setValue(e.target.value)} onBlur={onBlur} />;
+            return (
+                <input
+                    value={value}
+                    onChange={(e) => setValue(e.target.value)}
+                    onBlur={onBlur}
+                />
+            );
         },
     },
     {
         accessorFn: (row) => row,
-        id: 'save',
+        id: "save",
         cell: ({ getValue, table }) => {
             const { networkId, edit } = getValue() as NetworkCell;
             const onClickEdit = () => {
@@ -69,12 +87,21 @@ const columns: ColumnDef<NetworkCell, any>[] = [
             const onClickSave = () => {
                 table.options.meta?.saveData(networkId);
             };
-            if (!edit) return <Button onClick={onClickEdit}>Edit</Button>;
+            if (!edit)
+                return (
+                    <Button variant={"form"} h={6} onClick={onClickEdit}>
+                        Edit
+                    </Button>
+                );
 
             return (
                 <>
-                    <Button onClick={onClickCancel}>Cancel</Button>
-                    <Button onClick={onClickSave}>Save</Button>
+                    <Button variant={"form"} onClick={onClickCancel}>
+                        Cancel
+                    </Button>
+                    <Button variant={"form"} onClick={onClickSave}>
+                        Save
+                    </Button>
                 </>
             );
         },
@@ -82,10 +109,13 @@ const columns: ColumnDef<NetworkCell, any>[] = [
 ];
 
 export const NetworkTable = () => {
+    const { themes } = useTheme();
     const dispatch = useDispatch();
     const [networks] = Network.hooks.useAll();
     //Temp copy storing edited values
-    const [networksEdit, setNetworksEdit] = useState<Record<string, NetworkCell>>({});
+    const [networksEdit, setNetworksEdit] = useState<
+        Record<string, NetworkCell>
+    >({});
 
     const data = (networks ?? []).map((n) => {
         const nEdit = networksEdit[n.networkId];
@@ -116,48 +146,65 @@ export const NetworkTable = () => {
                     [networkId]: { ...networksEdit[networkId], edit: false },
                 };
                 setNetworksEdit(newEdit);
-                dispatch(Network.actions.update(omit(network, ['edit'])));
+                dispatch(Network.actions.update(omit(network, ["edit"])));
             },
         },
     });
 
     return (
-        <Table>
-            <Thead>
-                {table.getHeaderGroups().map((headerGroup) => (
-                    <Tr key={headerGroup.id}>
-                        {headerGroup.headers.map((header) => (
-                            <Th key={header.id}>
-                                {header.isPlaceholder
-                                    ? null
-                                    : flexRender(header.column.columnDef.header, header.getContext())}
-                            </Th>
+        <TableWrapper>
+            <TableContainer color={themes.color9}>
+                <Table variant="unstyled">
+                    <Thead>
+                        {table.getHeaderGroups().map((headerGroup) => (
+                            <Tr key={headerGroup.id}>
+                                {headerGroup.headers.map((header) => (
+                                    <Th key={header.id}>
+                                        {header.isPlaceholder
+                                            ? null
+                                            : flexRender(
+                                                  header.column.columnDef
+                                                      .header,
+                                                  header.getContext()
+                                              )}
+                                    </Th>
+                                ))}
+                            </Tr>
                         ))}
-                    </Tr>
-                ))}
-            </Thead>
-            <Tbody>
-                {table.getRowModel().rows.map((row) => (
-                    <Tr key={row.id}>
-                        {row.getVisibleCells().map((cell) => (
-                            <td key={cell.id}>{flexRender(cell.column.columnDef.cell, cell.getContext())}</td>
+                    </Thead>
+                    <Tbody>
+                        {table.getRowModel().rows.map((row) => (
+                            <Tr key={row.id}>
+                                {row.getVisibleCells().map((cell) => (
+                                    <Td key={cell.id}>
+                                        {flexRender(
+                                            cell.column.columnDef.cell,
+                                            cell.getContext()
+                                        )}
+                                    </Td>
+                                ))}
+                            </Tr>
                         ))}
-                    </Tr>
-                ))}
-            </Tbody>
-            <Tfoot>
-                {table.getFooterGroups().map((footerGroup) => (
-                    <Tr key={footerGroup.id}>
-                        {footerGroup.headers.map((header) => (
-                            <Th key={header.id}>
-                                {header.isPlaceholder
-                                    ? null
-                                    : flexRender(header.column.columnDef.footer, header.getContext())}
-                            </Th>
+                    </Tbody>
+                    <Tfoot>
+                        {table.getFooterGroups().map((footerGroup) => (
+                            <Tr key={footerGroup.id}>
+                                {footerGroup.headers.map((header) => (
+                                    <Th key={header.id}>
+                                        {header.isPlaceholder
+                                            ? null
+                                            : flexRender(
+                                                  header.column.columnDef
+                                                      .footer,
+                                                  header.getContext()
+                                              )}
+                                    </Th>
+                                ))}
+                            </Tr>
                         ))}
-                    </Tr>
-                ))}
-            </Tfoot>
-        </Table>
+                    </Tfoot>
+                </Table>
+            </TableContainer>
+        </TableWrapper>
     );
 };

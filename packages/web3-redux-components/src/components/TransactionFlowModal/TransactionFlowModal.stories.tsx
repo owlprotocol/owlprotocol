@@ -1,24 +1,33 @@
-import { ComponentStory, ComponentMeta } from '@storybook/react';
-import TransactionFlowModal from '.';
+import { ComponentStory, ComponentMeta } from "@storybook/react";
+import TransactionFlowModal from ".";
 
 export default {
-    title: 'Transaction/TransactionFlowModal',
+    title: "Transaction/TransactionFlowModal",
     component: TransactionFlowModal,
+    parameters: {
+        docs: {
+            description: {
+                component: "Modal of the 4 steps of transaction",
+            },
+        },
+    },
 } as ComponentMeta<typeof TransactionFlowModal>;
 
-const Template: ComponentStory<typeof TransactionFlowModal> = (args: any) => <TransactionFlowModal {...args} />;
+const Template: ComponentStory<typeof TransactionFlowModal> = (args: any) => (
+    <TransactionFlowModal {...args} />
+);
 export const Main = Template.bind({});
 
 Main.args = {
     isOpen: true,
-    tokenName: 'LINK',
+    tokenName: "LINK",
     stage: 1,
 };
 
 Main.argTypes = {
     stage: {
         options: [1, 2, 3, 4, 5],
-        control: { type: 'select' },
+        control: { type: "select" },
         defaultValue: 1,
     },
 };
