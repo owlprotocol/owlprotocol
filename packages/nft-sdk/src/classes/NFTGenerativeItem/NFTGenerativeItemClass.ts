@@ -1,5 +1,5 @@
 import { Options as MergeImagesOptions } from 'merge-images';
-import _, { mapValues, omit, omitBy, isUndefined } from 'lodash-es';
+import _, { mapValues, map, omit, omitBy, pickBy, isObject, isUndefined } from 'lodash-es';
 import type { NFTGenerativeItemInterface } from './NFTGenerativeItemInterface.js';
 import type { AttributeValue, JSONEncodable, NFTGenerativeItem, NFTGenerativeTraitImageOption } from '../../types/index.js';
 import type { NFTGenerativeCollectionInterface } from '../NFTGenerativeCollection/NFTGenerativeCollectionInterface.js';
@@ -59,7 +59,7 @@ export class NFTGenerativeItemClass<
     }: {
         collection: NFTGenerativeCollectionInterface;
         attributes: NFTGenerativeItem['attributes'];
-        children?: Record<string, NFTGenerativeItem>;
+        children?: Record<string, NFTGenerativeItem | undefined>;
     }) {
         //@ts-expect-error
         const children2 =
@@ -69,8 +69,8 @@ export class NFTGenerativeItemClass<
                         return NFTGenerativeItemClass.fromAttributes({
                             //@ts-expect-error
                             collection: col,
-                            attributes: children[k].attributes,
-                            children: children[k].children,
+                            attributes: (children[k] as NFTGenerativeItem).attributes,
+                            children: (children[k] as NFTGenerativeItem).children,
                         });
                     }
                 })
@@ -142,11 +142,11 @@ export class NFTGenerativeItemClass<
 
     async getJsonMetadata(mergeOptions?: MergeImagesOptions, width = 800, height = 800) {
         console.log('Entered getJsonMetadata');
-        const imageBuff = await this.getImage(mergeOptions, width, height);
+        const imageBuff = await this.getImageWithChildren(mergeOptions, width, height);
         const attributesRaw = this.attributesFormatted();
 
         // TODO: temp fix for enums, which are not structs (can't map them)
-        const attributes = _.map(_.pickBy(attributesRaw, (val) => _.isObject(val)), ((attr, traitIndex) => {
+        const attributes = map(pickBy(attributesRaw, (val) => isObject(val)), ((attr, traitIndex) => {
             let attribute: any = attr;
 
             if (!!(attr as NFTGenerativeTraitImageOption).image_url) {

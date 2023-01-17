@@ -542,11 +542,17 @@ export class NFTGenerativeCollectionClass<
         : undefined;
     }) {
         const dna = this.attributesToDna(attributes);
-        const existingChildren = pick(this.children, keys(omitBy(children, isUndefined))) as Record<string, NFTGenerativeCollectionInterface>;
+        // const existingChildren = pick(this.children, keys(omitBy(children, isUndefined))) as Record<string, NFTGenerativeCollectionInterface>;
         const fullDnaChildren =
             this.children && children
-                ? mapValues(existingChildren, (c, k) => {
-                    return c.attributesToFullDnaWithChildren(children[k]);
+                ? mapValues(this.children, (c, k) => {
+                    if (children[k]) {
+                        return c.attributesToFullDnaWithChildren(children[k]);
+                    } else {
+                        return {
+                            fullDna: '0x'
+                        };
+                    }
                 })
                 : undefined;
 
@@ -563,6 +569,8 @@ export class NFTGenerativeCollectionClass<
     attributesToAttributesFormatted(attributes: { [K in keyof Traits]: AttributeValue }): {
         [K in keyof Traits]: AttributeFormatted;
     } {
+        console.debug(attributes);
+
         const topsort = new TopologicalSort<string, string>(new Map());
         Object.values(this.traits).forEach((t) => {
             topsort.addNode(t.name, t.name);
@@ -574,10 +582,13 @@ export class NFTGenerativeCollectionClass<
             });
         });
         const sorted = [...topsort.sort().keys()];
-        //console.debug(sorted);
+        console.debug(sorted);
 
         //console.debug(traits.map((t) => t.name));
         const attributesFormatted: Record<string, any> = {};
+
+        console.debug(this.traits);
+
         sorted.forEach((name) => {
             const t = this.traits[name];
             //console.debug({ attributes, attributesFormatted, name: t.name });
@@ -663,7 +674,7 @@ export class NFTGenerativeCollectionClass<
         height = 800,
     ): Promise<string | undefined> {
 
-        console.log('Entered getImage');
+        console.log('Entered getImage', attributes);
 
         if (!this.generatedImageType) return undefined;
 
@@ -711,6 +722,9 @@ export class NFTGenerativeCollectionClass<
         width?: number | undefined,
         height?: number | undefined,
     ): Promise<string | undefined> {
+
+        console.log('Entered getImageWithChildren');
+
         if (!this.generatedImageType) return undefined;
 
         const image = this.getImage(attributes, mergeOptions, width, height);

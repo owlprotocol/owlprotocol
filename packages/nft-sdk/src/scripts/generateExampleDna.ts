@@ -29,7 +29,10 @@ async function main(){
         collection: <NFTGenerativeCollectionInterface>parentCollection,
         attributes: parentCollection.dnaToAttributes(new BN('17170688').toBuffer()),
         children: {
-            'hats': nftHat
+            glasses: undefined,
+            dress: undefined,
+            hats: nftHat,
+            facial_hair: undefined
         }
     });
 
