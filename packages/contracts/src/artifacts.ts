@@ -30,11 +30,15 @@ export { default as ERC721Base } from './artifacts/contracts/assets/ERC721/ERC72
 export { default as ERC721Mintable } from './artifacts/contracts/assets/ERC721/ERC721Mintable.sol/ERC721Mintable.js';
 export { default as ERC721MintableAutoId } from './artifacts/contracts/assets/ERC721/ERC721MintableAutoId.sol/ERC721MintableAutoId.js';
 export { default as ERC721TopDownDna } from './artifacts/contracts/assets/ERC721/ERC721TopDownDna.sol/ERC721TopDownDna.js';
+//Libraries
+export { default as ERC721TopDownLib } from './artifacts/contracts/assets/ERC721/ERC721TopDownLib.sol/ERC721TopDownLib.js';
+export { default as ERC721TopDownDnaLib } from './artifacts/contracts/assets/ERC721/ERC721TopDownDnaLib.sol/ERC721TopDownDnaLib.js';
 
 export { default as IERC1155Dna } from './artifacts/contracts/assets/ERC1155/IERC1155Dna.sol/IERC1155Dna.js';
 export { default as IERC1155Mintable } from './artifacts/contracts/assets/ERC1155/IERC1155Mintable.sol/IERC1155Mintable.js';
 export { default as ERC1155Base } from './artifacts/contracts/assets/ERC1155/ERC1155Base.sol/ERC1155Base.js';
 export { default as ERC1155Mintable } from './artifacts/contracts/assets/ERC1155/ERC1155Mintable.sol/ERC1155Mintable.js';
+export { default as ERC1155Dna } from './artifacts/contracts/assets/ERC1155/ERC1155Dna.sol/ERC1155Dna.js';
 
 export { default as IERC2981Setter } from './artifacts/contracts/assets/common/IERC2981Setter.sol/IERC2981Setter.js';
 export { default as ERC2981Setter } from './artifacts/contracts/assets/common/ERC2981Setter.sol/ERC2981Setter.js';

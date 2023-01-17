@@ -3,6 +3,8 @@ pragma solidity ^0.8.9;
 
 import {IERC721ReceiverUpgradeable} from '@openzeppelin/contracts-upgradeable/token/ERC721/IERC721ReceiverUpgradeable.sol';
 import {IERC721Upgradeable} from '@openzeppelin/contracts-upgradeable/token/ERC721/IERC721Upgradeable.sol';
+import {IERC1155ReceiverUpgradeable} from '@openzeppelin/contracts-upgradeable/token/ERC1155/IERC1155ReceiverUpgradeable.sol';
+
 import {IERC165Upgradeable} from '@openzeppelin/contracts-upgradeable/utils/introspection/IERC165Upgradeable.sol';
 
 import {AddressUpgradeable} from '@openzeppelin/contracts-upgradeable/utils/AddressUpgradeable.sol';
@@ -18,25 +20,34 @@ import {ERC721TopDownLib, Unauthorized, AddressNotChild} from './ERC721TopDownLi
 abstract contract ERC721TopDown is ERC721Base, IERC721TopDown, IERC721ReceiverUpgradeable {
     using AddressUpgradeable for address;
     using EnumerableSetUpgradeable for EnumerableSetUpgradeable.AddressSet;
+    using EnumerableSetUpgradeable for EnumerableSetUpgradeable.UintSet;
 
+    //ERC721 Attachments
     //Child contracts
-    EnumerableSetUpgradeable.AddressSet internal childContracts; //2 slots
-
+    EnumerableSetUpgradeable.AddressSet internal childContracts721; //2 slots
     // Adding 1 allows 0 to be the null value
     // There can only be one child token per contract
     // childTokenContract => childTokenId => tokenId
     mapping(address => mapping(uint256 => uint256)) public parentTokenIdOf;
     // tokenId => childTokenContract => childTokenId
-    mapping(uint256 => mapping(address => uint256)) public childTokenIdOf;
+    mapping(uint256 => mapping(address => uint256)) public childTokenIdOf721;
+
+    //ERC1155 Attachment
+    EnumerableSetUpgradeable.AddressSet internal childContracts1155; //2 slots
+    // tokenId => childTokenContract1155 => [childTokenId]
+    mapping(uint256 => mapping(address => EnumerableSetUpgradeable.UintSet)) internal childTokenIdOf1155;
 
     //https://docs.openzeppelin.com/contracts/4.x/upgradeable#storage_gaps
     uint256[46] private __gap;
 
     /**
      * @dev Initialize ERC721TopDown
-     * @param _childContracts child contracts that can be owned
+     * @param _childContracts721 child contracts that can be owned
+     * @param _childContracts1155 child contracts that can be owned
      */
-    function __ERC721TopDown_init_unchained(address[] memory _childContracts) internal {
+    function __ERC721TopDown_init_unchained(address[] memory _childContracts721, address[] memory _childContracts1155)
+        internal
+    {
         if (AddressUpgradeable.isContract(ERC1820_REGISTRY)) {
             registry.updateERC165Cache(address(this), type(IERC721ReceiverUpgradeable).interfaceId);
             registry.updateERC165Cache(address(this), type(IERC721TopDown).interfaceId);
@@ -48,25 +59,27 @@ abstract contract ERC721TopDown is ERC721Base, IERC721TopDown, IERC721ReceiverUp
             registry.setInterfaceImplementer(address(this), type(IERC721TopDown).interfaceId | ONE, address(this));
         }
 
-        for (uint256 i = 0; i < _childContracts.length; i++) childContracts.add(_childContracts[i]);
+        for (uint256 i = 0; i < _childContracts721.length; i++) childContracts721.add(_childContracts721[i]);
+        for (uint256 i = 0; i < _childContracts1155.length; i++) childContracts1155.add(_childContracts1155[i]);
     }
 
     /***** Getters *****/
     /**
      * inheritdoc IERC721TopDown
      */
-    function getChildContracts() external view returns (address[] memory) {
-        return childContracts.values();
+    function getChildContracts() external view returns (address[] memory, address[] memory) {
+        return (childContracts721.values(), childContracts1155.values());
     }
 
     /**
      * inheritdoc IERC721TopDown
+     * TODO: Return 1155 contracts children (nested array)
      */
     function childTokenIdsOf(uint256 tokenId) external view returns (uint256[] memory) {
-        address[] memory childContractAddresses = childContracts.values();
+        address[] memory childContractAddresses = childContracts721.values();
         uint256[] memory tokenIds = new uint256[](childContractAddresses.length);
         for (uint256 i = 0; i < tokenIds.length; i++) {
-            tokenIds[i] = childTokenIdOf[tokenId][childContractAddresses[i]];
+            tokenIds[i] = childTokenIdOf721[tokenId][childContractAddresses[i]];
         }
 
         return tokenIds;
@@ -91,120 +104,118 @@ abstract contract ERC721TopDown is ERC721Base, IERC721TopDown, IERC721ReceiverUp
         return parentContractAddress;
     }
 
-    /**
-     * @dev Returns whether `spender` is allowed to manage `tokenId`.
-     *
-     * owner == spender || approved(tokenId) == spender || operator(owner, spender) == true
-     */
-    function isApprovedOrRootOwner(
-        address rootOwner,
-        uint256 tokenId,
-        address spender
-    ) internal view returns (bool) {
-        return spender == rootOwner || isApprovedForAll(rootOwner, spender) || getApproved(tokenId) == spender;
-    }
-
-    /**
-     * @dev Returns wether `spender` is allowed to manage `childTokenId`.
-     * Approvals only work if parentTokenOwner = childOwner.
-     * owner == spender || approved(tokenId) == spender || operator(owner, spender) == true
-     */
-    function isChildApprovedOrRootOwner(
-        address childContract,
-        address childOwner,
-        uint256 childTokenId,
-        address spender,
-        address parentOwner
-    ) internal view returns (bool) {
-        return
-            spender == childOwner ||
-            ((IERC721Upgradeable(childContract).isApprovedForAll(childOwner, spender) ||
-                IERC721Upgradeable(childContract).getApproved(childTokenId) == spender) && childOwner == parentOwner);
-    }
-
     /***** Child NFTs *****/
-    /**
-     * @dev Attach a child NFT, external function. Implements security checks.
-     *      In addition, address(this) must be approved to transfer childTokenId (operator or specific tokenId).
-     * @param tokenId stored in this contract
-     * @param childContract to attach
-     * @param childTokenId to attach
-     */
-    function attachChild(
+    function setChildren(
         uint256 tokenId,
-        address childContract,
-        uint256 childTokenId
+        address[] calldata childContracts721Set,
+        uint256[] calldata childTokenIds721Set,
+        address[] calldata childContracts1155Remove,
+        uint256[][] calldata childTokenIds1155Remove,
+        address[] calldata childContracts1155Add,
+        uint256[][] calldata childTokenIds1155Add
     ) external {
-        //Check if childContract supported
-        if (!childContracts.contains(childContract)) revert AddressNotChild(childContract);
-
-        //Check if currentChildTokenId assigned
-
-        //Ownership checks (both for parentOwner & spender)
+        //attach MUST be done by rootOwner
         address spender = _msgSender();
-        //Token
-        address rootOwner = rootOwnerOf(tokenId);
-        bool isApproved = isApprovedOrRootOwner(rootOwner, tokenId, spender);
-        if (!isApproved) revert Unauthorized(spender, address(this), tokenId);
+        {
+            address rootOwner = rootOwnerOf(tokenId);
+            if (spender != rootOwner) revert Unauthorized(spender, address(this), tokenId);
+        }
 
-        //Child Token
-        address childOwner = IERC721Upgradeable(childContract).ownerOf(childTokenId);
-        //Check childTokenId spender
-        bool isChildApprovedOrOwner = isChildApprovedOrRootOwner(
-            childContract,
-            childOwner,
-            childTokenId,
-            spender,
-            rootOwner
-        );
+        {
+            ERC721TopDownLib.setChildren721(
+                childContracts721,
+                parentTokenIdOf,
+                childTokenIdOf721,
+                spender,
+                tokenId,
+                childContracts721Set,
+                childTokenIds721Set
+            );
+        }
 
-        if (!isChildApprovedOrOwner) revert Unauthorized(spender, childContract, childTokenId);
-
-        ERC721TopDownLib.attachChild(parentTokenIdOf, childTokenIdOf, childOwner, tokenId, childContract, childTokenId);
-        emit AttachedChild(rootOwner, tokenId, childContract, childTokenId);
-    }
-
-    /**
-     * @dev Detach a child NFT, external function. Implements security checks.
-     * @param tokenId stored in this contract
-     * @param childContract to detach
-     * @param childTokenId to detach
-     */
-    function detachChild(
-        uint256 tokenId,
-        address childContract,
-        uint256 childTokenId
-    ) external {
-        //Ownership checks (both for parentOwner & spender)
-        address spender = _msgSender();
-        //Token
-        address rootOwner = rootOwnerOf(tokenId);
-        bool isApproved = isApprovedOrRootOwner(rootOwner, tokenId, spender);
-        if (!isApproved) revert Unauthorized(spender, address(this), tokenId);
-
-        //No child approval checks, as these are inherited by parent token
-        //State updates, transfer child token & update mappings
-        ERC721TopDownLib.detachChild(parentTokenIdOf, childTokenIdOf, rootOwner, tokenId, childContract, childTokenId);
-        emit DetachedChild(rootOwner, tokenId, childContract, childTokenId);
+        {
+            ERC721TopDownLib.setChildren1155(
+                childContracts1155,
+                childTokenIdOf1155,
+                spender,
+                tokenId,
+                childContracts1155Remove,
+                childTokenIds1155Remove,
+                childContracts1155Add,
+                childTokenIds1155Add
+            );
+        }
     }
 
     /***** Overrides ******/
     /**
-     * @dev Safety check, only accept child contracts & operator == address(this)
+     * @dev Direct attachment via transfer (avoids need for approvals)
      */
     function onERC721Received(
         address operator,
-        address,
-        uint256 tokenId,
-        bytes memory
-    ) external view override returns (bytes4) {
+        address from,
+        uint256 childTokenId,
+        bytes memory data
+    ) external override returns (bytes4) {
         // Only child contracts can send NFTs into this contract
-        address tokenAddress = msg.sender;
-        //Pull-only transfers sent by this contract
-        if (operator != address(this)) revert Unauthorized(operator, tokenAddress, tokenId);
+        address childContract = msg.sender;
+        if (!childContracts721.contains(childContract)) revert AddressNotChild(childContract);
+        //Self-transfer, approve
+        if (operator == address(this)) return IERC721ReceiverUpgradeable.onERC721Received.selector;
 
-        if (!childContracts.contains(tokenAddress)) revert AddressNotChild(tokenAddress);
+        uint256 tokenId = abi.decode(data, (uint256));
+        address rootOwner = rootOwnerOf(tokenId);
+        if (from != rootOwner) revert Unauthorized(from, address(this), tokenId);
+
+        ERC721TopDownLib.setChild721(
+            childContracts721,
+            parentTokenIdOf,
+            childTokenIdOf721,
+            from,
+            tokenId,
+            childContract,
+            childTokenId,
+            true
+        );
+
         return IERC721ReceiverUpgradeable.onERC721Received.selector;
+    }
+
+    /**
+     * @dev Direct attachment via transfer (avoids need for approvals)
+     */
+    function onERC1155BatchReceived(
+        address operator,
+        address from,
+        uint256[] calldata childTokenIds,
+        uint256[] calldata amounts,
+        bytes calldata data
+    ) external returns (bytes4) {
+        // Only child contracts can send NFTs into this contract
+        address childContract = msg.sender;
+        if (!childContracts1155.contains(childContract)) revert AddressNotChild(childContract);
+        //Self-transfer, approve
+        if (operator == address(this)) return IERC1155ReceiverUpgradeable.onERC1155Received.selector;
+
+        uint256 tokenId = abi.decode(data, (uint256));
+        address rootOwner = rootOwnerOf(tokenId);
+        if (from != rootOwner) revert Unauthorized(from, address(this), tokenId);
+
+        for (uint256 i = 0; i < childTokenIds.length; i++) {
+            if (amounts[i] != 1) revert();
+        }
+
+        ERC721TopDownLib.attachChild1155(
+            childContracts1155,
+            childTokenIdOf1155,
+            from,
+            tokenId,
+            childContract,
+            childTokenIds,
+            true
+        );
+
+        return IERC1155ReceiverUpgradeable.onERC1155Received.selector;
     }
 
     /**
@@ -214,6 +225,7 @@ abstract contract ERC721TopDown is ERC721Base, IERC721TopDown, IERC721ReceiverUp
         return
             interfaceId == type(IERC721TopDown).interfaceId ||
             interfaceId == type(IERC721ReceiverUpgradeable).interfaceId ||
+            interfaceId == type(IERC1155ReceiverUpgradeable).interfaceId ||
             super.supportsInterface(interfaceId);
     }
 }

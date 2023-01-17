@@ -26,7 +26,7 @@ interface IERC721Dna {
      * @param tokenId to get
      * @return dna of tokenId
      */
-    function getDna(uint256 tokenId) external returns (bytes calldata);
+    function getDna(uint256 tokenId) external view returns (bytes memory);
 
     /**
      * @notice Must have DNA_ROLE

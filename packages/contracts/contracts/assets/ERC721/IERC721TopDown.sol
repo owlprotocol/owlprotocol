@@ -5,23 +5,29 @@ pragma solidity ^0.8.9;
  * Interface for nested NFT that can own other NFTs.
  */
 interface IERC721TopDown {
-    event AttachedChild(
+    event SetChild721(
         address indexed parentOwner,
         uint256 indexed parentTokenId,
         address indexed childContract,
         uint256 childTokenId
     );
-    event DetachedChild(
+    event AttachedChild1155(
         address indexed parentOwner,
         uint256 indexed parentTokenId,
         address indexed childContract,
-        uint256 childTokenId
+        uint256[] childTokenIds
+    );
+    event DetachedChild1155(
+        address indexed parentOwner,
+        uint256 indexed parentTokenId,
+        address indexed childContract,
+        uint256[] childTokenIds
     );
 
     /**
      * @dev Get child contracts that define attachment attributes
      */
-    function getChildContracts() external view returns (address[] memory);
+    function getChildContracts() external view returns (address[] memory, address[] memory);
 
     /**
      * @dev Get parentTokenId of locked child nft
@@ -31,7 +37,7 @@ interface IERC721TopDown {
     /**
      * @dev Get childTokenId of nft
      */
-    function childTokenIdOf(uint256 tokenId, address childContract) external view returns (uint256);
+    function childTokenIdOf721(uint256 tokenId, address childContract) external view returns (uint256);
 
     /**
      * @dev Get childTokenId of nft
@@ -49,25 +55,14 @@ interface IERC721TopDown {
     /***** Child NFTs *****/
     /**
      * @dev Attach a child NFT
-     * @param parentTokenId stored in this contract
-     * @param childContract to attach
-     * @param childTokenId to attach
      */
-    function attachChild(
-        uint256 parentTokenId,
-        address childContract,
-        uint256 childTokenId
-    ) external;
-
-    /**
-     * @dev Detach a child NFT
-     * @param parentTokenId stored in this contract
-     * @param childContract to detach
-     * @param childTokenId to detach
-     */
-    function detachChild(
-        uint256 parentTokenId,
-        address childContract,
-        uint256 childTokenId
+    function setChildren(
+        uint256 tokenId,
+        address[] calldata childContracts721Set,
+        uint256[] calldata childTokenIds721Set,
+        address[] calldata childContracts1155Remove,
+        uint256[][] calldata childTokenIds1155Remove,
+        address[] calldata childContracts1155Add,
+        uint256[][] calldata childTokenIds1155Add
     ) external;
 }

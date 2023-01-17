@@ -10,8 +10,9 @@ import {Base64Upgradeable} from '@openzeppelin/contracts-upgradeable/utils/Base6
 import {EnumerableSetUpgradeable} from '@openzeppelin/contracts-upgradeable/utils/structs/EnumerableSetUpgradeable.sol';
 
 import {ERC721TopDown} from './ERC721TopDown.sol';
-import {IERC721Dna} from './IERC721Dna.sol';
 import {Unauthorized, AddressNotChild} from './ERC721TopDownLib.sol';
+import {ERC721TopDownDnaLib} from './ERC721TopDownDnaLib.sol';
+import {IERC721Dna} from './IERC721Dna.sol';
 
 /**
  * @dev ERC721TopDownDNA
@@ -46,7 +47,8 @@ contract ERC721TopDownDna is ERC721TopDown, IERC721Dna {
      * @param _initBaseURI base URI for contract
      * @param _feeReceiver address of receiver of royalty fees
      * @param _feeNumerator numerator of royalty fee percentage (numerator / 10000)
-     * @param _childContracts child ERC721TopDownDNA contracts
+     * @param _childContracts721 child ERC721nDNA contracts
+     * @param _childContracts1155 child ERC1155DNA contracts
      */
     function initialize(
         address _admin,
@@ -57,7 +59,8 @@ contract ERC721TopDownDna is ERC721TopDown, IERC721Dna {
         string calldata _initBaseURI,
         address _feeReceiver,
         uint96 _feeNumerator,
-        address[] calldata _childContracts
+        address[] calldata _childContracts721,
+        address[] calldata _childContracts1155
     ) external initializer {
         __ERC721TopDownDna_init(
             _admin,
@@ -68,7 +71,8 @@ contract ERC721TopDownDna is ERC721TopDown, IERC721Dna {
             _initBaseURI,
             _feeReceiver,
             _feeNumerator,
-            _childContracts
+            _childContracts721,
+            _childContracts1155
         );
     }
 
@@ -85,7 +89,8 @@ contract ERC721TopDownDna is ERC721TopDown, IERC721Dna {
         string calldata _initBaseURI,
         address _feeReceiver,
         uint96 _feeNumerator,
-        address[] calldata _childContracts
+        address[] calldata _childContracts721,
+        address[] calldata _childContracts1155
     ) external onlyInitializing {
         __ERC721TopDownDna_init(
             _admin,
@@ -96,7 +101,8 @@ contract ERC721TopDownDna is ERC721TopDown, IERC721Dna {
             _initBaseURI,
             _feeReceiver,
             _feeNumerator,
-            _childContracts
+            _childContracts721,
+            _childContracts1155
         );
     }
 
@@ -112,7 +118,8 @@ contract ERC721TopDownDna is ERC721TopDown, IERC721Dna {
         string memory _initBaseURI,
         address _feeReceiver,
         uint96 _feeNumerator,
-        address[] memory _childContracts
+        address[] memory _childContracts721,
+        address[] memory _childContract1155
     ) internal {
         __ContractURI_init_unchained(_admin, _initContractURI);
         __RouterReceiver_init_unchained(_gsnForwarder);
@@ -123,7 +130,7 @@ contract ERC721TopDownDna is ERC721TopDown, IERC721Dna {
         __ERC2981Setter_init_unchained(_admin, _feeReceiver, _feeNumerator);
         __ERC721Base_init_unchained();
 
-        __ERC721TopDown_init_unchained(_childContracts);
+        __ERC721TopDown_init_unchained(_childContracts721, _childContract1155);
         __ERC721TopDownDna_init_unchained(_admin, _admin);
     }
 
@@ -172,12 +179,15 @@ contract ERC721TopDownDna is ERC721TopDown, IERC721Dna {
      * inheritdoc IERC721Dna
      */
     function updateDna(uint256 tokenId, bytes memory dna) external onlyRole(DNA_ROLE) {
-        //Ownership checks (both for parentOwner & spender)
+        //No ownership checks, delegated to DNA_ROLE implementation
+        /*
+        //TODO: Move this logic to standard DNA_ROLE middleware
         address spender = _msgSender();
         address rootOwner = rootOwnerOf(tokenId);
 
         bool isApproved = isApprovedOrRootOwner(rootOwner, tokenId, spender);
         if (!isApproved) revert Unauthorized(spender, address(this), tokenId);
+        */
 
         inherentDna[tokenId] = dna;
     }
@@ -187,24 +197,15 @@ contract ERC721TopDownDna is ERC721TopDown, IERC721Dna {
      */
     function getDna(uint256 tokenId) public view returns (bytes memory) {
         _requireMinted(tokenId);
-        address[] memory childContractAddresses = childContracts.values();
-        bytes[] memory childDnas = new bytes[](childContractAddresses.length);
-
-        for (uint256 i = 0; i < childContractAddresses.length; i++) {
-            address childContract = childContractAddresses[i];
-            uint256 childTokenId = childTokenIdOf[tokenId][childContract];
-            bytes memory childDna;
-            if (childTokenId != 0) {
-                childDna = ERC721TopDownDna(childContract).getDna(childTokenId);
-            } else {
-                childDna = new bytes(0);
-            }
-            childDnas[i] = childDna;
-        }
-
-        //Decode recursively as (bytes, bytes[])
-        bytes memory dna = abi.encode(inherentDna[tokenId], childDnas);
-        return dna;
+        return
+            ERC721TopDownDnaLib.getDna(
+                inherentDna,
+                childContracts721,
+                childTokenIdOf721,
+                childContracts1155,
+                childTokenIdOf1155,
+                tokenId
+            );
     }
 
     /***** Dna *****/
@@ -214,8 +215,6 @@ contract ERC721TopDownDna is ERC721TopDown, IERC721Dna {
      * @return uri at which metadata is housed
      */
     function tokenURI(uint256 tokenId) public view override returns (string memory) {
-        _requireMinted(tokenId);
-
         string memory baseURI = _baseURI();
         bytes memory dnaRaw = getDna(tokenId);
         string memory dnaString = dnaRaw.encode();

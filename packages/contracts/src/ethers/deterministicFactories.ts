@@ -4,7 +4,7 @@ import { ERC1167FactoryImplementation, deterministicFactory } from '../utils/ERC
 import { Factories } from './factories.js';
 import { CustomFactory } from '../utils/ERC1167Factory/factory.js';
 
-export type F_Initialize = Omit<Factories, 'ERC1167Factory' | 'Fallback'>;
+export type F_Initialize = Omit<Factories, 'ERC1167Factory' | 'Fallback' | 'ERC721TopDownLib' | 'ERC721TopDownDnaLib'>;
 export type F_ProxyInitialize = Omit<F_Initialize, 'UpgradeableBeacon' | 'BeaconProxy'>;
 
 export type NoInitFactories = {
@@ -37,7 +37,13 @@ export function getDeterministicInitializeFactories(
     msgSender: string,
 ): InitializeFactories {
     const cloneFactory = ERC1167FactoryImplementation(signer);
-    const factories2 = omit(factories, 'ERC1167Factory', 'Fallback') as F_Initialize;
+    const factories2 = omit(
+        factories,
+        'ERC1167Factory',
+        'Fallback',
+        'ERC721TopDownLib',
+        'ERC721TopDownDnaLib',
+    ) as F_Initialize;
 
     return mapValues(factories2, (f: any) => {
         return deterministicFactory({

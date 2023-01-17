@@ -4,7 +4,12 @@ import hre, { ethers } from 'hardhat';
 import { ERC721TopDownDna } from '../../../ethers/types.js';
 import deployProxyNick from '../../../deploy-hre/common/DeterministicDeployer.js';
 import deployProxyFactory from '../../../deploy-hre/common/ProxyFactory.js';
-import { ERC721TopDownDnaInitializeArgs, flattenInitArgsERC721TopDownDna } from '../../../utils/ERC721TopDownDna.js';
+import deployImplementations from '../../../deploy-hre/common/Implementations.js';
+import {
+    ERC721TopDownDnaInitializeArgs,
+    flattenInitArgsERC721TopDownDna,
+    flattenSetChildrenArgsERC721TopDownDna,
+} from '../../../utils/ERC721TopDownDna.js';
 import { expect } from 'chai';
 import { Factories, getFactories } from '../../../ethers/factories.js';
 import { getDeterministicInitializeFactories, InitializeFactories } from '../../../ethers/deterministicFactories.js';
@@ -23,6 +28,8 @@ describe('ERC721TopDownDna', function () {
     before(async () => {
         await deployProxyNick(hre as any);
         await deployProxyFactory(hre as any);
+        //Deploy libraries and other contracts
+        await deployImplementations(hre as any);
 
         signers = await ethers.getSigners();
         const signer = signers[0];
@@ -44,7 +51,8 @@ describe('ERC721TopDownDna', function () {
                 initBaseURI: `token${x}.${nonce}.com/api/`,
                 feeReceiver: signers[0].address,
                 feeNumerator: 0,
-                childContracts: [],
+                childContracts721: [],
+                childContracts1155: [],
             };
         });
         dnas = [1, 2, 3].map((x) => {
@@ -74,7 +82,7 @@ describe('ERC721TopDownDna', function () {
     describe('0-1 single child contract', () => {
         beforeEach(async () => {
             const token1 = await ERC721TopDownDnaFactory.deploy(...flattenInitArgsERC721TopDownDna(tokenArgs[1]));
-            tokenArgs[0].childContracts = [token1.address];
+            tokenArgs[0].childContracts721 = [token1.address];
             const token0 = await ERC721TopDownDnaFactory.deploy(...flattenInitArgsERC721TopDownDna(tokenArgs[0]));
 
             tokens = [token0, token1];
@@ -97,7 +105,13 @@ describe('ERC721TopDownDna', function () {
 
             //Attach
             await tokens[1].setApprovalForAll(tokens[0].address, true);
-            await tokens[0].attachChild(1, tokens[1].address, 1);
+            await tokens[0].setChildren(
+                ...flattenSetChildrenArgsERC721TopDownDna({
+                    tokenId: 1,
+                    childContracts721Set: [tokens[1].address],
+                    childTokenIds721Set: [1],
+                }),
+            );
 
             //Parent attached
             const result = await tokens[0].getDna(1);
@@ -106,14 +120,20 @@ describe('ERC721TopDownDna', function () {
         });
 
         it('getChildContracts', async () => {
-            const [result] = await tokens[0].getChildContracts();
+            const [[result]] = await tokens[0].getChildContracts();
             expect(result).to.be.eq(tokens[1].address);
         });
 
         it('ownership', async () => {
             //Token 1 Attach
             await tokens[1].setApprovalForAll(tokens[0].address, true);
-            await tokens[0].attachChild(1, tokens[1].address, 1);
+            await tokens[0].setChildren(
+                ...flattenSetChildrenArgsERC721TopDownDna({
+                    tokenId: 1,
+                    childContracts721Set: [tokens[1].address],
+                    childTokenIds721Set: [1],
+                }),
+            );
 
             expect(await tokens[1].ownerOf(1)).to.be.eq(tokens[0].address, 'attach tokens[1].ownerOf');
             expect(await tokens[1].rootOwnerOf(1)).to.be.eq(signers[0].address, 'attach tokens[1].rootOwnerOf');
@@ -125,7 +145,13 @@ describe('ERC721TopDownDna', function () {
 
             //Token 1 Detach
             tokens[0] = tokens[0].connect(signers[1]);
-            await tokens[0].detachChild(1, tokens[1].address, 1);
+            await tokens[0].setChildren(
+                ...flattenSetChildrenArgsERC721TopDownDna({
+                    tokenId: 1,
+                    childContracts721Set: [tokens[1].address],
+                    childTokenIds721Set: [0],
+                }),
+            );
             expect(await tokens[1].ownerOf(1)).to.be.eq(signers[1].address, 'detach tokens[1].ownerOf');
             expect(await tokens[1].rootOwnerOf(1)).to.be.eq(signers[1].address, 'detach tokens[1].rootOwnerOf');
         });
@@ -135,10 +161,10 @@ describe('ERC721TopDownDna', function () {
         beforeEach(async () => {
             const token2 = await ERC721TopDownDnaFactory.deploy(...flattenInitArgsERC721TopDownDna(tokenArgs[2]));
 
-            tokenArgs[1].childContracts = [token2.address];
+            tokenArgs[1].childContracts721 = [token2.address];
             const token1 = await ERC721TopDownDnaFactory.deploy(...flattenInitArgsERC721TopDownDna(tokenArgs[1]));
 
-            tokenArgs[0].childContracts = [token1.address];
+            tokenArgs[0].childContracts721 = [token1.address];
             const token0 = await ERC721TopDownDnaFactory.deploy(...flattenInitArgsERC721TopDownDna(tokenArgs[0]));
 
             tokens = [token0, token1, token2];
@@ -155,7 +181,13 @@ describe('ERC721TopDownDna', function () {
 
             //Token2 attach
             await tokens[2].setApprovalForAll(tokens[1].address, true);
-            await tokens[1].attachChild(1, tokens[2].address, 1);
+            await tokens[1].setChildren(
+                ...flattenSetChildrenArgsERC721TopDownDna({
+                    tokenId: 1,
+                    childContracts721Set: [tokens[2].address],
+                    childTokenIds721Set: [1],
+                }),
+            );
 
             //Token1 dna
             const token1Result = await tokens[1].getDna(1);
@@ -167,7 +199,13 @@ describe('ERC721TopDownDna', function () {
 
             //Token1 attach
             await tokens[1].setApprovalForAll(tokens[0].address, true);
-            await tokens[0].attachChild(1, tokens[1].address, 1);
+            await tokens[0].setChildren(
+                ...flattenSetChildrenArgsERC721TopDownDna({
+                    tokenId: 1,
+                    childContracts721Set: [tokens[1].address],
+                    childTokenIds721Set: [1],
+                }),
+            );
 
             //Token0 dna
             const token0Result = await tokens[0].getDna(1);
@@ -181,14 +219,26 @@ describe('ERC721TopDownDna', function () {
         it('ownership', async () => {
             //Token2 attach
             await tokens[2].setApprovalForAll(tokens[1].address, true);
-            await tokens[1].attachChild(1, tokens[2].address, 1);
+            await tokens[1].setChildren(
+                ...flattenSetChildrenArgsERC721TopDownDna({
+                    tokenId: 1,
+                    childContracts721Set: [tokens[2].address],
+                    childTokenIds721Set: [1],
+                }),
+            );
 
             expect(await tokens[2].ownerOf(1)).to.be.eq(tokens[1].address, 'token2.ownerOf');
             expect(await tokens[2].rootOwnerOf(1)).to.be.eq(signers[0].address, 'token2.rootOwnerOf');
 
             //Token1 attach
             await tokens[1].setApprovalForAll(tokens[0].address, true);
-            await tokens[0].attachChild(1, tokens[1].address, 1);
+            await tokens[0].setChildren(
+                ...flattenSetChildrenArgsERC721TopDownDna({
+                    tokenId: 1,
+                    childContracts721Set: [tokens[1].address],
+                    childTokenIds721Set: [1],
+                }),
+            );
 
             expect(await tokens[1].ownerOf(1)).to.be.eq(tokens[0].address, 'token1.ownerOf');
             expect(await tokens[1].rootOwnerOf(1)).to.be.eq(signers[0].address, 'token1.rootOwnerOf');
@@ -204,7 +254,13 @@ describe('ERC721TopDownDna', function () {
             //Token 2 Detach
             tokens[0] = tokens[0].connect(signers[1]);
             tokens[1] = tokens[1].connect(signers[1]);
-            await tokens[1].detachChild(1, tokens[2].address, 1);
+            await tokens[1].setChildren(
+                ...flattenSetChildrenArgsERC721TopDownDna({
+                    tokenId: 1,
+                    childContracts721Set: [tokens[2].address],
+                    childTokenIds721Set: [0],
+                }),
+            );
             expect(await tokens[2].ownerOf(1)).to.be.eq(signers[1].address, 'detach tokens[2].ownerOf');
             expect(await tokens[2].rootOwnerOf(1)).to.be.eq(signers[1].address, 'detach tokens[2].rootOwnerOf');
         });

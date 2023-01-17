@@ -10,7 +10,7 @@ interface IERC1155Dna {
      * @dev Getter for dna of tokenId
      * @param tokenId dna to change
      */
-    function getDna(uint256 tokenId) external returns (uint256);
+    function getDna(uint256 tokenId) external view returns (bytes memory);
 
     /**
      * @notice Must have DNA_ROLE
@@ -18,5 +18,5 @@ interface IERC1155Dna {
      * @param tokenId whose dna to change
      * @param newDna new dna for the provided tokenId
      */
-    function updateDna(uint256 tokenId, uint256 newDna) external returns (uint256);
+    function updateDna(uint256 tokenId, bytes calldata newDna) external;
 }

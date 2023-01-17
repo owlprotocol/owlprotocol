@@ -44,6 +44,7 @@ export type { IERC1155Dna, IERC1155DnaInterface } from '../typechain/ethers/IERC
 export type { IERC1155Mintable, IERC1155MintableInterface } from '../typechain/ethers/IERC1155Mintable';
 export type { ERC1155Base, ERC1155BaseInterface } from '../typechain/ethers/ERC1155Base';
 export type { ERC1155Mintable, ERC1155MintableInterface } from '../typechain/ethers/ERC1155Mintable';
+export type { ERC1155Dna, ERC1155DnaInterface } from '../typechain/ethers/ERC1155Dna';
 
 //export type { IERC4907 } from '../typechain/ethers/IERC4907';
 

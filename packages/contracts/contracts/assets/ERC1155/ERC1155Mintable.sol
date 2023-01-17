@@ -25,23 +25,23 @@ contract ERC1155Mintable is ERC1155Base, IERC1155Mintable {
      */
     function initialize(
         address _admin,
-        string memory _initContractURI,
+        string calldata _initContractURI,
         address _gsnForwarder,
-        string memory _uri,
+        string calldata _uri,
         address _feeReceiver,
         uint96 _feeNumerator
-    ) external initializer {
+    ) external virtual initializer {
         __ERC1155Mintable_init(_admin, _initContractURI, _gsnForwarder, _uri, _feeReceiver, _feeNumerator);
     }
 
     function proxyInitialize(
         address _admin,
-        string memory _initContractURI,
+        string calldata _initContractURI,
         address _gsnForwarder,
-        string memory _uri,
+        string calldata _uri,
         address _feeReceiver,
         uint96 _feeNumerator
-    ) external onlyInitializing {
+    ) external virtual onlyInitializing {
         __ERC1155Mintable_init(_admin, _initContractURI, _gsnForwarder, _uri, _feeReceiver, _feeNumerator);
     }
 
@@ -80,7 +80,7 @@ contract ERC1155Mintable is ERC1155Base, IERC1155Mintable {
         uint256 id,
         uint256 amount,
         bytes memory data
-    ) public onlyRole(MINTER_ROLE) {
+    ) external onlyRole(MINTER_ROLE) {
         _mint(to, id, amount, data);
     }
 
@@ -92,7 +92,7 @@ contract ERC1155Mintable is ERC1155Base, IERC1155Mintable {
         uint256[] memory ids,
         uint256[] memory amounts,
         bytes memory data
-    ) public onlyRole(MINTER_ROLE) {
+    ) external onlyRole(MINTER_ROLE) {
         _mintBatch(to, ids, amounts, data);
     }
 
