@@ -2,20 +2,20 @@ import { THEME_COLORS } from "../../constants/index.js";
 
 const Button = (CURRENT_THEME: string) => {
     // @ts-ignore
-    const { color1, color2, color3, color7, color10 } =
-        THEME_COLORS[CURRENT_THEME];
+    const theme = THEME_COLORS[CURRENT_THEME];
 
     return {
         baseStyle: {
-            h: "40px",
+            h: "50px",
             w: ["100%", "auto"],
+            minW: "168px",
             px: 10,
-            borderRadius: 20,
+            borderRadius: 12,
             fontWeight: "bold",
-            color: color7,
+            color: theme.color7,
             backgroundColor: "transparent",
             _hover: {
-                color: color1,
+                color: theme.color1,
             },
             _focus: {
                 outline: 0,
@@ -24,56 +24,57 @@ const Button = (CURRENT_THEME: string) => {
         },
         variants: {
             link: {
-                color: color1,
+                color: theme.color1,
                 fontSize: 13,
             },
             form: {
-                color: color7,
-                backgroundColor: color1,
+                minW: "168px",
+                color: theme.color7,
+                backgroundColor: theme.color1,
                 _hover: {
-                    color: color7,
+                    color: theme.color7,
                     opacity: 0.8,
                 },
                 _disabled: {
-                    backgroundColor: color3,
+                    backgroundColor: theme.color3,
                 },
                 _active: {
-                    backgroundColor: color2,
+                    backgroundColor: theme.color2,
                 },
                 _focus: {
-                    backgroundColor: color2,
+                    backgroundColor: theme.color2,
                     outline: 0,
                     boxShadow: 0,
                 },
             },
             hollow: {
                 bg: "transparent",
-                color: color1,
+                color: theme.color1,
                 borderWidth: 1,
                 borderStyle: "solid",
-                borderColor: color1,
+                borderColor: theme.color1,
                 _hover: {
-                    bg: color1,
-                    color: color7,
+                    bg: theme.color1,
+                    color: theme.color7,
                 },
                 _disabled: {
-                    backgroundColor: color3,
+                    backgroundColor: theme.color3,
                 },
                 _active: {
-                    backgroundColor: color2,
+                    backgroundColor: theme.color2,
                 },
                 _focus: {
-                    backgroundColor: color2,
+                    backgroundColor: theme.color2,
                     outline: 0,
                     boxShadow: 0,
                 },
             },
             cancel: {
-                bg: color10,
-                color: color7,
+                bg: theme.color10,
+                color: theme.color7,
                 _hover: {
-                    bg: color10,
-                    color: color7,
+                    bg: theme.color10,
+                    color: theme.color7,
                     opacity: 0.8,
                 },
             },
