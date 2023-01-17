@@ -6,9 +6,10 @@ import { NFTGenerativeTraitImage, NFTGenerativeTraitImageOption } from '../../ty
 
 export class NFTGenerativeTraitImageClass extends NFTGenerativeTraitBaseClass implements NFTGenerativeTraitImage {
     readonly type: NFTGenerativeTraitImage['type'];
-    readonly options: NFTGenerativeTraitImage['options'];
     readonly image_type: NFTGenerativeTraitImage['image_type'];
     readonly abi!: NFTGenerativeTraitImage['abi'];
+
+    options: NFTGenerativeTraitImage['options'];
 
     constructor(attribute: NFTGenerativeTraitImage) {
         super(attribute);

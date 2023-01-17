@@ -15,10 +15,11 @@ export interface NFTGenerativeTraitImage extends NFTGenerativeTraitBase {
     readonly abi?: 'uint8' | 'uint16';
     /** This is what the data encodes. Usually, will refer to items in options array */
     readonly type: 'image';
-    /** Generative attribute value options */
-    readonly options: NFTGenerativeTraitImageOption[];
     /** File type */
     readonly image_type: 'png' | 'svg';
+
+    /** Generative attribute value options */
+    options: NFTGenerativeTraitImageOption[];
 }
 
 export function isNFTGenerativeTraitImage(attribute: NFTGenerativeTraitBase): attribute is NFTGenerativeTraitImage {

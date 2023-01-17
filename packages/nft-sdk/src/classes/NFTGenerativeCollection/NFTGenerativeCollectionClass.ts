@@ -3,6 +3,7 @@ import type { CID } from 'ipfs-http-client';
 import { pick, omitBy, isUndefined, mapValues, keys, values, compact, isEmpty, uniq } from 'lodash-es';
 import mergeImages, { Options as MergeImagesOptions } from 'merge-images';
 import { BytesLike } from '@ethersproject/bytes';
+import fetch from '@adobe/node-fetch-retry';
 import { ethers } from 'ethers';
 import { Buffer } from 'buffer';
 import { join } from 'path';
@@ -103,9 +104,6 @@ export class NFTGenerativeCollectionClass<
 
         this.traits = traits;
         this.children = children;
-    }
-    loadImages(): Promise<void> {
-        throw new Error('Method not implemented.');
     }
 
     static fromData(collection: NFTGenerativeCollection) {
@@ -271,6 +269,7 @@ export class NFTGenerativeCollectionClass<
             children,
         };
     }
+
     /**
      * Get abi encoding from traits and child collections
      * @returns abi encoding
@@ -772,5 +771,78 @@ export class NFTGenerativeCollectionClass<
         const collectionJSON = this.getJsonMetadata();
         const collectionIpfsResult = await client.add(JSON.stringify(collectionJSON));
         return collectionIpfsResult.cid;
+    }
+
+    async loadImages(ipfsGateway: string, ipfsHash: string): Promise<void>{
+
+        console.debug('Entered loadImages');
+
+        for (const traitKey in this.traits) {
+
+            const trait = this.traits[traitKey];
+
+            if (!isNFTGenerativeTraitImage(trait)) {
+                continue;
+            }
+
+            const options: Array<NFTGenerativeTraitImageOption> = [];
+
+            for (const option of trait.options) {
+                let image_url = option.image_url;
+                if (!image_url) {
+                    options.push(option);
+                    continue;
+                }
+
+                // TODO: use ipfs-http-client for IPFS
+                // TODO: use a more robust method of redirecting IPFS calls to an arbitrary gateway
+                let image;
+                image_url = image_url.replace('ipfs://', ipfsGateway + '/')
+
+                try {
+                    const res = await fetch(image_url);
+
+                    if (trait.image_type === 'svg') {
+                        image = await res.text();
+                    } else {
+                        // png
+                        image = await res.arrayBuffer();
+                        image = Buffer.from(image).toString('base64');
+                    }
+                } catch (err) {
+                    console.log(`img fetch error: ${image_url}`);
+                    throw err;
+                }
+
+                // image cache key was too restrictive, you can have the same option.value on
+                // multiple traits, that are different images - still not perfect
+                // TODO: this should be exhaustive, or have a hash of the image?
+                const path = `${ipfsHash}/layer/${trait.name}/${option.value}`;
+
+                image_url = path;
+
+                const newOption: NFTGenerativeTraitImageOption = {
+                    ...option,
+                    image,
+                    image_url,
+                };
+
+                options.push(newOption);
+            }
+
+            trait.options = options;
+
+            this.traits[traitKey] = trait;
+        }
+    }
+
+    async loadImagesWithChildren(ipfsGateway: string, ipfsHash: string): Promise<void> {
+        await this.loadImages(ipfsGateway, ipfsHash);
+        if (this.children) {
+            for (const childKey in this.children) {
+                const child = this.children[childKey] as NFTGenerativeCollectionClass;
+                await child.loadImagesWithChildren(ipfsGateway, ipfsHash);
+            }
+        }
     }
 }
