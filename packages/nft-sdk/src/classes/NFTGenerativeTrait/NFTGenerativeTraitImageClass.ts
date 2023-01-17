@@ -34,7 +34,7 @@ export class NFTGenerativeTraitImageClass extends NFTGenerativeTraitBaseClass im
     }
 
     /**
-     * List attribute depedencies {attribute_name}
+     * List attribute dependencies {attribute_name}
      */
     dependencies(): string[] {
         //Regex for {param}

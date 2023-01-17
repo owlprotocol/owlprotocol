@@ -542,7 +542,6 @@ export class NFTGenerativeCollectionClass<
         : undefined;
     }) {
         const dna = this.attributesToDna(attributes);
-        // const existingChildren = pick(this.children, keys(omitBy(children, isUndefined))) as Record<string, NFTGenerativeCollectionInterface>;
         const fullDnaChildren =
             this.children && children
                 ? mapValues(this.children, (c, k) => {
@@ -566,10 +565,14 @@ export class NFTGenerativeCollectionClass<
         };
     }
 
+    /**
+     * This assumes that the trait.name matches the collection metadata trait key
+     * @param attributes
+     */
     attributesToAttributesFormatted(attributes: { [K in keyof Traits]: AttributeValue }): {
         [K in keyof Traits]: AttributeFormatted;
     } {
-        console.debug(attributes);
+        // console.debug(attributes);
 
         const topsort = new TopologicalSort<string, string>(new Map());
         Object.values(this.traits).forEach((t) => {
@@ -582,12 +585,12 @@ export class NFTGenerativeCollectionClass<
             });
         });
         const sorted = [...topsort.sort().keys()];
-        console.debug(sorted);
+        // console.debug(sorted);
 
         //console.debug(traits.map((t) => t.name));
         const attributesFormatted: Record<string, any> = {};
 
-        console.debug(this.traits);
+        // console.debug(this.traits);
 
         sorted.forEach((name) => {
             const t = this.traits[name];
@@ -674,7 +677,7 @@ export class NFTGenerativeCollectionClass<
         height = 800,
     ): Promise<string | undefined> {
 
-        console.log('Entered getImage', attributes);
+        console.log('Entered getImage');
 
         if (!this.generatedImageType) return undefined;
 
