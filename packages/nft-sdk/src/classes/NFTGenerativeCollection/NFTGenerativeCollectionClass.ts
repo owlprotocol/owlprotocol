@@ -539,9 +539,10 @@ export class NFTGenerativeCollectionClass<
         : undefined;
     }) {
         const dna = this.attributesToDna(attributes);
+        const existingChildren = pick(this.children, keys(omitBy(children, isUndefined))) as Record<string, NFTGenerativeCollectionInterface>;
         const fullDnaChildren =
             this.children && children
-                ? mapValues(this.children, (c, k) => {
+                ? mapValues(existingChildren, (c, k) => {
                     return c.attributesToFullDnaWithChildren(children[k]);
                 })
                 : undefined;

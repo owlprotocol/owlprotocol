@@ -37,7 +37,7 @@ async function main(){
 
     console.log(nftParent.dnaWithChildren());
 
-
+    console.log(nftParent.fullDnaWithChildren());
 
 }
 
