@@ -120,7 +120,7 @@ export class NFTGenerativeTraitImageClass extends NFTGenerativeTraitBaseClass im
         };
     }
 
-    getAmountofTraits() {
+    getAmountOfTraits() {
         return this.options.length;
     }
 }

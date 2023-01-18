@@ -78,7 +78,7 @@ export class NFTGenerativeTraitEnumClass extends NFTGenerativeTraitBaseClass imp
         };
     }
 
-    getAmountofTraits() {
+    getAmountOfTraits() {
         return this.options.length;
     }
 }

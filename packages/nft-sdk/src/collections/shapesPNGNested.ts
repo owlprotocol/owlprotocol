@@ -42,9 +42,7 @@ export const circleOnSquarePNGNestedItem = collectionShapesPNGNested.create({
         },
     },
 });
-console.debug(circleOnSquarePNGNestedItem);
 export const circleOnSquarePNGNestedDna = circleOnSquarePNGNestedItem.dnaWithChildren();
-console.debug(circleOnSquarePNGNestedDna);
 
 export const circleOnCirclePNGNestedItem = collectionShapesPNGNested.create({
     attributes: {

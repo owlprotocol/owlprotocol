@@ -50,7 +50,7 @@ export class NFTGenerativeTraitNumberClass extends NFTGenerativeTraitBaseClass i
         };
     }
 
-    getAmountofTraits() {
+    getAmountOfTraits() {
         return this.max - this.min;
     }
 }

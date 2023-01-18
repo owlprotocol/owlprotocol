@@ -71,7 +71,7 @@ export class NFTGenerativeTraitColormapClass extends NFTGenerativeTraitBaseClass
         };
     }
 
-    getAmountofTraits() {
+    getAmountOfTraits() {
         return this.options.length;
     }
 }

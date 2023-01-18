@@ -141,7 +141,6 @@ export class NFTGenerativeItemClass<
     }
 
     async getJsonMetadata(mergeOptions?: MergeImagesOptions, width = 800, height = 800) {
-        console.log('Entered getJsonMetadata');
         const imageBuff = await this.getImageWithChildren(mergeOptions, width, height);
         const attributesRaw = this.attributesFormatted();
 

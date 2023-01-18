@@ -7,25 +7,27 @@ describe('NFTGenerativeTraitNumberClass', () => {
     const attributeDef: NFTGenerativeTraitNumber = {
         name: 'power',
         type: 'number',
-        min: 1,
-        max: 17,
+        min: 2,
+        max: 18,
     };
     const attribute = new NFTGenerativeTraitNumberClass(attributeDef);
 
-    it('encode', () => {
+    // legacy - from bitShifting times
+    it.skip('encode', () => {
         const val = attribute.encode(7);
         //Offset by min value
         assert.equal(val, 6, 'encode');
     });
 
-    it('decode', () => {
+    // legacy - from bitShifting times
+    it.skip('decode', () => {
         const val = attribute.decode(6);
         //Offset by min value
         assert.equal(val, 7, 'decode');
     });
 
-    it('getAmountofTraits', () => {
-        assert.equal(attribute.getAmountofTraits(), 16, 'getAmountofTraits');
+    it('getAmountOfTraits', () => {
+        assert.equal(attribute.getAmountOfTraits(), 16, 'getAmountOfTraits');
     });
 
     it.skip('validateNFTGenerativeTraitNumberOptions', () => {

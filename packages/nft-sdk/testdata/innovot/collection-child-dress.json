@@ -8,7 +8,7 @@
   "generatedImageType": "png",
   "traits": {
     "class": {
-      "name": "Class",
+      "name": "class",
       "type": "enum",
       "options": [
         "Designer",
@@ -17,7 +17,7 @@
       ]
     },
     "dress": {
-      "name": "Dress/Shirt",
+      "name": "dress",
       "type": "image",
       "image_type": "png",
       "options": [

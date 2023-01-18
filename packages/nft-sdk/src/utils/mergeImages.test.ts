@@ -5,8 +5,8 @@ import { Buffer } from 'buffer';
 import { readFileSync } from 'fs';
 
 describe('mergeImages', () => {
-    const path1 = '../nft-project-demos/shapes-png/layers/shape0/circle.png';
-    const path2 = '../nft-project-demos/shapes-png/layers/shape1/square.png';
+    const path1 = './testdata/merge_images_png/layers/shape0/circle.png';
+    const path2 = './testdata/merge_images_png/layers/shape1/square.png';
 
     const mergedPath = './testdata/merge_images_png/circle_square.png';
     const mergedBuf = readFileSync(mergedPath);

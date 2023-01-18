@@ -25,12 +25,14 @@ async function main(){
     // fetch hat
     const nftHat = await getHat();
 
+    const nftDress = await getDress();
+
     const nftParent = NFTGenerativeItemClass.fromAttributes({
         collection: <NFTGenerativeCollectionInterface>parentCollection,
         attributes: parentCollection.dnaToAttributes(new BN('17170688').toBuffer()),
         children: {
             glasses: undefined,
-            dress: undefined,
+            dress: nftDress,
             hats: nftHat,
             facial_hair: undefined
         }
@@ -61,12 +63,24 @@ async function getHat(): Promise<NFTGenerativeItemClass> {
 
     const collectionClass = NFTGenerativeCollectionClass.fromData(collection);
 
-    const nftHat = NFTGenerativeItemClass.fromAttributes({
+    return NFTGenerativeItemClass.fromAttributes({
         collection: <NFTGenerativeCollectionInterface>collectionClass,
         attributes: { class: 'Designer', hats: 'Designer - Cap 5' }
     });
+}
 
-    return nftHat;
+async function getDress(): Promise<NFTGenerativeItemClass> {
+    const resp = await fetch('https://leovigna.mypinata.cloud/ipfs/QmPRM4ABL9eSmoYtuiqWxrV7b8KCcRu9PDmoaUeiVMmMCm');
+    const data = await resp.json();
+
+    const collection = <NFTGenerativeCollection>data;
+
+    const collectionClass = NFTGenerativeCollectionClass.fromData(collection);
+
+    return NFTGenerativeItemClass.fromAttributes({
+        collection: <NFTGenerativeCollectionInterface>collectionClass,
+        attributes: { class: 'Thread Haus', dress: 'ThreadHaus - Flight Jacket Indigo' }
+    });
 }
 
 main().then(() => console.log('Done'));

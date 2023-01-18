@@ -86,7 +86,7 @@ export class NFTGenerativeTraitColorClass extends NFTGenerativeTraitBaseClass im
         };
     }
 
-    getAmountofTraits() {
+    getAmountOfTraits() {
         return this.maxGene() - this.minGene();
     }
 }

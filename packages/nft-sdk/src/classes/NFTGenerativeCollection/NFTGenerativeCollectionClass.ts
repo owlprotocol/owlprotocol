@@ -774,8 +774,6 @@ export class NFTGenerativeCollectionClass<
 
     async loadImages(ipfsGateway: string, ipfsHash: string): Promise<void>{
 
-        console.debug('Entered loadImages');
-
         for (const traitKey in this.traits) {
 
             const trait = this.traits[traitKey];
