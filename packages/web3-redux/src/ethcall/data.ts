@@ -1,12 +1,12 @@
 import type { AbiItem } from 'web3-utils';
 import EthCallCRUD from './crud.js';
 import { coder } from '../utils/web3-eth-abi/index.js';
-import { Artifacts } from '@owlprotocol/contracts';
+import * as Contracts from '@owlprotocol/contracts';
 import { networkId, ADDRESS_1, ADDRESS_2 } from '../data.js';
 
 //Ethcall
 const methodName = 'getValue';
-const methodAbi = (Artifacts.BlockNumber.abi as AbiItem[]).filter((f: any) => f.name === methodName)[0];
+const methodAbi = (Contracts.Artifacts.BlockNumber.abi as AbiItem[]).filter((f: any) => f.name === methodName)[0];
 const data = coder.encodeFunctionCall(methodAbi, []);
 export const ethCall1 = EthCallCRUD.validate({
     networkId,

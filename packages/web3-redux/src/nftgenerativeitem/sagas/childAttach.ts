@@ -1,7 +1,7 @@
 import { put, call, all } from 'typed-redux-saga';
 import coder from 'web3-eth-abi';
 import { map, zip } from 'lodash-es';
-import { Web3 } from '@owlprotocol/contracts';
+import * as Contracts from '@owlprotocol/contracts';
 import { fetchSaga } from './fetch.js';
 import { fetchSaga as fetchCollectionSaga } from '../../nftgenerativecollection/sagas/fetch.js';
 import { ChildAttachAction } from '../actions/index.js';
@@ -100,7 +100,7 @@ export function* childAttachSaga(action: ChildAttachAction) {
             if (token != undefined) {
                 if (token.tokenId == '0') {
                     //Detach
-                    const args: Parameters<Web3.IERC721TopDown['methods']['detachChild']> = [
+                    const args: Parameters<Contracts.Web3.IERC721TopDown['methods']['detachChild']> = [
                         tokenId,
                         token.address,
                         childTokenIds[i],
@@ -112,7 +112,7 @@ export function* childAttachSaga(action: ChildAttachAction) {
                     yield* call(Contract.sagas.send, send);
                 } else {
                     //Attach
-                    const args: Parameters<Web3.IERC721TopDown['methods']['attachChild']> = [
+                    const args: Parameters<Contracts.Web3.IERC721TopDown['methods']['attachChild']> = [
                         tokenId,
                         token.address,
                         token.tokenId,

@@ -1,5 +1,5 @@
 import { call, all } from 'typed-redux-saga';
-import { Web3 } from '@owlprotocol/contracts';
+import * as Contracts from '@owlprotocol/contracts';
 
 import { ContractEvent } from '../../contractevent/model/interface.js';
 import {
@@ -141,10 +141,10 @@ export function eventGetPastFactory<T extends Record<string, any> = Record<strin
     }
 }
 
-export const eventGetPastInterfaceImplementerSet = eventGetPastFactory<Web3.InterfaceImplementerSetEvent['returnValues']>('InterfaceImplementerSet')
-export const eventGetPastIERC20Transfer = eventGetPastFactory<Web3.IERC20TransferEvent['returnValues']>('Transfer')
-export const eventGetPastIERC721Transfer = eventGetPastFactory<Web3.IERC721TransferEvent['returnValues']>('Transfer')
-export const eventGetPastIERC1155TransferSingle = eventGetPastFactory<Web3.IERC1155TransferSingleEvent['returnValues']>('TransferSingle')
-export const eventGetPastIERC1155TransferBatch = eventGetPastFactory<Web3.IERC1155TransferBatchEvent['returnValues']>('TransferBatch')
-export const eventGetPastAssetRouterSupportsAsset = eventGetPastFactory<Web3.SupportsAsset['returnValues']>('SupportsAsset')
-export const eventGetPastAssetRouterRouteBasket = eventGetPastFactory<Web3.RouteBasket['returnValues']>('RouteBasket')
+export const eventGetPastInterfaceImplementerSet = eventGetPastFactory<Contracts.Web3.InterfaceImplementerSetEvent['returnValues']>('InterfaceImplementerSet')
+export const eventGetPastIERC20Transfer = eventGetPastFactory<Contracts.Web3.IERC20TransferEvent['returnValues']>('Transfer')
+export const eventGetPastIERC721Transfer = eventGetPastFactory<Contracts.Web3.IERC721TransferEvent['returnValues']>('Transfer')
+export const eventGetPastIERC1155TransferSingle = eventGetPastFactory<Contracts.Web3.IERC1155TransferSingleEvent['returnValues']>('TransferSingle')
+export const eventGetPastIERC1155TransferBatch = eventGetPastFactory<Contracts.Web3.IERC1155TransferBatchEvent['returnValues']>('TransferBatch')
+export const eventGetPastAssetRouterSupportsAsset = eventGetPastFactory<Contracts.Web3.SupportsAsset['returnValues']>('SupportsAsset')
+export const eventGetPastAssetRouterRouteBasket = eventGetPastFactory<Contracts.Web3.RouteBasket['returnValues']>('RouteBasket')

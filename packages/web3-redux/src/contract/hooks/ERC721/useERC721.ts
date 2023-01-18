@@ -1,5 +1,5 @@
 import { useMemo } from 'react';
-import { Artifacts, Web3 } from '@owlprotocol/contracts';
+import * as Contracts from '@owlprotocol/contracts';
 import { useERC721Name, useERC721OwnerOf, useERC721Symbol, useERC721TokenURI } from './hooks.js';
 import { useERC721Transfer } from './useERC721Transfer.js';
 import { useERC721Approval } from './useERC721Approval.js';
@@ -24,7 +24,7 @@ export function useERC721(
     },
 ) {
     //Create abi in store if non-existant
-    useContract(networkId, address, { abi: Artifacts.IERC721Metadata.abi });
+    useContract(networkId, address, { abi: Contracts.Artifacts.IERC721Metadata.abi });
     //Static values
     const [name] = useERC721Name(networkId, address);
     const [symbol] = useERC721Symbol(networkId, address)

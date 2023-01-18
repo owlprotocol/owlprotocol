@@ -5,10 +5,10 @@ import { AbiInputType } from '../AbiInput/AbiInput/index.js';
 import { AbiInputList } from '../AbiInput/AbiInputList/index.js';
 
 export interface ContractCallFormProps {
-    networkId?: string;
-    address: string | undefined;
+    networkId: string;
+    address: string;
     namePrefix?: string;
-    name: string | undefined;
+    name: string;
     inputs: {
         name: string;
         type: AbiInputType;
@@ -22,10 +22,6 @@ export const ContractCallForm = ({ networkId, address, namePrefix = '', name, in
     const { errors } = formState;
     const inputErrors = Object.values(errors);
     const args = watch(inputs.map((i) => i.name));
-
-    const [configNetworkId] = Config.hooks.useNetworkId();
-    networkId = networkId ?? configNetworkId;
-
     const argsDefined = args.length > 0 ? args.reduce((acc, curr) => acc && !!curr, !!args[0]) : true;
     const noInputErrors =
         inputErrors.length > 0 ? inputErrors.reduce((acc, curr) => acc && !curr, !inputErrors[0]) : true;

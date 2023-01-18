@@ -9,7 +9,7 @@
   "homepage": "https://github.com/owlprotocol/contracts.git",
   "copyright": "Copyright 2021 Owl Protocol",
   "license": "MIT",
-  "type": "commonjs",
+  "type": "module",
   "main": "./lib/cjs/index.cjs",
   "module": "./lib/esm/index.mjs",
   "types": "./lib/types/index.d.ts",

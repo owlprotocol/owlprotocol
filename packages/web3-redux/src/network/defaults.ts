@@ -111,6 +111,12 @@ export const defaultNetworks = () => {
             currency: ETHER,
             web3Rpc: GANACHE_RPC(),
         },
+        '1336': {
+            networkId: '1336',
+            name: 'ganache2',
+            currency: ETHER,
+            web3Rpc: GANACHE_RPC(),
+        },
         '1': {
             networkId: '1',
             name: 'Mainnet',

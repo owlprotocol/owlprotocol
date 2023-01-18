@@ -1,7 +1,7 @@
-import { Web3, Artifacts } from '@owlprotocol/contracts';
+import * as Contracts from '@owlprotocol/contracts';
 import { contractCallHookFactory } from '../useContractCall.js';
 
-export const useContractURI = contractCallHookFactory<Web3.IContractURI, 'contractURI'>(
+export const useContractURI = contractCallHookFactory<Contracts.Web3.IContractURI, 'contractURI'>(
     'contractURI',
-    { abi: Artifacts.IContractURI.abi }
+    { abi: Contracts.Artifacts.IContractURI.abi }
 );

@@ -1,5 +1,5 @@
 import { put, call } from 'typed-redux-saga';
-import { Web3 } from '@owlprotocol/contracts';
+import * as Contracts from '@owlprotocol/contracts';
 
 import { fetchSaga } from './fetch.js';
 import { CallAction } from '../actions/index.js';
@@ -30,7 +30,7 @@ export function* callSaga(action: CallAction): Generator<
     const methodFn = web3Contract.methods[method];
     if (!methodFn) throw new Error(`Contract ${ContractCRUD.toPrimaryKey(payload)} has no such method ${payload.method}`);
 
-    let tx: Web3.NonPayableTransactionObject<any>;
+    let tx: Contracts.Web3.NonPayableTransactionObject<any>;
     if (!args || args.length == 0) tx = methodFn();
     else tx = methodFn(...args);
     const data = tx.encodeABI();

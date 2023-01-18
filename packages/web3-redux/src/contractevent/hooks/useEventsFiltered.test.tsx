@@ -1,7 +1,7 @@
 import { assert } from 'chai';
 import { Provider } from 'react-redux';
 import { renderHook } from '@testing-library/react-hooks';
-import { Artifacts } from '@owlprotocol/contracts'
+import * as Contracts from '@owlprotocol/contracts';
 
 import { name } from '../common.js';
 import { createStore, StoreType } from '../../store.js';
@@ -26,16 +26,16 @@ describe(`${name}/hooks/useEventsFiltered.tsx`, () => {
     let accounts: string[];
     let address: string;
 
-    const eventAbi = Artifacts.BlockNumber.abi.find((a: AbiItem) => a.type === 'event' && a.name === 'NewValue')
+    const eventAbi = Contracts.Artifacts.BlockNumber.abi.find((a: AbiItem) => a.type === 'event' && a.name === 'NewValue')
 
     before(async () => {
         accounts = await web3.eth.getAccounts();
     });
 
     beforeEach(async () => {
-        const web3Contract = await new web3.eth.Contract(Artifacts.BlockNumber.abi)
+        const web3Contract = await new web3.eth.Contract(Contracts.Artifacts.BlockNumber.abi)
             .deploy({
-                data: Artifacts.BlockNumber.bytecode,
+                data: Contracts.Artifacts.BlockNumber.bytecode,
             })
             .send({ from: accounts[0], gas: 1000000, gasPrice: '875000000' });
         address = web3Contract.options.address.toLowerCase();

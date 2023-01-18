@@ -1,6 +1,6 @@
 /** Queries all interface implementers using InterfaceImplementerSet events */
 import { put, call, select } from 'typed-redux-saga';
-import { Artifacts, Web3 } from '@owlprotocol/contracts';
+import * as Contracts from '@owlprotocol/contracts';
 import { NetworkCRUD } from '../../network/crud.js';
 import { fetchSaga as fetchNetwork } from '../../network/sagas/fetch.js'
 import { GetInterfaceImplementersAction } from '../actions/index.js';
@@ -37,5 +37,5 @@ export function* getInterfaceImplementers(action: GetInterfaceImplementersAction
     const events = yield* call(eventGetPastRaw, getEventsAction);
     if (!Array.isArray(events)) throw events;
 
-    return events as ContractEvent<Web3.InterfaceImplementerSetEvent['returnValues']>[];
+    return events as ContractEvent<Contracts.Web3.InterfaceImplementerSetEvent['returnValues']>[];
 }

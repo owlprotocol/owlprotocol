@@ -19,7 +19,7 @@ export function getProxy1167Factories(signer: Signer, factories: NoInitFactories
 
 export function getProxy1167InitializeFactories(signer: Signer, factories: NoInitFactories, msgSender: string) {
     const cloneFactory = ERC1167FactoryImplementation(signer);
-    const factories2 = omit(factories, 'ERC1167Factory', 'Fallback');
+    const factories2 = omit(factories, 'ERC1167Factory', 'Fallback', 'ERC721TopDownLib', 'ERC721TopDownDnaLib');
 
     return mapValues(factories2, (f: any) => {
         return proxy1167Factory({

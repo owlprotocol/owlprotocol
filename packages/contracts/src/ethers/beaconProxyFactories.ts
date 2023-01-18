@@ -17,7 +17,12 @@ export function getBeaconProxyFactories(
         'BeaconProxy',
         'UpgradeableBeacon',
         'Fallback',
-    ) as Omit<typeof deterministicFactories, 'ERC1167Factory' | 'BeaconProxy' | 'UpgradeableBeacon' | 'Fallback'>;
+        'ERC721TopDownLib',
+        'ERC721TopDownDnaLib',
+    ) as Omit<
+        typeof deterministicFactories,
+        'ERC1167Factory' | 'BeaconProxy' | 'UpgradeableBeacon' | 'Fallback' | 'ERC721TopDownLib' | 'ERC721TopDownDnaLib'
+    >;
 
     return mapValues(factories2, (f: any, k) => {
         const implementationAddress = f.getAddress() as string;

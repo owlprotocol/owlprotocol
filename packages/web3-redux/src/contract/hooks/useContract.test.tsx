@@ -9,7 +9,7 @@ import NetworkCRUD from '../../network/crud.js';
 import ContractCRUD from '../crud.js';
 import { network1336 } from '../../network/data.js';
 import expectThrowsAsync from '../../test/expectThrowsAsync.js';
-import { Artifacts } from '@owlprotocol/contracts';
+import * as Contracts from '@owlprotocol/contracts';
 import { sleep } from '../../utils/index.js';
 
 const networkId = network1336.networkId;
@@ -27,9 +27,9 @@ describe(`${name}/hooks/useContract.test.tsx`, () => {
     });
 
     beforeEach(async () => {
-        const web3Contract = await new web3.eth.Contract(Artifacts.BlockNumber.abi)
+        const web3Contract = await new web3.eth.Contract(Contracts.Artifacts.BlockNumber.abi)
             .deploy({
-                data: Artifacts.BlockNumber.bytecode,
+                data: Contracts.Artifacts.BlockNumber.bytecode,
             })
             .send({ from: from, gas: 1000000, gasPrice: '875000000' });
         address = web3Contract.options.address.toLowerCase()

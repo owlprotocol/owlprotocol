@@ -1,6 +1,6 @@
 import { assert } from 'chai';
 import Web3 from 'web3';
-import { Artifacts, Web3 as Web3Contracts } from '@owlprotocol/contracts';
+import * as Contracts from '@owlprotocol/contracts';
 import { getWeb3Provider } from '../../test/index.js';
 import { name } from '../common.js';
 import { ADDRESS_0, networkId } from '../../test/data.js';
@@ -18,7 +18,7 @@ describe(`${name}/sagas/subscribeLogs.test.ts`, () => {
     let web3: Web3; //Web3 loaded from store
     let accounts: string[];
     let store: StoreType;
-    let web3Contract: Web3Contracts.ERC20PresetMinterPauser;
+    let web3Contract: Contracts.Web3.ERC20PresetMinterPauser;
 
     let address: string;
 
@@ -30,16 +30,16 @@ describe(`${name}/sagas/subscribeLogs.test.ts`, () => {
     });
 
     beforeEach(async () => {
-        web3Contract = (await new web3.eth.Contract(Artifacts.ERC20PresetMinterPauser.abi as any)
+        web3Contract = (await new web3.eth.Contract(Contracts.Artifacts.ERC20PresetMinterPauser.abi as any)
             .deploy({
                 arguments: ['Test Token', 'TEST'],
-                data: Artifacts.ERC20PresetMinterPauser.bytecode,
+                data: Contracts.Artifacts.ERC20PresetMinterPauser.bytecode,
             })
             .send({
                 from: accounts[0],
                 gas: 2000000,
                 gasPrice: '875000000',
-            })) as unknown as Web3Contracts.ERC20PresetMinterPauser;
+            })) as unknown as Contracts.Web3.ERC20PresetMinterPauser;
         address = web3Contract.options.address;
 
         store = createStore();
@@ -68,7 +68,7 @@ describe(`${name}/sagas/subscribeLogs.test.ts`, () => {
 
         it('(networkId, address, [Transfer, from, to]) - All events', async () => {
             //Filter by address, Transfer event, from, address
-            const Transfer = Artifacts.ERC20PresetMinterPauser.abi.find((a: any) => a.name === 'Transfer');
+            const Transfer = Contracts.Artifacts.ERC20PresetMinterPauser.abi.find((a: any) => a.name === 'Transfer');
             const eventTopic = coder.encodeEventSignature(Transfer as any);
             const fromTopic = coder.encodeParameter('address', ADDRESS_0);
             const toTopic = coder.encodeParameter('address', accounts[0]);

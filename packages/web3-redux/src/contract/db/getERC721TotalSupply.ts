@@ -1,4 +1,4 @@
-import { Web3 } from '@owlprotocol/contracts';
+import * as Contracts from '@owlprotocol/contracts';
 import getContractCall from './getContractCall.js';
 
 /**
@@ -12,7 +12,7 @@ export async function getERC721TotalSupply(
 ) {
     if (!tokenId) return undefined;
 
-    const returnValue = await getContractCall<Web3.IERC721Enumerable, 'totalSupply'>(
+    const returnValue = await getContractCall<Contracts.Web3.IERC721Enumerable, 'totalSupply'>(
         state,
         networkId,
         address,

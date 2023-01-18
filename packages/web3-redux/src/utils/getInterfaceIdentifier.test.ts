@@ -1,4 +1,5 @@
 import { assert } from 'chai';
+import * as Contracts from '@owlprotocol/contracts';
 import {
     getInterfaceIdentifierForAbi,
     getFunctionIdentifier,
@@ -16,33 +17,33 @@ import {
 
 describe('getInterfaceIdentifierForAbi', () => {
     it('ERC165', () => {
-        assert.equal(getInterfaceIdentifierForAbi(Artifacts.IERC165.abi as AbiItem[]), '01ffc9a7');
+        assert.equal(getInterfaceIdentifierForAbi(Contracts.Artifacts.IERC165.abi as AbiItem[]), '01ffc9a7');
     });
 
     it('ERC721Enumerable', () => {
-        assert.equal(getInterfaceIdentifierForAbi(Artifacts.IERC20Metadata.abi as AbiItem[]), 'bfc4c1ea'); // '780e9d63');
+        assert.equal(getInterfaceIdentifierForAbi(Contracts.Artifacts.IERC20Metadata.abi as AbiItem[]), 'bfc4c1ea'); // '780e9d63');
     });
 
     it('ERC721Metadata', () => {
-        assert.equal(getInterfaceIdentifierForAbi(Artifacts.IERC721Metadata.abi as AbiItem[]), '9c944f16'); // '5b5e139f');
+        assert.equal(getInterfaceIdentifierForAbi(Contracts.Artifacts.IERC721Metadata.abi as AbiItem[]), '9c944f16'); // '5b5e139f');
     });
 });
 
 describe('getFunctionIdentifier', () => {
     it('supportsInterface', () => {
-        const abi = (Artifacts.IERC165.abi as AbiItem[]).find((a) => a.name === 'supportsInterface');
+        const abi = (Contracts.Artifacts.IERC165.abi as AbiItem[]).find((a) => a.name === 'supportsInterface');
         // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
         assert.equal(getFunctionIdentifier(abi!), '0x01ffc9a7');
     });
 
     it('tokenByIndex', () => {
-        const abi = (Artifacts.IERC721Enumerable.abi as AbiItem[]).find((a) => a.name === 'tokenByIndex');
+        const abi = (Contracts.Artifacts.IERC721Enumerable.abi as AbiItem[]).find((a) => a.name === 'tokenByIndex');
         // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
         assert.equal(getFunctionIdentifier(abi!), '0x4f6ccce7');
     });
 
     it('name', () => {
-        const abi = (Artifacts.IERC721Metadata.abi as AbiItem[]).find((a) => a.name === 'name');
+        const abi = (Contracts.Artifacts.IERC721Metadata.abi as AbiItem[]).find((a) => a.name === 'name');
         // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
         assert.equal(getFunctionIdentifier(abi!), '0x06fdde03');
     });

@@ -1,4 +1,5 @@
 import { put, call, all, select } from 'typed-redux-saga';
+import * as Contracts from '@owlprotocol/contracts';
 import getPastLogs from './getPastLogs.js';
 import { coder } from '../../utils/web3-eth-abi/index.js';
 
@@ -8,16 +9,12 @@ import { GetAssetsAction, GET_ASSETS, getPastLogs as getPastLogsAction } from '.
 import NetworkCRUD from '../../network/crud.js';
 import ContractCRUD from '../../contract/crud.js';
 
-import {
-    Artifacts
-} from '@owlprotocol/contracts'
-
 const GET_ASSETS_ERROR = `${GET_ASSETS}/ERROR`;
 
 //Event logs, comments denote [indexed params] - [unindexed data]
-const ERC20Transfer = Artifacts.IERC20.abi.find((a: any) => a.name === 'Transfer'); //[Transfer, from, to] - [data]
+const ERC20Transfer = Contracts.Artifacts.IERC20.abi.find((a: any) => a.name === 'Transfer'); //[Transfer, from, to] - [data]
 //const ERC721Transfer = IERC721.abi.find((a) => a.name === 'Transfer');          //[Transfer, from, to, tokenId] - []
-const ERC1155Transfer = Artifacts.IERC1155.abi.find((a: any) => a.name === 'TransferSingle'); //[TransferSingle, operator, from, to] - [tokenId]
+const ERC1155Transfer = Contracts.Artifacts.IERC1155.abi.find((a: any) => a.name === 'TransferSingle'); //[TransferSingle, operator, from, to] - [tokenId]
 
 //both have same topics[0]
 const ERC20or721TransferTopic = coder.encodeEventSignature(ERC20Transfer as any);
@@ -71,13 +68,13 @@ function* getAssets(action: GetAssetsAction) {
 
         //Dispatch Contract create actions
         const ERC20CreateAction = ERC20Address.map((a) => {
-            return { networkId, address: a, abi: Artifacts.IERC20Metadata.abi as any };
+            return { networkId, address: a, abi: Contracts.Artifacts.IERC20Metadata.abi as any };
         });
         const ERC721CreateAction = ERC721Address.map((a) => {
-            return { networkId, address: a, abi: Artifacts.IERC721Metadata.abi as any };
+            return { networkId, address: a, abi: Contracts.Artifacts.IERC721Metadata.abi as any };
         });
         const ERC1155CreateAction = ERC1155Address.map((a) => {
-            return { networkId, address: a, abi: Artifacts.IERC1155MetadataURI.abi as any };
+            return { networkId, address: a, abi: Contracts.Artifacts.IERC1155MetadataURI.abi as any };
         });
         const contracts = [...ERC20CreateAction, ...ERC721CreateAction, ...ERC1155CreateAction];
         if (contracts.length > 0) {

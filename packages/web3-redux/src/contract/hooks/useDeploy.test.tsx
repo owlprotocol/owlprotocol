@@ -5,7 +5,7 @@ import { Provider } from 'react-redux';
 import useDeploy from './useDeploy.js';
 
 import { name } from '../common.js';
-import { Artifacts } from '@owlprotocol/contracts'
+import * as Contracts from '@owlprotocol/contracts';
 
 import { createStore, StoreType } from '../../store.js';
 import NetworkCRUD from '../../network/crud.js';
@@ -15,8 +15,8 @@ import { AbiItem } from '../../utils/web3-utils/index.js';
 
 const networkId = network1336.networkId;
 const web3 = network1336.web3!;
-const abi = Artifacts.BlockNumber.abi as AbiItem[];
-const bytecode = Artifacts.BlockNumber.bytecode;
+const abi = Contracts.Artifacts.BlockNumber.abi as AbiItem[];
+const bytecode = Contracts.Artifacts.BlockNumber.bytecode;
 const label = 'BlockNumber';
 
 describe(`${name}/hooks/useDeploy.test.tsx`, () => {

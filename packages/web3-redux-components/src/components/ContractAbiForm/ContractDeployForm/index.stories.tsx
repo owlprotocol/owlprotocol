@@ -1,8 +1,9 @@
 import { ComponentStory, ComponentMeta } from '@storybook/react';
-import { TestData } from '@owlprotocol/web3-redux';
-import { Artifacts } from '@owlprotocol/contracts';
-import { addressArgType, networkIdArgType } from '../../../test/storybookArgs.js';
+import { Artifacts, Ethers } from '@owlprotocol/contracts';
+import { Contract } from '@owlprotocol/web3-redux'
 import { ContractDeployForm } from '.';
+import * as ethers from 'ethers';
+import { networkIdArgType } from '../../../test/storybookArgs';
 
 export default {
     title: 'ContractAbi/ContractDeployForm',
@@ -10,16 +11,41 @@ export default {
 } as ComponentMeta<typeof ContractDeployForm>;
 
 const Template: ComponentStory<typeof ContractDeployForm> = (args: any) => <ContractDeployForm {...args} />;
-const address = TestData.USDC;
 
 //eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-const { abi, bytecode } = Artifacts.IERC20.abi;
-export const ERC20 = Template.bind({});
-ERC20.args = {
-    networkId: '1',
-    abi,
-    bytecode,
+export const BlockNumber = Template.bind({});
+BlockNumber.args = {
+    networkId: '1336',
+    abi: Artifacts.BlockNumber.abi,
+    bytecode: Artifacts.BlockNumber.bytecode,
+    deployType: Contract.enums.DeployType.REGULAR
 };
-ERC20.argTypes = {
+BlockNumber.argTypes = {
+    networkId: networkIdArgType,
+};
+
+const from = '0x7E5F4552091A69125d5DfCb7b8C2659029395Bdf'
+const privateKey = ethers.utils.hexZeroPad(ethers.utils.hexlify(1), 32)
+const signer = new ethers.Wallet(privateKey);
+const factories = Ethers.getFactories(signer);
+const factoriesDeterministic = Ethers.getDeterministicFactories(signer, factories);
+const factoriesDeterministicInit = Ethers.getDeterministicInitializeFactories(signer, factories, from);
+
+const ERC721MintableImplementation = factoriesDeterministic.ERC721Mintable.getAddress()
+const UpgradeableBeaconFactory = factoriesDeterministicInit.UpgradeableBeacon;
+const ERC721MintableBeacon = '0x2Aa8C5372B00dcDD3DFE11d7baE5d24EA212d400' //UpgradeableBeaconFactory.getAddress(from, ERC721MintableImplementation)
+
+export const ERC721Mintable = Template.bind({});
+ERC721Mintable.args = {
+    networkId: '1336',
+    abi: Artifacts.ERC721Mintable.abi,
+    bytecode: Artifacts.ERC721Mintable.bytecode,
+    deployType: Contract.enums.DeployType.INITIALIZE,
+    deployImplementationAddress: ERC721MintableImplementation,
+    deployBeaconAddress: ERC721MintableBeacon,
+    deploySalt: '0x0000000000000000000000000000000000000000000000000000000000000001',
+    label: 'ERC721Mintable'
+};
+ERC721Mintable.argTypes = {
     networkId: networkIdArgType,
 };

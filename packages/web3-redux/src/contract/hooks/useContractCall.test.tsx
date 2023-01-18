@@ -3,7 +3,7 @@ import { Provider } from 'react-redux';
 import type { Contract as Web3Contract } from 'web3-eth-contract';
 import { renderHook } from '@testing-library/react-hooks';
 import sinon from 'sinon';
-import { Artifacts } from '@owlprotocol/contracts';
+import * as Contracts from '@owlprotocol/contracts';
 
 import { cloneDeep } from 'lodash-es';
 import { expectThrowsAsync } from '../../test/index.js';
@@ -141,7 +141,7 @@ describe(`${name}/hooks/useContractCall.test.tsx`, () => {
                 ContractCRUD.actions.create({
                     networkId,
                     address: ZERO_ADDRESS,
-                    abi: cloneDeep(Artifacts.BlockNumber.abi) as any,
+                    abi: cloneDeep(Contracts.Artifacts.BlockNumber.abi) as any,
                 }),
             );
 
@@ -170,9 +170,9 @@ describe(`${name}/hooks/useContractCall.test.tsx`, () => {
         });
         it.skip('Contract {id} has no such method {method}', async () => {
             store.dispatch(NetworkCRUD.actions.create({ networkId, web3 }));
-            web3Contract = await new web3.eth.Contract(cloneDeep(Artifacts.BlockNumber.abi) as any)
+            web3Contract = await new web3.eth.Contract(cloneDeep(Contracts.Artifacts.BlockNumber.abi) as any)
                 .deploy({
-                    data: Artifacts.BlockNumber.bytecode,
+                    data: Contracts.Artifacts.BlockNumber.bytecode,
                 })
                 .send({ from: accounts[0], gas: 1000000, gasPrice: '875000000' });
             address = web3Contract.options.address;
@@ -180,7 +180,7 @@ describe(`${name}/hooks/useContractCall.test.tsx`, () => {
                 ContractCRUD.actions.create({
                     networkId,
                     address,
-                    abi: cloneDeep(Artifacts.BlockNumber.abi) as any,
+                    abi: cloneDeep(Contracts.Artifacts.BlockNumber.abi) as any,
                 }),
             );
 
@@ -214,9 +214,9 @@ describe(`${name}/hooks/useContractCall.test.tsx`, () => {
         beforeEach(async () => {
             store.dispatch(NetworkCRUD.actions.create({ networkId, web3 }));
 
-            web3Contract = await new web3.eth.Contract(cloneDeep(Artifacts.BlockNumber.abi) as any)
+            web3Contract = await new web3.eth.Contract(cloneDeep(Contracts.Artifacts.BlockNumber.abi) as any)
                 .deploy({
-                    data: Artifacts.BlockNumber.bytecode,
+                    data: Contracts.Artifacts.BlockNumber.bytecode,
                 })
                 .send({ from: accounts[0], gas: 1000000, gasPrice: '875000000' });
             address = web3Contract.options.address.toLowerCase();
@@ -224,7 +224,7 @@ describe(`${name}/hooks/useContractCall.test.tsx`, () => {
                 ContractCRUD.actions.create({
                     networkId,
                     address,
-                    abi: cloneDeep(Artifacts.BlockNumber.abi) as any,
+                    abi: cloneDeep(Contracts.Artifacts.BlockNumber.abi) as any,
                 }),
             );
         });

@@ -2,7 +2,7 @@ import { assert } from 'chai';
 import axios from 'axios';
 import * as moxios from 'moxios';
 
-import { Artifacts } from '@owlprotocol/contracts';
+import * as Contracts from '@owlprotocol/contracts';
 
 import { sleep } from '../../utils/index.js';
 import { networkId, WETH as WETH_ADDRESS } from '../../test/data.js';
@@ -48,13 +48,13 @@ describe('contract/sagas/fetchAbi.test.ts', () => {
             await moxios.wait(() => {
                 const request = moxios.requests.mostRecent();
                 assert.deepEqual(request.config.params, { module: 'contract', action: 'getabi', address });
-                request.respondWith({ status: 200, response: { result: JSON.stringify(Artifacts.IERC20.abi) } });
+                request.respondWith({ status: 200, response: { result: JSON.stringify(Contracts.Artifacts.IERC20.abi) } });
             });
 
             await sleep(100);
             //Selector
             const contract = ContractCRUD.selectors.selectByIdSingle(store.getState(), { networkId, address });
-            assert.deepEqual(contract?.abi, Artifacts.IERC20.abi as any, 'contract.abi != Artifacts.IERC20.abi');
+            assert.deepEqual(contract?.abi, Contracts.Artifacts.IERC20.abi as any, 'contract.abi != Contracts.Artifacts.IERC20.abi');
         });
     });
 });

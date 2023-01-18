@@ -1,4 +1,4 @@
-import { Artifacts, IERC165InterfaceId, Utils } from "@owlprotocol/contracts";
+import * as Contracts from '@owlprotocol/contracts';
 import { compact, flatten, keys, map, mapValues, uniq, uniqBy } from "lodash-es";
 import { call, put } from 'typed-redux-saga'
 import { GetSupportsInterfaceAction, callBatched as callBatchedAction, CallActionInput } from "../actions/index.js";
@@ -26,8 +26,8 @@ export function* getSupportsInterfaceSaga(action: GetSupportsInterfaceAction): G
     const { contract } = yield* call(fetchSaga, ContractCRUD.actions.fetch({
         networkId,
         address,
-        abi: Artifacts.IERC165.abi,
-        interfaceIds: [IERC165InterfaceId]
+        abi: Contracts.Artifacts.IERC165.abi,
+        interfaceIds: [Contracts.IERC165InterfaceId]
     },
         action.meta.uuid
     ));
@@ -36,7 +36,7 @@ export function* getSupportsInterfaceSaga(action: GetSupportsInterfaceAction): G
     const { contract: registry } = yield* call(fetchSaga, ContractCRUD.actions.fetch({
         networkId,
         address: Utils.ERC1820.registryAddress,
-        abi: Artifacts.IERC1820Registry.abi
+        abi: Contracts.Artifacts.IERC1820Registry.abi
     }))
 
     //Find supported interfaceIds with IERC165

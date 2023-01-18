@@ -2,7 +2,7 @@ import { assert } from 'chai';
 import { Provider } from 'react-redux';
 import type { Contract as Web3Contract } from 'web3-eth-contract';
 import { renderHook } from '@testing-library/react-hooks';
-import { Artifacts } from '@owlprotocol/contracts'
+import * as Contracts from '@owlprotocol/contracts';
 
 import { name } from '../common.js';
 import { createStore, StoreType } from '../../store.js';
@@ -33,9 +33,9 @@ describe(`${name}/hooks/useEvents.tsx`, () => {
     });
 
     beforeEach(async () => {
-        web3Contract = await new web3.eth.Contract(Artifacts.BlockNumber.abi)
+        web3Contract = await new web3.eth.Contract(Contracts.Artifacts.BlockNumber.abi)
             .deploy({
-                data: Artifacts.BlockNumber.bytecode,
+                data: Contracts.Artifacts.BlockNumber.bytecode,
             })
             .send({ from: accounts[0], gas: 1000000, gasPrice: '875000000' });
         address = web3Contract.options.address.toLowerCase();

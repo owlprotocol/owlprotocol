@@ -9,7 +9,7 @@ import { getWeb3Provider } from '../../test/index.js';
 import { name } from '../common.js';
 import { networkId } from '../../test/data.js';
 
-import { Artifacts } from '@owlprotocol/contracts'
+import * as Contracts from '@owlprotocol/contracts';
 
 import { createStore, StoreType } from '../../store.js';
 
@@ -42,8 +42,8 @@ describe(`${name}.sagas.eventSubscribe`, () => {
         store = createStore();
         store.dispatch(NetworkCRUD.actions.create({ networkId, web3, web3Sender }));
 
-        const tx = new web3.eth.Contract(cloneDeep(Artifacts.BlockNumber.abi) as AbiItem[]).deploy({
-            data: Artifacts.BlockNumber.bytecode,
+        const tx = new web3.eth.Contract(cloneDeep(Contracts.Artifacts.BlockNumber.abi) as AbiItem[]).deploy({
+            data: Contracts.Artifacts.BlockNumber.bytecode,
         });
         const gas = await tx.estimateGas();
         web3Contract = await tx.send({ from: accounts[0], gas, gasPrice: '875000000' });
@@ -53,7 +53,7 @@ describe(`${name}.sagas.eventSubscribe`, () => {
             ContractCRUD.actions.create({
                 networkId,
                 address,
-                abi: cloneDeep(Artifacts.BlockNumber.abi) as AbiItem[],
+                abi: cloneDeep(Contracts.Artifacts.BlockNumber.abi) as AbiItem[],
             }),
         );
     });

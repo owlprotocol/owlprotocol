@@ -1,5 +1,5 @@
 import { put, call, all, select } from 'typed-redux-saga';
-import { Web3 as Web3Contracts } from '@owlprotocol/contracts';
+import * as Contracts from '@owlprotocol/contracts';
 import { NFTGenerativeItemCRUD } from '../crud.js';
 import { fetchSaga as fetchCollectionSaga } from '../../nftgenerativecollection/sagas/fetch.js';
 import { coder } from '../../utils/web3-eth-abi/index.js';
@@ -15,7 +15,7 @@ export function* fetchSaga(action: ReturnType<typeof NFTGenerativeItemCRUD.actio
     any,
     {
         network: NetworkWithObjects;
-        contract: ContractWithObjects<Web3Contracts.ERC721TopDownDna>;
+        contract: ContractWithObjects<Contracts.Web3.ERC721TopDownDna>;
         collection: NFTGenerativeCollection;
         item: NFTGenerativeItem;
     }

@@ -7,7 +7,7 @@ import { AbiItem } from '../../utils/web3-utils/index.js';
 
 import { sleep } from '../../utils/index.js';
 
-import { Artifacts } from '@owlprotocol/contracts'
+import * as Contracts from '@owlprotocol/contracts';
 import { createStore, StoreType } from '../../store.js';
 
 import { name } from '../common.js';
@@ -57,8 +57,8 @@ describe(`${name}.integration`, () => {
             it('Smart Contract - Code', async () => {
                 const accounts = await web3.eth.getAccounts();
                 //Deploy contract
-                const tx = new web3.eth.Contract(cloneDeep(Artifacts.BlockNumber.abi) as AbiItem[]).deploy({
-                    data: Artifacts.BlockNumber.bytecode,
+                const tx = new web3.eth.Contract(cloneDeep(Contracts.Artifacts.BlockNumber.abi) as AbiItem[]).deploy({
+                    data: Contracts.Artifacts.BlockNumber.bytecode,
                 });
                 const gas = await tx.estimateGas();
                 const web3Contract = await tx.send({ from: accounts[0], gas, gasPrice: '875000000' });
@@ -69,7 +69,7 @@ describe(`${name}.integration`, () => {
                 await sleep(1000);
 
                 const account = await ContractCRUD.db.get({ networkId, address });
-                assert.equal(account?.code, Artifacts.BlockNumber.deployedBytecode, 'smart contract code');
+                assert.equal(account?.code, Contracts.Artifacts.BlockNumber.deployedBytecode, 'smart contract code');
             });
         });
     });

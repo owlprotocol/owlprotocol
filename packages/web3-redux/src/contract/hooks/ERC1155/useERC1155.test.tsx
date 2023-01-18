@@ -16,7 +16,7 @@ import BlockCRUD from '../../../block/crud.js';
 import TransactionCRUD from '../../../transaction/crud.js';
 import NetworkCRUD from '../../../network/crud.js';
 
-import { Artifacts } from '@owlprotocol/contracts';
+import * as Contracts from '@owlprotocol/contracts';
 
 describe(`${name}/hooks/useERC1155.test.tsx`, () => {
     let store: StoreType;

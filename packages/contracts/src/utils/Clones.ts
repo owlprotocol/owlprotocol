@@ -2,6 +2,7 @@
  * Typescript implementation of Clones library pure functions
  * https://github.com/OpenZeppelin/openzeppelin-contracts/blob/master/contracts/proxy/Clones.sol
  */
+import { Buffer } from 'buffer';
 import { utils } from 'ethers';
 import { computeAddress } from './Create2.js';
 

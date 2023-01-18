@@ -1,5 +1,5 @@
 import { createAction2 } from '@owlprotocol/crud-redux';
-import { interfaceIds as defaultInterfaceIds } from '@owlprotocol/contracts'
+import * as Contracts from '@owlprotocol/contracts';
 import type { AbiItem } from 'web3-utils';
 
 import { name } from '../common.js';
@@ -16,7 +16,7 @@ export interface GetSupportsInterfaceActionInput extends ContractId {
 
 /** @category Actions */
 export const getSupportsInterface = createAction2(GET_SUPPORTS_INTERFACE, (payload: GetSupportsInterfaceActionInput) => {
-    const interfaceIds = payload.intefaceIds ?? defaultInterfaceIds
+    const interfaceIds = payload.intefaceIds ?? Contracts.interfaceIds
     return {
         networkId: payload.networkId,
         address: payload.address.toLowerCase(),

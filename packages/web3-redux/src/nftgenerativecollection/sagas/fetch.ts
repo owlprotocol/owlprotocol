@@ -1,5 +1,5 @@
 import { select, put, call, all } from 'typed-redux-saga';
-import { Artifacts, Web3 as Web3Contracts } from '@owlprotocol/contracts';
+import * as Contracts from '@owlprotocol/contracts';
 import { NFTGenerativeCollection as NFTGenerativeCollectionSpec, loadCollectionImages } from '@owlprotocol/nft-sdk';
 import axios, { AxiosResponse } from 'axios';
 import { NFTGenerativeCollectionCRUD } from '../crud.js';
@@ -13,17 +13,17 @@ import { NFTGenerativeCollection } from '../model/interface.js';
 import { callBatched } from '../../contract/sagas/callBatched.js';
 import { callBatched as callBatchedAction } from '../../contract/actions/callBatched.js'
 
-const IContractURI = Artifacts.IContractURI.abi;
-const IERC721 = Artifacts.IERC721.abi;
-const IERC721TopDown = Artifacts.IERC721TopDown.abi;
-const IERC721Dna = Artifacts.IERC721Dna.abi;
+const IContractURI = Contracts.Artifacts.IContractURI.abi;
+const IERC721 = Contracts.Artifacts.IERC721.abi;
+const IERC721TopDown = Contracts.Artifacts.IERC721TopDown.abi;
+const IERC721Dna = Contracts.Artifacts.IERC721Dna.abi;
 
 /** @category Sagas */
 export function* fetchSaga(action: ReturnType<typeof NFTGenerativeCollectionCRUD.actions.fetch>): Generator<
     any,
     {
         network: NetworkWithObjects;
-        contract: ContractWithObjects<Web3Contracts.ERC721TopDownDna>;
+        contract: ContractWithObjects<Contracts.Web3.ERC721TopDownDna>;
         collection: NFTGenerativeCollection;
     }
 > {
@@ -34,7 +34,7 @@ export function* fetchSaga(action: ReturnType<typeof NFTGenerativeCollectionCRUD
     const { network, contract } = (yield* call(
         fetchContractSaga,
         ContractCRUD.actions.fetch({ networkId, address, abi }),
-    )) as { network: NetworkWithObjects; contract: ContractWithObjects<Web3Contracts.ERC721TopDownDna> };
+    )) as { network: NetworkWithObjects; contract: ContractWithObjects<Contracts.Web3.ERC721TopDownDna> };
 
     const dbSelected = yield* call(NFTGenerativeCollectionCRUD.db.get, { networkId, address, status });
     if (dbSelected && dbSelected.metadata && dbSelected.childContracts) {

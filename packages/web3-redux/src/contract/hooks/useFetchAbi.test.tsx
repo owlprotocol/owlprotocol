@@ -6,7 +6,7 @@ import { renderHook } from '@testing-library/react-hooks';
 
 import { useFetchAbi } from './useFetchAbi.js';
 
-import { Artifacts } from '@owlprotocol/contracts';
+import * as Contracts from '@owlprotocol/contracts';
 import { WETH as WETH_ADDRESS, networkId } from '../../test/data.js';
 import { StoreType, createStore } from '../../store.js';
 import NetworkCRUD from '../../network/crud.js';
@@ -49,12 +49,12 @@ describe('contract/hooks/useFetchAbi.test.tsx', () => {
             await moxios.wait(() => {
                 const request = moxios.requests.mostRecent();
                 assert.deepEqual(request.config.params, { module: 'contract', action: 'getabi', address });
-                request.respondWith({ status: 200, response: { result: JSON.stringify(Artifacts.IERC20.abi) } });
+                request.respondWith({ status: 200, response: { result: JSON.stringify(Contracts.Artifacts.IERC20.abi) } });
             });
             await waitForNextUpdate();
 
-            assert.deepEqual(result.current, Artifacts.IERC20.abi as any, 'contract.abi != Artifacts.IERC20.abi');
-            assert.deepEqual(result.all, [undefined, Artifacts.IERC20.abi as any], 'result.all');
+            assert.deepEqual(result.current, Contracts.Artifacts.IERC20.abi as any, 'contract.abi != Contracts.Artifacts.IERC20.abi');
+            assert.deepEqual(result.all, [undefined, Contracts.Artifacts.IERC20.abi as any], 'result.all');
         });
 
         it('(networkId, address, false)', async () => {
@@ -72,11 +72,11 @@ describe('contract/hooks/useFetchAbi.test.tsx', () => {
             await moxios.wait(() => {
                 const request = moxios.requests.mostRecent();
                 assert.deepEqual(request.config.params, { module: 'contract', action: 'getabi', address });
-                request.respondWith({ status: 200, response: { result: JSON.stringify(Artifacts.IERC20.abi) } });
+                request.respondWith({ status: 200, response: { result: JSON.stringify(Contracts.Artifacts.IERC20.abi) } });
             });
             await waitForNextUpdate();
-            assert.deepEqual(result.current, Artifacts.IERC20.abi as any, 'contract.abi != Artifacts.IERC20.abi');
-            assert.deepEqual(result.all, [undefined, Artifacts.IERC20.abi as any], 'result.all');
+            assert.deepEqual(result.current, Contracts.Artifacts.IERC20.abi as any, 'contract.abi != Contracts.Artifacts.IERC20.abi');
+            assert.deepEqual(result.all, [undefined, Contracts.Artifacts.IERC20.abi as any], 'result.all');
         });
     });
 });

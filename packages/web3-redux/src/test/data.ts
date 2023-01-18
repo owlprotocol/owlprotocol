@@ -5,7 +5,7 @@ import { cloneDeep } from 'lodash-es';
 import { REDUX_ROOT } from '../common.js';
 import { StateRoot } from '../state.js';
 import { getOrm } from '../orm.js';
-import { Artifacts } from '@owlprotocol/contracts'
+import * as Contracts from '@owlprotocol/contracts';
 import ContractCRUD from '../contract/crud.js';
 import ContractEventCRUD from '../contractevent/crud.js';
 import BlockCRUD from '../block/crud.js';
@@ -14,12 +14,12 @@ import EthCallCRUD from '../ethcall/crud.js';
 
 export const networkId = '1336';
 
-const IContractURI = cloneDeep(Artifacts.IContractURI.abi);
-const IERC20 = cloneDeep(Artifacts.IERC20.abi)
-const IERC721 = cloneDeep(Artifacts.IERC721.abi)
-const IERC1155 = cloneDeep(Artifacts.IERC1155.abi)
-const IERC721TopDown = cloneDeep(Artifacts.IERC721TopDown.abi)
-const IERC721Dna = cloneDeep(Artifacts.IERC721Dna.abi)
+const IContractURI = cloneDeep(Contracts.Artifacts.IContractURI.abi);
+const IERC20 = cloneDeep(Contracts.Artifacts.IERC20.abi)
+const IERC721 = cloneDeep(Contracts.Artifacts.IERC721.abi)
+const IERC1155 = cloneDeep(Contracts.Artifacts.IERC1155.abi)
+const IERC721TopDown = cloneDeep(Contracts.Artifacts.IERC721TopDown.abi)
+const IERC721Dna = cloneDeep(Contracts.Artifacts.IERC721Dna.abi)
 
 //IPFS
 export const QM_BAYC_PNG = 'QmNwbd7ctEhGpVkP8nZvBBQfiNeFKRdxftJAxxEdkUKLcQ';
@@ -85,14 +85,14 @@ export const network1 = { networkId };
 export const contract0 = ContractCRUD.validate({
     networkId,
     address: ADDRESS_0,
-    abi: cloneDeep(Artifacts.BlockNumber.abi) as any,
+    abi: cloneDeep(Contracts.Artifacts.BlockNumber.abi) as any,
 });
 
 //Used in tests
 export const contract1 = ContractCRUD.validate({
     networkId,
     address: ADDRESS_1,
-    abi: cloneDeep(Artifacts.BlockNumber.abi) as any,
+    abi: cloneDeep(Contracts.Artifacts.BlockNumber.abi) as any,
 });
 export const contract2 = ContractCRUD.validate({
     networkId,
@@ -127,7 +127,7 @@ export const contractWETH = ContractCRUD.validate({
 export const contractUSDC = ContractCRUD.validate({
     networkId: '1',
     address: USDC,
-    abi: Artifacts.IERC20.abi,
+    abi: Contracts.Artifacts.IERC20.abi,
     tags: ['Favorites', 'ERC20'],
     label: 'USDC',
 });
@@ -261,7 +261,7 @@ export const transaction2 = TransactionCRUD.validate({
 
 //Ethcall
 const method = 'getValue';
-const methodAbi = (cloneDeep(Artifacts.BlockNumber.abi) as any).filter((f: any) => f.name === method)[0];
+const methodAbi = (cloneDeep(Contracts.Artifacts.BlockNumber.abi) as any).filter((f: any) => f.name === method)[0];
 const data = coder.encodeFunctionCall(methodAbi, []);
 export const ethCall1 = EthCallCRUD.validate({ networkId, from: ADDRESS_0, to: ADDRESS_1, data, returnValue: 66 });
 
@@ -281,9 +281,9 @@ export const getTestState = () => {
 export const deployTestContracts = async () => {
     const web3 = new Web3('ws://localhost:8545');
     const accounts = await web3.eth.getAccounts();
-    const contractBlockNumber = await new web3.eth.Contract(Artifacts.BlockNumber.abi as any)
+    const contractBlockNumber = await new web3.eth.Contract(Contracts.Artifacts.BlockNumber.abi as any)
         .deploy({
-            data: Artifacts.BlockNumber.bytecode,
+            data: Contracts.Artifacts.BlockNumber.bytecode,
         })
         .send({ from: accounts[0], gas: 1000000, gasPrice: '875000000' });
     /*

@@ -3,7 +3,7 @@ import Web3 from 'web3';
 import { name } from '../common.js';
 import { cloneDeep } from 'lodash-es';
 
-import { Artifacts } from '@owlprotocol/contracts'
+import * as Contracts from '@owlprotocol/contracts';
 
 import { createStore, StoreType } from '../../store.js';
 import { sleep } from '../../utils/index.js';
@@ -30,8 +30,8 @@ describe(`${name}/sagas/fetch.test.ts`, () => {
 
     it('store.dispatch(EthCall.fetch())', async () => {
         //Deploy contract
-        const tx1 = new web3.eth.Contract(cloneDeep(Artifacts.BlockNumber.abi) as any[]).deploy({
-            data: Artifacts.BlockNumber.bytecode,
+        const tx1 = new web3.eth.Contract(cloneDeep(Contracts.Artifacts.BlockNumber.abi) as any[]).deploy({
+            data: Contracts.Artifacts.BlockNumber.bytecode,
         });
         const gas1 = await tx1.estimateGas();
         const contract = await tx1.send({ from: accounts[0], gas: gas1, gasPrice: '875000000' });

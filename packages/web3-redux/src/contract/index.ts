@@ -12,6 +12,9 @@ import * as Hooks from './hooks/index.js';
 
 export const Contract = {
     name: CRUDModel.name,
+    enums: {
+        DeployType: Actions.DeployType
+    },
     actions: {
         ...CRUDModel.actions,
         call: Actions.call,

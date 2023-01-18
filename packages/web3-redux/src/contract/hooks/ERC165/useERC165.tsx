@@ -1,4 +1,4 @@
-import { Artifacts } from '@owlprotocol/contracts';
+import * as Contracts from '@owlprotocol/contracts';
 import { useERC165SupportsInterface } from './useERC165SupportsInterface.js';
 import { useContract } from '../useContract.js';
 
@@ -10,7 +10,7 @@ import { useContract } from '../useContract.js';
  */
 export function useERC165(networkId: string | undefined, address: string | undefined, interfaceId: string | undefined) {
     //Create abi in store if non-existant
-    useContract(networkId, address, { abi: Artifacts.IERC165.abi });
+    useContract(networkId, address, { abi: Contracts.Artifacts.IERC165.abi });
 
     const [value] = useERC165SupportsInterface(networkId, address, [interfaceId]);
     return value;

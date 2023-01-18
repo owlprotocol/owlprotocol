@@ -1,5 +1,5 @@
 import { useMemo } from 'react';
-import { Artifacts, Web3 } from '@owlprotocol/contracts';
+import * as Contracts from '@owlprotocol/contracts';
 import useERC20Transfer from './useERC20Transfer.js';
 import useERC20Approval from './useERC20Approval.js';
 import { UseEventsOptions } from '../useEvents.js';
@@ -26,7 +26,7 @@ export function useERC20(
     },
 ) {
     //Create abi in store if non-existant
-    useContract(networkId, address, { abi: Artifacts.IERC20Metadata.abi });
+    useContract(networkId, address, { abi: Contracts.Artifacts.IERC20Metadata.abi });
 
     //Default sync params
     //Refresh call action will get set by the callSyncedAction() creator, we pass an empty array as an argument

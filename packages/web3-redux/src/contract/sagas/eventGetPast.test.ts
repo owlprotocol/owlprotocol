@@ -8,7 +8,7 @@ import { AbiItem } from '../../utils/web3-utils/index.js';
 
 import { name } from '../common.js';
 
-import { Artifacts } from '@owlprotocol/contracts'
+import * as Contracts from '@owlprotocol/contracts';
 import { mineBlocks, sleep } from '../../utils/index.js';
 
 import { createStore, StoreType } from '../../store.js';
@@ -33,7 +33,7 @@ const web3 = network1336.web3!;
 
 describe(`${name}/sagas/eventGetPast.test.ts`, () => {
     let accounts: string[];
-    const eventAbi = Artifacts.BlockNumber.abi.find((a: AbiItem) => a.type === 'event' && a.name === 'NewValue')
+    const eventAbi = Contracts.Artifacts.BlockNumber.abi.find((a: AbiItem) => a.type === 'event' && a.name === 'NewValue')
 
     before(async () => {
         accounts = await web3.eth.getAccounts();
@@ -123,9 +123,9 @@ describe(`${name}/sagas/eventGetPast.test.ts`, () => {
 
 
         beforeEach(async () => {
-            web3Contract = await new web3.eth.Contract(Artifacts.BlockNumber.abi as AbiItem[])
+            web3Contract = await new web3.eth.Contract(Contracts.Artifacts.BlockNumber.abi as AbiItem[])
                 .deploy({
-                    data: Artifacts.BlockNumber.bytecode,
+                    data: Contracts.Artifacts.BlockNumber.bytecode,
                 })
                 .send({ from: accounts[0], gas: 1000000, gasPrice: '875000000' });
             address = web3Contract.options.address.toLowerCase();
@@ -136,7 +136,7 @@ describe(`${name}/sagas/eventGetPast.test.ts`, () => {
                 ContractCRUD.actions.create({
                     networkId,
                     address,
-                    abi: Artifacts.BlockNumber.abi as AbiItem[],
+                    abi: Contracts.Artifacts.BlockNumber.abi as AbiItem[],
                 }),
             );
         });

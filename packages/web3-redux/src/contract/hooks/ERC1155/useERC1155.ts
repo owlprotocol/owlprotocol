@@ -1,6 +1,6 @@
 import { useMemo } from 'react';
 import invariant from 'tiny-invariant';
-import { Artifacts } from '@owlprotocol/contracts';
+import * as Contracts from '@owlprotocol/contracts';
 import { useERC1155TransferSingle } from './useERC1155TransferSingle.js';
 import { useERC1155TokenURI, useERC1155BalanceOf } from './hooks.js';
 import { UseEventsOptions } from '../useEvents.js';
@@ -28,7 +28,7 @@ export function useERC1155(
     },
 ) {
     //Create abi in store if non-existant
-    useContract(networkId, address, { abi: Artifacts.IERC1155MetadataURI.abi });
+    useContract(networkId, address, { abi: Contracts.Artifacts.IERC1155MetadataURI.abi });
     if (address) invariant(isAddress(address), `${address} invalid contract address!`);
     if (balanceOfAddress) invariant(isAddress(balanceOfAddress), `${balanceOfAddress} invalid balanceOf address!`);
 

@@ -6,7 +6,7 @@ import { mineUpTo } from '@nomicfoundation/hardhat-network-helpers';
 import { AbiItem } from '../../utils/web3-utils/index.js';
 
 import { name } from '../common.js';
-import { Artifacts } from '@owlprotocol/contracts'
+import * as Contracts from '@owlprotocol/contracts';
 import {
     eventGetPastRawAction as eventGetPastRawAction,
 } from '../actions/index.js';
@@ -34,7 +34,7 @@ describe(`${name}/sagas/eventGetPastRaw.test.ts`, () => {
 
     describe('unit', () => {
         const address = ADDRESS_0;
-        const web3Contract = new web3.eth.Contract(Artifacts.BlockNumber.abi as AbiItem[], address);
+        const web3Contract = new web3.eth.Contract(Contracts.Artifacts.BlockNumber.abi as AbiItem[], address);
         const blockNumber = 20;
 
         const action = eventGetPastRawAction({
@@ -115,9 +115,9 @@ describe(`${name}/sagas/eventGetPastRaw.test.ts`, () => {
         let store: StoreType;
 
         beforeEach(async () => {
-            web3Contract = await new web3.eth.Contract(Artifacts.BlockNumber.abi as AbiItem[])
+            web3Contract = await new web3.eth.Contract(Contracts.Artifacts.BlockNumber.abi as AbiItem[])
                 .deploy({
-                    data: Artifacts.BlockNumber.bytecode,
+                    data: Contracts.Artifacts.BlockNumber.bytecode,
                 })
                 .send({ from: accounts[0], gas: 1000000, gasPrice: '875000000' });
             address = web3Contract.options.address.toLowerCase();
@@ -128,7 +128,7 @@ describe(`${name}/sagas/eventGetPastRaw.test.ts`, () => {
                 ContractCRUD.actions.create({
                     networkId,
                     address,
-                    abi: Artifacts.BlockNumber.abi as AbiItem[],
+                    abi: Contracts.Artifacts.BlockNumber.abi as AbiItem[],
                 }),
             );
         });

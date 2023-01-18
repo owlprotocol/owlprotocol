@@ -1,16 +1,17 @@
 import { ComponentStory, ComponentMeta } from '@storybook/react';
 import { TestData } from '@owlprotocol/web3-redux';
 import { networkIdArgType } from '../../../test/storybookArgs.js';
-import { AssetPickerInstanceSelect, ERC721InstanceSelectWithState } from './AssetPickerModal.js';
+import { AssetPickerModal } from './AssetPickerModal.js';
 
 // eslint-disable-next-line import/no-default-export
 export default {
     title: 'AssetPicker/ERC721InstanceSelect',
-    component: AssetPickerInstanceSelect,
-} as ComponentMeta<typeof AssetPickerInstanceSelect>;
+    component: AssetPickerModal,
+} as ComponentMeta<typeof AssetPickerModal>;
 
-const Template: ComponentStory<typeof AssetPickerInstanceSelect> = (args: any) => <ERC721InstanceSelect {...args} />;
+const Template: ComponentStory<typeof AssetPickerModal> = (args: any) => <AssetPickerModal {...args} />;
 
+/*
 export const Choices = Template.bind({});
 
 Choices.args = {
@@ -58,3 +59,5 @@ Stateful.args = {
         }
     ]
 };
+
+*/

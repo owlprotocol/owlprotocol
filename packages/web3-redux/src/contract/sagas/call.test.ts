@@ -1,7 +1,7 @@
 import { assert } from 'chai';
 import type { Contract as Web3Contract } from 'web3-eth-contract';
 import { testSaga } from 'redux-saga-test-plan';
-import { Artifacts } from '@owlprotocol/contracts';
+import * as Contracts from '@owlprotocol/contracts';
 import { callSaga } from './call.js';
 import { AbiItem } from '../../utils/web3-utils/index.js';
 import { sleep } from '../../utils/index.js';
@@ -36,7 +36,7 @@ describe(`${name}/sagas/call.ts`, () => {
     describe('unit', () => {
         beforeEach(async () => {
             address = ADDRESS_0;
-            web3Contract = await new web3.eth.Contract(Artifacts.BlockNumber.abi as AbiItem[], address);
+            web3Contract = await new web3.eth.Contract(Contracts.Artifacts.BlockNumber.abi as AbiItem[], address);
         });
 
         it.skip('call - success', async () => {
@@ -83,9 +83,9 @@ describe(`${name}/sagas/call.ts`, () => {
 
     describe('store', () => {
         beforeEach(async () => {
-            web3Contract = await new web3.eth.Contract(Artifacts.BlockNumber.abi as AbiItem[])
+            web3Contract = await new web3.eth.Contract(Contracts.Artifacts.BlockNumber.abi as AbiItem[])
                 .deploy({
-                    data: Artifacts.BlockNumber.bytecode,
+                    data: Contracts.Artifacts.BlockNumber.bytecode,
                 })
                 .send({ from: accounts[0], gas: 1000000, gasPrice: '875000000' });
             address = web3Contract.options.address.toLowerCase();
@@ -96,7 +96,7 @@ describe(`${name}/sagas/call.ts`, () => {
                 ContractCRUD.actions.create({
                     networkId,
                     address,
-                    abi: Artifacts.BlockNumber.abi as AbiItem[],
+                    abi: Contracts.Artifacts.BlockNumber.abi as AbiItem[],
                 }),
             );
         });

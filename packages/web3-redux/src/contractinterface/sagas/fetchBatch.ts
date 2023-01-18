@@ -1,8 +1,8 @@
 import { put, call } from 'typed-redux-saga';
 import { ContractInterfaceCRUD } from '../crud.js';
 import { ContractInterface } from '../model/interface.js';
-import { interfaceIds } from '@owlprotocol/contracts';
-import { compact, filter, map, zip } from 'lodash-es';
+import * as Contracts from '@owlprotocol/contracts';
+import { compact, map, zip } from 'lodash-es';
 
 /** @category Sagas */
 export function* fetchBatchSaga(action: ReturnType<typeof ContractInterfaceCRUD.actions.fetchBatch>): Generator<
@@ -27,7 +27,7 @@ export function* fetchBatchSaga(action: ReturnType<typeof ContractInterfaceCRUD.
         }
 
         //Default abi
-        if (interfaceIds[interfaceId]) {
+        if (Contracts.interfaceIds[interfaceId]) {
             const contractInterface = { interfaceId, abi }
             return { insert: true, contractInterface: contractInterface }
         }

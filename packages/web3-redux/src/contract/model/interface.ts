@@ -24,7 +24,7 @@ export type BaseWeb3Contract = Omit<Web3Contract, 'once' | 'clone' | '_address' 
 /**
  * Contract object.
  * @typeParam T
- * [TypeChain](https://github.com/dethcrypto/TypeChain) web3.js contract. Enables getting type inference for calls and events. Defaults to standard Web3.js contract interface.
+ * [TypeChain](https://github.com/dethcrypto/TypeChain) web3.js contract. Enables getting type inference for calls and events. Defaults to standard Contracts.Web3.js contract interface.
  */
 export interface Contract extends ContractId, T_Encoded_Base {
     /** Contract ABI */
