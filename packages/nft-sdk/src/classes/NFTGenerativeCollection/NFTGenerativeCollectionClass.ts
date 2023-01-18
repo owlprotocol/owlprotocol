@@ -676,8 +676,6 @@ export class NFTGenerativeCollectionClass<
         height = 800,
     ): Promise<string | undefined> {
 
-        console.log('Entered getImage');
-
         if (!this.generatedImageType) return undefined;
 
         //TODO: Cache
@@ -725,11 +723,10 @@ export class NFTGenerativeCollectionClass<
         height?: number | undefined,
     ): Promise<string | undefined> {
 
-        console.log('Entered getImageWithChildren');
-
         if (!this.generatedImageType) return undefined;
 
         const image = this.getImage(attributes, mergeOptions, width, height);
+
         const existingChildren = pick(this.children, keys(omitBy(children, isUndefined))) as Record<string, NFTGenerativeCollectionInterface>;
         const imagesChildren =
             this.children && children
@@ -740,7 +737,9 @@ export class NFTGenerativeCollectionClass<
                     isUndefined,
                 )
                 : undefined;
+
         const layers = compact(await Promise.all([image, ...Object.values(imagesChildren ?? [])]));
+
         if ('svg' == this.generatedImageType) {
             const svg = mergeSVG(layers, width, height);
             return svg;
@@ -819,12 +818,14 @@ export class NFTGenerativeCollectionClass<
                 // TODO: this should be exhaustive, or have a hash of the image?
                 const path = `${ipfsHash}/layer/${trait.name}/${option.value}`;
 
-                image_url = path;
+                // cache.set(path, image);
+
+                // image_url = path;
 
                 const newOption: NFTGenerativeTraitImageOption = {
                     ...option,
                     image,
-                    image_url,
+                    // image_url,
                 };
 
                 options.push(newOption);

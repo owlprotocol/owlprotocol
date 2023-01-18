@@ -295,7 +295,7 @@
       "external_url": "https://linktr.ee/threadhausco",
       "seller_fee_basis_points": 10000,
       "fee_recipient": "0xCF28F97AbDfE1d0b9c51aDF6cF334f6489e080Fd",
-      "generatedImage": "png",
+      "generatedImageType": "png",
       "traits": {
         "dress": {
           "name": "dress",
@@ -432,7 +432,7 @@
       "external_url": "https://linktr.ee/threadhausco",
       "seller_fee_basis_points": 10000,
       "fee_recipient": "0xCF28F97AbDfE1d0b9c51aDF6cF334f6489e080Fd",
-      "generatedImage": "png",
+      "generatedImageType": "png",
       "traits": {
         "hats": {
           "name": "hats",
@@ -673,7 +673,7 @@
       "external_url": "https://linktr.ee/threadhausco",
       "seller_fee_basis_points": 10000,
       "fee_recipient": "0xCF28F97AbDfE1d0b9c51aDF6cF334f6489e080Fd",
-      "generatedImage": "png",
+      "generatedImageType": "png",
       "traits": {
         "facial_hair": {
           "name": "facial_hair",
