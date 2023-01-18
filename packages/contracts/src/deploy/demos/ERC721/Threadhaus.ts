@@ -119,16 +119,21 @@ const deploy = async ({ provider, signers, network }: RunTimeEnvironment) => {
     ];
     const addressFacialHairChild = BeaconProxyFactory.getAddress(...initArgsFacialHairChildBeacon);
 
+
+    const childContracts = [addressGlassesChild, addressHatsChild, addressDressChild, addressFacialHairChild];
+
+    console.debug(childContracts);
+
     const thColl = {
         admin: signerAddress,
         contractUri: 'http://localhost:3000/innovot/collection.json',
         gsnForwarder: constants.AddressZero,
         name: 'Thread Haus - Innovot NFT Collection',
         symbol: 'ThreadHaus',
-        initBaseURI: '',
+        initBaseURI: 'http://localhost:3001/dev/metadata/getMetadata/',
         feeReceiver: signerAddress,
         feeNumerator: 0,
-        childContracts721: [addressGlassesChild, addressHatsChild, addressDressChild, addressFacialHairChild],
+        childContracts721: childContracts,
         childContracts1155: [],
     } as ERC721TopDownDna.ERC721TopDownDnaInitializeArgs;
     const initArgs = ERC721TopDownDna.flattenInitArgsERC721TopDownDna(thColl);

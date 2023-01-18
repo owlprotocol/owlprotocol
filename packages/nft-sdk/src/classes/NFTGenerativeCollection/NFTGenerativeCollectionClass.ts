@@ -3,7 +3,6 @@ import type { CID } from 'ipfs-http-client';
 import { pick, omitBy, isUndefined, mapValues, keys, values, compact, isEmpty, uniq } from 'lodash-es';
 import mergeImages, { Options as MergeImagesOptions } from 'merge-images';
 import { BytesLike } from '@ethersproject/bytes';
-import fetch from '@adobe/node-fetch-retry';
 import { ethers } from 'ethers';
 import { Buffer } from 'buffer';
 import { join } from 'path';
@@ -772,6 +771,11 @@ export class NFTGenerativeCollectionClass<
         return collectionIpfsResult.cid;
     }
 
+    /**
+     * Not recommended, but necessary for now because traits are readonly
+     * @param ipfsGateway
+     * @param ipfsHash
+     */
     async loadImages(ipfsGateway: string, ipfsHash: string): Promise<void>{
 
         for (const traitKey in this.traits) {
@@ -807,7 +811,7 @@ export class NFTGenerativeCollectionClass<
                         image = Buffer.from(image).toString('base64');
                     }
                 } catch (err) {
-                    console.log(`img fetch error: ${image_url}`);
+                    console.error(`img fetch error: ${image_url}`, err);
                     throw err;
                 }
 

@@ -11,7 +11,6 @@ import {
     isNFTGenerativeTraitImage,
 } from '../types'
 import BN from 'bn.js';
-import fetch from 'node-fetch';
 
 /**
  * Run with experimental-specifier-resolution
