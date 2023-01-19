@@ -773,6 +773,8 @@ export class NFTGenerativeCollectionClass<
 
     /**
      * Not recommended, but necessary for now because traits are readonly
+     *
+     * TODO: redunant with validation/NFTGenerativeCollection.ts
      * @param ipfsGateway
      * @param ipfsHash
      */
