@@ -11,7 +11,7 @@ const deploy = async ({ provider, signers, network }: RunTimeEnvironment) => {
     let nonce = await provider.getTransactionCount(signerAddress);
 
     const factories = getFactories(signer);
-    const deterministicFactories = getDeterministicInitializeFactories(signer, factories, signerAddress);
+    const deterministicFactories = getDeterministicInitializeFactories(factories, signerAddress);
     const ERC721MintableFactory = deterministicFactories.ERC721Mintable;
 
     //Contracts

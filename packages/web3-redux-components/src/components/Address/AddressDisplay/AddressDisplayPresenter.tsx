@@ -103,7 +103,7 @@ export const AddressDisplayPresenter = ({
                 <Box color={themes.color9} fontSize={14} fontWeight={400} flex={1} mx={2} w={['30%', '40%', '75%']}>
                     {label ? (
                         <Flex>
-                            <Text isTruncated maxW={'12%'} mx={1}>
+                            <Text isTruncated maxW={'50%'} mx={1}>
                                 {label}
                             </Text>
                             &lt;<Text isTruncated>{address}</Text>&gt;

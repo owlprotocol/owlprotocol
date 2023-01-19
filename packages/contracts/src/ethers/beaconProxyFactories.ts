@@ -1,16 +1,14 @@
 import { mapValues, omit } from '../lodash.js';
-import type { Signer } from 'ethers';
-import { ERC1167FactoryImplementation } from '../utils/ERC1167Factory/getContractFactory.js';
 import { InitializeFactories, NoInitFactories, ProxyInitializeFactories } from './deterministicFactories.js';
 import { beaconProxyFactory } from '../utils/ERC1167Factory/getBeaconProxyFactory.js';
+import { ERC1167FactoryAddress } from '../utils/ERC1167Factory/getAddress.js';
 
 export function getBeaconProxyFactories(
-    signer: Signer,
     deterministicFactories: NoInitFactories,
     beaconFactory: InitializeFactories['UpgradeableBeacon'],
     msgSender: string,
 ) {
-    const cloneFactory = ERC1167FactoryImplementation(signer);
+    const cloneFactory = deterministicFactories.ERC1167Factory.attach(ERC1167FactoryAddress);
     const factories2 = omit(
         deterministicFactories,
         'ERC1167Factory',

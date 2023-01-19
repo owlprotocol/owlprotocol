@@ -23,8 +23,8 @@ const deploy = async ({ provider, signers, network }: RunTimeEnvironment) => {
 
     const factories = getFactories(signer);
     const cloneFactory = factories.ERC1167Factory.attach(ERC1167Factory.ERC1167FactoryAddress);
-    const deterministicFactories = getDeterministicFactories(signer, factories);
-    const deterministicInitializeFactories = getDeterministicInitializeFactories(signer, factories, signerAddress);
+    const deterministicFactories = getDeterministicFactories(factories);
+    const deterministicInitializeFactories = getDeterministicInitializeFactories(factories, signerAddress);
 
     const UpgradeableBeaconFactory = deterministicInitializeFactories.UpgradeableBeacon;
     const implementationAddress = deterministicFactories.ERC721TopDownDna.getAddress();

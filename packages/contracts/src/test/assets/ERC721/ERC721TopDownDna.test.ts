@@ -36,7 +36,7 @@ describe('ERC721TopDownDna', function () {
         const signerAddress = signer.address;
 
         factories = getFactories(signer);
-        deterministicFactories = getDeterministicInitializeFactories(signer, factories, signerAddress);
+        deterministicFactories = getDeterministicInitializeFactories(factories, signerAddress);
         ERC721TopDownDnaFactory = deterministicFactories.ERC721TopDownDna;
     });
 

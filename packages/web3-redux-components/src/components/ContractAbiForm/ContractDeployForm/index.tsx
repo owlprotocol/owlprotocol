@@ -19,6 +19,7 @@ export interface ContractDeployFormProps {
     deployImplementationAddress?: string;
     deployBeaconAddress?: string;
     label?: string;
+    tags?: string[];
 }
 
 export const ContractDeployForm = ({
@@ -31,7 +32,8 @@ export const ContractDeployForm = ({
     deploySaltSenderDeterministic,
     deployImplementationAddress,
     deployBeaconAddress,
-    label
+    label,
+    tags
 }: ContractDeployFormProps) => {
     const dispatch = useDispatch();
 
@@ -78,7 +80,8 @@ export const ContractDeployForm = ({
                 deploySalt,
                 deploySaltSenderDeterministic,
                 onSuccess: setAddress,
-                label
+                label,
+                tags
             });
         }
     }, [
@@ -87,7 +90,8 @@ export const ContractDeployForm = ({
         deploySalt, deploySaltSenderDeterministic,
         args, from,
         setAddress,
-        label
+        label,
+        tags
     ]);
     //Callback
     const deploy = useCallback(() => {

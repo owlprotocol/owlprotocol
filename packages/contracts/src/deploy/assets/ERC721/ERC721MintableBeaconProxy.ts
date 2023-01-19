@@ -12,10 +12,10 @@ const deploy = async ({ provider, signers, network }: RunTimeEnvironment) => {
     let nonce = await provider.getTransactionCount(signerAddress);
 
     const factories = getFactories(signer);
-    const deterministicFactories = getDeterministicFactories(signer, factories);
-    const deterministicInitializeFactories = getDeterministicInitializeFactories(signer, factories, signerAddress);
+    const deterministicFactories = getDeterministicFactories(factories);
+    const deterministicInitializeFactories = getDeterministicInitializeFactories(factories, signerAddress);
     const beaconFactory = deterministicInitializeFactories.UpgradeableBeacon;
-    const beconProxyFactories = getBeaconProxyFactories(signer, deterministicFactories, beaconFactory, signerAddress);
+    const beconProxyFactories = getBeaconProxyFactories(deterministicFactories, beaconFactory, signerAddress);
     const ERC721MintableFactory = beconProxyFactories.ERC721Mintable;
 
     //Contracts

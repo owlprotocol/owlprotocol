@@ -1,5 +1,5 @@
 import React from 'react';
-import { BrowserRouter as Router } from 'react-router-dom';
+import { Outlet, RouterProvider, createReactRouter, createRouteConfig } from '@tanstack/react-router';
 import composeHooks from 'react-hooks-compose';
 import { useConfigureFromWeb3React, useMockData } from '../src/hooks/index.js'
 import { withChakraProvider, withMockData, withStoreProvider, withWeb3ReactProvider } from '../src/hoc/index.js';
@@ -38,12 +38,26 @@ export const decorators = [
             useConfigureFromWeb3React,
             useMockData,
         }))(Story2)
+
+        const rootRoute = createRouteConfig({
+            component: () => {
+                return <Story2 />
+            }
+        })
+        const indexRoute = rootRoute.createRoute({
+            path: '/',
+            component: () => {
+                return <></>
+            },
+        })
+        const routeConfig = rootRoute.addChildren([
+            indexRoute])
+        const router = createReactRouter({ routeConfig })
+
         return (
-            <Router>
-                <Provider store={store}>
-                    <Story2 />
-                </Provider>
-            </Router>
+            <Provider store={store}>
+                <RouterProvider router={router} />
+            </Provider>
         )
     }
 ];

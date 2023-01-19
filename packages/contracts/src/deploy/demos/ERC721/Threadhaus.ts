@@ -24,8 +24,8 @@ const deploy = async ({ provider, signers, network }: RunTimeEnvironment) => {
 
     const factories = getFactories(signer);
     const cloneFactory = factories.ERC1167Factory.attach(ERC1167Factory.ERC1167FactoryAddress);
-    const deterministicFactories = getDeterministicFactories(signer, factories);
-    const deterministicInitializeFactories = getDeterministicInitializeFactories(signer, factories, signerAddress);
+    const deterministicFactories = getDeterministicFactories(factories);
+    const deterministicInitializeFactories = getDeterministicInitializeFactories(factories, signerAddress);
 
     const UpgradeableBeaconFactory = deterministicInitializeFactories.UpgradeableBeacon;
     const implementationAddress = deterministicFactories.ERC721TopDownDna.getAddress();
@@ -129,11 +129,11 @@ const deploy = async ({ provider, signers, network }: RunTimeEnvironment) => {
     const address = BeaconProxyFactory.getAddress(...initArgsBeacon);
 
     const deployments = {
-        thGlassesChild: {address: addressGlassesChild, initArgs: initArgsGlassesChildBeacon},
-        thHatsChild: {address: addressHatsChild, initArgs: initArgsHatsChildBeacon},
-        thDressChild: {address: addressDressChild, initArgs: initArgsDressChildBeacon},
-        thFacialHairChild: {address: addressFacialHairChild, initArgs: initArgsFacialHairChildBeacon},
-        thColl: {address, initArgs: initArgsBeacon},
+        thGlassesChild: { address: addressGlassesChild, initArgs: initArgsGlassesChildBeacon },
+        thHatsChild: { address: addressHatsChild, initArgs: initArgsHatsChildBeacon },
+        thDressChild: { address: addressDressChild, initArgs: initArgsDressChildBeacon },
+        thFacialHairChild: { address: addressFacialHairChild, initArgs: initArgsFacialHairChildBeacon },
+        thColl: { address, initArgs: initArgsBeacon },
     };
 
     const promises = mapValues(deployments, async ({ address, initArgs }) => {

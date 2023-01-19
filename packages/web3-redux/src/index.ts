@@ -15,6 +15,7 @@ export * from './sync/index.js';
 export * from './transaction/index.js';
 export * from './nftgenerativecollection/index.js';
 export * from './nftgenerativeitem/index.js';
+export * from './web3Redux/index.js';
 
 export * from './orm.js';
 export * from './store.js';

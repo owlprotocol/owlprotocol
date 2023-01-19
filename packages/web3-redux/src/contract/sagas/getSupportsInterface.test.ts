@@ -44,7 +44,7 @@ describe(`${name}/sagas/getSupportsInterface.ts`, () => {
         await Deploy.deployERC1820({ provider, signers, network });
 
         factories = Ethers.getFactories(signer);
-        deterministicFactories = Ethers.getDeterministicInitializeFactories(signer, factories, signerAddress);
+        deterministicFactories = Ethers.getDeterministicInitializeFactories(factories, signerAddress);
         ERC721MintableFactory = deterministicFactories.ERC721Mintable;
     });
 

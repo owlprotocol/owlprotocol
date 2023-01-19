@@ -71,12 +71,12 @@ describe(`${name}/sagas/deploy.ts`, () => {
 
         //Use Factories to derive deterministic addresses
         const factories = Contracts.Ethers.getFactories(signer);
-        factoriesDeterministic = Contracts.Ethers.getDeterministicFactories(signer, factories);
-        factoriesDeterministicInit = Contracts.Ethers.getDeterministicInitializeFactories(signer, factories, from);
-        factoriesProxy1167 = Contracts.Ethers.getProxy1167InitializeFactories(signer, factoriesDeterministic, from)
+        factoriesDeterministic = Contracts.Ethers.getDeterministicFactories(factories);
+        factoriesDeterministicInit = Contracts.Ethers.getDeterministicInitializeFactories(factories, from);
+        factoriesProxy1167 = Contracts.Ethers.getProxy1167InitializeFactories(factoriesDeterministic, from)
         //Get address of upgradeable beacons
         const beaconFactory = factoriesDeterministicInit.UpgradeableBeacon;
-        factoriesProxyBeacon = Contracts.Ethers.getBeaconProxyFactories(signer, factoriesDeterministic, beaconFactory, from);
+        factoriesProxyBeacon = Contracts.Ethers.getBeaconProxyFactories(factoriesDeterministic, beaconFactory, from);
 
         //Configure web3Sender with privateKey wallet (required as we do signatures etc...)
         web3Sender = new Web3(web3.currentProvider);

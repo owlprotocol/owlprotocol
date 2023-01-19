@@ -38,8 +38,8 @@ describe('ERC1167Factory.sol', function () {
         const signerAddress = signer.address;
 
         factories = getFactories(signer);
-        deterministicFactories = getDeterministicFactories(signer, factories);
-        proxyFactories = getProxy1167InitializeFactories(signer, deterministicFactories, signerAddress);
+        deterministicFactories = getDeterministicFactories(factories);
+        proxyFactories = getProxy1167InitializeFactories(deterministicFactories, signerAddress);
 
         cloneFactory = await deployProxyFactory(hre as any);
 

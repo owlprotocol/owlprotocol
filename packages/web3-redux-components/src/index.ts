@@ -30,6 +30,7 @@ export * from "./components/NFT/index.js";
 
 //Address
 export * from "./components/Address/index.js";
+export * from "./components/Contract/index.js";
 
 //ERC
 export * from "./components/ERC721/index.js";

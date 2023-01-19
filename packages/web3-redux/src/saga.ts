@@ -22,7 +22,7 @@ import { rootSaga as transactionSaga } from './transaction/sagas/index.js';
 import { rootSaga as nftGenerativeCollectionSaga } from './nftgenerativecollection/sagas/index.js';
 import { rootSaga as nftGenerativeItemSaga } from './nftgenerativeitem/sagas/index.js';
 
-import Web3ReduxSaga from './web3Redux/sagas/index.js';
+import { rootSaga as Web3ReduxSaga } from './web3Redux/sagas/index.js';
 
 //https://typed-redux-saga.js.org/docs/advanced/RootSaga.html
 export function* rootSaga() {

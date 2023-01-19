@@ -18,8 +18,8 @@ const deployUpgradeableBeacon = async ({ provider, signers, network }: RunTimeEn
     let nonce = await provider.getTransactionCount(signerAddress);
 
     const factories = getFactories(signer);
-    const deterministicFactories = getDeterministicFactories(signer, factories);
-    const deterministicInitializeFactories = getDeterministicInitializeFactories(signer, factories, signerAddress);
+    const deterministicFactories = getDeterministicFactories(factories);
+    const deterministicInitializeFactories = getDeterministicInitializeFactories(factories, signerAddress);
     const UpgradeableBeaconFactory = deterministicInitializeFactories.UpgradeableBeacon;
     const implementationFactories = omit(deterministicFactories, 'UpgradeableBeacon', 'BeaconProxy') as NoInitFactories;
 

@@ -220,7 +220,7 @@ describe('ERC721Mintable', function () {
         const signerAddress = signer.address;
 
         factories = getFactories(signer);
-        deterministicFactories = getDeterministicInitializeFactories(signer, factories, signerAddress);
+        deterministicFactories = getDeterministicInitializeFactories( factories, signerAddress);
         ERC721MintableFactory = deterministicFactories.ERC721Mintable;
     });
 

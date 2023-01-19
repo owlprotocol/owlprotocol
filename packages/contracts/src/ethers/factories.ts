@@ -120,7 +120,7 @@ const AssetRouterOutput = new ContractFactory(
     AssetRouterOutputArtifact.bytecode,
 ) as AssetRouterOutput__factory;
 
-const factories = {
+export const factories = {
     ERC1167Factory,
     BeaconProxy,
     UpgradeableBeacon,

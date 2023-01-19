@@ -64,6 +64,20 @@ export const networkIdArgType = {
     },
 };
 
+const contractTags = {
+    ['Favorites']: 'Favorites',
+    ['Implementation']: 'Implementation',
+    ['deployed']: 'deployed',
+};
+export const contractTagsArgType = {
+    options: Object.keys(contractTags),
+    control: {
+        type: 'select',
+        labels: contractTags,
+    },
+};
+
+
 const addressLabels = {
     //[ADDRESS_0]: `ZERO - ${ADDRESS_0}`,
     [WETH]: `WETH - ${WETH}`,

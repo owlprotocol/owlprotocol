@@ -18,7 +18,9 @@ BlockNumber.args = {
     networkId: '1336',
     abi: Artifacts.BlockNumber.abi,
     bytecode: Artifacts.BlockNumber.bytecode,
-    deployType: Contract.enums.DeployType.REGULAR
+    deployType: Contract.enums.DeployType.REGULAR,
+    label: 'BlockNumber',
+    tags: ['deployed']
 };
 BlockNumber.argTypes = {
     networkId: networkIdArgType,
@@ -28,8 +30,8 @@ const from = '0x7E5F4552091A69125d5DfCb7b8C2659029395Bdf'
 const privateKey = ethers.utils.hexZeroPad(ethers.utils.hexlify(1), 32)
 const signer = new ethers.Wallet(privateKey);
 const factories = Ethers.getFactories(signer);
-const factoriesDeterministic = Ethers.getDeterministicFactories(signer, factories);
-const factoriesDeterministicInit = Ethers.getDeterministicInitializeFactories(signer, factories, from);
+const factoriesDeterministic = Ethers.getDeterministicFactories(factories);
+const factoriesDeterministicInit = Ethers.getDeterministicInitializeFactories(factories, from);
 
 const ERC721MintableImplementation = factoriesDeterministic.ERC721Mintable.getAddress()
 const UpgradeableBeaconFactory = factoriesDeterministicInit.UpgradeableBeacon;
@@ -44,7 +46,8 @@ ERC721Mintable.args = {
     deployImplementationAddress: ERC721MintableImplementation,
     deployBeaconAddress: ERC721MintableBeacon,
     deploySalt: '0x0000000000000000000000000000000000000000000000000000000000000001',
-    label: 'ERC721Mintable'
+    label: 'ERC721Mintable',
+    tags: ['deployed', 'ERC721', 'ERC721Mintable']
 };
 ERC721Mintable.argTypes = {
     networkId: networkIdArgType,

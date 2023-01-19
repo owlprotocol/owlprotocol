@@ -1,8 +1,8 @@
 import { mapValues, omit } from '../lodash.js';
-import type { Signer } from 'ethers';
-import { ERC1167FactoryImplementation, deterministicFactory } from '../utils/ERC1167Factory/getContractFactory.js';
-import { Factories } from './factories.js';
+import { deterministicFactory } from '../utils/ERC1167Factory/getContractFactory.js';
+import { factories, Factories } from './factories.js';
 import { CustomFactory } from '../utils/ERC1167Factory/factory.js';
+import { ERC1167FactoryAddress } from '../utils/ERC1167Factory/getAddress.js';
 
 export type F_Initialize = Omit<Factories, 'ERC1167Factory' | 'Fallback' | 'ERC721TopDownLib' | 'ERC721TopDownDnaLib'>;
 export type F_ProxyInitialize = Omit<F_Initialize, 'UpgradeableBeacon' | 'BeaconProxy'>;
@@ -19,8 +19,8 @@ export type ProxyInitializeFactories = {
     [K in keyof F_ProxyInitialize]: CustomFactory<ReturnType<F_ProxyInitialize[K]['attach']>, 'proxyInitialize'>;
 };
 
-export function getDeterministicFactories(signer: Signer, factories: Factories): NoInitFactories {
-    const cloneFactory = ERC1167FactoryImplementation(signer);
+export function getDeterministicFactories(factories: Factories): NoInitFactories {
+    const cloneFactory = factories.ERC1167Factory.attach(ERC1167FactoryAddress);
     const factories2 = omit(factories, 'ERC1167Factory');
 
     return mapValues(factories2, (f: any) => {
@@ -31,12 +31,11 @@ export function getDeterministicFactories(signer: Signer, factories: Factories):
     }) as NoInitFactories;
 }
 
-export function getDeterministicInitializeFactories(
-    signer: Signer,
-    factories: Factories,
-    msgSender: string,
-): InitializeFactories {
-    const cloneFactory = ERC1167FactoryImplementation(signer);
+export const implementationFactories = getDeterministicFactories(factories);
+export const implementationAddresses = mapValues(implementationFactories, (f) => f.getAddress());
+
+export function getDeterministicInitializeFactories(factories: Factories, msgSender: string): InitializeFactories {
+    const cloneFactory = factories.ERC1167Factory.attach(ERC1167FactoryAddress);
     const factories2 = omit(
         factories,
         'ERC1167Factory',

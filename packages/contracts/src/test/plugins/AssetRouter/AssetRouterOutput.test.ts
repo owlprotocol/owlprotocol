@@ -43,7 +43,7 @@ describe('AssetRouterOutput', function () {
         const signerAddress = signer.address;
 
         factories = getFactories(signer);
-        deterministicInitFactories = getDeterministicInitializeFactories(signer, factories, signerAddress);
+        deterministicInitFactories = getDeterministicInitializeFactories(factories, signerAddress);
 
         AssetRouterOutputFactory = deterministicInitFactories.AssetRouterOutput;
     });

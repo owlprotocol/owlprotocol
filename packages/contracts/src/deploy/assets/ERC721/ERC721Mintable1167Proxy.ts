@@ -13,8 +13,8 @@ const deploy = async ({ provider, signers, network }: RunTimeEnvironment) => {
     let nonce = await provider.getTransactionCount(signerAddress);
 
     const factories = getFactories(signer);
-    const deterministicFactories = getDeterministicFactories(signer, factories);
-    const proxyFactories = getProxy1167InitializeFactories(signer, deterministicFactories, signerAddress);
+    const deterministicFactories = getDeterministicFactories(factories);
+    const proxyFactories = getProxy1167InitializeFactories(deterministicFactories, signerAddress);
     const ERC721MintableFactory = proxyFactories.ERC721Mintable;
 
     //Contracts

@@ -38,8 +38,8 @@ describe('AssetRouterInput', function () {
         const signerAddress = signer.address;
 
         factories = getFactories(signer);
-        const deterministicFactories = getDeterministicFactories(signer, factories);
-        deterministicInitFactories = getDeterministicInitializeFactories(signer, factories, signerAddress);
+        const deterministicFactories = getDeterministicFactories(factories);
+        deterministicInitFactories = getDeterministicInitializeFactories(factories, signerAddress);
 
         Fallback = await deterministicFactories.Fallback.deploy();
         AssetRouterInputFactory = deterministicInitFactories.AssetRouterInput;

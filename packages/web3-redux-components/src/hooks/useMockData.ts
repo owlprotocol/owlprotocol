@@ -1,4 +1,4 @@
-import { Config, Network, Environment, Contract, TestData } from '@owlprotocol/web3-redux';
+import { Config, Network, Environment, Contract, TestData, Web3Redux } from '@owlprotocol/web3-redux';
 import { getEnvironment } from '../environment.js';
 
 Environment.setEnvironment(getEnvironment() as any);
@@ -9,6 +9,7 @@ const defaultConfig = { corsProxy };
 export const useMockData = () => {
     //Config
     Config.hooks.useConfig(defaultConfig);
+    Web3Redux.hooks.useInitialize();
     //Networks
     /*
         useEffect(() => {

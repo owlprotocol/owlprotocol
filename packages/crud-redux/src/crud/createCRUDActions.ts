@@ -33,8 +33,8 @@ export function createCRUDActions<
 
     /** Actions */
     const FETCH = `${name}/FETCH`;
-    const FETCH_BATCHED = `${name}/FETCH`;
-    const FETCH_ALL = `${name}/FETCH`;
+    const FETCH_BATCHED = `${FETCH}/BATCHED`;
+    //const FETCH_ALL = `${FETCH}/ALL`;
     const CREATE = `${name}/CREATE`;
     const CREATE_BATCHED = `${CREATE}/BATCHED`;
     const PUT = `${name}/PUT`;

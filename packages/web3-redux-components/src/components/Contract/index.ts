@@ -1,1 +1,2 @@
-export * from './ContractCall/index.js';
+export * from './ContractsManagerTable';
+export * from './ContractsManagerTableRow';

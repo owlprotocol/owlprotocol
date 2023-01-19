@@ -12,7 +12,7 @@ const deployImplementations = async ({ provider, signers, network }: RunTimeEnvi
     let nonce = await provider.getTransactionCount(await signer.getAddress());
 
     const factories = getFactories(signer);
-    const deterministicFactories = getDeterministicFactories(signer, factories);
+    const deterministicFactories = getDeterministicFactories(factories);
 
     const promises = mapValues(deterministicFactories, async (factory) => {
         const address = factory.getAddress();
