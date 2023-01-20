@@ -52,7 +52,8 @@ const deploy = async ({ provider, signers, network }: RunTimeEnvironment) => {
         initBaseURI: '',
         feeReceiver: signerAddress,
         feeNumerator: 0,
-        childContracts: [],
+        childContracts721: [],
+        childContracts1155: [],
     } as ERC721TopDownDna.ERC721TopDownDnaInitializeArgs;
 
     const initArgsChild = ERC721TopDownDna.flattenInitArgsERC721TopDownDna(shapesChild);
@@ -69,7 +70,8 @@ const deploy = async ({ provider, signers, network }: RunTimeEnvironment) => {
         initBaseURI: '',
         feeReceiver: signerAddress,
         feeNumerator: 0,
-        childContracts: [addressChild],
+        childContracts721: [addressChild],
+        childContracts1155: [],
     } as ERC721TopDownDna.ERC721TopDownDnaInitializeArgs;
     const initArgs = ERC721TopDownDna.flattenInitArgsERC721TopDownDna(shapes);
     const initData = ERC721TopDownDnaInitEncoder(...initArgs);

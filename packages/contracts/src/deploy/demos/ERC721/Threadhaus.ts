@@ -16,7 +16,6 @@ import {
 import { ERC721TopDownDna, ERC1167Factory } from '../../../utils/index.js';
 
 const deploy = async ({ provider, signers, network }: RunTimeEnvironment) => {
-
     const SDK = await import('@owlprotocol/nft-sdk');
     const signer = signers[0];
     const signerAddress = await signer.getAddress();
@@ -53,7 +52,8 @@ const deploy = async ({ provider, signers, network }: RunTimeEnvironment) => {
         initBaseURI: '',
         feeReceiver: signerAddress,
         feeNumerator: 0,
-        childContracts: [],
+        childContracts721: [],
+        childContracts1155: [],
     } as ERC721TopDownDna.ERC721TopDownDnaInitializeArgs;
 
     const thHatsChild = {
@@ -65,7 +65,8 @@ const deploy = async ({ provider, signers, network }: RunTimeEnvironment) => {
         initBaseURI: '',
         feeReceiver: signerAddress,
         feeNumerator: 0,
-        childContracts: [],
+        childContracts721: [],
+        childContracts1155: [],
     } as ERC721TopDownDna.ERC721TopDownDnaInitializeArgs;
 
     const thDressChild = {
@@ -77,7 +78,8 @@ const deploy = async ({ provider, signers, network }: RunTimeEnvironment) => {
         initBaseURI: '',
         feeReceiver: signerAddress,
         feeNumerator: 0,
-        childContracts: [],
+        childContracts721: [],
+        childContracts1155: [],
     } as ERC721TopDownDna.ERC721TopDownDnaInitializeArgs;
 
     const thFacialHairChild = {
@@ -89,7 +91,8 @@ const deploy = async ({ provider, signers, network }: RunTimeEnvironment) => {
         initBaseURI: '',
         feeReceiver: signerAddress,
         feeNumerator: 0,
-        childContracts: [],
+        childContracts721: [],
+        childContracts1155: [],
     } as ERC721TopDownDna.ERC721TopDownDnaInitializeArgs;
 
     const initArgsGlassesChild = ERC721TopDownDna.flattenInitArgsERC721TopDownDna(thGlassesChild);
@@ -109,7 +112,11 @@ const deploy = async ({ provider, signers, network }: RunTimeEnvironment) => {
 
     const initArgsFacialHairChild = ERC721TopDownDna.flattenInitArgsERC721TopDownDna(thFacialHairChild);
     const initDataFacialHairChild = ERC721TopDownDnaInitEncoder(...initArgsFacialHairChild);
-    const initArgsFacialHairChildBeacon = [signerAddress, beaconAddress, initDataFacialHairChild] as [string, string, string];
+    const initArgsFacialHairChildBeacon = [signerAddress, beaconAddress, initDataFacialHairChild] as [
+        string,
+        string,
+        string,
+    ];
     const addressFacialHairChild = BeaconProxyFactory.getAddress(...initArgsFacialHairChildBeacon);
 
     const thColl = {
@@ -121,7 +128,8 @@ const deploy = async ({ provider, signers, network }: RunTimeEnvironment) => {
         initBaseURI: '',
         feeReceiver: signerAddress,
         feeNumerator: 0,
-        childContracts: [addressGlassesChild, addressHatsChild, addressDressChild, addressFacialHairChild],
+        childContracts721: [addressGlassesChild, addressHatsChild, addressDressChild, addressFacialHairChild],
+        childContracts1155: [],
     } as ERC721TopDownDna.ERC721TopDownDnaInitializeArgs;
     const initArgs = ERC721TopDownDna.flattenInitArgsERC721TopDownDna(thColl);
     const initData = ERC721TopDownDnaInitEncoder(...initArgs);
@@ -206,11 +214,7 @@ const deploy = async ({ provider, signers, network }: RunTimeEnvironment) => {
         },
     };
 
-
-
-
-    const promisesMints = mapValues(tokens, async (tokens, k) => {
-
+    const promisesMints = mapValues(tokens, async (tokens, k: keyof typeof tokens) => {
         const contract = contracts[k].contract!;
         let collection: any;
 
@@ -272,7 +276,7 @@ const deploy = async ({ provider, signers, network }: RunTimeEnvironment) => {
     console.debug(mints);
 
     return { contracts, mints };
-}
+};
 
 deploy.tags = ['ThreadHaus'];
 deploy.dependencies = ['Implementations', 'ERC1820', 'UpgradeableBeacon'];
