@@ -42,14 +42,14 @@ type AbiItemInputType =
     | 'int8'
     | 'int4';
 
-export interface Props {
+export interface AbiItemInputProps {
     type: AbiItemInputType;
     name?: string | undefined;
     onChange?: (value: string | boolean | undefined, error: Error | undefined) => void;
 }
 
 //eslint-disable-next-line @typescript-eslint/no-empty-function
-export const AbiItemInput = ({ type, name, onChange = (value, error) => console.log({ value, error }) }: Props) => {
+export const AbiItemInput = ({ type, name, onChange = (value, error) => console.log({ value, error }) }: AbiItemInputProps) => {
     const { themes } = useTheme();
 
     const [error, setError] = useState<Error | undefined>();

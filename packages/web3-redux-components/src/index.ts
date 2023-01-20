@@ -13,12 +13,7 @@ export { default as TransactionProgressBar } from "./components/TransactionProgr
 export { default as Erc20QRGenerator } from "./components/Erc20QRGenerator/index.js";
 export { default as QRCodePopover } from "./components/QRCodePopover/index.js";
 export { default as TransactionsTable } from "./components/TransactionsTable/index.js";
-export {
-    AbiItemForm,
-    AbiItemInput,
-    ContractAbiForm,
-    ContractAbiPage,
-} from "./components/ContractAbiForm/index.js";
+export * from "./components/ContractAbiForm/index.js";
 export * from "./components/FileUpload/index.js";
 export * from "./components/IPFS/index.js";
 export * as Hooks from "./hooks/index.js";

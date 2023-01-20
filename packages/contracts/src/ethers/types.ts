@@ -147,6 +147,7 @@ export type { ERC721TopDownDna__factory } from '../typechain/ethers/factories/ER
 export type { IERC1155Dna__factory } from '../typechain/ethers/factories/IERC1155Dna__factory';
 export type { IERC1155Mintable__factory } from '../typechain/ethers/factories/IERC1155Mintable__factory';
 export type { ERC1155Mintable__factory } from '../typechain/ethers/factories/ERC1155Mintable__factory';
+export type { ERC1155Dna__factory } from '../typechain/ethers/factories/ERC1155Dna__factory';
 
 //export type { IERC4907__factory } from '../typechain/ethers/factories/IERC4907__factory';
 

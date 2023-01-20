@@ -22,7 +22,7 @@ export interface ContractDeployFormProps {
     tags?: string[];
 }
 
-export const ContractDeployForm = ({
+const ContractDeployForm = ({
     networkId,
     namePrefix = '',
     abi,
@@ -146,3 +146,5 @@ export const ContractDeployForm = ({
         </Box>
     );
 };
+ContractDeployForm.displayName = 'ContractDeployForm'
+export { ContractDeployForm }

@@ -3,11 +3,11 @@ import { Box, Textarea, useTheme } from '@chakra-ui/react';
 import ContractAbiForm from '../ContractAbiForm/index.js';
 import AbiItemInput from '../AbiItemInput/index.js';
 
-interface Props {
+export interface ContractAbiPageProps {
     networkId: string;
 }
 
-export const ContractAbiPage = ({ networkId }: Props) => {
+export const ContractAbiPage = ({ networkId }: ContractAbiPageProps) => {
     const { themes } = useTheme();
     const [address, setAddress] = useState<string | undefined>();
     const [abiJSON, setABIJSON] = useState<string | undefined>();

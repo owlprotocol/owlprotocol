@@ -10,7 +10,7 @@ import AbiItemInput from '../AbiItemInput/index.js';
 //Better error handling for reverts
 
 //Similar to AbiItem interface
-export interface Props {
+export interface AbiItemFormProps {
     networkId: string;
     address: string | undefined;
     account?: string;
@@ -33,7 +33,7 @@ export const AbiItemForm = ({
     inputs = [],
     type = 'function',
     stateMutability = 'view',
-}: Props) => {
+}: AbiItemFormProps) => {
     const { themes } = useTheme();
     //const dispatch = useDispatch();
 
