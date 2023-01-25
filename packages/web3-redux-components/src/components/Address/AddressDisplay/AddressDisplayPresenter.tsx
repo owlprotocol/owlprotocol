@@ -1,12 +1,21 @@
-import { useCallback, useEffect, useState } from 'react';
-import { useTheme, Flex, Box, Text, Button, IconButton, Input, StyleProps } from '@chakra-ui/react';
-import copy from 'copy-to-clipboard';
-import Icon from '../../Icon/index.js';
-import NetworkIcon from '../../NetworkIcon/index.js';
-import QRCodePopover from '../../QRCodePopover/index.js';
-import { Address } from '../../../interfaces/Address.js';
+import { useCallback, useEffect, useState } from "react";
+import {
+    useTheme,
+    Flex,
+    Box,
+    Text,
+    Button,
+    IconButton,
+    Input,
+    StyleProps,
+} from "@chakra-ui/react";
+import copy from "copy-to-clipboard";
+import Icon from "../../Icon/index.js";
+import NetworkIcon from "../../NetworkIcon/index.js";
+import QRCodePopover from "../../QRCodePopover/index.js";
+import { Address } from "../../../interfaces/Address.js";
 
-export type Control = 'qr' | 'copy' | 'favorite' | 'edit' | 'icon';
+export type Control = "qr" | "copy" | "favorite" | "edit" | "icon";
 export interface AddressDisplayPresenterProps extends Address {
     label?: string;
     isFavorite?: boolean;
@@ -25,20 +34,20 @@ export const AddressDisplayPresenter = ({
     isFavorite,
     borderRadius = 12,
     bg,
-    toggleFavorite = () => console.log('toggleFavorite()'),
+    toggleFavorite = () => console.log("toggleFavorite()"),
     setLabel = (v) => console.log(`setLabel(${v})`),
-    controls = ['qr', 'copy', 'favorite', 'edit', 'icon'],
+    controls = ["qr", "copy", "favorite", "edit", "icon"],
     containerStyles,
 }: AddressDisplayPresenterProps) => {
     const theme = useTheme();
     const themes = theme.themes ?? {};
 
-    const [editLabelText, setEditLabelText] = useState('');
+    const [editLabelText, setEditLabelText] = useState("");
     const [editLabel, setEditLabel] = useState(false);
 
     //Default edit input text
     useEffect(() => {
-        setEditLabelText(label ?? '');
+        setEditLabelText(label ?? "");
     }, [label]);
 
     const handleSave = useCallback(() => {
@@ -48,9 +57,9 @@ export const AddressDisplayPresenter = ({
 
     const handleInputKeyDown = useCallback(
         (e: any) => {
-            if (e.key === 'Enter') handleSave();
+            if (e.key === "Enter") handleSave();
         },
-        [handleSave],
+        [handleSave]
     );
 
     const handleEditOnClick = useCallback(() => {
@@ -71,25 +80,26 @@ export const AddressDisplayPresenter = ({
 
     return (
         <Flex
-            p={2}
-            h={'60px'}
-            alignItems={'center'}
-            justify={'space-between'}
+            h={"60px"}
+            alignItems={"center"}
+            justify={"space-between"}
             bg={bg || themes.color6}
             borderRadius={borderRadius}
             {...containerStyles}
         >
-            {controls.includes('qr') && <QRCodePopover address={address} />}
-            {controls.includes('icon') && <NetworkIcon networkId={networkId} size={20} />}
+            {controls.includes("qr") && <QRCodePopover address={address} />}
+            {controls.includes("icon") && (
+                <NetworkIcon networkId={networkId} size={20} />
+            )}
 
             {editLabel && (
-                <Box color={themes.color9} textAlign={'left'} flex={1}>
+                <Box color={themes.color9} textAlign={"left"} flex={1}>
                     <Input
-                        h={'30px'}
+                        h={"30px"}
                         border={0}
                         borderRadius={0}
                         lineHeight={1}
-                        borderBottom={'1px solid'}
+                        borderBottom={"1px solid"}
                         type="text"
                         placeholder="Label"
                         value={editLabelText}
@@ -100,10 +110,17 @@ export const AddressDisplayPresenter = ({
             )}
 
             {!editLabel && (
-                <Box color={themes.color9} fontSize={14} fontWeight={400} flex={1} mx={2} w={['30%', '40%', '75%']}>
+                <Box
+                    color={themes.color9}
+                    fontSize={14}
+                    fontWeight={400}
+                    flex={1}
+                    mx={2}
+                    w={["30%", "40%", "75%"]}
+                >
                     {label ? (
                         <Flex>
-                            <Text isTruncated maxW={'50%'} mx={1}>
+                            <Text isTruncated maxW={"50%"} mx={1}>
                                 {label}
                             </Text>
                             &lt;<Text isTruncated>{address}</Text>&gt;
@@ -115,37 +132,46 @@ export const AddressDisplayPresenter = ({
             )}
 
             {editLabel ? (
-                <Flex alignItems={'center'}>
-                    <Button onClick={handleSave} bg={'transparent'} h={'35px'}>
+                <Flex alignItems={"center"}>
+                    <Button onClick={handleSave} bg={"transparent"} h={"35px"}>
                         Save
                     </Button>
-                    <Button onClick={handleCancelOnClick} color={themes.color9} bg={'transparent'} h={'35px'}>
+                    <Button
+                        onClick={handleCancelOnClick}
+                        color={themes.color9}
+                        bg={"transparent"}
+                        h={"35px"}
+                    >
                         Cancel
                     </Button>
                 </Flex>
             ) : (
-                <Flex alignItems={'center'} justifyContent={'space-between'}>
-                    {controls.includes('copy') && (
+                <Flex alignItems={"center"} justifyContent={"space-between"}>
+                    {controls.includes("copy") && (
                         <IconButton
-                            bg={'transparent'}
+                            bg={"transparent"}
                             onClick={handleCopy}
-                            aria-label={'copy to clipboard'}
+                            aria-label={"copy to clipboard"}
                             icon={<Icon icon="copy" />}
                         />
                     )}
-                    {controls.includes('favorite') && (
+                    {controls.includes("favorite") && (
                         <IconButton
-                            bg={'transparent'}
+                            bg={"transparent"}
                             onClick={toggleFavorite}
-                            aria-label={'mark as favorite'}
-                            icon={<Icon icon={isFavorite ? 'heart.active' : 'heart'} />}
+                            aria-label={"mark as favorite"}
+                            icon={
+                                <Icon
+                                    icon={isFavorite ? "heart.active" : "heart"}
+                                />
+                            }
                         />
                     )}
-                    {controls.includes('edit') && (
+                    {controls.includes("edit") && (
                         <IconButton
-                            bg={'transparent'}
+                            bg={"transparent"}
                             onClick={handleEditOnClick}
-                            aria-label={'click to edit'}
+                            aria-label={"click to edit"}
                             icon={<Icon icon="pencil" />}
                         />
                     )}

@@ -17,6 +17,16 @@ const Text = (CURRENT_THEME: string) => {
                 color: theme.color9,
                 mb: 3,
             },
+            heading: {
+                color: theme.color7,
+                fontSize: 18,
+                fontWeight: 600,
+            },
+            subhead: {
+                color: theme.color9,
+                fontSize: 18,
+                fontWeight: 600,
+            },
             "grad-1": {
                 bg: "linear-gradient(99.23deg, #942457 1.6%, #8318DD 97.94%)",
                 backgroundClip: "text",
