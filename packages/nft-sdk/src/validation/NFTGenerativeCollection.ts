@@ -1,4 +1,4 @@
-import axios, { Axios } from 'axios';
+// import axios, { Axios } from 'axios';
 import { compact, map, values } from 'lodash-es';
 import { NFTGenerativeCollection, isNFTGenerativeTraitImage } from '../types/index.js';
 
@@ -8,16 +8,27 @@ export const validateNFTGenerativeCollection = () => {
     return true;
 };
 
-export async function loadCollectionImages(collection: NFTGenerativeCollection, client: Axios = axios) {
+/**
+ * Missing middleware:
+ * - SHOULD replace "ipfs://" protocol to an arbitrary gateway
+ * - SHOULD cache to local storage
+ * @param collection
+ */
+export async function loadCollectionImages(collection: NFTGenerativeCollection) {
     const promises = map(values(collection.traits), (t) => {
         if (isNFTGenerativeTraitImage(t)) {
             return Promise.all(
                 map(t.options, async (s) => {
                     if (s.image || !s.image_url) return undefined;
                     if (s.image_url) {
-                        const result = await client.get(s.image_url);
-                        //@ts-expect-error
-                        s.image = result.data as string;
+                        const result = await fetch(s.image_url);
+                        if (t.image_type === 'svg') {
+                            //@ts-expect-error
+                            s.image = await result.text();
+                        } else {
+                            //@ts-expect-error
+                            s.image = Buffer.from(await result.arrayBuffer()).toString('base64');
+                        }
                     }
                 }),
             );
