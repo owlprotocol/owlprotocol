@@ -1,4 +1,3 @@
-// import axios, { Axios } from 'axios';
 import { compact, map, values } from 'lodash-es';
 import { NFTGenerativeCollection, isNFTGenerativeTraitImage } from '../types/index.js';
 
