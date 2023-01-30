@@ -10,6 +10,8 @@ factory
 !/docs-contracts-reference/index.md
 /scripts
 
+traceOutputDir
+
 /deployments/anvil
 /deployments/hardhat
 !/deployments/anvil/.chainId

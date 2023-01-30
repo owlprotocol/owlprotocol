@@ -16,6 +16,7 @@ import {
 import { ERC721TopDownDna, ERC1167Factory } from '../../../utils/index.js';
 
 const deploy = async ({ provider, signers, network }: RunTimeEnvironment) => {
+
     const SDK = await import('@owlprotocol/nft-sdk');
     const signer = signers[0];
     const signerAddress = await signer.getAddress();
@@ -41,6 +42,7 @@ const deploy = async ({ provider, signers, network }: RunTimeEnvironment) => {
         initSignature: 'initialize',
         msgSender: signerAddress,
     });
+
 
     //Contracts
     const thGlassesChild = {
@@ -94,6 +96,7 @@ const deploy = async ({ provider, signers, network }: RunTimeEnvironment) => {
         childContracts721: [],
         childContracts1155: [],
     } as ERC721TopDownDna.ERC721TopDownDnaInitializeArgs;
+
 
     const initArgsGlassesChild = ERC721TopDownDna.flattenInitArgsERC721TopDownDna(thGlassesChild);
     const initDataGlassesChild = ERC721TopDownDnaInitEncoder(...initArgsGlassesChild);
@@ -149,6 +152,7 @@ const deploy = async ({ provider, signers, network }: RunTimeEnvironment) => {
         thColl: { address, initArgs: initArgsBeacon },
     };
 
+
     const promises = mapValues(deployments, async ({ address, initArgs }) => {
         try {
             //Compute Deployment Address
@@ -171,6 +175,7 @@ const deploy = async ({ provider, signers, network }: RunTimeEnvironment) => {
             return { address, error };
         }
     });
+
 
     const contracts = zipObject(Object.keys(promises), await Promise.all(Object.values(promises)));
     mapValues(promises, async (p, k) => {
@@ -219,7 +224,7 @@ const deploy = async ({ provider, signers, network }: RunTimeEnvironment) => {
         },
     };
 
-    const promisesMints = mapValues(tokens, async (tokens, k: keyof typeof tokens) => {
+    const promisesMints = mapValues(tokens, async (tokens, k) => {
         const contract = contracts[k].contract!;
         let collection: any;
 
@@ -275,12 +280,14 @@ const deploy = async ({ provider, signers, network }: RunTimeEnvironment) => {
         return zipObject(Object.keys(mints), await Promise.all(Object.values(mints)));
     });
 
+
     const mints = zipObject(Object.keys(promisesMints), await Promise.all(Object.values(promisesMints)));
 
     console.debug(contracts);
     console.debug(mints);
 
     return { contracts, mints };
+
 };
 
 deploy.tags = ['ThreadHaus'];
