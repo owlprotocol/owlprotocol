@@ -5,6 +5,8 @@ const TableWrapper = styled.div`
     table {
         border-spacing: 0;
         border-collapse: seperate;
+        border-radius: 12px;
+        overflow: hidden;
     }
 
     table tr:nth-child(odd) {
@@ -13,22 +15,6 @@ const TableWrapper = styled.div`
 
     table tr:nth-child(even) {
         background-color: #2c2c30;
-    }
-
-    table th:first-child {
-        border-top-left-radius: 12px;
-    }
-
-    table th:last-child {
-        border-top-right-radius: 12px;
-    }
-
-    table tr:last-child td:first-child {
-        border-bottom-left-radius: 12px;
-    }
-
-    table tr:last-child td:last-child {
-        border-bottom-right-radius: 12px;
     }
 `;
 

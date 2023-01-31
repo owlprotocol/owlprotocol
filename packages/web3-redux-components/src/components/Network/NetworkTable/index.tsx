@@ -172,6 +172,7 @@ export const NetworkTable = () => {
                             </Tr>
                         ))}
                     </Thead>
+                    <br />
                     <Tbody>
                         {table.getRowModel().rows.map((row) => (
                             <Tr key={row.id}>
