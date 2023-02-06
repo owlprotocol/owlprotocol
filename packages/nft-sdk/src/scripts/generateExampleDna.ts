@@ -10,7 +10,13 @@ import {
     NFTGenerativeTraitImageOption,
     isNFTGenerativeTraitImage,
 } from '../types'
+
+import { collectionThNested } from '../collections/threadhausNested.js';
+
 import BN from 'bn.js';
+import fs from 'fs';
+
+const DUMP_PARENT_JSON_ONLY = true;
 
 /**
  * Run with experimental-specifier-resolution
@@ -19,12 +25,22 @@ import BN from 'bn.js';
  */
 async function main(){
 
-    const parentCollection = await fetchParentCollectionClass();
+    // const parentCollection = await fetchParentCollectionClass();
+
+    const parentCollection = await buildParentCollectionClass();
+
+    if (DUMP_PARENT_JSON_ONLY) {
+        console.debug(parentCollection.getJsonMetadataWithChildren());
+        writeJSON(parentCollection.getJsonMetadataWithChildren());
+        return;
+    }
 
     // fetch hat
     const nftHat = await getHat();
 
     const nftDress = await getDress();
+
+    // TODO: somewhere we should do the random generation?
 
     const nftParent = NFTGenerativeItemClass.fromAttributes({
         collection: <NFTGenerativeCollectionInterface>parentCollection,
@@ -54,6 +70,11 @@ async function fetchParentCollectionClass(): Promise<NFTGenerativeCollectionClas
     return NFTGenerativeCollectionClass.fromData(collection);
 }
 
+function buildParentCollectionClass(): NFTGenerativeCollectionClass {
+    //@ts-expect-error
+    return collectionThNested as NFTGenerativeCollectionClass;
+}
+
 async function getHat(): Promise<NFTGenerativeItemClass> {
     const resp = await fetch('https://leovigna.mypinata.cloud/ipfs/QmbrstXfLUQ2gEi1uzMX39x4YRvtSPoJTYcxwbLxsiF2Dt');
     const data = await resp.json();
@@ -80,6 +101,10 @@ async function getDress(): Promise<NFTGenerativeItemClass> {
         collection: <NFTGenerativeCollectionInterface>collectionClass,
         attributes: { class: 'Thread Haus', dress: 'ThreadHaus - Flight Jacket Indigo' }
     });
+}
+
+async function writeJSON(jsonObject: any){
+    await fs.writeFileSync('testdata/innovot/collection-generated.json', JSON.stringify(jsonObject));
 }
 
 main().then(() => console.log('Done'));
