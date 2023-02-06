@@ -12,15 +12,20 @@ export const validateNFTGenerativeCollection = () => {
  * - SHOULD replace "ipfs://" protocol to an arbitrary gateway
  * - SHOULD cache to local storage
  * @param collection
+ * @param ipfsGateway OPTIONAL
  */
-export async function loadCollectionImages(collection: NFTGenerativeCollection) {
+export async function loadCollectionImages(collection: NFTGenerativeCollection, ipfsGateway?: string) {
     const promises = map(values(collection.traits), (t) => {
         if (isNFTGenerativeTraitImage(t)) {
             return Promise.all(
                 map(t.options, async (s) => {
                     if (s.image || !s.image_url) return undefined;
-                    if (s.image_url) {
-                        const result = await fetch(s.image_url);
+                    let imageUrl = s.image_url;
+                    if (imageUrl) {
+                        if (imageUrl.substring(0, 7) === 'ipfs://' && !!ipfsGateway) {
+                            imageUrl = imageUrl.replace(/^ipfs:\/\//, ipfsGateway + '/');
+                        }
+                        const result = await fetch(imageUrl);
                         if (t.image_type === 'svg') {
                             //@ts-expect-error
                             s.image = await result.text();
@@ -36,7 +41,7 @@ export async function loadCollectionImages(collection: NFTGenerativeCollection) 
     });
 
     //@ts-expect-error
-    const children = map(values(collection.children ?? {}), (c) => loadCollectionImages(c));
+    const children = map(values(collection.children ?? {}), (c) => loadCollectionImages(c, ipfsGateway));
 
     await Promise.all([...compact(promises), ...children]);
 }

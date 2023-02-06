@@ -79,7 +79,7 @@
     "ipfs-core": "^0.16.1",
     "ipfs-core-types": "^0.12.1",
     "ipfs-http-client": "^58.0.1",
-    "madge": "^5.0.1",
+    "madge": "^5.0.2",
     "merge-images": "^2.0.0",
     "mocha": "^9.2.2",
     "mockipfs": "^0.2.0",
