@@ -18,3 +18,4 @@ export * from './getSupportsInterface.js';
 export * from './callSynced.js';
 export * from './getBalanceSynced.js';
 export * from './getNonceSynced.js';
+export * from './subscribeInterfaceImplementerSet.js'

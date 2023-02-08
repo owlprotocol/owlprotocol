@@ -49,7 +49,7 @@ function* eventSubscribe(action: EventSubscribeAction) {
         const { payload } = action;
         const { networkId, address, eventName } = payload;
 
-        const { contract } = yield* call(fetchSaga, ContractCRUD.actions.fetch({ networkId, address }));
+        const { contract } = yield* call(fetchSaga, ContractCRUD.actions.fetch({ networkId, address }, action.meta.uuid));
         const web3Contract = contract.web3Contract!;
 
         const filter = payload.filter ?? {};

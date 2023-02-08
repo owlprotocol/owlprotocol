@@ -437,8 +437,7 @@ export function createCRUDModel<
         );
         const isLoading = response === 'loading';
         const result = isLoading ? undefined : response;
-        const exists = !!result; //false while loading
-        const returnOptions = { isLoading, exists };
+        const returnOptions = { isLoading };
         return [result, returnOptions] as [typeof result, typeof returnOptions];
     };
 
@@ -469,8 +468,30 @@ export function createCRUDModel<
 
         const isLoading = response === 'loading';
         const result = isLoading ? undefined : response;
-        const exists = !!result; //false while loading
-        const returnOptions = { isLoading, exists };
+        const returnOptions = { isLoading };
+        return [result, returnOptions] as [typeof result, typeof returnOptions];
+    };
+
+    const useWhereMany = (queries: Parameters<typeof useWhere>[]) => {
+        const dep = JSON.stringify(queries);
+        const response = useLiveQuery(
+            async () => {
+                return queries.map(([filter, options]) => {
+                    const reverse = options?.reverse;
+                    const offset = options?.offset;
+                    const limit = options?.limit;
+                    //@ts-expect-error
+                    const result = filter && isDefinedRecord(filter) ? where(filter, { reverse, offset, limit }) : ([] as const)
+                    return result
+                })
+            },
+            [dep],
+            'loading' as const,
+        );
+
+        const isLoading = response === 'loading';
+        const result = isLoading ? undefined : response;
+        const returnOptions = { isLoading };
         return [result, returnOptions] as [typeof result, typeof returnOptions];
     };
 
@@ -522,6 +543,53 @@ export function createCRUDModel<
         return [item, options] as [typeof item, typeof options];
     };
 
+    const useFetchMany = (
+        idList: T_ID[],
+        defaultItemList: T[] = [],
+        maxCacheAge: number = 0,
+        loadRedux: boolean = false) => {
+        const dispatch = useDispatch();
+
+        //DB Item
+        const [itemDBList, { isLoading }] = useGetBulk(idList)
+        const refreshDBList = useMemo(() => {
+            return (itemDBList ?? [])?.map((itemDB) => !itemDB?.updatedAt || Date.now() - itemDB.updatedAt > maxCacheAge)
+        }, [itemDBList])
+
+        //console.debug({ idx, dbExists, reduxExists })
+        useEffect(() => {
+            idList.forEach((idx, i) => {
+                const refreshDB = refreshDBList[i]
+                //Fetch DB Item
+                if (idx && isDefinedRecord(idx) && !isLoading && refreshDB) {
+                    const defaultItem = defaultItemList[i] ?? {}
+                    dispatch(actions.fetch({ ...defaultItem, ...(idx as T_ID), maxCacheAge }));
+                }
+            })
+        }, [JSON.stringify(idList), defaultItemList, maxCacheAge, dispatch, refreshDBList, isLoading])
+
+        //Redux Item
+        //Load redux with id from db item
+        const itemReduxList = useSelectByIdMany(idList);
+        const refreshReduxList = useMemo(() => itemReduxList.map((itemRedux) => !itemRedux?.updatedAt || Date.now() - itemRedux.updatedAt > maxCacheAge), [itemReduxList]);
+
+        useEffect(() => {
+            //Fetch Redux item
+            //console.debug({ id, refreshRedux })
+            idList.map((id, i) => {
+                const defaultItem = defaultItemList[i]
+                const refreshRedux = refreshReduxList[i]
+                if (loadRedux && id && isDefinedRecord(id) && refreshRedux) {
+                    dispatch(actions.fetch({ ...defaultItem, ...id, maxCacheAge }));
+                }
+            })
+        }, [defaultItemList, maxCacheAge, loadRedux, dispatch, JSON.stringify(idList), refreshReduxList]);
+
+        const itemList = useMemo(() => zip(itemDBList, itemReduxList).map(([itemDB, itemRedux]) => (itemRedux ?? itemDB) as T | undefined), [itemDBList, itemReduxList])
+        const options = { isLoading }
+        return [itemList, options] as [typeof itemList, typeof options];
+    };
+
     const useSelectAll = () => {
         return useSelector((state) => selectAll(state));
     };
@@ -562,10 +630,12 @@ export function createCRUDModel<
 
     const hooks = {
         useFetch,
+        useFetchMany,
         useGet,
         useGetBulk,
         useAll,
         useWhere,
+        useWhereMany,
         useSelectByIdSingle,
         useSelectByIdMany,
         useSelectAll,

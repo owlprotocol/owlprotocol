@@ -98,5 +98,14 @@ export function* getSupportsInterfaceSaga(action: GetSupportsInterfaceAction): G
             action.meta.uuid)
     );
 
+    //TODO: contractUri() + IPFS
+
+    //Fetch relevant event logs for contracts
+    //TODO: AssetRouterInput SupportedAsset
+    //TODO: AssetRouterOutput SupportedAsset
+    //TODO: IERC20 symbol, name
+    //TODO: IERC721 name
+    //TODO: IERC1155 name
+
     return { network, contract: contract2, contractInterfaces }
 }

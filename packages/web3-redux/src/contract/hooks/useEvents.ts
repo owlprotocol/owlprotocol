@@ -1,11 +1,10 @@
 import { useEffect, useMemo, useCallback } from 'react';
 import { useDispatch } from 'react-redux';
-import { BaseWeb3Contract, ContractWithObjects } from '../model/index.js';
+import { BaseWeb3Contract } from '../model/index.js';
 import { eventSubscribe, eventUnsubscribe, eventGetPast } from '../actions/index.js';
 import { EventGetPastActionInput } from '../actions/eventGetPast.js';
 import { ContractEvent } from '../../contractevent/model/index.js';
 import { ReduxError } from '@owlprotocol/crud-redux';
-import { useContract } from './useContract.js';
 import { isEmpty, isUndefined } from 'lodash-es';
 import { useEventsFiltered } from '../../contractevent/hooks/useEventsFiltered.js';
 
