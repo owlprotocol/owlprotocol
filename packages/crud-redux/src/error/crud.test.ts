@@ -1,4 +1,5 @@
 import { assert } from 'chai';
+import { omit } from 'lodash-es'
 import { ReduxErrorCRUD } from './crud.js';
 import { createStore, StoreType } from '../store.js';
 import { name } from './common.js';
@@ -17,7 +18,7 @@ describe(`${name}/crud.test.js`, () => {
 
             //Dexie
             const item1Dexie = await ReduxErrorCRUD.db.get({ id: '1' });
-            assert.deepEqual(item1Dexie, item1);
+            assert.deepEqual(omit(item1Dexie, 'updatedAt'), item1);
         });
     });
 });

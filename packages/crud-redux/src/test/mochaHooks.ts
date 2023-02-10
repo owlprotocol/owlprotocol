@@ -5,6 +5,8 @@ import Dexie from 'dexie';
 import setGlobalVars from 'indexeddbshim';
 import { getDB } from '../db.js';
 
+
+//TODO: Stop using in-memory db
 const beforeAll = async () => {
     const { window } = new JSDOM('', { url: 'http://localhost:8080' });
     //@ts-ignore

@@ -4,6 +4,7 @@ import createSagaMiddleware from 'redux-saga';
 import { isClient } from './utils/isClient.js';
 import { rootReducer } from './reducer.js';
 import { rootSaga } from './saga.js';
+import { channel } from './channel.js';
 
 /** @internal */
 export const createStore = () => {
@@ -17,6 +18,12 @@ export const createStore = () => {
 
     const store = createReduxStore(rootReducer, composeEnhancers(rootMiddleware));
     sagaMiddleware.run(rootSaga);
+
+    //Broadcast channel dispatch
+    channel.onmessage = (e) => {
+        console.debug(e)
+        store.dispatch(e)
+    }
 
     return store;
 };

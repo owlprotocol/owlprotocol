@@ -2,6 +2,7 @@ import { name } from './common.js';
 import { ReduxErrorId, ReduxErrorModel } from './model/index.js';
 import { createCRUDModel } from '../crud/createCRUDModel.js';
 import { CrudDexie, getDB } from '../db.js';
+import { channel } from '../channel.js';
 
 export const ReduxErrorCRUD = createCRUDModel<
     typeof name,
@@ -10,4 +11,4 @@ export const ReduxErrorCRUD = createCRUDModel<
     ReduxErrorModel,
     ReduxErrorId,
     CrudDexie
->(name, getDB);
+>(name, getDB, undefined, undefined, channel);
