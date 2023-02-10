@@ -9,8 +9,8 @@ export interface NFTGenerativeItemInterface<
     readonly collection: Collection;
     readonly attributes: NFTGenerativeItem<Collection>['attributes'];
     readonly children: Collection['children'] extends Record<string, NFTGenerativeCollectionInterface>
-    ? { [K in keyof Collection['children']]: NFTGenerativeItemInterface<Collection['children'][K]> }
-    : undefined;
+        ? { [K in keyof Collection['children']]: NFTGenerativeItemInterface<Collection['children'][K]> }
+        : undefined;
 
     genes(): ReturnType<Collection['attributesToGenes']>;
     genesWithChildren(): ReturnType<Collection['attributesToGenesWithChildren']>;

@@ -10,6 +10,8 @@ export interface NFTGenerativeTraitEnum extends NFTGenerativeTraitBase {
     readonly type: 'enum';
     /** Generative attribute value options */
     readonly options: NFTGenerativeTraitEnumOption[];
+    /** Probabilities of each option. Normalized when validating trait. Must have the same length as `options` **/
+    probabilities?: number[];
 }
 
 export function isNFTGenerativeTraitEnum(attribute: NFTGenerativeTraitBase): attribute is NFTGenerativeTraitEnum {

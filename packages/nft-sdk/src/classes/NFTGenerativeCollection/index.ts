@@ -1,2 +1,2 @@
 export * from './NFTGenerativeCollectionClass.js';
-export * from './NFTGenerativeCollectionInterface.js'
+export * from './NFTGenerativeCollectionInterface.js';

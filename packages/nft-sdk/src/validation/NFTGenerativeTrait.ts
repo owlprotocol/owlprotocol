@@ -1,4 +1,6 @@
 import Ajv from 'ajv';
+import { isUndefined, sum } from 'lodash-es';
+
 import { NFTGenerativeTrait as NFTGenerativeTraitSchema } from '../schemas/index.js';
 import { NFTGenerativeTraitBase } from '../types/NFTGenerativeTrait/NFTGenerativeTraitBase.js';
 import { isNFTGenerativeTraitEnum } from '../types/NFTGenerativeTrait/NFTGenerativeTraitEnum.js';
@@ -13,6 +15,18 @@ export const validateNFTGenerativeTrait = (trait: NFTGenerativeTraitBase) => {
     let valueRange: number;
     if (isNFTGenerativeTraitEnum(trait) || isNFTGenerativeTraitImage(trait)) {
         valueRange = trait.options.length;
+
+        // Validate and normalize probabilities
+        if (!isUndefined(trait.probabilities)) {
+            const currProbabilities = trait.probabilities;
+            if (currProbabilities.length != valueRange) {
+                throw new Error(`${trait.name}.probabilities.length != ${trait.name}.options.length`);
+            }
+
+            const totalProbability = sum(currProbabilities);
+
+            trait.probabilities = currProbabilities.map((val) => val / totalProbability);
+        }
     } else if (isNFTGenerativeTraitColormap(trait)) {
         trait.options.map((m, i) => {
             if (m.colors && m.colors.length != 256)
@@ -21,9 +35,9 @@ export const validateNFTGenerativeTrait = (trait: NFTGenerativeTraitBase) => {
         valueRange = trait.options.length;
     } else if (isNFTGenerativeTraitNumber(trait) || isNFTGenerativeTraitColor(trait)) {
         //@ts-expect-error
-        if (!trait.max) trait.max = 255
+        if (!trait.max) trait.max = 255;
         //@ts-expect-error
-        if (!trait.min) trait.min = 0
+        if (!trait.min) trait.min = 0;
         valueRange = trait.max - trait.min;
     } else {
         throw new Error(`${trait.name} invalid attribute type ${trait.type}`);

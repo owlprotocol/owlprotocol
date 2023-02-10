@@ -1,9 +1,13 @@
 import { Options as MergeImagesOptions } from 'merge-images';
-import _, { mapValues, map, omit, omitBy, pickBy, isObject, isUndefined } from 'lodash-es';
+import { mapValues, map, omit, omitBy, pickBy, isObject, isUndefined } from 'lodash-es';
 import type { NFTGenerativeItemInterface } from './NFTGenerativeItemInterface.js';
-import type { AttributeValue, JSONEncodable, NFTGenerativeItem, NFTGenerativeTraitImageOption } from '../../types/index.js';
+import type {
+    AttributeValue,
+    JSONEncodable,
+    NFTGenerativeItem,
+    NFTGenerativeTraitImageOption,
+} from '../../types/index.js';
 import type { NFTGenerativeCollectionInterface } from '../NFTGenerativeCollection/NFTGenerativeCollectionInterface.js';
-
 
 export class NFTGenerativeItemClass<
     Collection extends NFTGenerativeCollectionInterface = NFTGenerativeCollectionInterface,
@@ -65,15 +69,15 @@ export class NFTGenerativeItemClass<
         const children2 =
             collection.children && children
                 ? mapValues(collection.children, (col, k) => {
-                    if (children[k]) {
-                        return NFTGenerativeItemClass.fromAttributes({
-                            //@ts-expect-error
-                            collection: col,
-                            attributes: (children[k] as NFTGenerativeItem).attributes,
-                            children: (children[k] as NFTGenerativeItem).children,
-                        });
-                    }
-                })
+                      if (children[k]) {
+                          return NFTGenerativeItemClass.fromAttributes({
+                              //@ts-expect-error
+                              collection: col,
+                              attributes: (children[k] as NFTGenerativeItem).attributes,
+                              children: (children[k] as NFTGenerativeItem).children,
+                          });
+                      }
+                  })
                 : undefined;
 
         return new NFTGenerativeItemClass({ collection, attributes, children: children2 });
@@ -145,17 +149,20 @@ export class NFTGenerativeItemClass<
         const attributesRaw = this.attributesFormatted();
 
         // TODO: temp fix for enums, which are not structs (can't map them)
-        const attributes = map(pickBy(attributesRaw, (val) => isObject(val)), ((attr, traitIndex) => {
-            let attribute: any = attr;
+        const attributes = map(
+            pickBy(attributesRaw, (val) => isObject(val)),
+            (attr, traitIndex) => {
+                let attribute: any = attr;
 
-            if (!!(attr as NFTGenerativeTraitImageOption).image_url) {
-                attribute = omit(attribute as any, ['image', 'image_url']);
-            }
+                if (!!(attr as NFTGenerativeTraitImageOption).image_url) {
+                    attribute = omit(attribute as any, ['image', 'image_url']);
+                }
 
-            attribute.name = this.collection.traits[traitIndex].name;
+                attribute.name = this.collection.traits[traitIndex].name;
 
-            return attribute;
-        }));
+                return attribute;
+            },
+        );
 
         const imageType = this.collection.generatedImageType;
 

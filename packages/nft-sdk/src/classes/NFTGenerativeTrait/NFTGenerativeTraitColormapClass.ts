@@ -1,3 +1,4 @@
+import { random } from 'lodash-es';
 import { NFTGenerativeTraitBaseClass } from './NFTGenerativeTraitBaseClass.js';
 import type {
     NFTGenerativeTraitColormap,
@@ -50,6 +51,15 @@ export class NFTGenerativeTraitColormapClass extends NFTGenerativeTraitBaseClass
         if (idx === -1)
             throw new Error(`Invalid value ${attribute} not found in this.options ${this.options.map((v) => v.value)}`);
         return idx;
+    }
+
+    /** Pick a random attribute value.
+     * Assumes probabilities have been normalized
+     */
+    randomAttribute(): string {
+        const floating = false;
+        const gene = random(this.minGene(), this.maxGene(), floating);
+        return this.decode(gene);
     }
 
     format(attribute: string): NFTGenerativeTraitColormapOption {

@@ -63,6 +63,7 @@ export abstract class NFTGenerativeTraitBaseClass implements NFTGenerativeTraitB
 
     abstract encode(attribute: string | number): number;
     abstract format(attribute: string | number, dependencyValues: Record<string, any>): any;
+    abstract randomAttribute(): string | number;
 
     dependencies(): string[] {
         return [];

@@ -1,10 +1,9 @@
 import { assert } from 'chai';
 // import sinon from 'sinon';
+import mockttp, { Mockttp } from 'mockttp';
 import { readFileSync } from 'fs';
 // import {MockAgent, MockPool, setGlobalDispatcher} from 'undici';
-import {NFTGenerativeCollectionClass} from './NFTGenerativeCollectionClass.js'
-
-import mockttp, {Mockttp} from 'mockttp';
+import { NFTGenerativeCollectionClass } from './NFTGenerativeCollectionClass.js';
 
 let testCollectionClass: any;
 
@@ -15,7 +14,7 @@ const ipfsHash = '';
 /*
 const mockAgent = new MockAgent()
 const mockPool: MockPool = mockAgent.get('http://localhost:3000');
-mockPool.intercept({path: /\/innovot\/.*//*}).reply(200, (args) => {
+mockPool.intercept({path: /\/innovot\/.*/ /*}).reply(200, (args) => {
     console.log('undici intercept', args.path);
     return readFileSync('./testdata' + args.path);
 });
@@ -25,7 +24,6 @@ setGlobalDispatcher(mockAgent);
 let mockServer: Mockttp;
 
 before(async () => {
-
     const testCollectionFilePath = './testdata/innovot/collection.json';
     const testCollectionJSON = JSON.parse(readFileSync(testCollectionFilePath).toString());
 
@@ -35,18 +33,16 @@ before(async () => {
     mockServer.start(3000);
 
     await mockServer.forGet(/\/innovot\/.*/).thenCallback((req) => {
-        const data = readFileSync('./testdata' + req.path)
+        const data = readFileSync('./testdata' + req.path);
         return {
             status: 200,
-            body: data
+            body: data,
         };
     });
 });
 
 describe('NFTGenerativeCollectionClass', () => {
-
     it('loadImage from URL', async () => {
-
         const testOption = testCollectionClass.traits.light.options[0];
         const testChildOption = testCollectionClass.children.dress.traits.dress.options[8];
 
@@ -71,7 +67,6 @@ describe('NFTGenerativeCollectionClass', () => {
     });
 
     it('loadImageWithChildren from URL', async () => {
-
         const testChildOption = testCollectionClass.children.dress.traits.dress.options[8];
 
         assert(testChildOption.image_url !== undefined, 'image_url must be defined on child');
@@ -82,9 +77,14 @@ describe('NFTGenerativeCollectionClass', () => {
 
         await testCollectionClass.loadImagesWithChildren(ipfsGateway, ipfsHash);
 
-        assert(testCollectionClass.children.dress.traits.dress.options[8].image !== undefined, 'loaded image must be defined');
-        assert(testCollectionClass.children.dress.traits.dress.options[8].image === expectedImgData, 'loaded image does not match');
-
+        assert(
+            testCollectionClass.children.dress.traits.dress.options[8].image !== undefined,
+            'loaded image must be defined',
+        );
+        assert(
+            testCollectionClass.children.dress.traits.dress.options[8].image === expectedImgData,
+            'loaded image does not match',
+        );
     });
 });
 

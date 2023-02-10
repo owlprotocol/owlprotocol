@@ -1,3 +1,4 @@
+import { random } from 'lodash-es';
 import { NFTGenerativeTraitBaseClass } from './NFTGenerativeTraitBaseClass.js';
 import { NFTGenerativeTraitColor, RGB } from '../../types/index.js';
 import { rgbToHex } from '../../utils/hex.js';
@@ -33,6 +34,14 @@ export class NFTGenerativeTraitColorClass extends NFTGenerativeTraitBaseClass im
         return gene;
     }
 
+    /** Pick a random attribute value.
+     * Assumes probabilities have been normalized
+     */
+    randomAttribute(): number {
+        const floating = false;
+        return random(this.minGene(), this.maxGene(), floating);
+    }
+
     /** Encode attribute value to gene */
     encode(attribute: number): number {
         //Check metadata value in range
@@ -45,7 +54,8 @@ export class NFTGenerativeTraitColorClass extends NFTGenerativeTraitBaseClass im
         const colormap = dependencyValues[this.colormap];
         if (colormap === undefined)
             throw new Error(
-                `Error formatting ${this.name}. Dependencies do not contain colormap \'${this.colormap
+                `Error formatting ${this.name}. Dependencies do not contain colormap \'${
+                    this.colormap
                 }\': ${JSON.stringify(dependencyValues)}`,
             );
         const colors = colormap.colors;

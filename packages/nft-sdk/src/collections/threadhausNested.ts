@@ -6,7 +6,7 @@ import {
     traitImageGlasses,
     traitImageDress,
     traitImageHats,
-    traitImageFacialHair
+    traitImageFacialHair,
 } from './threadhaus.js';
 import {
     NFTGenerativeCollectionClass,
@@ -14,7 +14,7 @@ import {
     NFTGenerativeTraitImageClass,
 } from '../classes/index.js';
 
-import type {NFTGenerativeCollection} from '../types/index.js';
+import type { NFTGenerativeCollection } from '../types/index.js';
 
 const collThGlassesChildDef: NFTGenerativeCollection = {
     name: 'Thread Haus - Innovot NFT Glasses Sub-Collection',
@@ -24,7 +24,7 @@ const collThGlassesChildDef: NFTGenerativeCollection = {
     fee_recipient: '0xCF28F97AbDfE1d0b9c51aDF6cF334f6489e080Fd',
     generatedImageType: 'png',
     traits: {
-        glasses: traitImageGlasses
+        glasses: traitImageGlasses,
     },
 };
 
@@ -36,7 +36,7 @@ const collThDressChildDef: NFTGenerativeCollection = {
     fee_recipient: '0xCF28F97AbDfE1d0b9c51aDF6cF334f6489e080Fd',
     generatedImageType: 'png',
     traits: {
-        dress: traitImageDress
+        dress: traitImageDress,
     },
 };
 
@@ -48,7 +48,7 @@ const collThHatsChildDef: NFTGenerativeCollection = {
     fee_recipient: '0xCF28F97AbDfE1d0b9c51aDF6cF334f6489e080Fd',
     generatedImageType: 'png',
     traits: {
-        hats: traitImageHats
+        hats: traitImageHats,
     },
 };
 
@@ -60,13 +60,14 @@ const collThFacialHairChildDef: NFTGenerativeCollection = {
     fee_recipient: '0xCF28F97AbDfE1d0b9c51aDF6cF334f6489e080Fd',
     generatedImageType: 'png',
     traits: {
-        facial_hair: traitImageFacialHair
+        facial_hair: traitImageFacialHair,
     },
 };
 
 const collThNestedDef: NFTGenerativeCollection = {
     name: 'Thread Haus - Innovot NFT Collection',
-    description: 'InnoVot is a father x son collaboration and inspired by some of Thread haus Collection and some of the industry top trendsetters in fashion music and film',
+    description:
+        'InnoVot is a father x son collaboration and inspired by some of Thread haus Collection and some of the industry top trendsetters in fashion music and film',
     image: 'http://localhost:3000/threadhaus/image.jpg',
     external_url: 'https://tell.ie/threadhausCo/D5RQ6SBsgpAp',
     seller_fee_basis_points: 10000,
@@ -83,42 +84,42 @@ const collThNestedDef: NFTGenerativeCollection = {
         glasses: collThGlassesChildDef,
         dress: collThDressChildDef,
         hats: collThHatsChildDef,
-        facial_hair: collThFacialHairChildDef
-    }
+        facial_hair: collThFacialHairChildDef,
+    },
 };
 
-export const collectionThGlassesChild =  NFTGenerativeCollectionClass.fromData(
-    collThGlassesChildDef
+export const collectionThGlassesChild = NFTGenerativeCollectionClass.fromData(
+    collThGlassesChildDef,
 ) as NFTGenerativeCollectionClass<{
-    glasses: NFTGenerativeTraitImageClass
-}>
+    glasses: NFTGenerativeTraitImageClass;
+}>;
 
-export const collectionThDressChild =  NFTGenerativeCollectionClass.fromData(
-    collThGlassesChildDef
+export const collectionThDressChild = NFTGenerativeCollectionClass.fromData(
+    collThGlassesChildDef,
 ) as NFTGenerativeCollectionClass<{
-    dress: NFTGenerativeTraitImageClass
-}>
+    dress: NFTGenerativeTraitImageClass;
+}>;
 
-export const collectionThHatsChild =  NFTGenerativeCollectionClass.fromData(
-    collThGlassesChildDef
+export const collectionThHatsChild = NFTGenerativeCollectionClass.fromData(
+    collThGlassesChildDef,
 ) as NFTGenerativeCollectionClass<{
-    hats: NFTGenerativeTraitImageClass
-}>
+    hats: NFTGenerativeTraitImageClass;
+}>;
 
-export const collectionThFacialHairChild =  NFTGenerativeCollectionClass.fromData(
-    collThGlassesChildDef
+export const collectionThFacialHairChild = NFTGenerativeCollectionClass.fromData(
+    collThGlassesChildDef,
 ) as NFTGenerativeCollectionClass<{
-    facial_hair: NFTGenerativeTraitImageClass
-}>
+    facial_hair: NFTGenerativeTraitImageClass;
+}>;
 
 export const collectionThNested = NFTGenerativeCollectionClass.fromData(
-    collThNestedDef
+    collThNestedDef,
 ) as NFTGenerativeCollectionClass<
     {
-        rarityClass: NFTGenerativeTraitEnumClass,
-        background: NFTGenerativeTraitImageClass,
-        light: NFTGenerativeTraitImageClass,
-        base: NFTGenerativeTraitImageClass
+        rarityClass: NFTGenerativeTraitEnumClass;
+        background: NFTGenerativeTraitImageClass;
+        light: NFTGenerativeTraitImageClass;
+        base: NFTGenerativeTraitImageClass;
     },
     {
         glasses: NFTGenerativeCollectionClass<{
@@ -141,52 +142,52 @@ export const thTestNestedItem = collectionThNested.create({
         rarityClass: 'Designer',
         background: 'Party - Orange',
         light: 'Blue',
-        base: 'Grey'
+        base: 'Grey',
     },
     children: {
         glasses: {
             attributes: {
-                glasses: 'Designer - Tortoise'
-            }
+                glasses: 'Designer - Tortoise',
+            },
         },
         dress: {
             attributes: {
-                dress: 'Party - Shirt Turquoise'
-            }
+                dress: 'Party - Shirt Turquoise',
+            },
         },
         hats: {
             attributes: {
-                hats: 'Party - Fedora White'
-            }
+                hats: 'Party - Fedora White',
+            },
         },
         facial_hair: {
             attributes: {
-                facial_hair: 'None'
-            }
+                facial_hair: 'None',
+            },
         },
-    }
+    },
 });
 
 export const thTestNestedItemChildGlasses = collectionThGlassesChild.create({
     attributes: {
-        glasses: 'Designer - Tortoise'
+        glasses: 'Designer - Tortoise',
     },
 });
 
 export const thTestNestedItemChildDress = collectionThDressChild.create({
     attributes: {
-        dress: 'Party - Shirt Turquoise'
+        dress: 'Party - Shirt Turquoise',
     },
 });
 
 export const thTestNestedItemChildHats = collectionThHatsChild.create({
     attributes: {
-        hats: 'Party - Fedora White'
+        hats: 'Party - Fedora White',
     },
 });
 
 export const thTestNestedItemChildFacialHair = collectionThFacialHairChild.create({
     attributes: {
-        facial_hair: 'None'
+        facial_hair: 'None',
     },
 });

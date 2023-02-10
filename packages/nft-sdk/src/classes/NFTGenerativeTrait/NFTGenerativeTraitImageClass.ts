@@ -1,4 +1,4 @@
-import { omit } from 'lodash-es';
+import { isUndefined, omit, random } from 'lodash-es';
 import type { IPFS } from 'ipfs-core-types';
 import type { CID } from 'ipfs-http-client';
 import { NFTGenerativeTraitBaseClass } from './NFTGenerativeTraitBaseClass.js';
@@ -8,6 +8,7 @@ export class NFTGenerativeTraitImageClass extends NFTGenerativeTraitBaseClass im
     readonly type: NFTGenerativeTraitImage['type'];
     readonly image_type: NFTGenerativeTraitImage['image_type'];
     readonly abi!: NFTGenerativeTraitImage['abi'];
+    probabilities: NFTGenerativeTraitImage['probabilities'];
 
     options: NFTGenerativeTraitImage['options'];
 
@@ -16,6 +17,7 @@ export class NFTGenerativeTraitImageClass extends NFTGenerativeTraitBaseClass im
         this.type = attribute.type;
         this.options = attribute.options;
         this.image_type = attribute.image_type;
+        this.probabilities = attribute.probabilities;
     }
 
     minGene(): number {
@@ -89,6 +91,38 @@ export class NFTGenerativeTraitImageClass extends NFTGenerativeTraitBaseClass im
         if (idx === -1)
             throw new Error(`Invalid value ${attribute} not found in this.options ${this.options.map((v) => v.value)}`);
         return idx;
+    }
+
+    /** Pick a random attribute value.
+     * Assumes probabilities have been normalized
+     */
+    randomAttribute(): string {
+        if (isUndefined(this.probabilities)) {
+            // Uniform distribution
+            const floating = false;
+            // Max is inclusive
+            const max = this.options.length - 1;
+
+            const randomAttributeIdx = random(max, floating);
+
+            return this.decode(randomAttributeIdx);
+        }
+
+        const probabilities = this.probabilities!;
+        const randomFloat = random(true);
+
+        let cumulative = 0;
+        let i = 0;
+        for (; i < probabilities.length; i++) {
+            cumulative += probabilities[i];
+
+            if (cumulative >= randomFloat) {
+                break;
+            }
+        }
+
+        const pickedAttribute = i;
+        return this.decode(pickedAttribute);
     }
 
     /**

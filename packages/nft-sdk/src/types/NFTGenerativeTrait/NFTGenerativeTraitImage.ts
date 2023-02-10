@@ -20,6 +20,8 @@ export interface NFTGenerativeTraitImage extends NFTGenerativeTraitBase {
 
     /** Generative attribute value options */
     options: NFTGenerativeTraitImageOption[];
+    /** Probabilities of each option. Normalized when validating trait. Must have the same length as `options` **/
+    probabilities?: number[];
 }
 
 export function isNFTGenerativeTraitImage(attribute: NFTGenerativeTraitBase): attribute is NFTGenerativeTraitImage {

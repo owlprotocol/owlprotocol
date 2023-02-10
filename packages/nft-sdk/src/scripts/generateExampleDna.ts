@@ -1,7 +1,6 @@
-import {
-    NFTGenerativeCollectionClass,
-    NFTGenerativeItemClass, NFTGenerativeCollectionInterface
-} from '../classes';
+import BN from 'bn.js';
+import fs from 'fs';
+import { NFTGenerativeCollectionClass, NFTGenerativeItemClass, NFTGenerativeCollectionInterface } from '../classes';
 
 import {
     NFTGenerativeCollection,
@@ -9,12 +8,9 @@ import {
     NFTGenerativeTraitImage,
     NFTGenerativeTraitImageOption,
     isNFTGenerativeTraitImage,
-} from '../types'
+} from '../types';
 
 import { collectionThNested } from '../collections/threadhausNested.js';
-
-import BN from 'bn.js';
-import fs from 'fs';
 
 const DUMP_PARENT_JSON_ONLY = true;
 
@@ -23,11 +19,10 @@ const DUMP_PARENT_JSON_ONLY = true;
  *
  * e.g. pnpm run esbuild && node --experimental-specifier-resolution=node ./lib/esm/scripts/generateExampleDna.js
  */
-async function main(){
-
+async function main() {
     // const parentCollection = await fetchParentCollectionClass();
 
-    const parentCollection = await buildParentCollectionClass();
+    const parentCollection = buildParentCollectionClass();
 
     if (DUMP_PARENT_JSON_ONLY) {
         console.debug(parentCollection.getJsonMetadataWithChildren());
@@ -49,8 +44,8 @@ async function main(){
             glasses: undefined,
             dress: nftDress,
             hats: nftHat,
-            facial_hair: undefined
-        }
+            facial_hair: undefined,
+        },
     });
 
     console.log(nftParent.genes());
@@ -58,7 +53,6 @@ async function main(){
     console.log(nftParent.dnaWithChildren());
 
     console.log(nftParent.fullDnaWithChildren());
-
 }
 
 async function fetchParentCollectionClass(): Promise<NFTGenerativeCollectionClass> {
@@ -85,7 +79,7 @@ async function getHat(): Promise<NFTGenerativeItemClass> {
 
     return NFTGenerativeItemClass.fromAttributes({
         collection: <NFTGenerativeCollectionInterface>collectionClass,
-        attributes: { class: 'Designer', hats: 'Designer - Cap 5' }
+        attributes: { class: 'Designer', hats: 'Designer - Cap 5' },
     });
 }
 
@@ -99,13 +93,12 @@ async function getDress(): Promise<NFTGenerativeItemClass> {
 
     return NFTGenerativeItemClass.fromAttributes({
         collection: <NFTGenerativeCollectionInterface>collectionClass,
-        attributes: { class: 'Thread Haus', dress: 'ThreadHaus - Flight Jacket Indigo' }
+        attributes: { class: 'Thread Haus', dress: 'ThreadHaus - Flight Jacket Indigo' },
     });
 }
 
-async function writeJSON(jsonObject: any){
+async function writeJSON(jsonObject: any) {
     await fs.writeFileSync('testdata/innovot/collection-generated.json', JSON.stringify(jsonObject));
 }
 
 main().then(() => console.log('Done'));
-

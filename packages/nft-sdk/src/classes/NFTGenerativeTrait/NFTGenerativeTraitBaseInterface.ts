@@ -8,4 +8,5 @@ export interface NFTGenerativeTraitBaseInterface extends NFTGenerativeTraitBase 
     encode(attribute: number | string): number;
     format(attribute: number | string, dependencyValues: Record<string, any>): any;
     dependencies(): string[];
+    randomAttribute(): string | number;
 }
