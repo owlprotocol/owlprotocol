@@ -6,5 +6,3 @@ export * from './shapes.js';
 export * from './shapesNested.js';
 //export * from './shapesPNG.js';
 //export * from './shapesPNGNested.js'
-export * from './threadhausNested.js';
-export * from './threadhaus.js';
