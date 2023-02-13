@@ -24,8 +24,7 @@
     "allowSyntheticDefaultImports": true
   },
   "include": [
-    "src",
-    "../../../../../../packages-public/packages/nft-sdk/lib/types/classes"
+    "src"
   ],
   "exclude": []
 }
