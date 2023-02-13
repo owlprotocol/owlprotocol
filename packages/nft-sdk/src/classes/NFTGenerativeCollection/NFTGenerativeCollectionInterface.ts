@@ -1,7 +1,7 @@
-import type { IPFS } from 'ipfs-core-types';
-import type { CID } from 'ipfs-http-client';
-import type { BytesLike } from '@ethersproject/bytes';
-import type { Options as MergeImagesOptions } from 'merge-images';
+import type {IPFS} from 'ipfs-core-types';
+import type {CID} from 'ipfs-http-client';
+import type {BytesLike} from '@ethersproject/bytes';
+import type {Options as MergeImagesOptions} from 'merge-images';
 import type {
     NFTGenerativeCollection,
     JSONEncodable,
@@ -9,7 +9,7 @@ import type {
     AttributeValue,
     NFTGenerativeItem,
 } from '../../types/index.js';
-import type { NFTGenerativeTraitBaseInterface } from '../NFTGenerativeTrait/NFTGenerativeTraitBaseInterface.js';
+import type {NFTGenerativeTraitBaseInterface} from '../NFTGenerativeTrait/NFTGenerativeTraitBaseInterface.js';
 //import type { NFTGenerativeItem } from '../NFTGenerativeItem/NFTGenerativeItem.js';
 
 export type Gene = number;
@@ -26,13 +26,13 @@ export interface NFTGenerativeCollectionInterface<
     traitKeys(): keyof Traits[];
     childrenKeys(): Children extends Record<string, NFTGenerativeCollectionInterface> ? keyof Children[] : undefined;
     getJsonMetadata(): {
-        traits: { [K in keyof Traits]: JSONEncodable };
+        traits: {[K in keyof Traits]: JSONEncodable};
     };
     getJsonMetadataWithChildren(): {
-        traits: { [K in keyof Traits]: JSONEncodable };
+        traits: {[K in keyof Traits]: JSONEncodable};
         children: Children extends Record<string, NFTGenerativeCollectionInterface>
-            ? { [K in keyof Children]: ReturnType<Children[K]['getJsonMetadataWithChildren']> }
-            : undefined;
+        ? {[K in keyof Children]: ReturnType<Children[K]['getJsonMetadataWithChildren']>}
+        : undefined;
     };
     abi(): ('uint8' | 'uint16' | 'int8' | 'int16')[];
     abiWithChildren(): ValueOrArray<'uint8' | 'uint16' | 'int8' | 'int16'>;
@@ -42,10 +42,10 @@ export interface NFTGenerativeCollectionInterface<
         attributes,
         children,
     }: {
-        attributes: { [K in keyof Traits]: AttributeValue };
+        attributes: {[K in keyof Traits]: AttributeValue};
         children?: Children extends Record<string, NFTGenerativeCollectionInterface>
-            ? { [K in keyof Children]: Parameters<Children[K]['create']>[0] }
-            : undefined;
+        ? {[K in keyof Children]: Parameters<Children[K]['create']>[0]}
+        : undefined;
     }): NFTGenerativeItem<NFTGenerativeCollectionInterface>;
     createFromDna({
         dna,
@@ -53,131 +53,131 @@ export interface NFTGenerativeCollectionInterface<
     }: {
         dna: string;
         children?: Children extends Record<string, NFTGenerativeCollectionInterface>
-            ? { [K in keyof Children]: Parameters<Children[K]['createFromDna']>[0] }
-            : undefined;
+        ? {[K in keyof Children]: Parameters<Children[K]['createFromDna']>[0]}
+        : undefined;
     }): NFTGenerativeItem<NFTGenerativeCollectionInterface>;
     createFromFullDna(fullDna: string): NFTGenerativeItem<NFTGenerativeCollectionInterface>;
 
     /** DNA to Genes */
     dnaToGene(dna: BytesLike, name: keyof Traits): Gene;
-    dnaToGenes(dna: BytesLike): { [K in keyof Traits]: Gene };
+    dnaToGenes(dna: BytesLike): {[K in keyof Traits]: Gene};
     dnaToGenesWithChildren({
         dna,
         children,
     }: {
         dna: BytesLike;
         children?: Children extends Record<string, NFTGenerativeCollectionInterface>
-            ? { [K in keyof Children]: Parameters<Children[K]['dnaToGenesWithChildren']>[0] }
-            : undefined;
+        ? {[K in keyof Children]: Parameters<Children[K]['dnaToGenesWithChildren']>[0]}
+        : undefined;
     }): {
-        genes: { [K in keyof Traits]: Gene };
+        genes: {[K in keyof Traits]: Gene};
         children: Children extends Record<string, NFTGenerativeCollectionInterface>
-            ? { [K in keyof Children]: ReturnType<Children[K]['dnaToGenesWithChildren']> }
-            : undefined;
+        ? {[K in keyof Children]: ReturnType<Children[K]['dnaToGenesWithChildren']>}
+        : undefined;
     };
 
     /** DNA to Attributes */
     dnaToAttribute(dna: BytesLike, name: keyof Traits): AttributeValue;
-    dnaToAttributes(dna: BytesLike): { [K in keyof Traits]: AttributeValue };
+    dnaToAttributes(dna: BytesLike): {[K in keyof Traits]: AttributeValue};
     dnaToAttributesWithChildren({
         dna,
         children,
     }: {
         dna: BytesLike;
         children?: Children extends Record<string, NFTGenerativeCollectionInterface>
-            ? { [K in keyof Children]: Parameters<Children[K]['dnaToAttributesWithChildren']>[0] }
-            : undefined;
+        ? {[K in keyof Children]: Parameters<Children[K]['dnaToAttributesWithChildren']>[0]}
+        : undefined;
     }): {
-        attributes: { [K in keyof Traits]: AttributeValue };
+        attributes: {[K in keyof Traits]: AttributeValue};
         children?: Children extends Record<string, NFTGenerativeCollectionInterface>
-            ? { [K in keyof Children]: ReturnType<Children[K]['dnaToAttributesWithChildren']> }
-            : undefined;
+        ? {[K in keyof Children]: ReturnType<Children[K]['dnaToAttributesWithChildren']>}
+        : undefined;
     };
 
-    attributesToAttributesFormatted(attributes: { [K in keyof Traits]: AttributeValue }): {
+    attributesToAttributesFormatted(attributes: {[K in keyof Traits]: AttributeValue}): {
         [K in keyof Traits]: AttributeFormatted;
     };
     attributesToAttributesFormattedWithChildren({
         attributes,
         children,
     }: {
-        attributes: { [K in keyof Traits]: AttributeValue };
+        attributes: {[K in keyof Traits]: AttributeValue};
         children?: Children extends Record<string, NFTGenerativeCollectionInterface>
-            ? { [K in keyof Children]: Parameters<Children[K]['attributesToAttributesFormattedWithChildren']>[0] }
-            : undefined;
+        ? {[K in keyof Children]: Parameters<Children[K]['attributesToAttributesFormattedWithChildren']>[0]}
+        : undefined;
     }): {
-        attributes: { [K in keyof Traits]: Gene };
+        attributes: {[K in keyof Traits]: Gene};
         children: Children extends Record<string, NFTGenerativeCollectionInterface>
-            ? { [K in keyof Children]: ReturnType<Children[K]['attributesToAttributesFormattedWithChildren']> }
-            : undefined;
+        ? {[K in keyof Children]: ReturnType<Children[K]['attributesToAttributesFormattedWithChildren']>}
+        : undefined;
     };
 
-    dnaToAttributesFormatted(dna: BytesLike): { [K in keyof Traits]: AttributeFormatted };
+    dnaToAttributesFormatted(dna: BytesLike): {[K in keyof Traits]: AttributeFormatted};
     dnaToAttributesWithChildrenFormatted({
         dna,
         children,
     }: {
         dna: BytesLike;
         children?: Children extends Record<string, NFTGenerativeCollectionInterface>
-            ? { [K in keyof Children]: Parameters<Children[K]['dnaToAttributesWithChildrenFormatted']>[0] }
-            : undefined;
+        ? {[K in keyof Children]: Parameters<Children[K]['dnaToAttributesWithChildrenFormatted']>[0]}
+        : undefined;
     }): {
-        attributes: { [K in keyof Traits]: AttributeFormatted };
+        attributes: {[K in keyof Traits]: AttributeFormatted};
         children: Children extends Record<string, NFTGenerativeCollectionInterface>
-            ? { [K in keyof Children]: ReturnType<Children[K]['dnaToAttributesWithChildrenFormatted']> }
-            : undefined;
+        ? {[K in keyof Children]: ReturnType<Children[K]['dnaToAttributesWithChildrenFormatted']>}
+        : undefined;
     };
 
     /** Attribute to Gene */
     attributeToGene(attribute: AttributeValue, name: keyof Traits): Gene;
-    attributesToGenes(attributes: { [K in keyof Traits]: AttributeValue }): { [K in keyof Traits]: Gene };
+    attributesToGenes(attributes: {[K in keyof Traits]: AttributeValue}): {[K in keyof Traits]: Gene};
     attributesToGenesWithChildren({
         attributes,
         children,
     }: {
-        attributes: { [K in keyof Traits]: AttributeValue };
+        attributes: {[K in keyof Traits]: AttributeValue};
         children?: Children extends Record<string, NFTGenerativeCollectionInterface>
-            ? { [K in keyof Children]: Parameters<Children[K]['attributesToGenesWithChildren']>[0] }
-            : undefined;
+        ? {[K in keyof Children]: Parameters<Children[K]['attributesToGenesWithChildren']>[0]}
+        : undefined;
     }): {
-        genes: { [K in keyof Traits]: Gene };
+        genes: {[K in keyof Traits]: Gene};
         children: Children extends Record<string, NFTGenerativeCollectionInterface>
-            ? { [K in keyof Children]: ReturnType<Children[K]['attributesToGenesWithChildren']> }
-            : undefined;
+        ? {[K in keyof Children]: ReturnType<Children[K]['attributesToGenesWithChildren']>}
+        : undefined;
     };
 
     /** Gene to DNA */
-    genesToDna(genes: { [K in keyof Traits]: Gene }): string;
+    genesToDna(genes: {[K in keyof Traits]: Gene}): string;
     genesToDnaWithChildren({
         genes,
         children,
     }: {
-        genes: { [K in keyof Traits]: Gene };
+        genes: {[K in keyof Traits]: Gene};
         children?: Children extends Record<string, NFTGenerativeCollectionInterface>
-            ? { [K in keyof Children]: Parameters<Children[K]['genesToDnaWithChildren']>[0] }
-            : undefined;
+        ? {[K in keyof Children]: Parameters<Children[K]['genesToDnaWithChildren']>[0]}
+        : undefined;
     }): {
         dna: string;
         children: Children extends Record<string, NFTGenerativeCollectionInterface>
-            ? { [K in keyof Children]: ReturnType<Children[K]['genesToDnaWithChildren']> }
-            : undefined;
+        ? {[K in keyof Children]: ReturnType<Children[K]['genesToDnaWithChildren']>}
+        : undefined;
     };
 
     /** Attributes to DNA */
-    attributesToDna(attributes: { [K in keyof Traits]: AttributeValue }): string;
+    attributesToDna(attributes: {[K in keyof Traits]: AttributeValue}): string;
     attributesToDnaWithChildren({
         attributes,
         children,
     }: {
-        attributes: { [K in keyof Traits]: AttributeValue };
+        attributes: {[K in keyof Traits]: AttributeValue};
         children?: Children extends Record<string, NFTGenerativeCollectionInterface>
-            ? { [K in keyof Children]: Parameters<Children[K]['attributesToDnaWithChildren']>[0] }
-            : undefined;
+        ? {[K in keyof Children]: Parameters<Children[K]['attributesToDnaWithChildren']>[0]}
+        : undefined;
     }): {
         dna: string;
         children: Children extends Record<string, NFTGenerativeCollectionInterface>
-            ? { [K in keyof Children]: ReturnType<Children[K]['attributesToDnaWithChildren']> }
-            : undefined;
+        ? {[K in keyof Children]: ReturnType<Children[K]['attributesToDnaWithChildren']>}
+        : undefined;
     };
 
     /** Full DNA to DNA */
@@ -185,29 +185,29 @@ export interface NFTGenerativeCollectionInterface<
     fullDnaToDnaWithChildren(fullDna: BytesLike): {
         dna: string;
         children: Children extends Record<string, NFTGenerativeCollectionInterface>
-            ? { [K in keyof Children]: ReturnType<Children[K]['fullDnaToDnaWithChildren']> }
-            : undefined;
+        ? {[K in keyof Children]: ReturnType<Children[K]['fullDnaToDnaWithChildren']>}
+        : undefined;
     };
 
     /** Attributes to Full DNA */
-    attributesToFullDna(attributes: { [K in keyof Traits]: AttributeValue }): string;
+    attributesToFullDna(attributes: {[K in keyof Traits]: AttributeValue}): string;
     attributesToFullDnaWithChildren({
         attributes,
         children,
     }: {
-        attributes: { [K in keyof Traits]: AttributeValue };
+        attributes: {[K in keyof Traits]: AttributeValue};
         children?: Children extends Record<string, NFTGenerativeCollectionInterface>
-            ? { [K in keyof Children]: Parameters<Children[K]['attributesToFullDnaWithChildren']>[0] }
-            : undefined;
+        ? {[K in keyof Children]: Parameters<Children[K]['attributesToFullDnaWithChildren']>[0]}
+        : undefined;
     }): {
         fullDna: string;
         children: Children extends Record<string, NFTGenerativeCollectionInterface>
-            ? { [K in keyof Children]: ReturnType<Children[K]['attributesToFullDnaWithChildren']> }
-            : undefined;
+        ? {[K in keyof Children]: ReturnType<Children[K]['attributesToFullDnaWithChildren']>}
+        : undefined;
     };
 
     getImage(
-        attributes: { [K in keyof Traits]: AttributeFormatted },
+        attributes: {[K in keyof Traits]: AttributeFormatted},
         mergeOptions?: MergeImagesOptions,
         width?: number,
         height?: number,
@@ -222,8 +222,8 @@ export interface NFTGenerativeCollectionInterface<
                 [K in keyof Traits]: AttributeFormatted;
             };
             children?: Children extends Record<string, NFTGenerativeCollectionInterface>
-                ? { [K in keyof Children]: Parameters<Children[K]['getImageWithChildren']>[0] }
-                : undefined;
+            ? {[K in keyof Children]: Parameters<Children[K]['getImageWithChildren']>[0]}
+            : undefined;
         },
         mergeOptions?: MergeImagesOptions,
         width?: number,
@@ -231,8 +231,7 @@ export interface NFTGenerativeCollectionInterface<
     ): Promise<string | undefined>;
 
     /** Instance Generation */
-    generateInstances(): Generator<NFTGenerativeItem>;
-    // generateInstances(): Generator<NFTGenerativeItem, NFTGenerativeItem, boolean>;
+    generateInstance(): NFTGenerativeItem;
 
     /***** Upload IPFS */
     uploadIPFS(client: IPFS): Promise<CID>;

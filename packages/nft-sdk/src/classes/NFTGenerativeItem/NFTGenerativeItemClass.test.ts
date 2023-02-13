@@ -1,5 +1,5 @@
-import { assert } from 'chai';
-import { waterEnumItem, fireEnumItem } from '../../collections/enum.js';
+import {assert} from 'chai';
+import {waterEnumItem, fireEnumItem, } from '../../collections/enum.js';
 
 describe('NFTGenerativeItemClass', () => {
     it('withAttribute', () => {
@@ -7,4 +7,5 @@ describe('NFTGenerativeItemClass', () => {
         const expected = fireEnumItem;
         assert.equal(result.dna, expected.dna);
     });
+
 });
