@@ -1,0 +1,672 @@
+import { NFTGenerativeTraitEnum, NFTGenerativeTraitImage } from '../types/index.js';
+
+export const traitRarityClassEnum: NFTGenerativeTraitEnum = {
+    name: 'Class',
+    type: 'enum',
+    options: ['Party', 'Designer', 'Thread Haus'],
+    probabilities: [70, 20, 10],
+};
+
+export const traitImageThBg: NFTGenerativeTraitImage = {
+    name: 'Background',
+    type: 'image',
+    image_type: 'png',
+    options: [
+        {
+            value: 'None',
+            image_url: 'ipfs://QmeYhQsx2PGeKoCco8Ck4gUcoSNN7ecShKcZaXDsHardQL',
+        },
+        {
+            value: 'Designer - Blue',
+            image_url: 'ipfs://QmbKKqHgfwDG8RCYMHAQcxKthYwEnEMN4vaVB781hPTtTA/bg/1.png',
+        },
+        {
+            value: 'Designer - Red',
+            image_url: 'ipfs://QmbKKqHgfwDG8RCYMHAQcxKthYwEnEMN4vaVB781hPTtTA/bg/2.png',
+        },
+        {
+            value: 'Designer - Yellow',
+            image_url: 'ipfs://QmbKKqHgfwDG8RCYMHAQcxKthYwEnEMN4vaVB781hPTtTA/bg/3.png',
+        },
+        {
+            value: 'Designer - Black',
+            image_url: 'ipfs://QmbKKqHgfwDG8RCYMHAQcxKthYwEnEMN4vaVB781hPTtTA/bg/4.png',
+        },
+        {
+            value: 'Party - Blue',
+            image_url: 'ipfs://QmbKKqHgfwDG8RCYMHAQcxKthYwEnEMN4vaVB781hPTtTA/bg/1-1.png',
+        },
+        {
+            value: 'Party - Orange',
+            image_url: 'ipfs://QmbKKqHgfwDG8RCYMHAQcxKthYwEnEMN4vaVB781hPTtTA/bg/5.png',
+        },
+        {
+            value: 'Party - Red',
+            image_url: 'ipfs://QmbKKqHgfwDG8RCYMHAQcxKthYwEnEMN4vaVB781hPTtTA/bg/6.png',
+        },
+        {
+            value: 'Party - Purple',
+            image_url: 'ipfs://QmbKKqHgfwDG8RCYMHAQcxKthYwEnEMN4vaVB781hPTtTA/bg/7.png',
+        },
+        {
+            value: 'Party - Green',
+            image_url: 'ipfs://QmbKKqHgfwDG8RCYMHAQcxKthYwEnEMN4vaVB781hPTtTA/bg/8.png',
+        },
+        {
+            value: 'Party - Pink',
+            image_url: 'ipfs://QmbKKqHgfwDG8RCYMHAQcxKthYwEnEMN4vaVB781hPTtTA/bg/9.png',
+        },
+        {
+            value: 'Party - Turquoise 1',
+            image_url: 'ipfs://QmbKKqHgfwDG8RCYMHAQcxKthYwEnEMN4vaVB781hPTtTA/bg/10.png',
+        },
+        {
+            value: 'Party - Turquoise 2',
+            image_url: 'ipfs://QmbKKqHgfwDG8RCYMHAQcxKthYwEnEMN4vaVB781hPTtTA/bg/11.png',
+        },
+        {
+            value: 'Thread Haus - Black',
+            image_url: 'ipfs://QmbKKqHgfwDG8RCYMHAQcxKthYwEnEMN4vaVB781hPTtTA/bg/12.png',
+        },
+        {
+            value: 'Thread Haus - Brown',
+            image_url: 'ipfs://QmbKKqHgfwDG8RCYMHAQcxKthYwEnEMN4vaVB781hPTtTA/bg/13.png',
+        },
+        {
+            value: 'Thread Haus - Olive',
+            image_url: 'ipfs://QmbKKqHgfwDG8RCYMHAQcxKthYwEnEMN4vaVB781hPTtTA/bg/14.png',
+        },
+        {
+            value: 'Thread Haus - Forest',
+            image_url: 'ipfs://QmbKKqHgfwDG8RCYMHAQcxKthYwEnEMN4vaVB781hPTtTA/bg/15.png',
+        },
+        {
+            value: 'Thread Haus - Maroon',
+            image_url: 'ipfs://QmbKKqHgfwDG8RCYMHAQcxKthYwEnEMN4vaVB781hPTtTA/bg/16.png',
+        },
+    ],
+    probabilities: [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
+};
+
+export const traitImageLight: NFTGenerativeTraitImage = {
+    name: 'Light',
+    type: 'image',
+    image_type: 'png',
+    options: [
+        {
+            value: 'Yellow',
+            image_url: 'ipfs://QmbKKqHgfwDG8RCYMHAQcxKthYwEnEMN4vaVB781hPTtTA/light/1.png',
+        },
+        {
+            value: 'Blue',
+            image_url: 'ipfs://QmbKKqHgfwDG8RCYMHAQcxKthYwEnEMN4vaVB781hPTtTA/light/2.png',
+        },
+        {
+            value: 'Red',
+            image_url: 'ipfs://QmbKKqHgfwDG8RCYMHAQcxKthYwEnEMN4vaVB781hPTtTA/light/3.png',
+        },
+        {
+            value: 'Green',
+            image_url: 'ipfs://QmbKKqHgfwDG8RCYMHAQcxKthYwEnEMN4vaVB781hPTtTA/light/4.png',
+        },
+        {
+            value: 'Turquoise',
+            image_url: 'ipfs://QmbKKqHgfwDG8RCYMHAQcxKthYwEnEMN4vaVB781hPTtTA/light/5.png',
+        },
+    ],
+    probabilities: [1, 1, 1, 1, 6],
+};
+
+export const traitImageBase: NFTGenerativeTraitImage = {
+    name: 'Base',
+    type: 'image',
+    image_type: 'png',
+    options: [
+        {
+            value: 'Base',
+            image_url: 'ipfs://QmbKKqHgfwDG8RCYMHAQcxKthYwEnEMN4vaVB781hPTtTA/1.png',
+        },
+    ],
+    probabilities: [1],
+};
+
+export const traitImageGlasses: NFTGenerativeTraitImage = {
+    name: 'Glasses',
+    type: 'image',
+    image_type: 'png',
+    options: [
+        {
+            value: 'None',
+            image_url: 'ipfs://QmeYhQsx2PGeKoCco8Ck4gUcoSNN7ecShKcZaXDsHardQL',
+        },
+        {
+            value: 'Designer - Basic',
+            image_url: 'ipfs://QmbKKqHgfwDG8RCYMHAQcxKthYwEnEMN4vaVB781hPTtTA/glasses/1.png',
+        },
+        {
+            value: 'Designer - Classic',
+            image_url: 'ipfs://QmbKKqHgfwDG8RCYMHAQcxKthYwEnEMN4vaVB781hPTtTA/glasses/2.png',
+        },
+        {
+            value: 'Designer - Creepers',
+            image_url: 'ipfs://QmbKKqHgfwDG8RCYMHAQcxKthYwEnEMN4vaVB781hPTtTA/glasses/3.png',
+        },
+        {
+            value: 'Designer - Square Frames',
+            image_url: 'ipfs://QmbKKqHgfwDG8RCYMHAQcxKthYwEnEMN4vaVB781hPTtTA/glasses/4.png',
+        },
+        {
+            value: 'Designer - Tortoise',
+            image_url: 'ipfs://QmbKKqHgfwDG8RCYMHAQcxKthYwEnEMN4vaVB781hPTtTA/glasses/5.png',
+        },
+        {
+            value: 'Party - Glasses 1',
+            image_url: 'ipfs://QmbKKqHgfwDG8RCYMHAQcxKthYwEnEMN4vaVB781hPTtTA/glasses/6.png',
+        },
+        {
+            value: 'Party - Glasses 2',
+            image_url: 'ipfs://QmbKKqHgfwDG8RCYMHAQcxKthYwEnEMN4vaVB781hPTtTA/glasses/7.png',
+        },
+        {
+            value: 'Party - Glasses 3',
+            image_url: 'ipfs://QmbKKqHgfwDG8RCYMHAQcxKthYwEnEMN4vaVB781hPTtTA/glasses/8.png',
+        },
+        {
+            value: 'Party - Glasses 7',
+            image_url: 'ipfs://QmbKKqHgfwDG8RCYMHAQcxKthYwEnEMN4vaVB781hPTtTA/glasses/9.png',
+        },
+        {
+            value: 'Party - Glasses 12',
+            image_url: 'ipfs://QmbKKqHgfwDG8RCYMHAQcxKthYwEnEMN4vaVB781hPTtTA/glasses/10.png',
+        },
+        {
+            value: 'Party - Glasses 14',
+            image_url: 'ipfs://QmbKKqHgfwDG8RCYMHAQcxKthYwEnEMN4vaVB781hPTtTA/glasses/11.png',
+        },
+        {
+            value: 'Party - Glasses 17',
+            image_url: 'ipfs://QmbKKqHgfwDG8RCYMHAQcxKthYwEnEMN4vaVB781hPTtTA/glasses/12.png',
+        },
+        {
+            value: 'Party - Glasses 18',
+            image_url: 'ipfs://QmbKKqHgfwDG8RCYMHAQcxKthYwEnEMN4vaVB781hPTtTA/glasses/13.png',
+        },
+        {
+            value: 'Party - Glasses 20',
+            image_url: 'ipfs://QmbKKqHgfwDG8RCYMHAQcxKthYwEnEMN4vaVB781hPTtTA/glasses/14.png',
+        },
+        {
+            value: 'Party - Glasses 21',
+            image_url: 'ipfs://QmbKKqHgfwDG8RCYMHAQcxKthYwEnEMN4vaVB781hPTtTA/glasses/15.png',
+        },
+        {
+            value: 'Party - Glasses 25',
+            image_url: 'ipfs://QmbKKqHgfwDG8RCYMHAQcxKthYwEnEMN4vaVB781hPTtTA/glasses/16.png',
+        },
+        {
+            value: 'Party - Glasses 27',
+            image_url: 'ipfs://QmbKKqHgfwDG8RCYMHAQcxKthYwEnEMN4vaVB781hPTtTA/glasses/17.png',
+        },
+        {
+            value: 'Party - Glasses 29',
+            image_url: 'ipfs://QmbKKqHgfwDG8RCYMHAQcxKthYwEnEMN4vaVB781hPTtTA/glasses/18.png',
+        },
+        {
+            value: 'Party - Glasses 30',
+            image_url: 'ipfs://QmbKKqHgfwDG8RCYMHAQcxKthYwEnEMN4vaVB781hPTtTA/glasses/19.png',
+        },
+        {
+            value: 'Party - Glasses 31',
+            image_url: 'ipfs://QmbKKqHgfwDG8RCYMHAQcxKthYwEnEMN4vaVB781hPTtTA/glasses/20.png',
+        },
+        {
+            value: 'Party - Glasses 32',
+            image_url: 'ipfs://QmbKKqHgfwDG8RCYMHAQcxKthYwEnEMN4vaVB781hPTtTA/glasses/21.png',
+        },
+        {
+            value: 'Party - Glasses 34',
+            image_url: 'ipfs://QmbKKqHgfwDG8RCYMHAQcxKthYwEnEMN4vaVB781hPTtTA/glasses/22.png',
+        },
+        {
+            value: 'Party - Glasses 36',
+            image_url: 'ipfs://QmbKKqHgfwDG8RCYMHAQcxKthYwEnEMN4vaVB781hPTtTA/glasses/23.png',
+        },
+        {
+            value: 'Party - Glasses 37',
+            image_url: 'ipfs://QmbKKqHgfwDG8RCYMHAQcxKthYwEnEMN4vaVB781hPTtTA/glasses/24.png',
+        },
+        {
+            value: 'Party - Glasses 38',
+            image_url: 'ipfs://QmbKKqHgfwDG8RCYMHAQcxKthYwEnEMN4vaVB781hPTtTA/glasses/25.png',
+        },
+        {
+            value: 'Party - Glasses 39',
+            image_url: 'ipfs://QmbKKqHgfwDG8RCYMHAQcxKthYwEnEMN4vaVB781hPTtTA/glasses/26.png',
+        },
+        {
+            value: 'Party - Glasses Aviator',
+            image_url: 'ipfs://QmbKKqHgfwDG8RCYMHAQcxKthYwEnEMN4vaVB781hPTtTA/glasses/27.png',
+        },
+        {
+            value: 'ThreadHaus - Square Frames Maroon',
+            image_url: 'ipfs://QmbKKqHgfwDG8RCYMHAQcxKthYwEnEMN4vaVB781hPTtTA/glasses/28.png',
+        },
+        {
+            value: 'ThreadHaus - Round Glasses',
+            image_url: 'ipfs://QmbKKqHgfwDG8RCYMHAQcxKthYwEnEMN4vaVB781hPTtTA/glasses/29.png',
+        },
+        {
+            value: 'ThreadHaus - Rimless Glasses',
+            image_url: 'ipfs://QmbKKqHgfwDG8RCYMHAQcxKthYwEnEMN4vaVB781hPTtTA/glasses/30.png',
+        },
+        {
+            value: 'ThreadHaus - Vintage MJ',
+            image_url: 'ipfs://QmbKKqHgfwDG8RCYMHAQcxKthYwEnEMN4vaVB781hPTtTA/glasses/31.png',
+        },
+        {
+            value: 'ThreadHaus - Vintage MJ 2',
+            image_url: 'ipfs://QmbKKqHgfwDG8RCYMHAQcxKthYwEnEMN4vaVB781hPTtTA/glasses/32.png',
+        },
+        {
+            value: 'ThreadHaus - Black Speckled Kimono',
+            image_url: 'ipfs://QmbKKqHgfwDG8RCYMHAQcxKthYwEnEMN4vaVB781hPTtTA/glasses/33.png',
+        },
+    ],
+    probabilities: [
+        1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
+    ],
+};
+
+export const traitImageDress: NFTGenerativeTraitImage = {
+    name: 'Dress/Shirt',
+    type: 'image',
+    image_type: 'png',
+    options: [
+        {
+            value: 'None',
+            image_url: 'ipfs://QmeYhQsx2PGeKoCco8Ck4gUcoSNN7ecShKcZaXDsHardQL',
+        },
+        {
+            value: 'Designer - Kani',
+            image_url: 'ipfs://QmbKKqHgfwDG8RCYMHAQcxKthYwEnEMN4vaVB781hPTtTA/dress/1.png',
+        },
+        {
+            value: 'Designer - Kani Black',
+            image_url: 'ipfs://QmbKKqHgfwDG8RCYMHAQcxKthYwEnEMN4vaVB781hPTtTA/dress/2.png',
+        },
+        {
+            value: 'Designer - Kani Blue',
+            image_url: 'ipfs://QmbKKqHgfwDG8RCYMHAQcxKthYwEnEMN4vaVB781hPTtTA/dress/3.png',
+        },
+        {
+            value: 'Designer - Spike',
+            image_url: 'ipfs://QmbKKqHgfwDG8RCYMHAQcxKthYwEnEMN4vaVB781hPTtTA/dress/4.png',
+        },
+        {
+            value: 'Designer - Spike Blue',
+            image_url: 'ipfs://QmbKKqHgfwDG8RCYMHAQcxKthYwEnEMN4vaVB781hPTtTA/dress/5.png',
+        },
+        {
+            value: 'Designer - Spike Red',
+            image_url: 'ipfs://QmbKKqHgfwDG8RCYMHAQcxKthYwEnEMN4vaVB781hPTtTA/dress/6.png',
+        },
+        {
+            value: 'Party - Coat Purple',
+            image_url: 'ipfs://QmbKKqHgfwDG8RCYMHAQcxKthYwEnEMN4vaVB781hPTtTA/dress/7.png',
+        },
+        {
+            value: 'Party - Coat Green',
+            image_url: 'ipfs://QmbKKqHgfwDG8RCYMHAQcxKthYwEnEMN4vaVB781hPTtTA/dress/8.png',
+        },
+        {
+            value: 'Party - Shirt Turquoise',
+            image_url: 'ipfs://QmbKKqHgfwDG8RCYMHAQcxKthYwEnEMN4vaVB781hPTtTA/dress/9.png',
+        },
+        {
+            value: 'Party - Shirt Pink',
+            image_url: 'ipfs://QmbKKqHgfwDG8RCYMHAQcxKthYwEnEMN4vaVB781hPTtTA/dress/10.png',
+        },
+        {
+            value: 'Party - Suit Purple',
+            image_url: 'ipfs://QmbKKqHgfwDG8RCYMHAQcxKthYwEnEMN4vaVB781hPTtTA/dress/11.png',
+        },
+        {
+            value: 'Party - Suit Red',
+            image_url: 'ipfs://QmbKKqHgfwDG8RCYMHAQcxKthYwEnEMN4vaVB781hPTtTA/dress/12.png',
+        },
+        {
+            value: 'Party - Suit Blue',
+            image_url: 'ipfs://QmbKKqHgfwDG8RCYMHAQcxKthYwEnEMN4vaVB781hPTtTA/dress/13.png',
+        },
+        {
+            value: 'ThreadHaus - Coat Gold',
+            image_url: 'ipfs://QmbKKqHgfwDG8RCYMHAQcxKthYwEnEMN4vaVB781hPTtTA/dress/14.png',
+        },
+        {
+            value: 'ThreadHaus - Track Jacket Burgundy',
+            image_url: 'ipfs://QmbKKqHgfwDG8RCYMHAQcxKthYwEnEMN4vaVB781hPTtTA/dress/15.png',
+        },
+        {
+            value: 'ThreadHaus - Suit 3.0 Burgundy',
+            image_url: 'ipfs://QmbKKqHgfwDG8RCYMHAQcxKthYwEnEMN4vaVB781hPTtTA/dress/16.png',
+        },
+        {
+            value: 'ThreadHaus - Suit 3.0 Black',
+            image_url: 'ipfs://QmbKKqHgfwDG8RCYMHAQcxKthYwEnEMN4vaVB781hPTtTA/dress/17.png',
+        },
+        {
+            value: 'ThreadHaus - Kimono Navy',
+            image_url: 'ipfs://QmbKKqHgfwDG8RCYMHAQcxKthYwEnEMN4vaVB781hPTtTA/dress/18.png',
+        },
+        {
+            value: 'ThreadHaus - Intch Vest Quilted',
+            image_url: 'ipfs://QmbKKqHgfwDG8RCYMHAQcxKthYwEnEMN4vaVB781hPTtTA/dress/19.png',
+        },
+        {
+            value: 'ThreadHaus - Grey Tee',
+            image_url: 'ipfs://QmbKKqHgfwDG8RCYMHAQcxKthYwEnEMN4vaVB781hPTtTA/dress/20.png',
+        },
+        {
+            value: 'ThreadHaus - Flight Jacket Navy',
+            image_url: 'ipfs://QmbKKqHgfwDG8RCYMHAQcxKthYwEnEMN4vaVB781hPTtTA/dress/21.png',
+        },
+        {
+            value: 'ThreadHaus - Flight Jacket Indigo',
+            image_url: 'ipfs://QmbKKqHgfwDG8RCYMHAQcxKthYwEnEMN4vaVB781hPTtTA/dress/22.png',
+        },
+        {
+            value: 'ThreadHaus - Cloak Acid',
+            image_url: 'ipfs://QmbKKqHgfwDG8RCYMHAQcxKthYwEnEMN4vaVB781hPTtTA/dress/23.png',
+        },
+        {
+            value: 'ThreadHaus - Kimono RGY',
+            image_url: 'ipfs://QmbKKqHgfwDG8RCYMHAQcxKthYwEnEMN4vaVB781hPTtTA/dress/24.png',
+        },
+        {
+            value: 'ThreadHaus - Button Up',
+            image_url: 'ipfs://QmbKKqHgfwDG8RCYMHAQcxKthYwEnEMN4vaVB781hPTtTA/dress/25.png',
+        },
+        {
+            value: 'ThreadHaus - 24 Hour Polo Multi',
+            image_url: 'ipfs://QmbKKqHgfwDG8RCYMHAQcxKthYwEnEMN4vaVB781hPTtTA/dress/26.png',
+        },
+        {
+            value: 'ThreadHaus - Red Jacket',
+            image_url: 'ipfs://QmbKKqHgfwDG8RCYMHAQcxKthYwEnEMN4vaVB781hPTtTA/dress/27.png',
+        },
+        {
+            value: 'ThreadHaus - Kani White',
+            image_url: 'ipfs://QmbKKqHgfwDG8RCYMHAQcxKthYwEnEMN4vaVB781hPTtTA/dress/28.png',
+        },
+        {
+            value: 'ThreadHaus - Track Jacket Black',
+            image_url: 'ipfs://QmbKKqHgfwDG8RCYMHAQcxKthYwEnEMN4vaVB781hPTtTA/dress/29.png',
+        },
+    ],
+    probabilities: [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
+};
+
+export const traitImageHats: NFTGenerativeTraitImage = {
+    name: 'Hats',
+    type: 'image',
+    image_type: 'png',
+    options: [
+        {
+            value: 'None',
+            image_url: 'ipfs://QmeYhQsx2PGeKoCco8Ck4gUcoSNN7ecShKcZaXDsHardQL',
+        },
+        {
+            value: 'Designer - 40 Arce 2',
+            image_url: 'ipfs://QmbKKqHgfwDG8RCYMHAQcxKthYwEnEMN4vaVB781hPTtTA/hats/1.png',
+        },
+        {
+            value: 'Designer - 40 Arce 3',
+            image_url: 'ipfs://QmbKKqHgfwDG8RCYMHAQcxKthYwEnEMN4vaVB781hPTtTA/hats/2.png',
+        },
+        {
+            value: 'Designer - Bandana',
+            image_url: 'ipfs://QmbKKqHgfwDG8RCYMHAQcxKthYwEnEMN4vaVB781hPTtTA/hats/3.png',
+        },
+        {
+            value: 'Designer - Bandana 2',
+            image_url: 'ipfs://QmbKKqHgfwDG8RCYMHAQcxKthYwEnEMN4vaVB781hPTtTA/hats/4.png',
+        },
+        {
+            value: 'Designer - Fedora Black White Trim',
+            image_url: 'ipfs://QmbKKqHgfwDG8RCYMHAQcxKthYwEnEMN4vaVB781hPTtTA/hats/5.png',
+        },
+        {
+            value: 'Designer - Bunky Brimless Passion Flames',
+            image_url: 'ipfs://QmbKKqHgfwDG8RCYMHAQcxKthYwEnEMN4vaVB781hPTtTA/hats/6.png',
+        },
+        {
+            value: 'Designer - 40 Acre 1',
+            image_url: 'ipfs://QmbKKqHgfwDG8RCYMHAQcxKthYwEnEMN4vaVB781hPTtTA/hats/7.png',
+        },
+        {
+            value: 'Designer - Cap 1',
+            image_url: 'ipfs://QmbKKqHgfwDG8RCYMHAQcxKthYwEnEMN4vaVB781hPTtTA/hats/8.png',
+        },
+        {
+            value: 'Designer - Cap 2',
+            image_url: 'ipfs://QmbKKqHgfwDG8RCYMHAQcxKthYwEnEMN4vaVB781hPTtTA/hats/9.png',
+        },
+        {
+            value: 'Designer - Cap 3',
+            image_url: 'ipfs://QmbKKqHgfwDG8RCYMHAQcxKthYwEnEMN4vaVB781hPTtTA/hats/10.png',
+        },
+        {
+            value: 'Designer - Cap 5',
+            image_url: 'ipfs://QmbKKqHgfwDG8RCYMHAQcxKthYwEnEMN4vaVB781hPTtTA/hats/11.png',
+        },
+        {
+            value: 'Designer - Cap 6',
+            image_url: 'ipfs://QmbKKqHgfwDG8RCYMHAQcxKthYwEnEMN4vaVB781hPTtTA/hats/12.png',
+        },
+        {
+            value: 'Designer - Cap 8',
+            image_url: 'ipfs://QmbKKqHgfwDG8RCYMHAQcxKthYwEnEMN4vaVB781hPTtTA/hats/13.png',
+        },
+        {
+            value: 'Designer - Fedora Black Red Brim',
+            image_url: 'ipfs://QmbKKqHgfwDG8RCYMHAQcxKthYwEnEMN4vaVB781hPTtTA/hats/14.png',
+        },
+        {
+            value: 'Designer - Hat',
+            image_url: 'ipfs://QmbKKqHgfwDG8RCYMHAQcxKthYwEnEMN4vaVB781hPTtTA/hats/15.png',
+        },
+        {
+            value: 'Designer - MAGA Hat',
+            image_url: 'ipfs://QmbKKqHgfwDG8RCYMHAQcxKthYwEnEMN4vaVB781hPTtTA/hats/16.png',
+        },
+        {
+            value: 'Designer - 1619 Hat',
+            image_url: 'ipfs://QmbKKqHgfwDG8RCYMHAQcxKthYwEnEMN4vaVB781hPTtTA/hats/17.png',
+        },
+        {
+            value: 'Party - Bandana 2',
+            image_url: 'ipfs://QmbKKqHgfwDG8RCYMHAQcxKthYwEnEMN4vaVB781hPTtTA/hats/18.png',
+        },
+        {
+            value: 'Party - Bandana 3',
+            image_url: 'ipfs://QmbKKqHgfwDG8RCYMHAQcxKthYwEnEMN4vaVB781hPTtTA/hats/19.png',
+        },
+        {
+            value: 'Party - Beret',
+            image_url: 'ipfs://QmbKKqHgfwDG8RCYMHAQcxKthYwEnEMN4vaVB781hPTtTA/hats/20.png',
+        },
+        {
+            value: 'Party - Fedora White',
+            image_url: 'ipfs://QmbKKqHgfwDG8RCYMHAQcxKthYwEnEMN4vaVB781hPTtTA/hats/21.png',
+        },
+        {
+            value: 'Party - Cap 1',
+            image_url: 'ipfs://QmbKKqHgfwDG8RCYMHAQcxKthYwEnEMN4vaVB781hPTtTA/hats/22.png',
+        },
+        {
+            value: 'Party - Cap 2',
+            image_url: 'ipfs://QmbKKqHgfwDG8RCYMHAQcxKthYwEnEMN4vaVB781hPTtTA/hats/23.png',
+        },
+        {
+            value: 'Party - Cap 23',
+            image_url: 'ipfs://QmbKKqHgfwDG8RCYMHAQcxKthYwEnEMN4vaVB781hPTtTA/hats/24.png',
+        },
+        {
+            value: 'Party - Cap 24',
+            image_url: 'ipfs://QmbKKqHgfwDG8RCYMHAQcxKthYwEnEMN4vaVB781hPTtTA/hats/25.png',
+        },
+        {
+            value: 'Party - Cap 25',
+            image_url: 'ipfs://QmbKKqHgfwDG8RCYMHAQcxKthYwEnEMN4vaVB781hPTtTA/hats/26.png',
+        },
+        {
+            value: 'Party - Cap 26',
+            image_url: 'ipfs://QmbKKqHgfwDG8RCYMHAQcxKthYwEnEMN4vaVB781hPTtTA/hats/27.png',
+        },
+        {
+            value: 'Party - Fedora White Blue Brim',
+            image_url: 'ipfs://QmbKKqHgfwDG8RCYMHAQcxKthYwEnEMN4vaVB781hPTtTA/hats/28.png',
+        },
+        {
+            value: 'Party - Mule Hat 2',
+            image_url: 'ipfs://QmbKKqHgfwDG8RCYMHAQcxKthYwEnEMN4vaVB781hPTtTA/hats/29.png',
+        },
+        {
+            value: 'Party - Red Black Hat',
+            image_url: 'ipfs://QmbKKqHgfwDG8RCYMHAQcxKthYwEnEMN4vaVB781hPTtTA/hats/30.png',
+        },
+        {
+            value: 'ThreadHaus - Crew Cap 1',
+            image_url: 'ipfs://QmbKKqHgfwDG8RCYMHAQcxKthYwEnEMN4vaVB781hPTtTA/hats/31.png',
+        },
+        {
+            value: 'ThreadHaus - Crew Cap 2',
+            image_url: 'ipfs://QmbKKqHgfwDG8RCYMHAQcxKthYwEnEMN4vaVB781hPTtTA/hats/32.png',
+        },
+        {
+            value: 'ThreadHaus - Crew Cap 3',
+            image_url: 'ipfs://QmbKKqHgfwDG8RCYMHAQcxKthYwEnEMN4vaVB781hPTtTA/hats/33.png',
+        },
+        {
+            value: 'ThreadHaus - Crew Cap 4',
+            image_url: 'ipfs://QmbKKqHgfwDG8RCYMHAQcxKthYwEnEMN4vaVB781hPTtTA/hats/34.png',
+        },
+        {
+            value: 'ThreadHaus - Crew Cap 12',
+            image_url: 'ipfs://QmbKKqHgfwDG8RCYMHAQcxKthYwEnEMN4vaVB781hPTtTA/hats/35.png',
+        },
+        {
+            value: 'ThreadHaus - Crew Cap 13',
+            image_url: 'ipfs://QmbKKqHgfwDG8RCYMHAQcxKthYwEnEMN4vaVB781hPTtTA/hats/36.png',
+        },
+        {
+            value: 'ThreadHaus - Crew Cap 14',
+            image_url: 'ipfs://QmbKKqHgfwDG8RCYMHAQcxKthYwEnEMN4vaVB781hPTtTA/hats/37.png',
+        },
+        {
+            value: 'ThreadHaus - Crew Cap Reg',
+            image_url: 'ipfs://QmbKKqHgfwDG8RCYMHAQcxKthYwEnEMN4vaVB781hPTtTA/hats/38.png',
+        },
+        {
+            value: 'ThreadHaus - Crew Hat 1',
+            image_url: 'ipfs://QmbKKqHgfwDG8RCYMHAQcxKthYwEnEMN4vaVB781hPTtTA/hats/39.png',
+        },
+        {
+            value: 'ThreadHaus - Crew Hat 2',
+            image_url: 'ipfs://QmbKKqHgfwDG8RCYMHAQcxKthYwEnEMN4vaVB781hPTtTA/hats/40.png',
+        },
+        {
+            value: 'ThreadHaus - Crew Reg 2',
+            image_url: 'ipfs://QmbKKqHgfwDG8RCYMHAQcxKthYwEnEMN4vaVB781hPTtTA/hats/41.png',
+        },
+        {
+            value: 'ThreadHaus - Crew Reg 3',
+            image_url: 'ipfs://QmbKKqHgfwDG8RCYMHAQcxKthYwEnEMN4vaVB781hPTtTA/hats/42.png',
+        },
+        {
+            value: 'ThreadHaus - Crew Crown - Denim Dani',
+            image_url: 'ipfs://QmbKKqHgfwDG8RCYMHAQcxKthYwEnEMN4vaVB781hPTtTA/hats/43.png',
+        },
+        {
+            value: 'ThreadHaus - Crew Crown - Denim Vibes',
+            image_url: 'ipfs://QmbKKqHgfwDG8RCYMHAQcxKthYwEnEMN4vaVB781hPTtTA/hats/44.png',
+        },
+        {
+            value: 'ThreadHaus - Crew Crown - Leather Lenny',
+            image_url: 'ipfs://QmbKKqHgfwDG8RCYMHAQcxKthYwEnEMN4vaVB781hPTtTA/hats/45.png',
+        },
+        {
+            value: 'ThreadHaus - Crew Dora - AAW',
+            image_url: 'ipfs://QmbKKqHgfwDG8RCYMHAQcxKthYwEnEMN4vaVB781hPTtTA/hats/46.png',
+        },
+        {
+            value: 'ThreadHaus - Crew Dora - 1',
+            image_url: 'ipfs://QmbKKqHgfwDG8RCYMHAQcxKthYwEnEMN4vaVB781hPTtTA/hats/47.png',
+        },
+        {
+            value: 'ThreadHaus - Crew Dora - 2',
+            image_url: 'ipfs://QmbKKqHgfwDG8RCYMHAQcxKthYwEnEMN4vaVB781hPTtTA/hats/48.png',
+        },
+        {
+            value: 'ThreadHaus - Crew Dora - 3',
+            image_url: 'ipfs://QmbKKqHgfwDG8RCYMHAQcxKthYwEnEMN4vaVB781hPTtTA/hats/49.png',
+        },
+        {
+            value: 'ThreadHaus - Crew Dora - 4',
+            image_url: 'ipfs://QmbKKqHgfwDG8RCYMHAQcxKthYwEnEMN4vaVB781hPTtTA/hats/50.png',
+        },
+        {
+            value: 'ThreadHaus - Crew Dora - 5',
+            image_url: 'ipfs://QmbKKqHgfwDG8RCYMHAQcxKthYwEnEMN4vaVB781hPTtTA/hats/51.png',
+        },
+        {
+            value: 'ThreadHaus - Crew Dora - White Green',
+            image_url: 'ipfs://QmbKKqHgfwDG8RCYMHAQcxKthYwEnEMN4vaVB781hPTtTA/hats/52.png',
+        },
+        {
+            value: 'ThreadHaus - Crew Band - 1',
+            image_url: 'ipfs://QmbKKqHgfwDG8RCYMHAQcxKthYwEnEMN4vaVB781hPTtTA/hats/53.png',
+        },
+        {
+            value: 'ThreadHaus - Crew Band - 3',
+            image_url: 'ipfs://QmbKKqHgfwDG8RCYMHAQcxKthYwEnEMN4vaVB781hPTtTA/hats/54.png',
+        },
+        {
+            value: 'ThreadHaus - Crew Band - 4',
+            image_url: 'ipfs://QmbKKqHgfwDG8RCYMHAQcxKthYwEnEMN4vaVB781hPTtTA/hats/55.png',
+        },
+    ],
+    probabilities: [
+        1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
+        1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
+    ],
+};
+
+export const traitImageFacialHair: NFTGenerativeTraitImage = {
+    name: 'Facial Hair',
+    type: 'image',
+    image_type: 'png',
+    options: [
+        {
+            value: 'None',
+            image_url: 'ipfs://QmeYhQsx2PGeKoCco8Ck4gUcoSNN7ecShKcZaXDsHardQL',
+        },
+        {
+            value: 'Facial Hair - 1',
+            image_url: 'ipfs://QmbKKqHgfwDG8RCYMHAQcxKthYwEnEMN4vaVB781hPTtTA/facial_hair/1.png',
+        },
+        {
+            value: 'Facial Hair - 2',
+            image_url: 'ipfs://QmbKKqHgfwDG8RCYMHAQcxKthYwEnEMN4vaVB781hPTtTA/facial_hair/2.png',
+        },
+        {
+            value: 'Facial Hair - 3',
+            image_url: 'ipfs://QmbKKqHgfwDG8RCYMHAQcxKthYwEnEMN4vaVB781hPTtTA/facial_hair/3.png',
+        },
+        {
+            value: 'Facial Hair - 4',
+            image_url: 'ipfs://QmbKKqHgfwDG8RCYMHAQcxKthYwEnEMN4vaVB781hPTtTA/facial_hair/4.png',
+        },
+    ],
+    probabilities: [1, 1, 1, 1, 1],
+};
