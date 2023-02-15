@@ -12,10 +12,10 @@
   "type": "commonjs",
   "main": "./lib/cjs/index.cjs",
   "module": "./lib/esm/index.mjs",
-  "types": "./lib/types/index.d.ts",
+  "types": "./lib/types/src/index.d.ts",
   "exports": {
     ".": {
-      "types": "./lib/types/index.d.ts",
+      "types": "./lib/types/src/index.d.ts",
       "require": "./lib/cjs/index.js",
       "import": "./lib/esm/index.js"
     }
@@ -30,7 +30,8 @@
     "contracts/*"
   ],
   "scripts": {
-    "build": "npm-run-all compile generate-types docs esbuild tsc build:interfaceIds build:deployments-export",
+    "build": "npm-run-all compile build:esm docs build:interfaceIds build:deployments-export",
+    "build:esm": "npm-run-all esbuild tsc generate-types",
     "build:watch": "npm-run-all -p tsc:watch esbuild:watch",
     "build:interfaceIds": "rm interfaceId/* && node lib/cjs/ethers/generateInterfaceIds.js",
     "build:deployments-export": "node generate-deployments-export.js",
@@ -43,6 +44,7 @@
     "hardhat:node": "hardhat node --no-deploy",
     "ipfs": "jsipfs daemon",
     "ipfs:configure": "jsipfs config --json API.HTTPHeaders.Access-Control-Allow-Methods '[\"PUT\", \"POST\"]' && jsipfs config --json API.HTTPHeaders.Access-Control-Allow-Origin '[\"http://127.0.0.1:5002\", \"http://localhost:3000\", \"http://127.0.0.1:5001\", \"https://webui.ipfs.io\"]'",
+    "clean": "rimraf types lib",
     "clean:types": "rimraf types && hardhat clean",
     "coverage": "hardhat coverage --solcoverjs .solcover.js --testfiles 'test/**/*.test.ts'",
     "coverage:gsn": "hardhat --network local coverage --solcoverjs .solcover.js --testfiles 'test/**/*.test.ts'",
