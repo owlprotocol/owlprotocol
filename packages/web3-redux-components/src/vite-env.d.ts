@@ -6,6 +6,7 @@ export interface ImportMetaEnv {
     readonly VITE_OWL_RPC: string;
     readonly VITE_IPFS_URL: string;
     readonly VITE_CORS_PROXY: string;
+    readonly VITE_MAGIC_CONNECT_PK: string;
 }
 
 export interface ImportMeta {
