@@ -3,7 +3,7 @@ import {
     ContractEventQueryId,
     ContractEventQuery,
     validate,
-    ContractEventIndexInput,
+    ContractEventQueryIndexInput,
     validateId,
     toPrimaryKey,
 } from './model/index.js';
@@ -15,7 +15,7 @@ export const ContractEventQueryCRUD = createCRUDModel<
     ContractEventQueryId,
     ContractEventQuery,
     ContractEventQuery,
-    ContractEventIndexInput,
+    ContractEventQueryIndexInput,
     Web3ReduxDexie
 >(name, getDB, { validate, validateId, toPrimaryKey });
 export default ContractEventQueryCRUD;

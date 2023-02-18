@@ -12,6 +12,8 @@ const beforeAll = async () => {
     //global.window = global; // We'll allow ourselves to use `window.indexedDB` or `indexedDB` as a global
     setGlobalVars(window, { checkOrigin: false, memoryDatabase: '' }); // See signature below
     const { indexedDB, IDBKeyRange } = window;
+    global.indexedDB = indexedDB
+    global.IDBKeyRange = IDBKeyRange
     //@ts-expect-error
     global.window = window;
     global.document = window.document;

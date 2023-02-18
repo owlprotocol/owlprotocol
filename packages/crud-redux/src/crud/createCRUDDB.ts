@@ -1,5 +1,5 @@
 import { zip } from 'lodash-es';
-import Dexie, { IndexableTypeArrayReadonly } from 'dexie';
+import Dexie, { IndexableType, IndexableTypeArrayReadonly } from 'dexie';
 
 import { T_Encoded_Base } from './model.js';
 import { createCRUDValidators } from './createCRUDValidators.js';
@@ -30,7 +30,7 @@ export function createCRUDDB<
     const { encode, toPrimaryKey } = validators;
 
     /** Dexie Getters */
-    const get = (idx: T_Idx | string) => {
+    const get = (idx: T_Idx | string | IndexableType) => {
         const db = getDB();
         const table = db.table<T_Encoded>(name);
         //@ts-expect-error
@@ -56,22 +56,27 @@ export function createCRUDDB<
 
         const db = getDB();
         const table = db.table<T_Encoded>(name);
-        //@ts-expect-error
-        let result = table.where(filter);
-        //@ts-expect-error
-        if (reverse) result = result.reverse();
-        //@ts-expect-error
-        if (offset) result = result.offset(offset);
-        //@ts-expect-error
-        if (limit) result = result.limit(limit);
+        return db.transaction('r', table, () => {
+            //@ts-expect-error
+            let result = table.where(filter);
+            //@ts-expect-error
+            if (reverse) result = result.reverse();
+            //@ts-expect-error
+            if (offset) result = result.offset(offset);
+            //@ts-expect-error
+            if (limit) result = result.limit(limit);
 
-        return result.toArray();
+            return result.toArray();
+        })
     };
 
     const add = (item: T) => {
         const db = getDB();
         const table = db.table<T_Encoded>(name);
-        return table.add({ ...encode(item), updatedAt: Date.now() });
+        //return table.add({ ...encode(item), updatedAt: Date.now() });
+        return db.transaction('rw', table, () => {
+            return table.add({ ...encode(item), updatedAt: Date.now() });
+        })
     };
 
     const bulkAdd = (items: T[]) => {
@@ -168,7 +173,10 @@ export function createCRUDDB<
         return table.clear();
     };
 
+    const table = () => getDB().table<T_Encoded>(name)
+
     const db = {
+        table,
         get,
         bulkGet,
         all,

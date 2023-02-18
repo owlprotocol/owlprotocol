@@ -60,17 +60,17 @@ export function createCRUDModel<
     //Model Validators
     const crudValidators = createCRUDValidators<T_ID, T_Encoded, T>(validators)
     //Redux Actions
-    const crudActions = createCRUDActions<U, T_ID, T_Encoded, T_Encoded, T_Idx>(name, crudValidators)
+    const crudActions = createCRUDActions<U, T_ID, T_Encoded, T, T_Idx>(name, crudValidators)
     //Redux ORM Reducer
-    const crudReducer = createCRUDReducer<U, T_ID, T_Encoded, T_Encoded, T_Idx>(name, crudValidators, crudActions)
+    const crudReducer = createCRUDReducer<U, T_ID, T_Encoded, T, T_Idx>(name, crudValidators, crudActions)
     //Redux ORM Selectors
     const crudSelectors = createCRUDSelectors<U, T_ID, T_Encoded, T>(name, crudValidators, orm)
     //Dexie Getters
     const crudDB = createCRUDDB<U, T_ID, T_Encoded, T, T_Idx, DB>(name, getDB, crudValidators)
     //Dexie Sagas
-    const crudSagas = createCRUDSagas<U, T_ID, T_Encoded, T_Encoded, T_Idx>(crudValidators, crudActions, crudSelectors, crudDB, channel)
+    const crudSagas = createCRUDSagas<U, T_ID, T_Encoded, T, T_Idx>(crudValidators, crudActions, crudSelectors, crudDB, channel)
     //Dexie Hooks
-    const crudHooks = createCRUDHooks<U, T_ID, T_Encoded, T_Encoded, T_Idx>(crudValidators, crudActions, crudSelectors, crudDB)
+    const crudHooks = createCRUDHooks<U, T_ID, T_Encoded, T, T_Idx>(crudValidators, crudActions, crudSelectors, crudDB)
 
     const model = {
         name,

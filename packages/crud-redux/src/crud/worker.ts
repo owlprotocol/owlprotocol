@@ -4,7 +4,7 @@ import { ReduxErrorCRUD } from '../error/crud.js';
 import { createStore } from '../store.js';
 
 //TODO: Use real db for testing (bc no shared memory)
-const store = createStore()
+//const store = createStore()
 
 console.debug(getDB())
 

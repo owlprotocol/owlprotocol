@@ -5,7 +5,6 @@
  * @module ContractEvent
  */
 
-import * as Actions from './actions/index.js';
 import CRUDModel from './crud.js';
 import { rootSaga } from './sagas/index.js';
 
@@ -14,10 +13,6 @@ export const ContractEvent = {
     actionTypes: CRUDModel.actionTypes,
     actions: {
         ...CRUDModel.actions,
-        getAssets: Actions.getAssets,
-        getPastLogs: Actions.getPastLogs,
-        subscribeLogs: Actions.subscribeLogs,
-        unsubscribeLogs: Actions.unsubscribeLogs,
     },
     sagas: {
         ...CRUDModel.sagas,

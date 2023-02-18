@@ -7,3 +7,10 @@ export const network1336: NetworkWithObjects = validate({
     networkId,
     web3: new Web3(getWeb3Provider() as any),
 } as NetworkWithObjects);
+
+export function getNetwork1336() {
+    return validate({
+        networkId,
+        web3: new Web3(getWeb3Provider() as any),
+    } as NetworkWithObjects);
+}

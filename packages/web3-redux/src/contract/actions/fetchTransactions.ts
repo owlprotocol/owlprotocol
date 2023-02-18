@@ -1,5 +1,5 @@
 import { v4 as uuidv4 } from 'uuid';
-import { createAction } from '@owlprotocol/crud-redux';
+import { createAction2 } from '@owlprotocol/crud-redux';
 
 import { name } from '../common.js';
 
@@ -19,15 +19,13 @@ export interface FetchTransactionsPayload extends FetchTransactionOptions {
 /** @internal */
 export const FETCH_TRANSACTIONS = `${name}/FETCH_TRANSACTIONS`;
 /** @category Actions */
-export const fetchTransactions = createAction(
+export const fetchTransactions = createAction2(
     FETCH_TRANSACTIONS,
-    (payload: FetchTransactionsPayload, uuid?: string) => {
-        return { payload: { ...payload, address: payload.address.toLowerCase() }, meta: uuid ?? uuidv4() };
+    (payload: FetchTransactionsPayload) => {
+        return { ...payload, address: payload.address.toLowerCase() };
     },
 );
 /** @internal */
 export type FetchTransactionsAction = ReturnType<typeof fetchTransactions>;
 /** @internal */
 export const isFetchTransactionsAction = fetchTransactions.match;
-
-export default fetchTransactions;

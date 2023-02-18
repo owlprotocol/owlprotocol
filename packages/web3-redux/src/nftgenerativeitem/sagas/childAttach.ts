@@ -1,3 +1,4 @@
+//@ts-nocheck
 import { put, call, all } from 'typed-redux-saga';
 import coder from 'web3-eth-abi';
 import { map, zip } from 'lodash-es';

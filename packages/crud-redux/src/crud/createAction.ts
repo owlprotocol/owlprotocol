@@ -1,6 +1,7 @@
 import * as ReduxJSToolkit from '@reduxjs/toolkit';
 import { v4 as uuidv4 } from 'uuid';
 
+//@ts-expect-error
 const { createAction } = (ReduxJSToolkit.default) as typeof ReduxJSToolkit;
 export { createAction };
 

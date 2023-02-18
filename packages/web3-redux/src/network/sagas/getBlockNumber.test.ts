@@ -3,7 +3,6 @@ import { testSaga } from 'redux-saga-test-plan';
 import { assert } from 'chai';
 import Web3 from 'web3';
 import { getBlockNumber } from './getBlockNumber.js';
-import loadNetwork from './loadNetwork.js';
 import { getBlockNumberAction } from '../actions/index.js';
 import { name } from '../common.js';
 import NetworkCRUD from '../../network/crud.js';
@@ -20,7 +19,7 @@ describe(`${name}/sagas/getBlockNumber.test.ts`, () => {
         it('getBlockNumber', async () => {
             testSaga(getBlockNumber, action)
                 .next()
-                .call(loadNetwork, networkId, action.meta.uuid)
+                .call(NetworkCRUD.actions.fetch, networkId, action.meta.uuid)
                 .next({ networkId, web3 })
                 .call(web3!.eth.getBlockNumber)
                 .next(1)

@@ -1,5 +1,6 @@
 import { Config } from './config/model/interface.js';
 import { ContractWithObjects } from './contract/model/interface.js';
+import { ContractEventSubscribeWithObjects } from './contracteventsubscribe/model/interface.js';
 import { Network } from './network/model/index.js';
 
 export interface StateRoot {
@@ -26,6 +27,11 @@ export interface State {
                 [networkId: string]: string[];
             };
         };
+    };
+    /** Contracts event subscriptions indexed by id */
+    ContractEventSubscribe: {
+        items: string[];
+        itemsById: { [id: string]: ContractEventSubscribeWithObjects };
     };
     /** Networks indexed by id */
     Network: {

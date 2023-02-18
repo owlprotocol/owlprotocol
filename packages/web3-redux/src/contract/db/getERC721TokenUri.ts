@@ -1,5 +1,5 @@
 import * as Contracts from '@owlprotocol/contracts';
-import getContractCall from './getContractCall.js';
+import { getContractCall } from './getContractCall.js';
 
 /**
  * Recursively searches for CID at file at <BASE_CID>/path/to/file

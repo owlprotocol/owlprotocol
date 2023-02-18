@@ -1,4 +1,4 @@
-import getEthCall from './getEthCall.js';
+import { getEthCall } from './getEthCall.js';
 import { Await } from '../../types/promise.js';
 import { BaseWeb3Contract } from '../model/index.js';
 
@@ -19,5 +19,3 @@ export async function getContractCall<
     const returnValue = ethCall?.returnValue as Await<ReturnType<ReturnType<T['methods'][K]>['call']>> | undefined;
     return returnValue;
 }
-
-export default getContractCall;

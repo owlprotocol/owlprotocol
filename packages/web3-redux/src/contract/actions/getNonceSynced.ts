@@ -1,9 +1,9 @@
-import { getNonce } from './getNonce.js';
+import { getNonceAction as getNonceAction2 } from './getNonce.js';
 
 import { GenericSync, createSyncForActions } from '../../sync/model/index.js';
 import { ContractId } from '../model/interface.js';
-import ContractCRUD from '../crud.js';
-import SyncCRUD from '../../sync/crud.js';
+import { ContractCRUD } from '../crud.js';
+import { SyncCRUD } from '../../sync/crud.js';
 
 /** @internal */
 export interface GetNonceSyncedActionInput extends ContractId {
@@ -16,7 +16,7 @@ export interface GetNonceSyncedActionInput extends ContractId {
 export const getNonceSynced = (payload: GetNonceSyncedActionInput) => {
     const { networkId } = payload;
     const address = payload.address.toLowerCase();
-    const getNonceAction = getNonce({ networkId, address });
+    const getNonceAction = getNonceAction2({ networkId, address });
 
     const sync = createSyncForActions('', networkId, [getNonceAction], payload.sync, address);
     if (sync) sync.id = `${sync.type}-${ContractCRUD.validateId({ networkId, address })}-getNonce`;

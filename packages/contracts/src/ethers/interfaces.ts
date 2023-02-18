@@ -1,4 +1,4 @@
-import {utils} from 'ethers';
+import { utils } from 'ethers';
 import type {
     IERC20Interface as IERC20InterfaceType,
     IERC20MetadataInterface as IERC20MetadataInterfaceType,
@@ -25,6 +25,7 @@ import type {
     IERC165Interface as IERC165InterfaceType,
     IAssetRouterInputInterface as IAssetRouterInputInterfaceType,
     IAssetRouterOutputInterface as IAssetRouterOutputInterfaceType,
+    IERC1820RegistryInterface as IERC1820RegistryInterfaceType,
 } from './types';
 
 import {
@@ -53,14 +54,20 @@ import {
     IERC165,
     IAssetRouterInput,
     IAssetRouterOutput,
+    IERC1820Registry,
 } from '../artifacts.js';
-import {interfaceId} from '../utils/IERC165.js';
-import {Interface} from '@ethersproject/abi';
+import { interfaceId } from '../utils/IERC165.js';
+import { Interface } from '@ethersproject/abi';
+import type { AbiItem } from 'web3-utils';
 
 // ERC165
 export const IERC165Interface = new utils.Interface(IERC165.abi) as IERC165InterfaceType;
 const IERC165Sighashes = new Set(IERC165Interface.fragments.map(Interface.getSighash));
 export const IERC165InterfaceId = interfaceId(IERC165Interface.fragments);
+
+// ERC1820
+export const IERC1820Interface = new utils.Interface(IERC1820Registry.abi) as IERC1820RegistryInterfaceType;
+export const IERC1820InterfaceId = interfaceId(IERC1820Interface.fragments);
 
 // ERC20
 export const IERC20Interface = new utils.Interface(IERC20.abi) as IERC20InterfaceType;
@@ -175,8 +182,9 @@ export const IAssetRouterOutputInterface = new utils.Interface(
 ) as IAssetRouterOutputInterfaceType;
 export const IAssetRouterOutputInterfaceId = interfaceId(IAssetRouterOutputInterface.fragments);
 
-export const interfaceIds = {
+export const interfaceIds: { [k: string]: AbiItem[] } = {
     [IERC165InterfaceId]: IERC165.abi,
+    [IERC1820InterfaceId]: IERC1820Registry.abi,
     [IAccessControlInterfaceId]: IAccessControl.abi,
     [IRouterReceiverInterfaceId]: IBaseURI.abi,
     [IContractURIInterfaceId]: IContractURI.abi,
@@ -202,8 +210,10 @@ export const interfaceIds = {
     [IAssetRouterOutputInterfaceId]: IAssetRouterOutput.abi,
 };
 
-export const interfaceIdNames = {
+export type InterfaceName = keyof typeof interfaces;
+export const interfaceIdNames: { [k: string]: InterfaceName } = {
     [IERC165InterfaceId]: 'IERC165',
+    [IERC1820InterfaceId]: 'IERC1820',
     [IAccessControlInterfaceId]: 'IAccessControl',
     [IRouterReceiverInterfaceId]: 'IRouterReceiver',
     [IContractURIInterfaceId]: 'IContractURI',
@@ -233,6 +243,10 @@ export const interfaces = {
     IERC165: {
         interface: IERC165Interface,
         interfaceId: IERC165InterfaceId,
+    },
+    IERC1820: {
+        interface: IERC1820Interface,
+        interfaceId: IERC1820InterfaceId,
     },
     IAccessControl: {
         interface: IAccessControlInterface,

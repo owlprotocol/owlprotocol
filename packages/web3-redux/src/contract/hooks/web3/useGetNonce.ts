@@ -5,7 +5,7 @@ import { ReduxError } from '@owlprotocol/crud-redux';
 import NetworkCRUD from '../../../network/crud.js';
 import SyncCRUD from '../../../sync/crud.js';
 import { GenericSync } from '../../../sync/model/index.js';
-import { getNonce, getNonceSynced } from '../../actions/index.js';
+import { inferInterfaceAction as getNonceAction2, getNonceSynced } from '../../actions/index.js';
 import ContractCRUD from '../../crud.js';
 
 /**
@@ -35,7 +35,7 @@ export function useGetNonce(
                 if (!!sync && sync != 'ifnull') {
                     return getNonceSynced({ networkId, address, sync });
                 } else {
-                    const getNonceAction = getNonce({ networkId, address });
+                    const getNonceAction = getNonceAction2({ networkId, address });
                     return { getNonceAction, syncAction: undefined };
                 }
             }

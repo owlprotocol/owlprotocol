@@ -3,7 +3,8 @@ import { AxiosResponse } from 'axios';
 import { FetchTransactionsAction } from '../actions/index.js';
 import TransactionCRUD from '../../transaction/crud.js';
 import ContractCRUD from '../crud.js';
-import loadNetwork from '../../network/sagas/loadNetwork.js';
+import { fetchSaga as fetchNetworkSaga } from '../../network/sagas/fetch.js';
+import { NetworkCRUD } from '../../network/crud.js';
 
 interface EtherscanTx {
     blockNumber: string;
@@ -31,7 +32,7 @@ export function* fetchTransactions(action: FetchTransactionsAction) {
     const { payload } = action;
     const { networkId, address, startblock, endblock, page, offset, sort } = payload;
 
-    const network = yield* call(loadNetwork, networkId);
+    const { network } = yield* call(fetchNetworkSaga, NetworkCRUD.actions.fetch({ networkId }, action.meta.uuid));
     if (!network) throw new Error(`Network ${networkId} undefined`);
 
     const apiClient = network?.explorerApiClient;

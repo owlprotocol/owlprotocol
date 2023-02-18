@@ -1,10 +1,9 @@
 import type { Contract as Web3Contract } from 'web3-eth-contract';
 import { coder } from '../../utils/web3-eth-abi/index.js';
-import { filter, isUndefined, keyBy, omit, omitBy } from 'lodash-es';
+import { filter, isUndefined, keyBy, omit, omitBy, uniq } from 'lodash-es';
 import { AbiItem } from '../../utils/web3-utils/index.js';
 import { NetworkWithObjects } from '../../network/model/interface.js';
-import toReduxOrmId from '../../utils/toReduxORMId.js';
-import { T_Encoded_Base } from '@owlprotocol/crud-redux';
+import { toReduxOrmId, T_Encoded_Base } from '@owlprotocol/crud-redux';
 
 /**
  * Contract Id object.
@@ -77,6 +76,7 @@ export function validate(contract: Contract): Contract {
     const { networkId, address } = validateId(contract);
     const eventAbis = filter(abi, (x) => x.type === 'event');
     const eventAbiBySignature = keyBy(eventAbis, (x) => coder.encodeEventSignature(x));
+    const interfaceIds = uniq(contract.interfaceIds ?? [])
 
     return omitBy(
         {
@@ -85,6 +85,7 @@ export function validate(contract: Contract): Contract {
             id: toReduxOrmId(toPrimaryKey({ networkId, address })),
             abi,
             eventAbiBySignature,
+            interfaceIds
         },
         isUndefined,
     ) as unknown as Contract;

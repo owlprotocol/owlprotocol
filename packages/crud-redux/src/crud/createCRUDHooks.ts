@@ -48,6 +48,7 @@ export function createCRUDHooks<
         get,
         bulkGet,
         all,
+        where,
         delete: deleteDB,
     } = crudDB;
 
@@ -160,6 +161,7 @@ export function createCRUDHooks<
         useEffect(() => {
             //Fetch DB Item
             if (idx && isDefinedRecord(idx) && !isLoading && refreshDB) {
+                //@ts-expect-error
                 dispatch(actions.fetch({ ...defaultItem, ...(idx as T_ID), maxCacheAge }));
             }
         }, [JSON.stringify(idx), defaultItem, maxCacheAge, dispatch, refreshDB, isLoading])
@@ -177,6 +179,7 @@ export function createCRUDHooks<
             //Fetch Redux item
             //console.debug({ id, refreshRedux })
             if (loadRedux && id && isDefinedRecord(id) && refreshRedux) {
+                //@ts-expect-error
                 dispatch(actions.fetch({ ...defaultItem, ...id, maxCacheAge }));
             }
         }, [defaultItem, maxCacheAge, loadRedux, dispatch, JSON.stringify(id), refreshRedux]);

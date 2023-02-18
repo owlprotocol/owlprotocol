@@ -12,14 +12,14 @@ export interface EthCallId {
     readonly data: string;
 }
 
-export interface EthCall extends EthCallId, T_Encoded_Base {
+export interface EthCall<Args extends any[] = any[], Ret = any> extends EthCallId, T_Encoded_Base {
     /** Contract Call indexing */
     readonly methodName?: string;
     readonly methodSignature?: string;
-    readonly args?: any[];
+    readonly args?: Args;
     readonly argsHash?: string;
     /** Return value of call. Can be raw bytes or decoded with a contract ABI. */
-    readonly returnValue?: any;
+    readonly returnValue?: Ret;
     /** Status */
     readonly status?: 'LOADING' | 'SUCCESS' | 'ERROR';
     /** Error Id */
@@ -35,15 +35,11 @@ export interface EthCall extends EthCallId, T_Encoded_Base {
 //Valid indexes
 export type EthCallIndexInput =
     | EthCallId
-    | { networkId: string; to: string }
-    | { networkId: string }
-    | { networkId: string; to: string; methodName: string; argsHash: string }
     | { networkId: string; to: string; methodName: string }
-    | { networkId: string; methodName: string }
-    | { methodName: string };
+    | { networkId: string; to: string; methodName: string; argsHash: string }
 
 export const EthCallIndex =
-    '[networkId+to+data], [networkId+to+methodName+argsHash], [networkId+methodName], methodName';
+    '[networkId+to+data], [networkId+to+methodName], [networkId+to+methodName+argsHash]';
 
 /** @internal */
 export function validateId({ networkId, to, data }: EthCallId): EthCallId {

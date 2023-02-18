@@ -1,23 +1,14 @@
-import { v4 as uuidv4 } from 'uuid';
-import { createAction } from '@owlprotocol/crud-redux';
-
+import { createAction2 } from '@owlprotocol/crud-redux';
 import { name } from '../common.js';
 import { ContractId } from '../model/interface.js';
 
 /** @internal */
 export const GET_ENS = `${name}/GET_ENS`;
 /** @category Actions */
-export const getEns = createAction(GET_ENS, (payload: ContractId, uuid?: string) => {
-    return {
-        payload: { networkId: payload.networkId, address: payload.address.toLowerCase() },
-        meta: {
-            uuid: uuid ?? uuidv4(),
-        },
-    };
+export const getEnsAction = createAction2(GET_ENS, (payload: ContractId) => {
+    return { networkId: payload.networkId, address: payload.address.toLowerCase() }
 });
 /** @internal */
-export type GetEnsAction = ReturnType<typeof getEns>;
+export type GetEnsAction = ReturnType<typeof getEnsAction>;
 /** @internal */
-export const isGetEnsAction = getEns.match;
-
-export default getEns;
+export const isGetEnsAction = getEnsAction.match;

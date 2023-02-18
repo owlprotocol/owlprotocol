@@ -9,6 +9,7 @@ import { Config, ConfigIndex } from './config/model/index.js';
 import { Contract, ContractIndex } from './contract/model/index.js';
 import { ContractEvent, ContractEventIndex } from './contractevent/model/index.js';
 import { ContractEventQuery, ContractEventQueryIndex } from './contracteventquery/model/index.js';
+import { ContractEventSubscribe, ContractEventSubscribeIndex } from './contracteventsubscribe/model/index.js';
 import { ContractSend, ContractSendIndex } from './contractsend/model/index.js';
 import { EthCall, EthCallIndex } from './ethcall/model/index.js';
 import { HTTPCache, HTTPCacheIndex } from './http/model/index.js';
@@ -27,6 +28,7 @@ import { name as ConfigName } from './config/common.js';
 import { name as ContractName } from './contract/common.js';
 import { name as ContractEventName } from './contractevent/common.js';
 import { name as ContractEventQueryName } from './contracteventquery/common.js';
+import { name as ContractEventSubscribeName } from './contracteventsubscribe/common.js';
 import { name as ContractSendName } from './contractsend/common.js';
 import { name as EthCallName } from './ethcall/common.js';
 import { name as HTTPCacheName } from './http/common.js';
@@ -49,6 +51,7 @@ export class Web3ReduxDexie extends Dexie {
     [ContractName]!: Table<Contract>;
     [ContractEventName]!: Table<ContractEvent>;
     [ContractEventQueryName]!: Table<ContractEventQuery>;
+    [ContractEventSubscribeName]!: Table<ContractEventSubscribe>;
     [ContractSendName]!: Table<ContractSend>;
     [ContractInterfaceName]!: Table<ContractInterface>;
     [EthCallName]!: Table<EthCall>;
@@ -71,6 +74,7 @@ export class Web3ReduxDexie extends Dexie {
             [ContractName]: ContractIndex,
             [ContractEventName]: ContractEventIndex,
             [ContractEventQueryName]: ContractEventQueryIndex,
+            [ContractEventSubscribeName]: ContractEventSubscribeIndex,
             [ContractSendName]: ContractSendIndex,
             [ContractInterfaceName]: ContractInterfaceIndex,
             [EthCallName]: EthCallIndex,
@@ -92,6 +96,8 @@ export class Web3ReduxDexie extends Dexie {
             this[ConfigName].clear(),
             this[ContractName].clear(),
             this[ContractEventName].clear(),
+            this[ContractEventQueryName].clear(),
+            this[ContractEventSubscribeName].clear(),
             this[ContractSendName].clear(),
             this[ContractInterfaceName].clear(),
             this[EthCallName].clear(),

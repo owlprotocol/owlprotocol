@@ -1,5 +1,5 @@
-//@ts-nocheck
 import { AnyAction, Store } from 'redux';
+import { ContractCRUD } from '../crud.js';
 
 /*
 import { coder } from '../../utils/web3-eth-abi/index.js';
@@ -14,7 +14,13 @@ import ContractEventCRUD from '../../contractevent/crud.js';
  * - Decode events with undefined returnValues that are decodable with a contract abi
  */
 export const onUpdate = (_: Store) => (next: (action: AnyAction) => any) => (action: AnyAction) => {
-    next(action);
+    if (ContractCRUD.actions.reduxUpsert.match(action)) {
+        const { networkId, address } = action.payload
+        next(action)
+        console.log(`Contract ${networkId} ${address} reduxUpsert`)
+    } else {
+        next(action);
+    }
     /*
     let contracts: Contract[] = [];
     if (ContractCRUD.actions.create.match(action) || ContractCRUD.actions.update.match(action)) {

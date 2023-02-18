@@ -33,11 +33,17 @@ export type { IERC2981Setter, IERC2981SetterInterface } from '../typechain/ether
 export type { IERC721Dna, IERC721DnaInterface } from '../typechain/ethers/IERC721Dna';
 export type { IERC721Mintable, IERC721MintableInterface } from '../typechain/ethers/IERC721Mintable';
 export type { IERC721MintableAutoId, IERC721MintableAutoIdInterface } from '../typechain/ethers/IERC721MintableAutoId';
-export type { IERC721TopDown, IERC721TopDownInterface } from '../typechain/ethers/IERC721TopDown';
+export type {
+    IERC721TopDown,
+    IERC721TopDownInterface,
+    SetChild721Event as IERC721TopDownSetChild721Event,
+    AttachedChild1155Event as IERC721TopDownAttachedChild1155Event,
+    DetachedChild1155Event as IERC721TopDownDetachedChild1155Event,
+} from '../typechain/ethers/IERC721TopDown';
+
 export type { ERC721Mintable, ERC721MintableInterface } from '../typechain/ethers/ERC721Mintable';
 export type { ERC721MintableAutoId, ERC721MintableAutoIdInterface } from '../typechain/ethers/ERC721MintableAutoId';
 export type { ERC721Base, ERC721BaseInterface } from '../typechain/ethers/ERC721Base';
-
 export type { ERC721TopDownDna, ERC721TopDownDnaInterface } from '../typechain/ethers/ERC721TopDownDna';
 
 export type { IERC1155Dna, IERC1155DnaInterface } from '../typechain/ethers/IERC1155Dna';

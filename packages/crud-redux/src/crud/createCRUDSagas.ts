@@ -1,4 +1,4 @@
-import { put as putDispatch, select as selectSaga, call, all as allSaga, takeEvery } from 'typed-redux-saga';
+import { put as putDispatch, select as selectSaga, call, all as allSaga, takeEvery, spawn, take } from 'typed-redux-saga';
 import { compact, isEqual } from 'lodash-es';
 import type { BroadcastChannel } from 'broadcast-channel';
 
@@ -8,6 +8,8 @@ import { createCRUDActions } from './createCRUDActions.js';
 import { createCRUDDB } from './createCRUDDB.js';
 import { createCRUDSelectors } from './createCRUDSelectors.js';
 import { createCRUDValidators } from './createCRUDValidators.js';
+import { buffers, EventChannel, eventChannel } from 'redux-saga';
+import { IndexableType, Transaction } from 'dexie';
 
 /**
  *
@@ -32,12 +34,13 @@ export function createCRUDSagas<
     channel?: BroadcastChannel
 ) {
 
-    const { encode } = crudValidators;
+    const { encode, toPrimaryKey } = crudValidators;
     const { actions, actionTypes } = crudActions
     const {
         selectByIdSingle
     } = crudSelectors
     const {
+        table,
         get,
         bulkGet,
         all,
@@ -67,46 +70,100 @@ export function createCRUDSagas<
     type HydrateBatchedAction = ReturnType<typeof actions.hydrateBatched>;
     type HydrateAllAction = ReturnType<typeof actions.hydrateAll>;
 
+    enum DexieHookType {
+        creating = 'creating',
+        updating = 'updating',
+        deleting = 'deleting'
+    }
+
+    interface DexieHookChannelMessage {
+        type: DexieHookType
+        primKey: IndexableType;
+        obj: T_Encoded,
+        mods?: Partial<T_Encoded>
+        //updatedObj?: T_Encoded
+    }
+
+
+    function dexieHookChannel(t: ReturnType<typeof table>): EventChannel<DexieHookChannelMessage> {
+        return eventChannel((emitter) => {
+            t.hook('creating', function (primKey, obj, trans) {
+                trans.on('complete', function () { emitter({ type: DexieHookType.creating, primKey, obj }) });
+                //this.onsuccess = (primKey) => emitter({ type: DexieHookType.creating, primKey, obj })
+            })
+            t.hook('updating', function (mods, primKey, obj, trans) {
+                trans.on('complete', function () { emitter({ type: DexieHookType.updating, primKey, obj, mods: mods as Partial<T_Encoded> }) });
+                //this.onsuccess = (updatedObj) => emitter({ type: DexieHookType.updating, primKey, obj, mods: mods as Partial<T_Encoded>, updatedObj })
+            })
+            t.hook('deleting', function (primKey, obj, trans) {
+                trans.on('complete', function () { emitter({ type: DexieHookType.deleting, primKey, obj }) });
+                //this.onsuccess = () => emitter({ type: DexieHookType.deleting, primKey, obj })
+            })
+
+            // The subscriber must return an unsubscribe function
+            return () => {
+                t.hook('creating').unsubscribe(() => { });
+            };
+            //TODO: Buffered channel?
+        }, buffers.expanding(10));
+    }
+
+    const watchChangesSaga = function* () {
+        //https://dexie.org/docs/Table/Table.hook('creating')
+        const t = table()
+        const channel = dexieHookChannel(t)
+        while (true) {
+            const message = yield* take(channel)
+            if (message.type === DexieHookType.creating) {
+                yield* putDispatch(actions.dbCreating({
+                    primKey: message.primKey,
+                    obj: message.obj
+                }))
+            } else if (message.type === DexieHookType.updating) {
+                yield* putDispatch(actions.dbUpdating({
+                    primKey: message.primKey,
+                    obj: message.obj,
+                    mods: message.mods!,
+                    //updatedObj: message.updatedObj!
+                }))
+            } else if (message.type === DexieHookType.deleting) {
+                yield* putDispatch(actions.dbDeleting({
+                    primKey: message.primKey,
+                    obj: message.obj
+                }))
+            }
+        }
+    }
     /** Dexie Sagas */
     const createSaga = function* (action: CreateAction) {
-        yield* call(add, action.payload);
-        channel?.postMessage(actions.createPost(action.payload, action.meta.uuid))
+        yield* call(add, action.payload)
     };
     const createBatchedSaga = function* (action: CreateBatchedAction) {
         yield* call(bulkAdd, action.payload);
-        channel?.postMessage(actions.createBatchedPost(action.payload, action.meta.uuid))
     };
     const putSaga = function* (action: PutAction) {
         yield* call(put, action.payload);
-        channel?.postMessage(actions.putPost(action.payload, action.meta.uuid))
     };
     const putBatchedSaga = function* (action: PutBatchedAction) {
         yield* call(bulkPut, action.payload);
-        channel?.postMessage(actions.putBatchedPost(action.payload, action.meta.uuid))
     };
     const updateSaga = function* (action: UpdateAction) {
         yield* call(update, action.payload);
-        channel?.postMessage(actions.updatePost(action.payload, action.meta.uuid))
     };
     const updateBatchedSaga = function* (action: UpdateBatchedAction) {
         yield* call(bulkUpdate, action.payload);
-        channel?.postMessage(actions.updateBatchedPost(action.payload, action.meta.uuid))
     };
     const upsertSaga = function* (action: UpsertAction) {
         yield* call(upsert, action.payload);
-        channel?.postMessage(actions.upsertPost(action.payload, action.meta.uuid))
     };
     const upsertBatchedSaga = function* (action: UpsertBatchedAction) {
         yield* call(bulkUpsert, action.payload);
-        channel?.postMessage(actions.upsertBatchedPost(action.payload, action.meta.uuid))
     };
     const deleteSaga = function* (action: DeleteAction) {
         yield* call(deleteDB, action.payload);
-        channel?.postMessage(actions.deletePost(action.payload, action.meta.uuid))
     };
     const deleteBatchedSaga = function* (action: DeleteBatchedAction) {
         yield* call(bulkDelete, action.payload);
-        channel?.postMessage(actions.deleteBatchedPost(action.payload, action.meta.uuid))
     };
     const hydrateSaga = function* (action: HydrateAction) {
         const { payload } = action;
@@ -137,6 +194,7 @@ export function createCRUDSagas<
 
     const crudRootSaga = function* () {
         yield* allSaga([
+            spawn(watchChangesSaga),
             takeEvery(actionTypes.CREATE, wrapSagaWithErrorHandler(createSaga, actionTypes.CREATE)),
             takeEvery(
                 actionTypes.CREATE_BATCHED,

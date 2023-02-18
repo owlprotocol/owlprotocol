@@ -3,7 +3,7 @@ import { useDispatch } from 'react-redux';
 import { ReduxError } from '@owlprotocol/crud-redux';
 
 import NetworkCRUD from '../../../network/crud.js';
-import { getCode } from '../../actions/index.js';
+import { getCodeAction as getCodeAction2 } from '../../actions/index.js';
 import ContractCRUD from '../../crud.js';
 
 /**
@@ -29,7 +29,7 @@ export function useGetCode(
     //Action
     const getCodeAction = useMemo(() => {
         if (networkId && address) {
-            return getCode({ networkId, address });
+            return getCodeAction2({ networkId, address });
         }
     }, [networkId, address]);
     //Callback

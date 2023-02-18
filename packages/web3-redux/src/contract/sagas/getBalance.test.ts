@@ -1,18 +1,19 @@
 import { assert } from 'chai';
 import { testSaga } from 'redux-saga-test-plan';
-import getBalance from './getBalance.js';
+import { getBalance } from './getBalance.js';
 
 import { ADDRESS_0 } from '../../test/data.js';
 import { createStore, StoreType } from '../../store.js';
 
 import { name } from '../common.js';
 
-import { getBalance as getBalanceAction } from '../actions/index.js';
+import { getBalanceAction } from '../actions/index.js';
 import NetworkCRUD from '../../network/crud.js';
 import ContractCRUD from '../crud.js';
 import { network1336 } from '../../network/data.js';
-import loadNetwork from '../../network/sagas/loadNetwork.js';
 import sleep from '../../utils/sleep.js';
+import { fetchSaga as fetchNetworkSaga } from '../../network/sagas/fetch.js'
+
 
 const networkId = network1336.networkId;
 const web3 = network1336.web3!;
@@ -24,7 +25,7 @@ describe(`${name}/sagas/getBalance.test.ts`, () => {
         it('getBalance', () => {
             testSaga(getBalance, action)
                 .next()
-                .call(loadNetwork, networkId)
+                .call(fetchNetworkSaga, NetworkCRUD.actions.fetch({ networkId }))
                 .next({ networkId, web3 })
                 .call(web3.eth.getBalance, address)
                 .next('0')

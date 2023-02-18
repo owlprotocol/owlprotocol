@@ -19,9 +19,11 @@ export function logDeployment(
     deploymentType: 'nicks' | 'deterministic' | 'implementation' | 'proxy' | 'beacon' | 'beacon-proxy',
     status: 'exists' | 'deployed' | 'failed',
 ) {
-    console.log(
-        `${networkName.padEnd(20)}\t${contractName.padEnd(30)}\t${deploymentType.padEnd(20)}\t${status.padEnd(
-            10,
-        )}\t${address}`,
-    );
+    if (process.env.LOG_LEVEL != 'info') {
+        console.log(
+            `${networkName.padEnd(20)}\t${contractName.padEnd(30)}\t${deploymentType.padEnd(20)}\t${status.padEnd(
+                10,
+            )}\t${address}`,
+        );
+    }
 }

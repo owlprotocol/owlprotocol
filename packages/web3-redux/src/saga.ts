@@ -9,6 +9,7 @@ import { rootSaga as configSaga } from './config/sagas/index.js';
 import { rootSaga as contractSaga } from './contract/sagas/index.js';
 import { rootSaga as contractEventSaga } from './contractevent/sagas/index.js';
 import { rootSaga as contractEventQuerySaga } from './contracteventquery/sagas/index.js';
+import { rootSaga as contractEventSubscribeSaga } from './contracteventsubscribe/sagas/index.js';
 import { rootSaga as contractSendSaga } from './contractsend/sagas/index.js';
 import { rootSaga as contractInterfaceSaga } from './contractinterface/sagas/index.js';
 import { rootSaga as ethCallSaga } from './ethcall/sagas/index.js';
@@ -34,6 +35,7 @@ export function* rootSaga() {
         spawn(contractSaga),
         spawn(contractEventSaga),
         spawn(contractEventQuerySaga),
+        spawn(contractEventSubscribeSaga),
         spawn(contractSendSaga),
         spawn(contractInterfaceSaga),
         spawn(ReduxError.sagas.rootSaga),

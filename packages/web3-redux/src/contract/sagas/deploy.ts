@@ -4,13 +4,14 @@ import * as Contracts from '@owlprotocol/contracts';
 import { constants } from 'ethers';
 import { keccak256 } from '../../utils/web3-utils/index.js';
 
-import { DeployAction, DEPLOY, DeployType, isDeployRegular, isDeployInitialize, isDeployProxy1167, isDeployProxyBeacon } from '../actions/index.js';
+import { DeployAction, DEPLOY, isDeployRegular, isDeployInitialize, isDeployProxy1167, isDeployProxyBeacon } from '../actions/index.js';
 import ContractCRUD from '../crud.js';
-import loadNetwork from '../../network/sagas/loadNetwork.js';
 import { fetchSaga } from './fetch.js';
 import { BeaconProxy, ERC1167Factory, NonPayableTransactionObject, UpgradeableBeacon } from '@owlprotocol/contracts/lib/types/web3/types.js';
 import { ContractWithObjects } from '../model/interface.js';
 import { NetworkWithObjects } from '../../network/index.js';
+import { fetchSaga as fetchNetworkSaga } from '../../network/sagas/fetch.js'
+import { NetworkCRUD } from '../../network/crud.js';
 
 const DEPLOY_ERROR = `${DEPLOY}/ERROR`;
 
@@ -22,11 +23,11 @@ export function* deploySaga(action: DeployAction) {
     //Make sure required parameters defined
     if (!networkId) throw new Error('networkId undefined');
 
-    const network = yield* call(loadNetwork, networkId);
+    const { network } = yield* call(fetchNetworkSaga, NetworkCRUD.actions.fetch({ networkId }, action.meta.uuid));
     if (!network) throw new Error(`Network ${networkId} undefined`);
 
-    const web3 = network.web3Sender ?? network.web3;
-    if (!web3) throw new Error(`Network ${networkId} missing web3 or web3Sender`);
+    const web3 = network.web3Sender;
+    if (!web3) throw new Error(`Network ${networkId} missing web3Sender`);
 
     const web3Contract = new web3.eth.Contract(abi);
     if (isDeployRegular(payload)) {

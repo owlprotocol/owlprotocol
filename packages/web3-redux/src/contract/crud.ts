@@ -31,6 +31,6 @@ export const ContractCRUD = createCRUDModel<
         hydrate,
         encode,
     },
-    getOrm()
+    getOrm(),
 );
 export default ContractCRUD;

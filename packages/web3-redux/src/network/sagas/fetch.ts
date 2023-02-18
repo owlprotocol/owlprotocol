@@ -1,6 +1,5 @@
 import { put as putSaga, call, select } from 'typed-redux-saga';
 import { NetworkCRUD } from '../crud.js';
-import { defaultNetworks } from '../defaults.js';
 import { NetworkWithObjects } from '../model/interface.js';
 
 export function* fetchSaga(action: ReturnType<typeof NetworkCRUD.actions.fetch>): Generator<
@@ -10,48 +9,18 @@ export function* fetchSaga(action: ReturnType<typeof NetworkCRUD.actions.fetch>)
     }
 > {
     const { payload } = action;
-    const { networkId, web3Rpc, web3 } = payload;
+    const { networkId } = payload;
 
-    const reduxSelected = yield* select(NetworkCRUD.selectors.selectByIdSingle, networkId);
-    if ((web3Rpc && web3Rpc != reduxSelected?.web3Rpc) || web3 && web3 != reduxSelected?.web3) {
-        //Update values
-        console.debug('Insert web3')
-        yield* putSaga(NetworkCRUD.actions.upsert(payload, action.meta.uuid));
-        const network = yield* select(NetworkCRUD.selectors.selectByIdSingle, networkId);
-        if (!network?.web3) throw Error(`No network ${networkId}`);
-        return { network };
-    }
+    const reduxSelected = yield* select(NetworkCRUD.selectors.selectByIdSingle, { networkId });
+    //console.debug({ reduxSelected })
+    if (reduxSelected) return { network: reduxSelected }
 
-    if (reduxSelected?.web3) {
-        //Return current web3 instance
-        return { network: reduxSelected };
-    }
+    const dbSelected = yield* call(NetworkCRUD.db.get, { networkId });
+    if (!dbSelected) throw Error(`No network ${networkId}`);
 
-    const dbSelected = yield* call(NetworkCRUD.db.get, networkId);
-    if (web3Rpc && web3Rpc != dbSelected?.web3Rpc) {
-        //Update values
-        yield* putSaga(NetworkCRUD.actions.upsert(payload, action.meta.uuid));
-        const network = yield* select(NetworkCRUD.selectors.selectByIdSingle, networkId);
-        if (!network?.web3) throw Error(`No network ${networkId}`);
-        return { network };
-    }
+    yield* putSaga(NetworkCRUD.actions.reduxUpsert(dbSelected, action.meta.uuid));
+    const reduxSelected2 = yield* select(NetworkCRUD.selectors.selectByIdSingle, { networkId });
+    if (!reduxSelected2) throw Error(`No network ${networkId}`);
 
-    if (dbSelected?.web3Rpc) {
-        //Hydrate
-        yield* putSaga(NetworkCRUD.actions.upsert(dbSelected, action.meta.uuid));
-        const network = yield* select(NetworkCRUD.selectors.selectByIdSingle, networkId);
-        if (!network?.web3) throw Error(`No network ${networkId}`);
-        return { network };
-    }
-
-    const defaultNetworkForId = defaultNetworks()[networkId];
-    if (defaultNetworkForId) {
-        //Default values, auto merge in the upsert action with default network values
-        yield* putSaga(NetworkCRUD.actions.upsert(payload, action.meta.uuid));
-        const network = yield* select(NetworkCRUD.selectors.selectByIdSingle, networkId);
-        if (!network?.web3) throw Error(`No network ${networkId}`);
-        return { network };
-    }
-
-    throw Error(`No network ${networkId}`);
+    return { network: reduxSelected2 }
 }

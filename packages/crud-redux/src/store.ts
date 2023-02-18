@@ -5,6 +5,9 @@ import { isClient } from './utils/isClient.js';
 import { rootReducer } from './reducer.js';
 import { rootSaga } from './saga.js';
 import { channel } from './channel.js';
+import { crashReporter } from './middleware/index.js';
+
+const defaultMiddleware: any[] = [crashReporter];
 
 /** @internal */
 export const createStore = () => {
@@ -14,7 +17,7 @@ export const createStore = () => {
         ? (window as any).__REDUX_DEVTOOLS_EXTENSION_COMPOSE__({ trace: true, traceLimit: 10 })
         : compose;
     const sagaMiddleware = createSagaMiddleware();
-    const rootMiddleware = applyMiddleware(sagaMiddleware);
+    const rootMiddleware = applyMiddleware(...defaultMiddleware, sagaMiddleware);
 
     const store = createReduxStore(rootReducer, composeEnhancers(rootMiddleware));
     sagaMiddleware.run(rootSaga);

@@ -1,7 +1,7 @@
 import { assert } from 'chai';
 import { testSaga } from 'redux-saga-test-plan';
 
-import getCode from './getCode.js';
+import { getCodeSaga } from './getCode.js';
 import { cloneDeep } from 'lodash-es';
 import { AbiItem } from '../../utils/web3-utils/index.js';
 
@@ -12,12 +12,12 @@ import { createStore, StoreType } from '../../store.js';
 
 import { name } from '../common.js';
 
-import { getCode as getCodeAction } from '../actions/index.js';
-import NetworkCRUD from '../../network/crud.js';
-import ContractCRUD from '../crud.js';
-import loadNetwork from '../../network/sagas/loadNetwork.js';
+import { getCodeAction as getCodeAction } from '../actions/index.js';
+import { NetworkCRUD } from '../../network/crud.js';
+import { ContractCRUD } from '../crud.js';
 import { ADDRESS_0 } from '../../data.js';
 import { network1336 } from '../../network/data.js';
+import { fetchSaga as fetchNetworkSaga } from '../../network/sagas/fetch.js'
 
 const networkId = network1336.networkId;
 const web3 = network1336.web3!;
@@ -27,9 +27,9 @@ const action = getCodeAction({ networkId, address }, '');
 describe(`${name}.integration`, () => {
     describe('unit', () => {
         it('getCode', () => {
-            testSaga(getCode, action)
+            testSaga(getCodeSaga, action)
                 .next()
-                .call(loadNetwork, networkId)
+                .call(fetchNetworkSaga, NetworkCRUD.actions.fetch({ networkId }))
                 .next({ networkId, web3 })
                 .call(web3.eth.getCode, address)
                 .next('0x')

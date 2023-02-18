@@ -1,6 +1,7 @@
 import { ORM } from 'redux-orm';
 import NetworkModel from './network/model/orm.js';
 import ContractModel from './contract/model/orm.js';
+import { ContractEventSubscribeORMModel } from './contracteventsubscribe/model/orm.js';
 import ConfigModel from './config/model/orm.js';
 
 //Fix undefined import issue
@@ -14,6 +15,7 @@ export function getOrm(): any {
     });
     orm.register(NetworkModel);
     orm.register(ContractModel);
+    orm.register(ContractEventSubscribeORMModel);
     orm.register(ConfigModel);
 
     return orm;

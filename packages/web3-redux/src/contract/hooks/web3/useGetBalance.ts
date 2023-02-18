@@ -5,7 +5,7 @@ import { ReduxError } from '@owlprotocol/crud-redux';
 import NetworkCRUD from '../../../network/crud.js';
 import SyncCRUD from '../../../sync/crud.js';
 import { GenericSync } from '../../../sync/model/index.js';
-import { getBalance, getBalanceSynced } from '../../actions/index.js';
+import { getBalanceAction as getBalanceAction2, getBalanceSynced } from '../../actions/index.js';
 import ContractCRUD from '../../crud.js';
 
 /**
@@ -36,7 +36,7 @@ export function useGetBalance(
                 if (!!sync && sync != 'ifnull' && sync != 'once') {
                     return getBalanceSynced({ networkId, address, sync });
                 } else {
-                    const getBalanceAction = getBalance({ networkId, address });
+                    const getBalanceAction = getBalanceAction2({ networkId, address });
                     return { getBalanceAction, syncAction: undefined };
                 }
             }

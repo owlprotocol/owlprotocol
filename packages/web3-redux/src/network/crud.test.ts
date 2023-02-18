@@ -3,6 +3,8 @@ import { assert } from 'chai';
 import { network1336 } from './data.js';
 import NetworkCRUD from './crud.js';
 import { createStore, StoreType } from '../store.js';
+import { sleep } from '../utils/sleep.js';
+import { omit } from 'lodash-es';
 
 describe('pet/crud.test.js', () => {
     describe('store', () => {
@@ -14,6 +16,7 @@ describe('pet/crud.test.js', () => {
 
         it('create', async () => {
             store.dispatch(NetworkCRUD.actions.create(network1336));
+            await sleep(1000)
 
             //Redux ORM
             const network1337Redux = NetworkCRUD.selectors.selectByIdSingle(store.getState(), network1336.networkId);
@@ -24,7 +27,7 @@ describe('pet/crud.test.js', () => {
             //Dexie
             const network1337Dexie = await NetworkCRUD.db.get(network1336.networkId);
             assert.isDefined(network1337Dexie, 'db.get() undefined');
-            assert.deepEqual(network1337Dexie, NetworkCRUD.encode(network1336));
+            assert.deepEqual(omit(network1337Dexie, 'updatedAt'), NetworkCRUD.encode(network1336));
         });
     });
 });

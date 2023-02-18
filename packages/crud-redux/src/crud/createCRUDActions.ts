@@ -1,10 +1,11 @@
 import { v4 as uuidv4 } from 'uuid';
 import type { Action } from '@reduxjs/toolkit';
-import { isUndefined, omitBy, pick } from 'lodash-es';
+import { isUndefined, omitBy, pick, zip } from 'lodash-es';
 
 import { createCRUDValidators } from './createCRUDValidators.js'
 import { createAction as createReduxAction, createAction2 } from './createAction.js';
 import { T_Encoded_Base } from './model.js';
+import { IndexableType } from 'dexie';
 
 
 /**
@@ -26,47 +27,45 @@ export function createCRUDActions<
     name: U,
     validators: ReturnType<typeof createCRUDValidators<T_ID, T_Encoded, T>>
 ) {
-    const { validateId, validate } = validators;
+    const { validateId, validate, diff, hydrate, toPrimaryKeyString } = validators;
 
     /** Actions */
     const FETCH = `${name}/FETCH`;
     const FETCH_BATCHED = `${FETCH}/BATCHED`;
     //const FETCH_ALL = `${FETCH}/ALL`;
 
+    const DB = `${name}/DB`
+    const DB_CREATING = `${DB}/CREATING`
+    const DB_UPDATING = `${DB}/UPDATING`
+    const DB_DELETING = `${DB}/DELETING`
+
+    const REDUX = `${name}/REDUX`
+    const REDUX_UPSERT = `${REDUX}/UPSERT`
+    const REDUX_DELETE = `${REDUX}/DELETE`
+
     //(name)_CRUD_(BATCHED) Actions Write to IndexedDB
     //(CRUD)_POST actions send notifications once action is complete and can be used by other workers
     const CREATE = `${name}/CREATE`;
-    const CREATE_POST = `${CREATE}/POST`;
     const CREATE_BATCHED = `${CREATE}/BATCHED`;
-    const CREATE_BATCHED_POST = `${CREATE_BATCHED}/POST`;
 
     const PUT = `${name}/PUT`;
-    const PUT_POST = `${PUT}/POST`;
     const PUT_BATCHED = `${PUT}/BATCHED`;
-    const PUT_BATCHED_POST = `${PUT_BATCHED}/POST`;
 
     const UPDATE = `${name}/UPDATE`;
-    const UPDAET_POST = `${UPDATE}/POST`;
     const UPDATE_BATCHED = `${UPDATE}/BATCHED`;
-    const UPDATE_BATCHED_POST = `${UPDATE_BATCHED}/POST`;
 
     const UPSERT = `${name}/UPSERT`;
-    const UPSERT_POST = `${UPSERT}/POST`;
     const UPSERT_BATCHED = `${UPSERT}/BATCHED`;
-    const UPSERT_BATCHED_POST = `${UPSERT_BATCHED}/POST`;
 
     const DELETE = `${name}/DELETE`;
-    const DELETE_POST = `${DELETE}/POST`;
     const DELETE_BATCHED = `${DELETE}/BATCHED`;
-    const DELETE_BATCHED_POST = `${DELETE_BATCHED}/POST`;
 
     //const DELETE_ALL = `${DELETE}/ALL`;
     const HYDRATE = `${name}/HYDRATE`;
     const HYDRATE_BATCHED = `${HYDRATE}/BATCHED`;
     const HYDRATE_ALL = `${HYDRATE}/ALL`;
 
-    const fetchAction = createAction2(FETCH, (payload: (T_ID | T) & { maxCacheAge?: number }) => {
-        //@ts-expect-error
+    const fetchAction = createAction2(FETCH, (payload: (T) & { maxCacheAge?: number }) => {
         return { ...validate(payload), maxCacheAge: payload.maxCacheAge ?? 0 }
     });
     const fetchBatchAction = createAction2(FETCH_BATCHED, (payload:
@@ -77,12 +76,21 @@ export function createCRUDActions<
         return payload.map(validate).map((item) => { return { ...item, maxCacheAge: payload.maxCacheAge ?? 0 } })
     })
 
+    const dbCreatingAction = createAction2(DB_CREATING, (payload: { primKey: IndexableType, obj: T_Encoded }) => payload);
+    const dbUpdatingAction = createAction2(DB_UPDATING, (payload: { primKey: IndexableType, obj: T_Encoded, mods: Partial<T_Encoded>, /*updatedObj: T_Encoded*/ }) => {
+        return payload
+    });
+    const dbDeletingAction = createAction2(DB_DELETING, (payload: { primKey: IndexableType, obj: T_Encoded }) => payload);
+
+    const reduxUpsertAction = createAction2(REDUX_UPSERT, (payload: T) => {
+        return validate(payload)
+    })
+    const reduxDeleteAction = createAction2(REDUX_DELETE, (payload: T_ID) => {
+        return toPrimaryKeyString(payload)
+    })
+
     const createAction = createAction2(CREATE, validate);
     const createBatchedAction = createAction2(CREATE_BATCHED, (payload: T[]) => {
-        return payload.map(validate)
-    });
-    const createPostAction = createAction2(CREATE_POST, validate);
-    const createBatchedPostAction = createAction2(CREATE_BATCHED_POST, (payload: T[]) => {
         return payload.map(validate)
     });
 
@@ -90,17 +98,9 @@ export function createCRUDActions<
     const putBatchedAction = createAction2(PUT_BATCHED, (payload: T[]) => {
         return payload.map(validate)
     });
-    const putPostAction = createAction2(PUT_POST, validate);
-    const putBatchedPostAction = createAction2(PUT_BATCHED_POST, (payload: T[]) => {
-        return payload.map(validate)
-    });
 
     const updateAction = createAction2(UPDATE, validate);
     const updateBatchedAction = createAction2(UPDATE_BATCHED, (payload: T[]) => {
-        return payload.map(validate)
-    });
-    const updatePostAction = createAction2(UPDAET_POST, validate);
-    const updateBatchedPostAction = createAction2(UPDATE_BATCHED_POST, (payload: T[]) => {
         return payload.map(validate)
     });
 
@@ -108,20 +108,11 @@ export function createCRUDActions<
     const upsertBatchedAction = createAction2(UPSERT_BATCHED, (payload: T[]) => {
         return payload.map(validate)
     });
-    const upsertPostAction = createAction2(UPSERT_POST, validate);
-    const upsertBatchedPostAction = createAction2(UPSERT_BATCHED_POST, (payload: T[]) => {
-        return payload.map(validate)
-    });
 
     const deleteAction = createAction2(DELETE, validateId);
     const deleteBatchedAction = createAction2(DELETE_BATCHED, (payload: T_ID[]) => {
         return payload.map(validateId)
     });
-    const deletePostAction = createAction2(DELETE_POST, validateId);
-    const deleteBatchedPostAction = createAction2(DELETE_BATCHED_POST, (payload: T_ID[]) => {
-        return payload.map(validateId)
-    });
-
 
     const hydrateAction = createReduxAction(
         HYDRATE,
@@ -163,26 +154,21 @@ export function createCRUDActions<
     const actionTypes = {
         FETCH,
         FETCH_BATCHED,
+        DB_CREATING,
+        DB_UPDATING,
+        DB_DELETING,
+        REDUX_UPSERT,
+        REDUX_DELETE,
         CREATE,
-        CREATE_POST,
         CREATE_BATCHED,
-        CREATE_BATCHED_POST,
         PUT,
-        PUT_POST,
         PUT_BATCHED,
-        PUT_BATCHED_POST,
         UPDATE,
-        UPDAET_POST,
         UPDATE_BATCHED,
-        UPDATE_BATCHED_POST,
         UPSERT,
-        UPSERT_POST,
         UPSERT_BATCHED,
-        UPSERT_BATCHED_POST,
         DELETE,
-        DELETE_POST,
         DELETE_BATCHED,
-        DELETE_BATCHED_POST,
         HYDRATE,
         HYDRATE_BATCHED,
         HYDRATE_ALL,
@@ -191,43 +177,38 @@ export function createCRUDActions<
     const actions = {
         fetch: fetchAction,
         fetchBatch: fetchBatchAction,
+        dbCreating: dbCreatingAction,
+        dbUpdating: dbUpdatingAction,
+        dbDeleting: dbDeletingAction,
+        reduxUpsert: reduxUpsertAction,
+        reduxDelete: reduxDeleteAction,
         create: createAction,
-        createPost: createPostAction,
         createBatched: createBatchedAction,
-        createBatchedPost: createBatchedPostAction,
         put: putAction,
-        putPost: putPostAction,
         putBatched: putBatchedAction,
-        putBatchedPost: putBatchedPostAction,
         update: updateAction,
-        updatePost: updatePostAction,
         updateBatched: updateBatchedAction,
-        updateBatchedPost: updateBatchedPostAction,
         upsert: upsertAction,
-        upsertPost: upsertPostAction,
         upsertBatched: upsertBatchedAction,
-        upsertBatchedPost: upsertBatchedPostAction,
         delete: deleteAction,
-        deletePost: deletePostAction,
         deleteBatched: deleteBatchedAction,
-        deleteBatchedPost: deleteBatchedPostAction,
         hydrate: hydrateAction,
         hydrateBatched: hydrateBatchedAction,
         hydrateAll: hydrateAllAction,
     };
 
-    const isPostAction = (action: Action) => {
+    const isReduxAction = (action: Action) => {
         return (
-            actions.createPost.match(action) ||
-            actions.createBatchedPost.match(action) ||
-            actions.putPost.match(action) ||
-            actions.putBatchedPost.match(action) ||
-            actions.updatePost.match(action) ||
-            actions.updateBatchedPost.match(action) ||
-            actions.upsertPost.match(action) ||
-            actions.upsertBatchedPost.match(action) ||
-            actions.deletePost.match(action) ||
-            actions.deleteBatchedPost.match(action)
+            actions.reduxUpsert.match(action) ||
+            actions.reduxDelete.match(action)
+        );
+    }
+
+    const isDbAction = (action: Action) => {
+        return (
+            actions.dbCreating.match(action) ||
+            actions.dbUpdating.match(action) ||
+            actions.dbDeleting.match(action)
         );
     }
 
@@ -248,7 +229,8 @@ export function createCRUDActions<
             actions.hydrate.match(action) ||
             actions.hydrateBatched.match(action) ||
             HYDRATE_ALL === action.type ||
-            isPostAction(action)
+            isDbAction(action) ||
+            isReduxAction(action)
         );
     };
 
@@ -256,6 +238,6 @@ export function createCRUDActions<
         actions,
         actionTypes,
         isAction,
-        isPostAction
+        isDbAction
     };
 }

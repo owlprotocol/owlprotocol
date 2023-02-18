@@ -1,3 +1,4 @@
+//@ts-nocheck
 import { put, call, all, select } from 'typed-redux-saga';
 import * as Contracts from '@owlprotocol/contracts';
 import { NFTGenerativeItemCRUD } from '../crud.js';

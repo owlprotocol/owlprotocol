@@ -2,7 +2,6 @@
  * @module ContractInterface
  */
 
-import * as Actions from './actions/index.js';
 import { ContractInterfaceCRUD } from './crud.js';
 import { rootSaga } from './sagas/index.js';
 
@@ -11,9 +10,6 @@ export const ContractInterface = {
     actionTypes: ContractInterfaceCRUD.actionTypes,
     actions: {
         ...ContractInterfaceCRUD.actions,
-        getInterfaceImplementer: Actions.getInterfaceImplementer,
-        getInterfaceImplementers: Actions.getInterfaceImplementers,
-        setIntefaceImplementers: Actions.setInterfaceImplementers,
     },
     sagas: {
         ...ContractInterfaceCRUD.sagas,

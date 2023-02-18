@@ -12,6 +12,7 @@ import { ReduxError } from '@owlprotocol/crud-redux';
  */
 export function useDeploy(input: Partial<DeployActionInput> | undefined, address?: string, auto = false) {
     const dispatch = useDispatch();
+    //@ts-expect-error
     const { networkId, abi, bytecode, from, args, label, tags } = input ?? {};
     const [contractByAddress, { exists: contractByAddressExists }] = ContractCRUD.hooks.useHydrate({
         networkId,
@@ -24,6 +25,7 @@ export function useDeploy(input: Partial<DeployActionInput> | undefined, address
     //Action
     const action = useMemo(() => {
         if (networkId && abi && bytecode && from) {
+            //@ts-expect-error
             return deployAction({ networkId, abi, bytecode, from, args, label, tags });
         }
     }, [networkId, abi, bytecode, from, args, label, tags]);

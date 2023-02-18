@@ -1,5 +1,6 @@
 import { isUndefined, omitBy } from 'lodash-es';
-import { EventData } from 'web3-eth-contract';
+import type { Log } from 'web3-core';
+import type { EventData } from 'web3-eth-contract';
 import type { AbiItem } from 'web3-utils';
 
 export interface ContractEventId {
@@ -95,6 +96,20 @@ export function validate(item: ContractEvent): ContractEvent {
         topic2,
         topic3,
     };
+}
+
+export function fromLogData(e: Log, networkId: string): ContractEvent {
+    const topics = e.topics;
+    const event = {
+        ...e,
+        networkId,
+        address: e.address.toLowerCase(),
+        topic0: topics[0],
+        topic1: topics[1],
+        topic2: topics[2],
+        topic3: topics[3]
+    }
+    return omitBy(event, isUndefined) as any;
 }
 
 export function fromEventData(e: EventData, networkId: string): ContractEvent {

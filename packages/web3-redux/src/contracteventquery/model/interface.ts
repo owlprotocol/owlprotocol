@@ -1,58 +1,78 @@
+import { isUndefined, omitBy } from 'lodash-es';
 import { ContractEventId } from '../../contractevent/model/index.js';
 
 export interface ContractEventQueryId {
-    /** Blockchain network id.
-     * See [chainlist](https://chainlist.org/) for a list of networks. */
     readonly networkId: string;
-    /** Address of contract*/
-    readonly address: string;
-    readonly name: string;
+    readonly address: string | '*';
+    /** Topics */
+    readonly topic0: string | '*'; //topic0 = keccak256(name + args)
+    readonly topic1: string | '*';
+    readonly topic2: string | '*';
+    readonly topic3: string | '*';
     readonly fromBlock: number;
     readonly toBlock: number;
-    readonly filterHash: string;
 }
 
 /**
  * Contract event query cache.
  */
-export interface ContractEventQuery extends ContractEventQueryId {
-    readonly filter?: Record<string, any>;
+export interface ContractEventQuery<T extends Record<string, any> = Record<string, any>> extends ContractEventQueryId {
+    readonly eventName?: string
+    readonly filter?: Partial<T>;
     readonly events?: ContractEventId[];
     readonly errorId?: string;
 }
 
-export type ContractEventIndexInput = ContractEventQueryId;
-export const ContractEventQueryIndex = '[networkId+address+name+fromBlock+toBlock+filterHash]';
+export type ContractEventQueryIndexInput = |
+    ContractEventQueryId
+    | { networkId: string, address: string, eventName: string, fromBlock: number, toBlock: number };
+
+export const ContractEventQueryIndex =
+    '[networkId+address+topic0+topic1+topic2+topic3+fromBlock+toBlock],\
+[networkId+address+eventName+fromBlock+toBlock]';
 
 /** @internal */
 export function validateId({
     networkId,
     address,
-    name,
+    topic0,
+    topic1,
+    topic2,
+    topic3,
     fromBlock,
     toBlock,
-    filterHash,
 }: ContractEventQueryId): ContractEventQueryId {
-    return { networkId, address: address.toLowerCase(), name, fromBlock, toBlock, filterHash };
+    return {
+        networkId,
+        address: address?.toLowerCase() ?? '*',
+        topic0: topic0 ?? '*',
+        topic1: topic1 ?? '*',
+        topic2: topic2 ?? '*',
+        topic3: topic3 ?? '*',
+        fromBlock, toBlock
+    };
 }
 
 export function toPrimaryKey({
     networkId,
     address,
-    name,
+    topic0,
+    topic1,
+    topic2,
+    topic3,
     fromBlock,
     toBlock,
-    filterHash,
-}: ContractEventQueryId): [string, string, string, number, number, string] {
-    return [networkId, address.toLowerCase(), name, fromBlock, toBlock, filterHash];
+}: ContractEventQueryId): [string, string, string, string, string, string, number, number] {
+    return [networkId, address?.toLowerCase() ?? '*', topic0 ?? '*', topic1 ?? '*', topic2 ?? '*', topic3 ?? '*', fromBlock, toBlock];
 }
 
 /** @internal */
-export function validate(item: ContractEventQuery): ContractEventQuery {
-    return {
-        ...item,
-        address: item.address.toLowerCase(),
-    };
+export function validate({ networkId, address, topic0, topic1, topic2, topic3, fromBlock, toBlock, eventName, filter, events, errorId }: ContractEventQuery): ContractEventQuery {
+    const item = {
+        networkId, address: address?.toLowerCase() ?? '*',
+        topic0: topic0 ?? '*', topic1: topic1 ?? '*', topic2: topic2 ?? '*', topic3: topic3 ?? '*',
+        fromBlock, toBlock,
+        eventName, filter, events, errorId
+    }
+    return omitBy(item, isUndefined) as unknown as ContractEventQuery;
 }
-
-export default ContractEventQuery;

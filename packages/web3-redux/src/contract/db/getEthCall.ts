@@ -1,5 +1,5 @@
-import EthCallCRUD from '../../ethcall/crud.js';
-import ContractCRUD from '../crud.js';
+import { EthCallCRUD } from '../../ethcall/crud.js';
+import { ContractCRUD } from '../crud.js';
 import { BaseWeb3Contract } from '../model/index.js';
 
 /**
@@ -36,5 +36,3 @@ export async function getEthCall<T extends BaseWeb3Contract = BaseWeb3Contract, 
         return undefined;
     }
 }
-
-export default getEthCall;

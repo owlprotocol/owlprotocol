@@ -1,12 +1,13 @@
 import { useEffect, useMemo, useCallback } from 'react';
 import { useDispatch } from 'react-redux';
-import { BaseWeb3Contract } from '../model/index.js';
-import { eventSubscribe, eventUnsubscribe, eventGetPast } from '../actions/index.js';
-import { EventGetPastActionInput } from '../actions/eventGetPast.js';
-import { ContractEvent } from '../../contractevent/model/index.js';
 import { ReduxError } from '@owlprotocol/crud-redux';
 import { isEmpty, isUndefined } from 'lodash-es';
+
+import { BaseWeb3Contract } from '../model/index.js';
+import { ContractEvent } from '../../contractevent/model/index.js';
 import { useEventsFiltered } from '../../contractevent/hooks/useEventsFiltered.js';
+import { EventGetPastActionInput, eventGetPastAction } from '../../contracteventquery/actions/eventGetPast.js';
+import { eventSubscribeAction, eventUnSubscribeAction } from '../../contracteventsubscribe/actions/eventSubscribe.js';
 
 //Contract Events
 /** @internal */
@@ -54,7 +55,7 @@ export function useEvents<
     //Actions
     const getPastAction = useMemo(() => {
         if (networkId && address && eventName) {
-            return eventGetPast({
+            return eventGetPastAction({
                 networkId,
                 address,
                 eventName: eventName as string,
@@ -69,7 +70,7 @@ export function useEvents<
 
     const subscribeAction = useMemo(() => {
         if (networkId && address && eventName) {
-            return eventSubscribe({
+            return eventSubscribeAction({
                 networkId,
                 address,
                 eventName: eventName as string,
@@ -81,7 +82,7 @@ export function useEvents<
 
     const unsubscribeAction = useMemo(() => {
         if (networkId && address && eventName) {
-            return eventUnsubscribe({
+            return eventUnSubscribeAction({
                 networkId,
                 address,
                 eventName: eventName as string,

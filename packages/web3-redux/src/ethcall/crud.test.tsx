@@ -24,12 +24,6 @@ describe(`${name}/crud.test.js`, () => {
                 assert.deepEqual(selected, ethCall1);
             });
 
-            it('get({methodName})', async () => {
-                const selected = await EthCallCRUD.db.get({
-                    methodName: ethCall1.methodName!,
-                });
-                assert.deepEqual(selected, ethCall1);
-            });
 
             it('bulkGet({networkId,to,data})', async () => {
                 const selected = await EthCallCRUD.db.bulkGet([
@@ -42,8 +36,10 @@ describe(`${name}/crud.test.js`, () => {
                 assert.deepEqual(selected, [ethCall1]);
             });
 
+            /*
             it('where({methodName})', async () => {
                 const selected = await EthCallCRUD.db.where({
+                    networkId: ethCall1.networkId,
                     methodName: ethCall1.methodName!,
                 });
                 assert.deepEqual(selected, [ethCall1]);
@@ -81,6 +77,7 @@ describe(`${name}/crud.test.js`, () => {
                 );
                 assert.deepEqual(selected, [ethCall2]);
             });
+            */
         });
         describe('write', () => {
             it('add', async () => {

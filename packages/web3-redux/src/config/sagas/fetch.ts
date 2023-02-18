@@ -19,11 +19,13 @@ export function* fetchSaga(action: ReturnType<typeof ConfigCRUD.actions.fetch>):
         //Update values
         yield* putSaga(ConfigCRUD.actions.upsert(payload, action.meta.uuid));
         const config = yield* select(ConfigCRUD.selectors.selectByIdSingle, id ?? '0');
-        return { config: config! };
+        //@ts-expect-error
+        return { config: config ?? {} };
     } else if (reduxSelected) {
         //Return current config
         return { config: reduxSelected };
     }
+
 
     const dbSelected = yield* call(ConfigCRUD.db.get, id ?? '0');
     if (ipfsUrl && ipfsUrl != dbSelected?.ipfsUrl
@@ -31,9 +33,11 @@ export function* fetchSaga(action: ReturnType<typeof ConfigCRUD.actions.fetch>):
         //Update values
         yield* putSaga(ConfigCRUD.actions.upsert(payload, action.meta.uuid));
         const config = yield* select(ConfigCRUD.selectors.selectByIdSingle, id ?? '0');
-        return { config: config! };
+        //@ts-expect-error
+        return { config: config ?? {} };
     } else {
-        return { config: dbSelected! }
+        //@ts-expect-error
+        return { config: dbSelected ?? {} }
     }
 
 }
