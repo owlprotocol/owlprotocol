@@ -2,7 +2,7 @@ import { constants, utils } from 'ethers';
 import { mapValues, zipObject } from '../../../lodash.js';
 
 import { logDeployment, RunTimeEnvironment } from '../../utils.js';
-import { getFactories } from '../../../ethers/factories.js';
+import { factories, getFactories } from '../../../ethers/factories.js';
 import {
     getDeterministicFactories,
     getDeterministicInitializeFactories,
@@ -14,6 +14,7 @@ import {
     ERC721TopDownDnaInterface,
 } from '../../../ethers/types.js';
 import { ERC721TopDownDna, ERC1167Factory } from '../../../utils/index.js';
+import { ERC1167FactoryAddress } from '../../../utils/ERC1167Factory/index.js';
 
 const deploy = async ({ provider, signers, network }: RunTimeEnvironment) => {
 
@@ -23,9 +24,9 @@ const deploy = async ({ provider, signers, network }: RunTimeEnvironment) => {
     let nonce = await provider.getTransactionCount(signerAddress);
 
     const factories = getFactories(signer);
-    const cloneFactory = factories.ERC1167Factory.attach(ERC1167Factory.ERC1167FactoryAddress);
+    const cloneFactory = factories.ERC1167Factory.attach(ERC1167FactoryAddress);
     const deterministicFactories = getDeterministicFactories(factories);
-    const deterministicInitializeFactories = getDeterministicInitializeFactories(factories, signerAddress);
+    const deterministicInitializeFactories = getDeterministicInitializeFactories(factories, cloneFactory, signerAddress);
 
     const UpgradeableBeaconFactory = deterministicInitializeFactories.UpgradeableBeacon;
     const implementationAddress = deterministicFactories.ERC721TopDownDna.getAddress();

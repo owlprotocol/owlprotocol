@@ -7,6 +7,7 @@ import {
     getDeterministicInitializeFactories,
     NoInitFactories,
 } from '../../ethers/deterministicFactories.js';
+import { ERC1167FactoryAddress } from '../../utils/ERC1167Factory/index.js';
 
 /**
  * Deployment is always the same regardless of contract.
@@ -18,8 +19,9 @@ const deployUpgradeableBeacon = async ({ provider, signers, network }: RunTimeEn
     let nonce = await provider.getTransactionCount(signerAddress);
 
     const factories = getFactories(signer);
+    const cloneFactory = factories.ERC1167Factory.attach(ERC1167FactoryAddress)
     const deterministicFactories = getDeterministicFactories(factories);
-    const deterministicInitializeFactories = getDeterministicInitializeFactories(factories, signerAddress);
+    const deterministicInitializeFactories = getDeterministicInitializeFactories(factories, cloneFactory, signerAddress);
     const UpgradeableBeaconFactory = deterministicInitializeFactories.UpgradeableBeacon;
     const implementationFactories = omit(deterministicFactories, 'UpgradeableBeacon', 'BeaconProxy') as NoInitFactories;
 

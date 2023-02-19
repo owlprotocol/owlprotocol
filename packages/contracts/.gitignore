@@ -12,10 +12,10 @@ factory
 
 traceOutputDir
 
-/deployments/anvil
-/deployments/hardhat
-!/deployments/anvil/.chainId
-!/deployments/hardhat/.chainId
+src/deployments/anvil
+src/deployments/hardhat
+!/src/deployments/anvil/.chainId
+!/src/deployments/hardhat/.chainId
 
 # forge
 forge-cache/

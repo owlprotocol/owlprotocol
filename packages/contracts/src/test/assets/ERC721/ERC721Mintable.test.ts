@@ -7,7 +7,7 @@ import deployProxyFactory from '../../../deploy-hre/common/ProxyFactory.js';
 import deployERC1820 from '../../../deploy-hre/common/ERC1820.js';
 import { ERC721MintableInitializeArgs, flattenInitArgsERC721Mintable } from '../../../utils/ERC721Mintable.js';
 import { expect, assert } from 'chai';
-import { Factories, getFactories } from '../../../ethers/factories.js';
+import { factories, Factories, getFactories } from '../../../ethers/factories.js';
 import { getDeterministicInitializeFactories, InitializeFactories } from '../../../ethers/deterministicFactories.js';
 import {
     IAccessControlInterfaceId,
@@ -26,6 +26,7 @@ import {
 import { registry as registryContract } from '../../../utils/ERC1820.js';
 import { sleep } from '../../utils/sleep.js';
 import { zip } from 'lodash';
+import { ERC1167FactoryAddress } from '../../../utils/ERC1167Factory/index.js';
 
 describe('ERC721Mintable', function () {
     let signers: SignerWithAddress[];
@@ -49,7 +50,8 @@ describe('ERC721Mintable', function () {
         const signerAddress = signer.address;
 
         factories = getFactories(signer);
-        deterministicFactories = getDeterministicInitializeFactories(factories, signerAddress);
+        const cloneFactory = factories.ERC1167Factory.attach(ERC1167FactoryAddress);
+        deterministicFactories = getDeterministicInitializeFactories(factories, cloneFactory, signerAddress);
         ERC721MintableFactory = deterministicFactories.ERC721Mintable;
     });
 

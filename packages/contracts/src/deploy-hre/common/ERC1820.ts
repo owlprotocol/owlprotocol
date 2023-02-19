@@ -8,12 +8,14 @@ const deploy = async ({ ethers, network, deployments }: HardhatRuntimeEnvironmen
         provider: ethers.provider,
         //Manual transaction signing requires private key
         signers: [new ethers.Wallet(process.env.PK_0, ethers.provider)],
-        //@ts-expect-error
         network,
     });
 
-    const { save } = deployments;
-    await save(ERC1820.tags[0], { address, abi: IERC1820Registry.abi });
+    const { save, getOrNull } = deployments;
+    const submission = await getOrNull(ERC1820.tags[0])
+    if (!submission?.numDeployments) {
+        await save(ERC1820.tags[0], { address, abi: IERC1820Registry.abi });
+    }
 
     return { address };
 };

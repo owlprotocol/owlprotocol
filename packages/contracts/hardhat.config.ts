@@ -27,6 +27,8 @@ const config = {
         sources: './contracts',
         tests: 'test/hardhat',
         artifacts: './src/artifacts',
+        deploy: './lib/cjs/deploy-hre',
+        deployments: './src/deployments'
     },
     solidity: {
         version: '0.8.14',

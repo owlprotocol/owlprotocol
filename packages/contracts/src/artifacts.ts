@@ -28,7 +28,10 @@ export { default as IERC721MintableAutoId } from './artifacts/contracts/assets/E
 export { default as IERC721TopDown } from './artifacts/contracts/assets/ERC721/IERC721TopDown.sol/IERC721TopDown.js';
 export { default as ERC721Base } from './artifacts/contracts/assets/ERC721/ERC721Base.sol/ERC721Base.js';
 export { default as ERC721Mintable } from './artifacts/contracts/assets/ERC721/ERC721Mintable.sol/ERC721Mintable.js';
+export { default as ERC721Dna } from './artifacts/contracts/assets/ERC721/ERC721Dna.sol/ERC721Dna.js';
 export { default as ERC721MintableAutoId } from './artifacts/contracts/assets/ERC721/ERC721MintableAutoId.sol/ERC721MintableAutoId.js';
+export { default as ERC721TopDownMintable } from './artifacts/contracts/assets/ERC721/ERC721TopDownMintable.sol/ERC721TopDownMintable.js';
+export { default as ERC721TopDownMintableAutoId } from './artifacts/contracts/assets/ERC721/ERC721TopDownMintableAutoId.sol/ERC721TopDownMintableAutoId.js';
 export { default as ERC721TopDownDna } from './artifacts/contracts/assets/ERC721/ERC721TopDownDna.sol/ERC721TopDownDna.js';
 //Libraries
 export { default as ERC721TopDownLib } from './artifacts/contracts/assets/ERC721/ERC721TopDownLib.sol/ERC721TopDownLib.js';

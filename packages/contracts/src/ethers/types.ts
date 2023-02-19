@@ -43,7 +43,9 @@ export type {
 
 export type { ERC721Mintable, ERC721MintableInterface } from '../typechain/ethers/ERC721Mintable';
 export type { ERC721MintableAutoId, ERC721MintableAutoIdInterface } from '../typechain/ethers/ERC721MintableAutoId';
-export type { ERC721Base, ERC721BaseInterface } from '../typechain/ethers/ERC721Base';
+export type { ERC721Dna, ERC721DnaInterface } from '../typechain/ethers/ERC721Dna';
+export type { ERC721TopDownMintable, ERC721TopDownMintableInterface } from '../typechain/ethers/ERC721TopDownMintable';
+export type { ERC721TopDownMintableAutoId, ERC721TopDownMintableAutoIdInterface } from '../typechain/ethers/ERC721TopDownMintableAutoId';
 export type { ERC721TopDownDna, ERC721TopDownDnaInterface } from '../typechain/ethers/ERC721TopDownDna';
 
 export type { IERC1155Dna, IERC1155DnaInterface } from '../typechain/ethers/IERC1155Dna';
@@ -145,9 +147,12 @@ export type { IERC721Dna__factory } from '../typechain/ethers/factories/IERC721D
 export type { IERC721Mintable__factory } from '../typechain/ethers/factories/IERC721Mintable__factory';
 export type { IERC721MintableAutoId__factory } from '../typechain/ethers/factories/IERC721MintableAutoId__factory';
 export type { IERC721TopDown__factory } from '../typechain/ethers/factories/IERC721TopDown__factory';
+
 export type { ERC721Mintable__factory } from '../typechain/ethers/factories/ERC721Mintable__factory';
 export type { ERC721MintableAutoId__factory } from '../typechain/ethers/factories/ERC721MintableAutoId__factory';
-export type { ERC721Base__factory } from '../typechain/ethers/factories/ERC721Base__factory';
+export type { ERC721Dna__factory } from '../typechain/ethers/factories/ERC721Dna__factory';
+export type { ERC721TopDownMintable__factory } from '../typechain/ethers/factories/ERC721TopDownMintable__factory';
+export type { ERC721TopDownMintableAutoId__factory } from '../typechain/ethers/factories/ERC721TopDownMintableAutoId__factory';
 export type { ERC721TopDownDna__factory } from '../typechain/ethers/factories/ERC721TopDownDna__factory';
 
 export type { IERC1155Dna__factory } from '../typechain/ethers/factories/IERC1155Dna__factory';

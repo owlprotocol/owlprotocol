@@ -6,6 +6,9 @@ import {
     ERC20Mintable__factory,
     ERC721Mintable__factory,
     ERC721MintableAutoId__factory,
+    ERC721Dna__factory,
+    ERC721TopDownMintable__factory,
+    ERC721TopDownMintableAutoId__factory,
     ERC721TopDownDna__factory,
     ERC1155Mintable__factory,
     ERC1155Dna__factory,
@@ -20,6 +23,9 @@ import {
     ERC20Mintable as ERC20MintableArtifact,
     ERC721Mintable as ERC721MintableArtifact,
     ERC721MintableAutoId as ERC721MintableAutoIdArtifact,
+    ERC721Dna as ERC721DnaArtifact,
+    ERC721TopDownMintable as ERC721TopDownMintableArtifact,
+    ERC721TopDownMintableAutoId as ERC721TopDownMintableAutoIdArtifact,
     ERC721TopDownDna as ERC721TopDownDnaArtifact,
     ERC721TopDownLib as ERC721TopDownLibArtifact,
     ERC721TopDownDnaLib as ERC721TopDownDnaLibArtifact,
@@ -32,6 +38,30 @@ import {
     Fallback as FallbackArtifact,
 } from '../artifacts.js';
 import { deployDeterministicAddress, ERC1167FactoryAddress } from '../utils/ERC1167Factory/getAddress.js';
+import type { Artifact, LinkReferences } from 'hardhat/types/artifacts.js';
+
+export interface DeployedLinkReferences {
+    [libraryFileName: string]: {
+        [libraryName: string]: string
+    };
+}
+
+//Replace placeholders with libraries, numbers are 2x as bytes are represented as hex, offset by 2 for initial 0x
+export function linkLibraryBytecode(artifact: Artifact, deployedLinkReferences: DeployedLinkReferences) {
+    let bytecode = artifact.bytecode
+    Object.entries(artifact.linkReferences).forEach(([linkRefFile, linkRef]) => {
+        Object.entries(linkRef).forEach(([linkRefName, values]) => {
+            values.forEach(({ length, start }) => {
+                const linkDeployedAddress = deployedLinkReferences[linkRefFile][linkRefName]
+                bytecode =
+                    bytecode.substring(0, 2 + start * 2) +
+                    linkDeployedAddress.replace('0x', '') +
+                    bytecode.substring(2 + start * 2 + length * 2);
+            })
+        })
+    })
+    return bytecode;
+}
 
 //Static Libraries
 const ERC721TopDownLib = new ContractFactory(ERC721TopDownLibArtifact.abi, ERC721TopDownLibArtifact.bytecode);
@@ -48,7 +78,10 @@ export const ERC721TopDownDnaLibAddress = deployDeterministicAddress({
     cloneFactoryAddress: ERC1167FactoryAddress,
 });
 
-//console.debug({ ERC721TopDownLibAddress, ERC721TopDownDnaLibAddress });
+export const deployedLinkReferences: DeployedLinkReferences = {
+    'contracts/assets/ERC721/ERC721TopDownLib.sol': { 'ERC721TopDownLib': ERC721TopDownLibAddress },
+    'contracts/assets/ERC721/ERC721TopDownDnaLib.sol': { 'ERC721TopDownDnaLib': ERC721TopDownDnaLibAddress }
+}
 
 //Proxies
 const ERC1167Factory = new ContractFactory(
@@ -78,30 +111,24 @@ const ERC721MintableAutoId = new ContractFactory(
     ERC721MintableAutoIdArtifact.bytecode,
 ) as ERC721MintableAutoId__factory;
 
-//Replace placeholders with libraries, numbers are 2x as bytes are represented as hex, offset by 2 for initial 0x
-let ERC721TopDownDnaBytecode = ERC721TopDownDnaArtifact.bytecode;
+const ERC721Dna = new ContractFactory(
+    ERC721DnaArtifact.abi,
+    ERC721DnaArtifact.bytecode,
+) as ERC721Dna__factory;
 
-ERC721TopDownDnaArtifact.linkReferences['contracts/assets/ERC721/ERC721TopDownLib.sol']['ERC721TopDownLib'].forEach(
-    ({ length, start }: { length: number; start: number }) => {
-        //console.debug({ length, start });
-        //console.debug(ERC721TopDownDnaBytecode.substring(2 + start * 2, 2 + start * 2 + length * 2));
-        ERC721TopDownDnaBytecode =
-            ERC721TopDownDnaBytecode.substring(0, 2 + start * 2) +
-            ERC721TopDownLibAddress.replace('0x', '') +
-            ERC721TopDownDnaBytecode.substring(2 + start * 2 + length * 2);
-    },
-);
-ERC721TopDownDnaArtifact.linkReferences['contracts/assets/ERC721/ERC721TopDownDnaLib.sol'][
-    'ERC721TopDownDnaLib'
-].forEach(({ length, start }: { length: number; start: number }) => {
-    //console.debug({ length, start });
-    //console.debug(ERC721TopDownDnaBytecode.substring(2 + start * 2, 2 + start * 2 + length * 2));
-    ERC721TopDownDnaBytecode =
-        ERC721TopDownDnaBytecode.substring(0, 2 + start * 2) +
-        ERC721TopDownDnaLibAddress.replace('0x', '') +
-        ERC721TopDownDnaBytecode.substring(2 + start * 2 + length * 2);
-});
+let ERC721TopDownMintableBytecode = linkLibraryBytecode(ERC721TopDownMintableArtifact, deployedLinkReferences);
+const ERC721TopDownMintable = new ContractFactory(
+    ERC721TopDownMintableArtifact.abi,
+    ERC721TopDownMintableBytecode,
+) as ERC721TopDownMintable__factory;
 
+let ERC721TopDownMintableAutoIdBytecode = linkLibraryBytecode(ERC721TopDownMintableAutoIdArtifact, deployedLinkReferences);
+const ERC721TopDownMintableAutoId = new ContractFactory(
+    ERC721TopDownMintableAutoIdArtifact.abi,
+    ERC721TopDownMintableAutoIdBytecode,
+) as ERC721TopDownMintableAutoId__factory;
+
+let ERC721TopDownDnaBytecode = linkLibraryBytecode(ERC721TopDownDnaArtifact, deployedLinkReferences);
 const ERC721TopDownDna = new ContractFactory(
     ERC721TopDownDnaArtifact.abi,
     ERC721TopDownDnaBytecode,
@@ -132,14 +159,19 @@ export const factories = {
     ERC20Mintable,
     ERC721Mintable,
     ERC721MintableAutoId,
+    ERC721Dna,
     ERC721TopDownLib,
     ERC721TopDownDnaLib,
+    ERC721TopDownMintable,
+    ERC721TopDownMintableAutoId,
     ERC721TopDownDna,
     ERC1155Mintable,
     ERC1155Dna,
     AssetRouterInput,
     AssetRouterOutput,
 };
+
+//export const implementationFactories = omit(factories, 'ERC1167Factory', 'BeaconProxy', 'UpgradeableBeacon')
 
 export function getFactories(signer: Signer) {
     return mapValues(factories, (f) => f.connect(signer)) as typeof factories;

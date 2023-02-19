@@ -10,22 +10,27 @@ const deploy = async ({ ethers, network, deployments }: HardhatRuntimeEnvironmen
         provider: ethers.provider,
         //Manual transaction signing requires private key
         signers: [new ethers.Wallet(process.env.PK_0 as string, ethers.provider)],
-        //@ts-expect-error
         network,
     });
 
-    const { save } = deployments;
-    await save(ProxyFactory.tags[0], {
-        address: cloneFactory.address,
-        args: [],
-        abi,
-        bytecode,
-        deployedBytecode,
-        devdoc,
-        solcInputHash,
-        metadata,
-        storageLayout,
-    });
+    //TODO: Add back additional artifact info for verification?
+    const { save, getOrNull } = deployments;
+    const submission = await getOrNull(ProxyFactory.tags[0])
+    if (!submission?.numDeployments) {
+        await save(ProxyFactory.tags[0], {
+            address: cloneFactory.address,
+            //args: [],
+            abi,
+            /*
+            bytecode,
+            deployedBytecode,
+            devdoc,
+            solcInputHash,
+            metadata,
+            storageLayout,
+            */
+        });
+    }
 
     return cloneFactory;
 };

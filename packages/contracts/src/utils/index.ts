@@ -6,6 +6,7 @@ export * as Clones from './Clones.js';
 export * as Create2 from './Create2.js';
 export * as DeploymerDeterministic from './DeployerDeterministic.js';
 export * as ERC20Mintable from './ERC20Mintable.js';
+export * as ERC721Dna from './ERC721Dna.js'
 export * as ERC721Mintable from './ERC721Mintable.js';
 export * as ERC721MintableAutoId from './ERC721MintableAutoId.js';
 export * as ERC721TopDownDna from './ERC721TopDownDna.js';

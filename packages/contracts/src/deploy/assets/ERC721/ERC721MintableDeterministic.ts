@@ -1,9 +1,10 @@
 import { logDeployment, RunTimeEnvironment } from '../../utils';
 import { mapValues } from '../../../lodash.js';
-import { getFactories } from '../../../ethers/factories';
+import { factories, getFactories } from '../../../ethers/factories';
 import { getDeterministicInitializeFactories } from '../../../ethers/deterministicFactories';
 import { ERC721MintableInitializeArgs, flattenInitArgsERC721Mintable } from '../../../utils/ERC721Mintable';
 import { constants } from 'ethers';
+import { ERC1167FactoryAddress } from '../../../utils/ERC1167Factory';
 
 const deploy = async ({ provider, signers, network }: RunTimeEnvironment) => {
     const signer = signers[0];
@@ -11,7 +12,8 @@ const deploy = async ({ provider, signers, network }: RunTimeEnvironment) => {
     let nonce = await provider.getTransactionCount(signerAddress);
 
     const factories = getFactories(signer);
-    const deterministicFactories = getDeterministicInitializeFactories(factories, signerAddress);
+    const cloneFactory = factories.ERC1167Factory.attach(ERC1167FactoryAddress)
+    const deterministicFactories = getDeterministicInitializeFactories(factories, cloneFactory, signerAddress);
     const ERC721MintableFactory = deterministicFactories.ERC721Mintable;
 
     //Contracts

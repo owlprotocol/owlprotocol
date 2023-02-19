@@ -11,8 +11,11 @@ import {
     flattenSetChildrenArgsERC721TopDownDna,
 } from '../../../utils/ERC721TopDownDna.js';
 import { expect } from 'chai';
-import { Factories, getFactories } from '../../../ethers/factories.js';
+import { factories, Factories, getFactories } from '../../../ethers/factories.js';
 import { getDeterministicInitializeFactories, InitializeFactories } from '../../../ethers/deterministicFactories.js';
+import { ERC1167FactoryAddress } from '../../../utils/ERC1167Factory/index.js';
+
+const cloneFactory = factories.ERC1167Factory.attach(ERC1167FactoryAddress)
 
 describe('ERC721TopDownDna', function () {
     let signers: SignerWithAddress[];
@@ -36,7 +39,7 @@ describe('ERC721TopDownDna', function () {
         const signerAddress = signer.address;
 
         factories = getFactories(signer);
-        deterministicFactories = getDeterministicInitializeFactories(factories, signerAddress);
+        deterministicFactories = getDeterministicInitializeFactories(factories, cloneFactory, signerAddress);
         ERC721TopDownDnaFactory = deterministicFactories.ERC721TopDownDna;
     });
 

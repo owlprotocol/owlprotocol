@@ -4,9 +4,8 @@ import Implementations from '../../deploy/common/Implementations.js';
 
 //@ts-expect-error
 const deploy = async ({ ethers, network, deployments }: HardhatRuntimeEnvironment) => {
-    const { save } = deployments;
+    const { save, getOrNull } = deployments;
 
-    //@ts-expect-error
     const results = await Implementations({ provider: ethers.provider, signers: await ethers.getSigners(), network });
 
     const promises = mapValues(results, async ({ address, contract }, k) => {
@@ -14,17 +13,23 @@ const deploy = async ({ ethers, network, deployments }: HardhatRuntimeEnvironmen
             const { abi, bytecode, deployedBytecode, devdoc, solcInputHash, metadata, storageLayout } =
                 await deployments.getExtendedArtifact(k);
 
-            return save(k + 'Implementation', {
-                address,
-                args: [],
-                abi,
-                bytecode,
-                deployedBytecode,
-                devdoc,
-                solcInputHash,
-                metadata,
-                storageLayout,
-            });
+            const submission = await getOrNull(k + 'Implementation')
+            if (!submission?.numDeployments) {
+                //Bloat
+                return save(k + 'Implementation', {
+                    address,
+                    //args: [],
+                    abi,
+                    /*
+                    bytecode
+                    deployedBytecode,
+                    devdoc,
+                    solcInputHash,
+                    metadata,
+                    storageLayout,
+                    */
+                });
+            }
         }
     });
 

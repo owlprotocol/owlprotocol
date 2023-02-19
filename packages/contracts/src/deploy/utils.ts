@@ -1,15 +1,11 @@
 import type { Signer } from 'ethers';
 import type { BaseProvider } from '@ethersproject/providers';
+import type { HardhatRuntimeEnvironment } from 'hardhat/types';
 
 export interface RunTimeEnvironment {
     provider: BaseProvider;
     signers: Signer[];
-    network: {
-        name: string;
-        config: {
-            chainId: number;
-        };
-    };
+    network: HardhatRuntimeEnvironment['network']
 }
 
 export function logDeployment(

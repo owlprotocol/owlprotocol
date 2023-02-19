@@ -1,11 +1,7 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.9;
 
-import {CountersUpgradeable} from '@openzeppelin/contracts-upgradeable/utils/CountersUpgradeable.sol';
-import {AddressUpgradeable} from '@openzeppelin/contracts-upgradeable/utils/AddressUpgradeable.sol';
-
-import {ERC721Base} from './ERC721Base.sol';
-import {IERC721MintableAutoId} from './IERC721MintableAutoId.sol';
+import {ERC721MintableAutoIdBase} from './ERC721MintableAutoIdBase.sol';
 
 /**
  * @dev This implements the standard OwlProtocol `ERC721` contract that is an
@@ -13,17 +9,7 @@ import {IERC721MintableAutoId} from './IERC721MintableAutoId.sol';
  * happens through initializers for compatibility with a EIP1167 minimal-proxy
  * deployment strategy.
  */
-contract ERC721MintableAutoId is ERC721Base, IERC721MintableAutoId {
-    using CountersUpgradeable for CountersUpgradeable.Counter;
-
-    bytes32 internal constant MINTER_ROLE = keccak256('MINTER_ROLE');
-
-    // Auto-incrementing tokenIds
-    CountersUpgradeable.Counter private nextId; //1 slot
-
-    //https://docs.openzeppelin.com/contracts/4.x/upgradeable#storage_gaps
-    uint256[49] private __gap;
-
+contract ERC721MintableAutoId is ERC721MintableAutoIdBase {
     constructor() {}
 
     /**********************
@@ -107,56 +93,6 @@ contract ERC721MintableAutoId is ERC721Base, IERC721MintableAutoId {
         __BaseURI_init_unchained(_admin, _initBaseURI);
         __ERC2981Setter_init_unchained(_admin, _feeReceiver, _feeNumerator);
         __ERC721Base_init_unchained();
-        __ERC721MintableAutoId_init_unchained(_admin);
-    }
-
-    function __ERC721MintableAutoId_init_unchained(address _minterRole) internal {
-        _grantRole(MINTER_ROLE, _minterRole);
-        if (AddressUpgradeable.isContract(ERC1820_REGISTRY)) {
-            registry.updateERC165Cache(address(this), type(IERC721MintableAutoId).interfaceId);
-            registry.setInterfaceImplementer(
-                address(this),
-                type(IERC721MintableAutoId).interfaceId | ONE,
-                address(this)
-            );
-        }
-
-        //Start at 1
-        nextId.increment();
-    }
-
-    /**********************
-          Interaction
-    **********************/
-
-    /**
-     * @inheritdoc IERC721MintableAutoId
-     */
-    function mint(address to) external virtual onlyRole(MINTER_ROLE) returns (uint256) {
-        uint256 tokenId = nextId.current();
-        nextId.increment();
-
-        _mint(to, tokenId);
-
-        return tokenId;
-    }
-
-    /**
-     * @inheritdoc IERC721MintableAutoId
-     */
-    function safeMint(address to) external virtual onlyRole(MINTER_ROLE) returns (uint256) {
-        uint256 tokenId = nextId.current();
-        nextId.increment();
-
-        _safeMint(to, tokenId, '');
-
-        return tokenId;
-    }
-
-    /**
-     * @inheritdoc ERC721Base
-     */
-    function supportsInterface(bytes4 interfaceId) public view virtual override returns (bool) {
-        return interfaceId == type(IERC721MintableAutoId).interfaceId || super.supportsInterface(interfaceId);
+        __ERC721MintableAutoIdBase_init_unchained(_admin);
     }
 }

@@ -14,7 +14,7 @@ import { ERC20MintableInitializeArgs, flattenInitArgsERC20Mintable } from '../..
 import { ERC721MintableInitializeArgs, flattenInitArgsERC721Mintable } from '../../../utils/ERC721Mintable';
 import { ERC1155MintableInitializeArgs, flattenInitArgsERC1155Mintable } from '../../../utils/ERC1155Mintable';
 import { expect } from 'chai';
-import { Factories, getFactories } from '../../../ethers/factories';
+import { factories, Factories, getFactories } from '../../../ethers/factories';
 import { getDeterministicInitializeFactories, InitializeFactories } from '../../../ethers/deterministicFactories';
 import { AssetRouterOutputInitializeArgs, flattenInitArgsAssetRouterOutput } from '../../../utils/AssetRouterOutput';
 import { MINTER_ROLE } from '../../../utils/IAccessControl';
@@ -22,7 +22,9 @@ import {
     ERC721MintableAutoIdInitializeArgs,
     flattenInitArgsERC721MintableAutoId,
 } from '../../../utils/ERC721MintableAutoId';
+import { ERC1167FactoryAddress } from '../../../utils/ERC1167Factory';
 
+const cloneFactory = factories.ERC1167Factory.attach(ERC1167FactoryAddress)
 describe('AssetRouterOutput', function () {
     let signers: SignerWithAddress[];
     let factories: Factories;
@@ -43,7 +45,7 @@ describe('AssetRouterOutput', function () {
         const signerAddress = signer.address;
 
         factories = getFactories(signer);
-        deterministicInitFactories = getDeterministicInitializeFactories(factories, signerAddress);
+        deterministicInitFactories = getDeterministicInitializeFactories(factories, cloneFactory, signerAddress);
 
         AssetRouterOutputFactory = deterministicInitFactories.AssetRouterOutput;
     });

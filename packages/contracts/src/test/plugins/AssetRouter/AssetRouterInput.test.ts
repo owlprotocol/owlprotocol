@@ -8,13 +8,14 @@ import { ERC20MintableInitializeArgs, flattenInitArgsERC20Mintable } from '../..
 import { ERC721MintableInitializeArgs, flattenInitArgsERC721Mintable } from '../../../utils/ERC721Mintable.js';
 import { ERC1155MintableInitializeArgs, flattenInitArgsERC1155Mintable } from '../../../utils/ERC1155Mintable.js';
 import { expect } from 'chai';
-import { Factories, getFactories } from '../../../ethers/factories.js';
+import { factories, Factories, getFactories } from '../../../ethers/factories.js';
 import {
     getDeterministicFactories,
     getDeterministicInitializeFactories,
     InitializeFactories,
 } from '../../../ethers/deterministicFactories.js';
 import { AssetRouterInputInitializeArgs, flattenInitArgsAssetRouterInput } from '../../../utils/AssetRouterInput.js';
+import { ERC1167FactoryAddress } from '../../../utils/ERC1167Factory/index.js';
 
 describe('AssetRouterInput', function () {
     let signers: SignerWithAddress[];
@@ -38,8 +39,9 @@ describe('AssetRouterInput', function () {
         const signerAddress = signer.address;
 
         factories = getFactories(signer);
+        const cloneFactory = factories.ERC1167Factory.attach(ERC1167FactoryAddress);
         const deterministicFactories = getDeterministicFactories(factories);
-        deterministicInitFactories = getDeterministicInitializeFactories(factories, signerAddress);
+        deterministicInitFactories = getDeterministicInitializeFactories(factories, cloneFactory, signerAddress);
 
         Fallback = await deterministicFactories.Fallback.deploy();
         AssetRouterInputFactory = deterministicInitFactories.AssetRouterInput;

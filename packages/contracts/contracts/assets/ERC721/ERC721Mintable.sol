@@ -1,11 +1,7 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.9;
 
-import {AddressUpgradeable} from '@openzeppelin/contracts-upgradeable/utils/AddressUpgradeable.sol';
-import {IERC165Upgradeable} from '@openzeppelin/contracts-upgradeable/utils/introspection/IERC165Upgradeable.sol';
-
-import {ERC721Base} from './ERC721Base.sol';
-import {IERC721Mintable} from './IERC721Mintable.sol';
+import {ERC721MintableBase} from './ERC721MintableBase.sol';
 
 /**
  * @dev This implements the standard OwlProtocol `ERC721` contract that is an
@@ -13,12 +9,7 @@ import {IERC721Mintable} from './IERC721Mintable.sol';
  * happens through initializers for compatibility with a EIP1167 minimal-proxy
  * deployment strategy.
  */
-contract ERC721Mintable is ERC721Base, IERC721Mintable {
-    bytes32 internal constant MINTER_ROLE = keccak256('MINTER_ROLE');
-
-    //https://docs.openzeppelin.com/contracts/4.x/upgradeable#storage_gaps
-    uint256[50] private __gap;
-
+contract ERC721Mintable is ERC721MintableBase {
     constructor() {}
 
     /**********************
@@ -102,39 +93,6 @@ contract ERC721Mintable is ERC721Base, IERC721Mintable {
         __BaseURI_init_unchained(_admin, _initBaseURI);
         __ERC2981Setter_init_unchained(_admin, _feeReceiver, _feeNumerator);
         __ERC721Base_init_unchained();
-        __ERC721Mintable_init_unchained(_admin);
-    }
-
-    function __ERC721Mintable_init_unchained(address _minterRole) internal {
-        _grantRole(MINTER_ROLE, _minterRole);
-        if (AddressUpgradeable.isContract(ERC1820_REGISTRY)) {
-            registry.updateERC165Cache(address(this), type(IERC721Mintable).interfaceId);
-            registry.setInterfaceImplementer(address(this), type(IERC721Mintable).interfaceId | ONE, address(this));
-        }
-    }
-
-    /**********************
-          Interaction
-    **********************/
-
-    /**
-     * @inheritdoc IERC721Mintable
-     */
-    function mint(address to, uint256 tokenId) external virtual onlyRole(MINTER_ROLE) {
-        _mint(to, tokenId);
-    }
-
-    /**
-     * @inheritdoc IERC721Mintable
-     */
-    function safeMint(address to, uint256 tokenId) external virtual onlyRole(MINTER_ROLE) {
-        _safeMint(to, tokenId);
-    }
-
-    /**
-     * @inheritdoc ERC721Base
-     */
-    function supportsInterface(bytes4 interfaceId) public view virtual override returns (bool) {
-        return interfaceId == type(IERC721Mintable).interfaceId || super.supportsInterface(interfaceId);
+        __ERC721MintableBase_init_unchained(_admin);
     }
 }

@@ -50,8 +50,10 @@ export type {
 } from '../typechain/web3/IERC721TopDown.js';
 export type { ERC721Mintable } from '../typechain/web3/ERC721Mintable.js';
 export type { ERC721MintableAutoId } from '../typechain/web3/ERC721MintableAutoId.js';
-export type { ERC721Base } from '../typechain/web3/ERC721Base.js';
+export type { ERC721Dna } from '../typechain/web3/ERC721Dna.js';
 
+export type { ERC721TopDownMintable } from '../typechain/web3/ERC721TopDownMintable.js';
+export type { ERC721TopDownMintableAutoId } from '../typechain/web3/ERC721TopDownMintableAutoId.js';
 export type { ERC721TopDownDna } from '../typechain/web3/ERC721TopDownDna.js';
 
 export type { IERC1155Dna } from '../typechain/web3/IERC1155Dna.js';
