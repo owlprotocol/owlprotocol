@@ -2,7 +2,7 @@
 pragma solidity ^0.8.0;
 
 import {IAssetRouter} from './IAssetRouter.sol';
-import {AssetBasketOutput} from './IAsset.sol';
+import {AssetBasketOutput} from './AssetOutputLib.sol';
 
 /**
  * @dev [IAssetRouterOutput.sol] defines a contract that outputs assets.

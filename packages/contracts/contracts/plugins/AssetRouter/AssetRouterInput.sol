@@ -1,16 +1,14 @@
 //SPDX-License-Identifier: MIT
 pragma solidity ^0.8.0;
 
-import {IERC20Upgradeable} from '@openzeppelin/contracts-upgradeable/token/ERC20/IERC20Upgradeable.sol';
-import {IERC721Upgradeable} from '@openzeppelin/contracts-upgradeable/token/ERC721/IERC721Upgradeable.sol';
-import {IERC1155Upgradeable} from '@openzeppelin/contracts-upgradeable/token/ERC1155/IERC1155Upgradeable.sol';
+import {IERC721ReceiverUpgradeable} from '@openzeppelin/contracts-upgradeable/token/ERC721/IERC721ReceiverUpgradeable.sol';
+import {IERC1155ReceiverUpgradeable} from '@openzeppelin/contracts-upgradeable/token/ERC1155/IERC1155ReceiverUpgradeable.sol';
 
 import {AddressUpgradeable} from '@openzeppelin/contracts-upgradeable/utils/AddressUpgradeable.sol';
-import {SafeERC20Upgradeable} from '@openzeppelin/contracts-upgradeable/token/ERC20/utils/SafeERC20Upgradeable.sol';
 
 import {OwlBase} from '../../common/OwlBase.sol';
 
-import {AssetBasketInput, AssetLib} from './IAsset.sol';
+import {AssetBasketInput, AssetInputLib} from './AssetInputLib.sol';
 import {IAssetRouterInput} from './IAssetRouterInput.sol';
 import {IAssetRouterOutput} from './IAssetRouterOutput.sol';
 
@@ -20,7 +18,7 @@ import {IAssetRouterOutput} from './IAssetRouterOutput.sol';
  *
  *
  */
-contract AssetRouterInput is OwlBase, IAssetRouterInput {
+contract AssetRouterInput is OwlBase, IAssetRouterInput, IERC721ReceiverUpgradeable {
     // mapping from contract address to tokenId to nUsed
     mapping(uint256 => mapping(address => mapping(uint256 => uint256))) erc721NTime;
     // Array of inputs in this configurations
@@ -79,46 +77,26 @@ contract AssetRouterInput is OwlBase, IAssetRouterInput {
     function __AssetRouterInput_init_unchained(AssetBasketInput[] memory _inputBaskets) internal {
         //Registry
         if (AddressUpgradeable.isContract(ERC1820_REGISTRY)) {
+            registry.updateERC165Cache(address(this), type(IERC721ReceiverUpgradeable).interfaceId);
+            registry.updateERC165Cache(address(this), type(IERC1155ReceiverUpgradeable).interfaceId);
             registry.updateERC165Cache(address(this), type(IAssetRouterInput).interfaceId);
+            registry.setInterfaceImplementer(
+                address(this),
+                type(IERC721ReceiverUpgradeable).interfaceId | ONE,
+                address(this)
+            );
+            registry.setInterfaceImplementer(
+                address(this),
+                type(IERC1155ReceiverUpgradeable).interfaceId | ONE,
+                address(this)
+            );
             registry.setInterfaceImplementer(address(this), type(IAssetRouterInput).interfaceId | ONE, address(this));
         }
 
         //Emit events for indexing
         for (uint256 i = 0; i < _inputBaskets.length; i++) {
             AssetBasketInput memory basket = _inputBaskets[i];
-            for (uint256 j = 0; j < basket.erc20Unaffected.length; j++) {
-                emit SupportsAsset(basket.erc20Unaffected[j].contractAddr, 0, i);
-            }
-            for (uint256 j = 0; j < basket.erc20Burned.length; j++) {
-                emit SupportsAsset(basket.erc20Burned[j].contractAddr, 0, i);
-            }
-            for (uint256 j = 0; j < basket.erc721Unaffected.length; j++) {
-                emit SupportsAsset(basket.erc721Unaffected[j].contractAddr, 0, i);
-            }
-            for (uint256 j = 0; j < basket.erc721Burned.length; j++) {
-                emit SupportsAsset(basket.erc721Burned[j].contractAddr, 0, i);
-            }
-            for (uint256 j = 0; j < basket.erc721NTime.length; j++) {
-                emit SupportsAsset(basket.erc721NTime[j].contractAddr, 0, i);
-            }
-            for (uint256 j = 0; j < basket.erc1155Unaffected.length; j++) {
-                for (uint256 k = 0; k < basket.erc1155Unaffected[j].tokenIds.length; k++) {
-                    emit SupportsAsset(
-                        basket.erc1155Unaffected[j].contractAddr,
-                        basket.erc1155Unaffected[j].tokenIds[k],
-                        i
-                    );
-                }
-            }
-            for (uint256 j = 0; j < basket.erc1155Burned.length; j++) {
-                for (uint256 k = 0; k < basket.erc1155Burned[j].tokenIds.length; k++) {
-                    emit SupportsAsset(
-                        basket.erc1155Burned[j].contractAddr,
-                        basket.erc1155Burned[j].tokenIds[k],
-                        i
-                    );
-                }
-            }
+            AssetInputLib.supportsBasket(basket, i);
         }
 
         //Store
@@ -155,7 +133,7 @@ contract AssetRouterInput is OwlBase, IAssetRouterInput {
         emit RouteBasket(msgSender, target, basketIdx, amount);
 
         //Consume inputs
-        AssetLib.input(
+        AssetInputLib.input(
             inputBaskets[basketIdx],
             amount,
             msgSender,
@@ -167,5 +145,84 @@ contract AssetRouterInput is OwlBase, IAssetRouterInput {
 
         //Route call
         IAssetRouterOutput(target).output(msgSender, amount, outBasketIdx);
+    }
+
+    /**
+     * @dev Direct input via transfer (avoids need for approvals)
+     */
+    function onERC721Received(
+        address,
+        address from,
+        uint256 tokenId,
+        bytes memory data
+    ) external override returns (bytes4) {
+        //User deposit
+        (
+        uint256 basketId,
+        uint256[][] memory erc721TokenIdsUnaffected,
+        uint256[][] memory erc721TokenIdsNTime
+        ) = abi.decode(data, (uint256, uint256[][], uint256[][]));
+
+        //Burn tokenId hard code
+        uint256[][] memory erc721TokenIdsBurned = new uint256[][](1);
+        uint256[] memory erc721TokenIdsBurned0 = new uint256[](1);
+        erc721TokenIdsBurned0[0] = tokenId;
+        erc721TokenIdsBurned[0] = erc721TokenIdsBurned0;
+
+        //childTokenId
+        AssetBasketInput memory basket = inputBaskets[basketId];
+
+        AssetInputLib.inputOnERC721Received(
+            basket,
+            from,
+            erc721TokenIdsUnaffected,
+            erc721TokenIdsNTime,
+            erc721TokenIdsBurned,
+            erc721NTime[basketId]
+        );
+
+        return IERC721ReceiverUpgradeable.onERC721Received.selector;
+    }
+
+    /**
+     * @dev Direct input via transfer (avoids need for approvals)
+     */
+    function onERC1155BatchReceived(
+        address,
+        address from,
+        uint256[] calldata,
+        uint256[] calldata,
+        bytes calldata data
+    ) external returns (bytes4) {
+        //User deposit
+        (
+        uint256 basketId,
+        uint256 amount,
+        uint256[][] memory erc721TokenIdsUnaffected,
+        uint256[][] memory erc721TokenIdsNTime,
+        uint256[][] memory erc721TokenIdsBurned
+        ) = abi.decode(data, (uint256, uint256, uint256[][], uint256[][], uint256[][]));
+
+        AssetBasketInput memory basket = inputBaskets[basketId];
+
+        AssetInputLib.inputOnERC1155Received(
+            basket,
+            amount,
+            from,
+            erc721TokenIdsUnaffected,
+            erc721TokenIdsNTime,
+            erc721TokenIdsBurned,
+            erc721NTime[basketId]
+        );
+
+        return IERC1155ReceiverUpgradeable.onERC1155Received.selector;
+    }
+
+    function supportsInterface(bytes4 interfaceId) public view virtual override returns (bool) {
+        return
+            interfaceId == type(IAssetRouterInput).interfaceId ||
+            interfaceId == type(IERC721ReceiverUpgradeable).interfaceId ||
+            interfaceId == type(IERC1155ReceiverUpgradeable).interfaceId ||
+            super.supportsInterface(interfaceId);
     }
 }

@@ -2,7 +2,7 @@
 pragma solidity ^0.8.0;
 
 import {IAssetRouter} from './IAssetRouter.sol';
-import {AssetBasketInput} from './IAsset.sol';
+import {AssetBasketInput} from './AssetInputLib.sol';
 
 /**
  * @dev [IAssetRouterInput.sol] defines a contract that guards calls

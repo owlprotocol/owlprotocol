@@ -14,7 +14,7 @@ import {SafeERC20Upgradeable} from '@openzeppelin/contracts-upgradeable/token/ER
 
 import {OwlBase} from '../../common/OwlBase.sol';
 
-import {AssetBasketOutput, AssetLib} from './IAsset.sol';
+import {AssetBasketOutput, AssetOutputLib} from './AssetOutputLib.sol';
 import {IAssetRouterInput} from './IAssetRouterInput.sol';
 import {IAssetRouterOutput} from './IAssetRouterOutput.sol';
 
@@ -99,39 +99,7 @@ contract AssetRouterOutput is ERC721HolderUpgradeable, ERC1155HolderUpgradeable,
         //Emit events for indexing
         for (uint256 i = 0; i < _outputBaskets.length; i++) {
             AssetBasketOutput memory basket = _outputBaskets[i];
-            for (uint256 j = 0; j < basket.erc20Transfer.length; j++) {
-                emit SupportsAsset(basket.erc20Transfer[j].contractAddr, 0, i);
-            }
-            for (uint256 j = 0; j < basket.erc20Mint.length; j++) {
-                emit SupportsAsset(basket.erc20Mint[j].contractAddr, 0, i);
-            }
-            for (uint256 j = 0; j < basket.erc721Transfer.length; j++) {
-                emit SupportsAsset(basket.erc721Transfer[j].contractAddr, 0, i);
-            }
-            for (uint256 j = 0; j < basket.erc721Mint.length; j++) {
-                emit SupportsAsset(basket.erc721Mint[j].contractAddr, 0, i);
-            }
-            for (uint256 j = 0; j < basket.erc721MintAutoId.length; j++) {
-                emit SupportsAsset(basket.erc721MintAutoId[j].contractAddr, 0, i);
-            }
-            for (uint256 j = 0; j < basket.erc1155Transfer.length; j++) {
-                for (uint256 k = 0; k < basket.erc1155Transfer[j].tokenIds.length; k++) {
-                    emit SupportsAsset(
-                        basket.erc1155Transfer[j].contractAddr,
-                        basket.erc1155Transfer[j].tokenIds[k],
-                        i
-                    );
-                }
-            }
-            for (uint256 j = 0; j < basket.erc1155Mint.length; j++) {
-                for (uint256 k = 0; k < basket.erc1155Mint[j].tokenIds.length; k++) {
-                    emit SupportsAsset(
-                        basket.erc1155Mint[j].contractAddr,
-                        basket.erc1155Mint[j].tokenIds[k],
-                        i
-                    );
-                }
-            }
+            AssetOutputLib.supportsBasket(basket, i);
         }
 
         //Storage
@@ -156,7 +124,13 @@ contract AssetRouterOutput is ERC721HolderUpgradeable, ERC1155HolderUpgradeable,
     ) external onlyRole(DEFAULT_ADMIN_ROLE) {
         emit UpdateBasket(basketIdx, int256(amount));
 
-        AssetLib.deposit(outputBaskets[basketIdx], amount, _msgSender(), erc721TokenIdsTransfer, erc721TokenIdsMint);
+        AssetOutputLib.deposit(
+            outputBaskets[basketIdx],
+            amount,
+            _msgSender(),
+            erc721TokenIdsTransfer,
+            erc721TokenIdsMint
+        );
     }
 
     /**
@@ -165,7 +139,7 @@ contract AssetRouterOutput is ERC721HolderUpgradeable, ERC1155HolderUpgradeable,
     function withdraw(uint256 amount, uint256 basketIdx) external onlyRole(DEFAULT_ADMIN_ROLE) {
         emit UpdateBasket(basketIdx, -int256(amount));
 
-        AssetLib.withdraw(outputBaskets[basketIdx], amount, _msgSender());
+        AssetOutputLib.withdraw(outputBaskets[basketIdx], amount, _msgSender());
     }
 
     /**
@@ -178,7 +152,7 @@ contract AssetRouterOutput is ERC721HolderUpgradeable, ERC1155HolderUpgradeable,
     ) external onlyRole(ASSET_ROUTER_INPUT) {
         emit RouteBasket(msg.sender, to, basketIdx, amount);
 
-        AssetLib.output(outputBaskets[basketIdx], amount, to);
+        AssetOutputLib.output(outputBaskets[basketIdx], amount, to);
     }
 
     /**
@@ -191,12 +165,6 @@ contract AssetRouterOutput is ERC721HolderUpgradeable, ERC1155HolderUpgradeable,
         override(OwlBase, ERC1155ReceiverUpgradeable)
         returns (bool)
     {
-        return
-            interfaceId == type(IAssetRouterOutput).interfaceId ||
-            interfaceId == type(IERC1155ReceiverUpgradeable).interfaceId ||
-            interfaceId == type(IERC165Upgradeable).interfaceId ||
-            interfaceId == type(IAccessControlUpgradeable).interfaceId ||
-            interfaceId == type(IRouterReceiver).interfaceId ||
-            interfaceId == type(IContractURI).interfaceId;
+        return interfaceId == type(IAssetRouterOutput).interfaceId || super.supportsInterface(interfaceId);
     }
 }

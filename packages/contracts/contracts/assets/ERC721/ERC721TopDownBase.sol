@@ -50,10 +50,16 @@ abstract contract ERC721TopDownBase is ERC721Base, IERC721TopDown, IERC721Receiv
     {
         if (AddressUpgradeable.isContract(ERC1820_REGISTRY)) {
             registry.updateERC165Cache(address(this), type(IERC721ReceiverUpgradeable).interfaceId);
+            registry.updateERC165Cache(address(this), type(IERC1155ReceiverUpgradeable).interfaceId);
             registry.updateERC165Cache(address(this), type(IERC721TopDown).interfaceId);
             registry.setInterfaceImplementer(
                 address(this),
                 type(IERC721ReceiverUpgradeable).interfaceId | ONE,
+                address(this)
+            );
+            registry.setInterfaceImplementer(
+                address(this),
+                type(IERC1155ReceiverUpgradeable).interfaceId | ONE,
                 address(this)
             );
             registry.setInterfaceImplementer(address(this), type(IERC721TopDown).interfaceId | ONE, address(this));
