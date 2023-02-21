@@ -12,11 +12,6 @@ factory
 
 traceOutputDir
 
-src/deployments/anvil
-src/deployments/hardhat
-!/src/deployments/anvil/.chainId
-!/src/deployments/hardhat/.chainId
-
 # forge
 forge-cache/
 out/

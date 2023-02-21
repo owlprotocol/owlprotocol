@@ -1,0 +1,265 @@
+{
+  "address": "0xE51B5eD1c7168Be6e3fb73E429dAbaaFC19b8940",
+  "abi": [
+    {
+      "anonymous": false,
+      "inputs": [
+        {
+          "indexed": true,
+          "internalType": "address",
+          "name": "from",
+          "type": "address"
+        },
+        {
+          "indexed": true,
+          "internalType": "address",
+          "name": "to",
+          "type": "address"
+        },
+        {
+          "indexed": true,
+          "internalType": "uint256",
+          "name": "basketIdx",
+          "type": "uint256"
+        },
+        {
+          "indexed": false,
+          "internalType": "uint256",
+          "name": "amount",
+          "type": "uint256"
+        }
+      ],
+      "name": "RouteBasket",
+      "type": "event"
+    },
+    {
+      "anonymous": false,
+      "inputs": [
+        {
+          "indexed": true,
+          "internalType": "address",
+          "name": "contractAddr",
+          "type": "address"
+        },
+        {
+          "indexed": true,
+          "internalType": "uint256",
+          "name": "tokenId",
+          "type": "uint256"
+        },
+        {
+          "indexed": false,
+          "internalType": "uint256",
+          "name": "basketIdx",
+          "type": "uint256"
+        }
+      ],
+      "name": "SupportsAsset",
+      "type": "event"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "uint256",
+          "name": "basketIdx",
+          "type": "uint256"
+        }
+      ],
+      "name": "getBasket",
+      "outputs": [
+        {
+          "components": [
+            {
+              "internalType": "address",
+              "name": "burnAddress",
+              "type": "address"
+            },
+            {
+              "components": [
+                {
+                  "internalType": "address",
+                  "name": "contractAddr",
+                  "type": "address"
+                },
+                {
+                  "internalType": "uint256",
+                  "name": "amount",
+                  "type": "uint256"
+                }
+              ],
+              "internalType": "struct AssetERC20[]",
+              "name": "erc20Unaffected",
+              "type": "tuple[]"
+            },
+            {
+              "components": [
+                {
+                  "internalType": "address",
+                  "name": "contractAddr",
+                  "type": "address"
+                },
+                {
+                  "internalType": "uint256",
+                  "name": "amount",
+                  "type": "uint256"
+                }
+              ],
+              "internalType": "struct AssetERC20[]",
+              "name": "erc20Burned",
+              "type": "tuple[]"
+            },
+            {
+              "components": [
+                {
+                  "internalType": "address",
+                  "name": "contractAddr",
+                  "type": "address"
+                },
+                {
+                  "internalType": "uint256[]",
+                  "name": "tokenIds",
+                  "type": "uint256[]"
+                }
+              ],
+              "internalType": "struct AssetERC721[]",
+              "name": "erc721Unaffected",
+              "type": "tuple[]"
+            },
+            {
+              "components": [
+                {
+                  "internalType": "address",
+                  "name": "contractAddr",
+                  "type": "address"
+                },
+                {
+                  "internalType": "uint256[]",
+                  "name": "tokenIds",
+                  "type": "uint256[]"
+                }
+              ],
+              "internalType": "struct AssetERC721[]",
+              "name": "erc721Burned",
+              "type": "tuple[]"
+            },
+            {
+              "components": [
+                {
+                  "internalType": "address",
+                  "name": "contractAddr",
+                  "type": "address"
+                },
+                {
+                  "internalType": "uint256[]",
+                  "name": "tokenIds",
+                  "type": "uint256[]"
+                }
+              ],
+              "internalType": "struct AssetERC721[]",
+              "name": "erc721NTime",
+              "type": "tuple[]"
+            },
+            {
+              "internalType": "uint256[]",
+              "name": "erc721NTimeMax",
+              "type": "uint256[]"
+            },
+            {
+              "components": [
+                {
+                  "internalType": "address",
+                  "name": "contractAddr",
+                  "type": "address"
+                },
+                {
+                  "internalType": "uint256[]",
+                  "name": "amounts",
+                  "type": "uint256[]"
+                },
+                {
+                  "internalType": "uint256[]",
+                  "name": "tokenIds",
+                  "type": "uint256[]"
+                }
+              ],
+              "internalType": "struct AssetERC1155[]",
+              "name": "erc1155Unaffected",
+              "type": "tuple[]"
+            },
+            {
+              "components": [
+                {
+                  "internalType": "address",
+                  "name": "contractAddr",
+                  "type": "address"
+                },
+                {
+                  "internalType": "uint256[]",
+                  "name": "amounts",
+                  "type": "uint256[]"
+                },
+                {
+                  "internalType": "uint256[]",
+                  "name": "tokenIds",
+                  "type": "uint256[]"
+                }
+              ],
+              "internalType": "struct AssetERC1155[]",
+              "name": "erc1155Burned",
+              "type": "tuple[]"
+            }
+          ],
+          "internalType": "struct AssetBasketInput",
+          "name": "",
+          "type": "tuple"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "address",
+          "name": "target",
+          "type": "address"
+        },
+        {
+          "internalType": "uint256",
+          "name": "amount",
+          "type": "uint256"
+        },
+        {
+          "internalType": "uint256",
+          "name": "basketIdx",
+          "type": "uint256"
+        },
+        {
+          "internalType": "uint256[][]",
+          "name": "erc721TokenIdsUnaffected",
+          "type": "uint256[][]"
+        },
+        {
+          "internalType": "uint256[][]",
+          "name": "erc721TokenIdsNTime",
+          "type": "uint256[][]"
+        },
+        {
+          "internalType": "uint256[][]",
+          "name": "erc721TokenIdsBurned",
+          "type": "uint256[][]"
+        },
+        {
+          "internalType": "uint256",
+          "name": "outBasketIdx",
+          "type": "uint256"
+        }
+      ],
+      "name": "input",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    }
+  ],
+  "numDeployments": 1
+}

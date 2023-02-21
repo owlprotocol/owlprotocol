@@ -30,7 +30,7 @@
     "contracts/*"
   ],
   "scripts": {
-    "build": "npm-run-all compile generate-types docs esbuild tsc build:interfaceIds",
+    "build": "npm-run-all compile generate-types docs esbuild tsc build:interfaceIds build:deployments-export",
     "build:watch": "npm-run-all -p tsc:watch esbuild:watch",
     "build:interfaceIds": "rm interfaceId/* && node lib/cjs/ethers/generateInterfaceIds.js",
     "build:deployments-export": "node generate-deployments-export.js",
