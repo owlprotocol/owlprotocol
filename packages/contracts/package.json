@@ -30,10 +30,10 @@
     "contracts/*"
   ],
   "scripts": {
-    "build": "npm-run-all compile build:esm docs build:interfaceIds build:deployments-export",
+    "build": "npm-run-all compile build:deployments-export build:esm build:interfaceIds docs",
     "build:esm": "npm-run-all esbuild tsc generate-types",
     "build:watch": "npm-run-all -p tsc:watch esbuild:watch",
-    "build:interfaceIds": "rm interfaceId/* && node lib/cjs/ethers/generateInterfaceIds.js",
+    "build:interfaceIds": "rm -f interfaceId/* && node lib/cjs/ethers/generateInterfaceIds.js",
     "build:deployments-export": "node generate-deployments-export.js",
     "docs": "hardhat docgen && cp -R docs-contracts-reference/* ../docs/docs-contracts/reference",
     "esbuild": "node esbuild.config.mjs",
