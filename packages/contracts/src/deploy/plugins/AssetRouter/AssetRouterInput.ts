@@ -1,12 +1,12 @@
-import { logDeployment, RunTimeEnvironment } from '../../utils';
+import { logDeployment, RunTimeEnvironment } from '../../utils.js';
 import { mapValues } from '../../../lodash.js';
-import { getFactories } from '../../../ethers/factories';
-import { getDeterministicFactories, getDeterministicInitializeFactories } from '../../../ethers/deterministicFactories';
-import { AssetRouterInputInitializeArgs, flattenInitArgsAssetRouterInput } from '../../../utils/AssetRouterInput';
+import { getFactories } from '../../../ethers/factories.js';
+import { getDeterministicFactories, getDeterministicInitializeFactories } from '../../../ethers/deterministicFactories.js';
+import { AssetRouterInputInitializeArgs, flattenInitArgsAssetRouterInput } from '../../../utils/AssetRouterInput.js';
 import { constants } from 'ethers';
-import { getBeaconProxyFactories } from '../../../ethers/beaconProxyFactories';
+import { getBeaconProxyFactories } from '../../../ethers/beaconProxyFactories.js';
 import { AssetRouterInput } from '../../../ethers';
-import { ERC1167FactoryAddress } from '../../../utils/ERC1167Factory';
+import { ERC1167FactoryAddress } from '../../../utils/ERC1167Factory/index.js';
 
 export interface AssetRouterInputDeployParams extends RunTimeEnvironment {
     routers: Pick<AssetRouterInputInitializeArgs, 'inputBaskets'>[]

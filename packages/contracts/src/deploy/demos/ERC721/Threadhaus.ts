@@ -18,6 +18,8 @@ import { ERC1167FactoryAddress } from '../../../utils/ERC1167Factory/index.js';
 
 const deploy = async ({ provider, signers, network }: RunTimeEnvironment) => {
 
+    console.debug(provider, signers, network);
+
     const SDK = await import('@owlprotocol/nft-sdk');
     const signer = signers[0];
     const signerAddress = await signer.getAddress();

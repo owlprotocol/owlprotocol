@@ -1,6 +1,6 @@
-import { logDeployment, RunTimeEnvironment } from '../../utils';
+import { logDeployment, RunTimeEnvironment } from '../../utils.js';
 import { mapValues } from '../../../lodash.js';
-import { factories, getFactories } from '../../../ethers/factories';
+import { factories, getFactories } from '../../../ethers/factories.js';
 import { getDeterministicInitializeFactories } from '../../../ethers/deterministicFactories';
 import { ERC721MintableInitializeArgs, flattenInitArgsERC721Mintable } from '../../../utils/ERC721Mintable';
 import { constants } from 'ethers';

@@ -1,11 +1,11 @@
-import { logDeployment, RunTimeEnvironment } from '../../utils';
+import { logDeployment, RunTimeEnvironment } from '../../utils.js';
 import { mapValues } from '../../../lodash.js';
-import { getFactories } from '../../../ethers/factories';
-import { getDeterministicFactories, getDeterministicInitializeFactories } from '../../../ethers/deterministicFactories';
-import { ERC721MintableInitializeArgs, flattenInitArgsERC721Mintable } from '../../../utils/ERC721Mintable';
+import { getFactories } from '../../../ethers/factories.js';
+import { getDeterministicFactories, getDeterministicInitializeFactories } from '../../../ethers/deterministicFactories.js';
+import { ERC721MintableInitializeArgs, flattenInitArgsERC721Mintable } from '../../../utils/ERC721Mintable.js';
 import { constants, utils } from 'ethers';
-import { getBeaconProxyFactories } from '../../../ethers/beaconProxyFactories';
-import { ERC1167FactoryAddress } from '../../../utils/ERC1167Factory';
+import { getBeaconProxyFactories } from '../../../ethers/beaconProxyFactories.js';
+import { ERC1167FactoryAddress } from '../../../utils/ERC1167Factory/index.js';
 import { TransactionReceipt } from '@ethersproject/providers';
 
 interface Params extends RunTimeEnvironment {

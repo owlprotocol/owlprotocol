@@ -1,11 +1,11 @@
-import { logDeployment, RunTimeEnvironment } from '../../utils';
+import { logDeployment, RunTimeEnvironment } from '../../utils.js';
 import { mapValues } from '../../../lodash.js';
-import { getFactories } from '../../../ethers/factories';
-import { getDeterministicFactories, getDeterministicInitializeFactories } from '../../../ethers/deterministicFactories';
-import { ERC721TopDownDnaInitializeArgs, flattenInitArgsERC721TopDownDna } from '../../../utils/ERC721TopDownDna';
+import { getFactories } from '../../../ethers/factories.js';
+import { getDeterministicFactories, getDeterministicInitializeFactories } from '../../../ethers/deterministicFactories.js';
+import { ERC721TopDownDnaInitializeArgs, flattenInitArgsERC721TopDownDna } from '../../../utils/ERC721TopDownDna.js';
 import { constants } from 'ethers';
-import { getBeaconProxyFactories } from '../../../ethers/beaconProxyFactories';
-import { ERC1167FactoryAddress } from '../../../utils/ERC1167Factory';
+import { getBeaconProxyFactories } from '../../../ethers/beaconProxyFactories.js';
+import { ERC1167FactoryAddress } from '../../../utils/ERC1167Factory/index.js';
 import { TransactionReceipt } from '@ethersproject/providers';
 
 export interface ERC721TopDownDnaDeployParams extends RunTimeEnvironment {
@@ -16,7 +16,7 @@ export interface ERC721TopDownDnaDeployParams extends RunTimeEnvironment {
     balanceTarget: number
 }
 export const ERC721TopDownDnaDeploy = async ({ provider, signers, network, tokens, balanceTarget }: ERC721TopDownDnaDeployParams) => {
-    const { awaitAllObj } = await import('@owlprotocol/utils')
+    const { awaitAllObj } = await import('@owlprotocol/utils');
     const signer = signers[0];
     const signerAddress = await signer.getAddress();
     let nonce = await provider.getTransactionCount(signerAddress);
@@ -26,8 +26,8 @@ export const ERC721TopDownDnaDeploy = async ({ provider, signers, network, token
     const deterministicFactories = getDeterministicFactories(factories);
     const deterministicInitializeFactories = getDeterministicInitializeFactories(factories, cloneFactory, signerAddress);
     const beaconFactory = deterministicInitializeFactories.UpgradeableBeacon;
-    const beconProxyFactories = getBeaconProxyFactories(deterministicFactories, cloneFactory, beaconFactory, signerAddress);
-    const ERC721TopDownDnaFactory = beconProxyFactories.ERC721TopDownDna;
+    const beaconProxyFactories = getBeaconProxyFactories(deterministicFactories, cloneFactory, beaconFactory, signerAddress);
+    const ERC721TopDownDnaFactory = beaconProxyFactories.ERC721TopDownDna;
 
     //Contracts
     const deployments: { [key: string]: ERC721TopDownDnaInitializeArgs } = {}

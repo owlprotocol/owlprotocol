@@ -1,12 +1,12 @@
-import { logDeployment, RunTimeEnvironment } from '../../utils';
+import { logDeployment, RunTimeEnvironment } from '../../utils.js';
 import { mapValues } from '../../../lodash.js';
-import { getFactories } from '../../../ethers/factories';
-import { getDeterministicFactories, getDeterministicInitializeFactories } from '../../../ethers/deterministicFactories';
-import { AssetRouterOutputInitializeArgs, flattenInitArgsAssetRouterOutput } from '../../../utils/AssetRouterOutput';
-import { getBeaconProxyFactories } from '../../../ethers/beaconProxyFactories';
+import { getFactories } from '../../../ethers/factories.js';
+import { getDeterministicFactories, getDeterministicInitializeFactories } from '../../../ethers/deterministicFactories.js';
+import { AssetRouterOutputInitializeArgs, flattenInitArgsAssetRouterOutput } from '../../../utils/AssetRouterOutput.js';
+import { getBeaconProxyFactories } from '../../../ethers/beaconProxyFactories.js';
 import { AssetRouterOutput } from '../../../ethers';
-import { ERC1167FactoryAddress } from '../../../utils/ERC1167Factory';
-import { MINTER_ROLE } from '../../../utils/IAccessControl';
+import { ERC1167FactoryAddress } from '../../../utils/ERC1167Factory/index.js';
+import { MINTER_ROLE } from '../../../utils/IAccessControl.js';
 
 export interface AssetRouterOutputDeployParams extends RunTimeEnvironment {
     routers: Pick<AssetRouterOutputInitializeArgs, 'outputBaskets' | 'routers'>[]
