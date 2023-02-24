@@ -154,7 +154,7 @@ library ERC721TopDownLib {
         //Store previous child token
         uint256 currentChildTokenId = childTokenIdOf721[tokenId][childContract721];
         childTokenIdOf721[tokenId][childContract721] = childTokenId;
-        if (!deposited && childTokenId != 0) {
+        if (!deposited && childTokenId != 0 && currentChildTokenId != childTokenId) {
             parentTokenIdOf[childContract721][childTokenId] = tokenId;
             //Regular transfer as to == address(this)
             IERC721Upgradeable(childContract721).transferFrom(from, address(this), childTokenId);
