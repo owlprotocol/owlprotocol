@@ -1,21 +1,20 @@
-import { isEmpty, isNull, omitBy } from 'lodash-es';
+import { isEmpty, isUndefined, isNull, omitBy } from 'lodash-es';
 import { call } from 'typed-redux-saga';
 import type { AbiInput, AbiItem } from 'web3-utils';
 import { ContractCRUD } from '../../contract/crud.js';
 import { fetchSaga as fetchContractSaga } from '../../contract/sagas/fetch.js'
 import { coder } from '../../utils/web3-eth-abi/index.js';
 
-export interface GetEventFilter {
-    networkId: string,
-    address: string,
-    name: string,
+export interface GetEventFilterParams {
+    networkId?: string,
+    address?: string,
     filter?: Record<string, any>
 }
 
 export interface EventFilter {
     index: {
-        networkId: string,
-        address: string,
+        networkId?: string,
+        address?: string,
         topic0: string,
         topic1?: string
         topic2?: string,
@@ -24,7 +23,7 @@ export interface EventFilter {
     filter?: Record<string, any>
 }
 
-export function getEventFilter({ networkId, address, filter }: Omit<GetEventFilter, 'name'>, event: AbiItem): EventFilter {
+export function getEventFilter({ networkId, address, filter }: Omit<GetEventFilterParams, 'name'>, event: AbiItem): EventFilter {
     //console.debug({ networkId, address, filter, event })
     //Topic0 based on event signature
     const topic0 = coder.encodeEventSignature(event)
@@ -57,7 +56,7 @@ export function getEventFilter({ networkId, address, filter }: Omit<GetEventFilt
             topic2: topics[2],
             topic3: topics[3],
         }
-        const indexDefined = omitBy(index, isNull) as EventFilter['index']
+        const indexDefined = omitBy(index, (a) => isNull(a) || isUndefined(a)) as EventFilter['index']
 
         return {
             index: indexDefined,
@@ -73,10 +72,17 @@ export function getEventFilter({ networkId, address, filter }: Omit<GetEventFilt
         },
     }
 }
+
+export interface GetEventFilterSagaParams {
+    networkId: string,
+    address: string,
+    name: string,
+    filter?: Record<string, any>
+}
 /**
  * Use contract abi to get event filter by topics.
  */
-export function* getEventFilterSaga({ networkId, address, name, filter }: GetEventFilter): Generator<
+export function* getEventFilterSaga({ networkId, address, name, filter }: GetEventFilterSagaParams): Generator<
     any,
     EventFilter
 > {

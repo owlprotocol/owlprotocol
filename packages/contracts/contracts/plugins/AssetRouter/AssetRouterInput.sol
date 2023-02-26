@@ -160,8 +160,10 @@ contract AssetRouterInput is OwlBase, IAssetRouterInput, IERC721ReceiverUpgradea
         (
         uint256 basketId,
         uint256[][] memory erc721TokenIdsUnaffected,
-        uint256[][] memory erc721TokenIdsNTime
-        ) = abi.decode(data, (uint256, uint256[][], uint256[][]));
+        uint256[][] memory erc721TokenIdsNTime,
+        address target,
+        uint256 outputBasketId
+        ) = abi.decode(data, (uint256, uint256[][], uint256[][], address, uint256));
 
         //Burn tokenId hard code
         uint256[][] memory erc721TokenIdsBurned = new uint256[][](1);
@@ -181,6 +183,8 @@ contract AssetRouterInput is OwlBase, IAssetRouterInput, IERC721ReceiverUpgradea
             erc721NTime[basketId]
         );
 
+        //Route call
+        IAssetRouterOutput(target).output(from, 1, outputBasketId);
         return IERC721ReceiverUpgradeable.onERC721Received.selector;
     }
 
@@ -200,8 +204,10 @@ contract AssetRouterInput is OwlBase, IAssetRouterInput, IERC721ReceiverUpgradea
         uint256 amount,
         uint256[][] memory erc721TokenIdsUnaffected,
         uint256[][] memory erc721TokenIdsNTime,
-        uint256[][] memory erc721TokenIdsBurned
-        ) = abi.decode(data, (uint256, uint256, uint256[][], uint256[][], uint256[][]));
+        uint256[][] memory erc721TokenIdsBurned,
+        address target,
+        uint256 outputBasketId
+        ) = abi.decode(data, (uint256, uint256, uint256[][], uint256[][], uint256[][], address, uint256));
 
         AssetBasketInput memory basket = inputBaskets[basketId];
 
@@ -215,6 +221,8 @@ contract AssetRouterInput is OwlBase, IAssetRouterInput, IERC721ReceiverUpgradea
             erc721NTime[basketId]
         );
 
+        //Route call
+        IAssetRouterOutput(target).output(from, amount, outputBasketId);
         return IERC1155ReceiverUpgradeable.onERC1155Received.selector;
     }
 

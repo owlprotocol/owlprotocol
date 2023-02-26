@@ -112,23 +112,26 @@ export function createCRUDHooks<
         );
 
         const isLoading = response === 'loading';
-        const result = isLoading ? undefined : response;
+        const result = isLoading ? [] : response;
         const returnOptions = { isLoading };
         return [result, returnOptions] as [typeof result, typeof returnOptions];
     };
 
-    const useWhereMany = (queries: Parameters<typeof useWhere>[]) => {
+    const useWhereMany = (
+        queries: Parameters<typeof useWhere>[0][],
+        options?: { reverse?: boolean; offset?: number; limit?: number }
+    ) => {
         const dep = JSON.stringify(queries);
         const response = useLiveQuery(
             async () => {
-                return queries.map(([filter, options]) => {
+                return Promise.all(queries.map((filter) => {
                     const reverse = options?.reverse;
                     const offset = options?.offset;
                     const limit = options?.limit;
                     //@ts-expect-error
-                    const result = filter && isDefinedRecord(filter) ? where(filter, { reverse, offset, limit }) : ([] as const)
+                    const result = filter && isDefinedRecord(filter) ? where(filter, { reverse, offset, limit }) : ([] as T_Encoded[])
                     return result
-                })
+                }))
             },
             [dep],
             'loading' as const,

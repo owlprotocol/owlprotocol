@@ -2,9 +2,9 @@ import { matches } from "lodash-es";
 import { call } from "typed-redux-saga";
 import { ContractEventCRUD } from "../crud.js";
 import { ContractEvent } from "../model/interface.js";
-import { getEventFilterSaga, GetEventFilter } from "./getEventFilter.js";
+import { getEventFilterSaga, GetEventFilterSagaParams } from "./getEventFilter.js";
 
-export function* getEventsFilteredSaga({ networkId, address, name, filter }: GetEventFilter): Generator<
+export function* getEventsFilteredSaga({ networkId, address, name, filter }: GetEventFilterSagaParams): Generator<
     any,
     ContractEvent[]
 > {

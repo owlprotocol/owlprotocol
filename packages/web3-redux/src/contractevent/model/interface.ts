@@ -55,6 +55,14 @@ export type ContractEventIndexInput =
     | { networkId: string; address: string, topic0: string, topic2: string }
     | { networkId: string; address: string, topic0: string, topic3: string }
     | { networkId: string; address: string, topic0: string }
+    | { topic0: string, topic1: string; topic2: string; topic3: string }
+    | { topic0: string, topic1: string, topic2: string }
+    | { topic0: string, topic2: string, topic3: string }
+    | { topic0: string, topic1: string, topic3: string }
+    | { topic0: string, topic1: string }
+    | { topic0: string, topic2: string }
+    | { topic0: string, topic3: string }
+    | { topic0: string }
 
 export const ContractEventIndex =
     '[networkId+blockNumber+logIndex],\
@@ -66,7 +74,15 @@ export const ContractEventIndex =
 [networkId+address+topic0+topic1],\
 [networkId+address+topic0+topic2],\
 [networkId+address+topic0+topic3],\
-[networkId+address+topic0]';
+[networkId+address+topic0],\
+[topic0+topic1+topic2+topic3],\
+[topic0+topic1+topic2],\
+[topic0+topic2+topic3],\
+[topic0+topic1+topic3],\
+[topic0+topic1],\
+[topic0+topic2],\
+[topic0+topic3],\
+[topic0]';
 
 /** @internal */
 export function validateId({ networkId, blockNumber, logIndex }: ContractEventId): ContractEventId {

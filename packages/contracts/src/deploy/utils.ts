@@ -5,7 +5,7 @@ import type { HardhatRuntimeEnvironment } from 'hardhat/types';
 export interface RunTimeEnvironment {
     provider: BaseProvider;
     signers: Signer[];
-    network: HardhatRuntimeEnvironment['network']
+    network: any //Partial<HardhatRuntimeEnvironment['network']>
 }
 
 export function logDeployment(

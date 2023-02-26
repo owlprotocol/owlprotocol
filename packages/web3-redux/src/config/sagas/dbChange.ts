@@ -1,6 +1,6 @@
 import { Action } from "redux";
 import { all, put } from "typed-redux-saga";
-import { TransferBatchTopic, TransferSingleTopic, TransferTopic } from "../../contractevent/constants.js";
+import { TransferBatchERC1155Topic, TransferSingleERC1155Topic, TransferERC20Topic } from "../../contractevent/constants.js";
 import { eventGetPastAction } from "../../contracteventquery/actions/index.js";
 import { ContractEventSubscribeCRUD } from "../../contracteventsubscribe/crud.js";
 import { coder } from "../../utils/web3-eth-abi/index.js";
@@ -66,12 +66,12 @@ export function stopAssetSubscribe(networkId: string, account: string): {
     const addressTopic = coder.encodeParameter('address', account);
 
     actions.push(
-        ContractEventSubscribeCRUD.actions.delete({ networkId, address: '*', topic0: TransferTopic, topic1: addressTopic, topic2: '*', topic3: '*' }),
-        ContractEventSubscribeCRUD.actions.delete({ networkId, address: '*', topic0: TransferTopic, topic1: '*', topic2: addressTopic, topic3: '*' }),
-        ContractEventSubscribeCRUD.actions.delete({ networkId, address: '*', topic0: TransferSingleTopic, topic1: '*', topic2: addressTopic, topic3: '*' }),
-        ContractEventSubscribeCRUD.actions.delete({ networkId, address: '*', topic0: TransferSingleTopic, topic1: '*', topic2: '*', topic3: addressTopic }),
-        ContractEventSubscribeCRUD.actions.delete({ networkId, address: '*', topic0: TransferBatchTopic, topic1: '*', topic2: addressTopic, topic3: '*' }),
-        ContractEventSubscribeCRUD.actions.delete({ networkId, address: '*', topic0: TransferBatchTopic, topic1: '*', topic2: '*', topic3: addressTopic })
+        ContractEventSubscribeCRUD.actions.delete({ networkId, address: '*', topic0: TransferERC20Topic, topic1: addressTopic, topic2: '*', topic3: '*' }),
+        ContractEventSubscribeCRUD.actions.delete({ networkId, address: '*', topic0: TransferERC20Topic, topic1: '*', topic2: addressTopic, topic3: '*' }),
+        ContractEventSubscribeCRUD.actions.delete({ networkId, address: '*', topic0: TransferSingleERC1155Topic, topic1: '*', topic2: addressTopic, topic3: '*' }),
+        ContractEventSubscribeCRUD.actions.delete({ networkId, address: '*', topic0: TransferSingleERC1155Topic, topic1: '*', topic2: '*', topic3: addressTopic }),
+        ContractEventSubscribeCRUD.actions.delete({ networkId, address: '*', topic0: TransferBatchERC1155Topic, topic1: '*', topic2: addressTopic, topic3: '*' }),
+        ContractEventSubscribeCRUD.actions.delete({ networkId, address: '*', topic0: TransferBatchERC1155Topic, topic1: '*', topic2: '*', topic3: addressTopic })
     )
     return { actions }
 }
@@ -84,18 +84,18 @@ export function startAssetSubscribe(networkId: string, account: string): {
     const addressTopic = coder.encodeParameter('address', account);
 
     actions.push(
-        ContractEventSubscribeCRUD.actions.create({ networkId, address: '*', topic0: TransferTopic, topic1: addressTopic, topic2: '*', topic3: '*', eventName: 'Transfer', active: true }),
-        ContractEventSubscribeCRUD.actions.create({ networkId, address: '*', topic0: TransferTopic, topic1: '*', topic2: addressTopic, topic3: '*', eventName: 'Transfer', active: true }),
-        ContractEventSubscribeCRUD.actions.create({ networkId, address: '*', topic0: TransferSingleTopic, topic1: '*', topic2: addressTopic, topic3: '*', eventName: 'TransferSingle', active: true }),
-        ContractEventSubscribeCRUD.actions.create({ networkId, address: '*', topic0: TransferSingleTopic, topic1: '*', topic2: '*', topic3: addressTopic, eventName: 'TransferSingle', active: true }),
-        ContractEventSubscribeCRUD.actions.create({ networkId, address: '*', topic0: TransferBatchTopic, topic1: '*', topic2: addressTopic, topic3: '*', eventName: 'TransferBatch', active: true }),
-        ContractEventSubscribeCRUD.actions.create({ networkId, address: '*', topic0: TransferBatchTopic, topic1: '*', topic2: '*', topic3: addressTopic, eventName: 'TransferBatch', active: true }),
-        eventGetPastAction({ networkId, address: '*', topic0: TransferTopic, topic1: addressTopic, topic2: '*', topic3: '*', eventName: 'Transfer' }),
-        eventGetPastAction({ networkId, address: '*', topic0: TransferTopic, topic1: '*', topic2: addressTopic, topic3: '*', eventName: 'Transfer' }),
-        eventGetPastAction({ networkId, address: '*', topic0: TransferSingleTopic, topic1: '*', topic2: addressTopic, topic3: '*', eventName: 'TransferSingle' }),
-        eventGetPastAction({ networkId, address: '*', topic0: TransferSingleTopic, topic1: '*', topic2: '*', topic3: addressTopic, eventName: 'TransferSingle' }),
-        eventGetPastAction({ networkId, address: '*', topic0: TransferBatchTopic, topic1: '*', topic2: addressTopic, topic3: '*', eventName: 'TransferBatch' }),
-        eventGetPastAction({ networkId, address: '*', topic0: TransferBatchTopic, topic1: '*', topic2: '*', topic3: addressTopic, eventName: 'TransferBatch' }),
+        ContractEventSubscribeCRUD.actions.create({ networkId, address: '*', topic0: TransferERC20Topic, topic1: addressTopic, topic2: '*', topic3: '*', eventName: 'Transfer', active: true }),
+        ContractEventSubscribeCRUD.actions.create({ networkId, address: '*', topic0: TransferERC20Topic, topic1: '*', topic2: addressTopic, topic3: '*', eventName: 'Transfer', active: true }),
+        ContractEventSubscribeCRUD.actions.create({ networkId, address: '*', topic0: TransferSingleERC1155Topic, topic1: '*', topic2: addressTopic, topic3: '*', eventName: 'TransferSingle', active: true }),
+        ContractEventSubscribeCRUD.actions.create({ networkId, address: '*', topic0: TransferSingleERC1155Topic, topic1: '*', topic2: '*', topic3: addressTopic, eventName: 'TransferSingle', active: true }),
+        ContractEventSubscribeCRUD.actions.create({ networkId, address: '*', topic0: TransferBatchERC1155Topic, topic1: '*', topic2: addressTopic, topic3: '*', eventName: 'TransferBatch', active: true }),
+        ContractEventSubscribeCRUD.actions.create({ networkId, address: '*', topic0: TransferBatchERC1155Topic, topic1: '*', topic2: '*', topic3: addressTopic, eventName: 'TransferBatch', active: true }),
+        eventGetPastAction({ networkId, address: '*', topic0: TransferERC20Topic, topic1: addressTopic, topic2: '*', topic3: '*', eventName: 'Transfer' }),
+        eventGetPastAction({ networkId, address: '*', topic0: TransferERC20Topic, topic1: '*', topic2: addressTopic, topic3: '*', eventName: 'Transfer' }),
+        eventGetPastAction({ networkId, address: '*', topic0: TransferSingleERC1155Topic, topic1: '*', topic2: addressTopic, topic3: '*', eventName: 'TransferSingle' }),
+        eventGetPastAction({ networkId, address: '*', topic0: TransferSingleERC1155Topic, topic1: '*', topic2: '*', topic3: addressTopic, eventName: 'TransferSingle' }),
+        eventGetPastAction({ networkId, address: '*', topic0: TransferBatchERC1155Topic, topic1: '*', topic2: addressTopic, topic3: '*', eventName: 'TransferBatch' }),
+        eventGetPastAction({ networkId, address: '*', topic0: TransferBatchERC1155Topic, topic1: '*', topic2: '*', topic3: addressTopic, eventName: 'TransferBatch' }),
 
     )
     return { actions }

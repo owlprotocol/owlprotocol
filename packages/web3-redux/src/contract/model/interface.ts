@@ -56,7 +56,7 @@ export interface ContractWithObjects<T extends BaseWeb3Contract = BaseWeb3Contra
 }
 
 export type ContractIndexInput = ContractId | { networkId: string } | { label: string } | { tags: string[] };
-export const ContractIndex = '[networkId+address], networkId, label, *tags';
+export const ContractIndex = '[networkId+address], networkId, label, *tags, *interfaceIds';
 
 /** @internal */
 export function validateId({ networkId, address }: ContractId): ContractId {

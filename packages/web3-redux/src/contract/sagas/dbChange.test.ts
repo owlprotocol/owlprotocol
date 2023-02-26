@@ -72,8 +72,9 @@ describe(`${name}/sagas/createPost.ts`, () => {
 
         //Use Factories to derive deterministic addresses
         const factories = Contracts.Ethers.getFactories(signer);
+        const cloneFactory = factories.ERC1167Factory.attach(Contracts.Utils.ERC1167Factory.ERC1167FactoryAddress)
         factoriesDeterministic = Contracts.Ethers.getDeterministicFactories(factories);
-        factoriesDeterministicInit = Contracts.Ethers.getDeterministicInitializeFactories(factories, from);
+        factoriesDeterministicInit = Contracts.Ethers.getDeterministicInitializeFactories(factories, cloneFactory, from);
 
         //Store
         store = createStore();
