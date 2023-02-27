@@ -1,5 +1,6 @@
 import { utils } from 'ethers';
 import type {
+    IERC1167FactoryInterface as IERC1167FactoryInterfaceType,
     IERC20Interface as IERC20InterfaceType,
     IERC20MetadataInterface as IERC20MetadataInterfaceType,
     IERC20MintableInterface as IERC20MintableInterfaceType,
@@ -30,6 +31,7 @@ import type {
 } from './types';
 
 import {
+    IERC1167Factory,
     IERC20,
     IERC20Metadata,
     IERC20Mintable,
@@ -61,6 +63,10 @@ import {
 import { interfaceId } from '../utils/IERC165.js';
 import { Interface } from '@ethersproject/abi';
 import type { AbiItem } from 'web3-utils';
+
+// ERC1667Factory
+export const IERC1167FactoryInterface = new utils.Interface(IERC1167Factory.abi) as IERC1167FactoryInterfaceType;
+export const IERC1167FactoryInterfaceId = interfaceId(IERC1167FactoryInterface.fragments);
 
 // ERC165
 export const IERC165Interface = new utils.Interface(IERC165.abi) as IERC165InterfaceType;
@@ -188,6 +194,7 @@ export const IAssetRouterOutputInterface = new utils.Interface(
 export const IAssetRouterOutputInterfaceId = interfaceId(IAssetRouterOutputInterface.fragments);
 
 export const interfaceIds: { [k: string]: AbiItem[] } = {
+    [IERC1167FactoryInterfaceId]: IERC1167Factory.abi,
     [IERC165InterfaceId]: IERC165.abi,
     [IERC1820InterfaceId]: IERC1820Registry.abi,
     [IAccessControlInterfaceId]: IAccessControl.abi,
@@ -218,6 +225,7 @@ export const interfaceIds: { [k: string]: AbiItem[] } = {
 
 export type InterfaceName = keyof typeof interfaces;
 export const interfaceIdNames: { [k: string]: InterfaceName } = {
+    [IERC1167FactoryInterfaceId]: 'IERC1167Factory',
     [IERC165InterfaceId]: 'IERC165',
     [IERC1820InterfaceId]: 'IERC1820',
     [IAccessControlInterfaceId]: 'IAccessControl',
@@ -247,6 +255,10 @@ export const interfaceIdNames: { [k: string]: InterfaceName } = {
 };
 
 export const interfaces = {
+    IERC1167Factory: {
+        interface: IERC1167FactoryInterface,
+        interfaceId: IERC1167FactoryInterfaceId
+    },
     IERC165: {
         interface: IERC165Interface,
         interfaceId: IERC165InterfaceId,

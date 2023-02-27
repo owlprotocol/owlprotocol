@@ -2,7 +2,7 @@ import { interfaces } from '@owlprotocol/contracts';
 import { useLiveQuery } from 'dexie-react-hooks';
 import { ContractCRUD } from '../crud.js';
 
-export function useContractsWithInterfaceIds(interfaceIds: string[], networkIds?: string[]) {
+export function useContractsWithInterfaceIds(interfaceIds: string[], networkIds?: string[] | undefined, implementation?: boolean) {
     const networkIdsSet = new Set(networkIds)
     const response = useLiveQuery(
         () => {
@@ -10,6 +10,14 @@ export function useContractsWithInterfaceIds(interfaceIds: string[], networkIds?
                 .where('interfaceIds')
                 .anyOf(...interfaceIds)
             if (networkIds && networkIds.length > 0) collection.filter((c) => networkIdsSet.has(c.networkId))
+
+            //Filter out implementation contracts by default
+            if (implementation) {
+                collection.filter((c) => new Set(c.tags).has('Implementation') == true);
+            } else {
+                collection.filter((c) => new Set(c.tags).has('Implementation') == false);
+            }
+
             return collection.toArray();
         },
         [JSON.stringify(interfaceIds), JSON.stringify(networkIds)],
@@ -33,14 +41,18 @@ export function useERC1155Contracts(networkIds?: string[]) {
     return useContractsWithInterfaceIds([interfaces.IERC1155.interfaceId], networkIds)
 }
 
-export function useAcceslControlContracts(networkIds?: string[]) {
+export function useAccessControlContracts(networkIds?: string[]) {
     return useContractsWithInterfaceIds([interfaces.IAccessControl.interfaceId], networkIds)
+}
+
+export function useAssetRouterCraftContracts(networkId?: string[]) {
+    return useContractsWithInterfaceIds([interfaces.IAssetRouterCraft.interfaceId], networkId)
 }
 
 export function useAssetRouterInputContracts(networkIds?: string[]) {
     return useContractsWithInterfaceIds([interfaces.IAssetRouterInput.interfaceId], networkIds)
 }
 
-export function useAssetRouterOutputContracts(networkId?: string) {
+export function useAssetRouterOutputContracts(networkId?: string[]) {
     return useContractsWithInterfaceIds([interfaces.IAssetRouterOutput.interfaceId], networkId)
 }

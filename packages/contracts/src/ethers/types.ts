@@ -10,6 +10,7 @@ export type { BlockNumber } from '../typechain/ethers/BlockNumber';
 
 //Proxy
 export type { ERC1167Factory, ERC1167FactoryInterface } from '../typechain/ethers/ERC1167Factory';
+export type { IERC1167Factory, IERC1167FactoryInterface } from '../typechain/ethers/IERC1167Factory';
 export type {
     BeaconProxy,
     BeaconProxyInterface,

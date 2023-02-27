@@ -2,11 +2,12 @@ import React from 'react';
 import { Outlet, RouterProvider, createReactRouter, createRouteConfig } from '@tanstack/react-router';
 import composeHooks from 'react-hooks-compose';
 import { useConfigureFromWeb3React, useMockData } from '../src/hooks/index.js'
-import { withChakraProvider, withMockData, withStoreProvider, withWeb3ReactProvider } from '../src/hoc/index.js';
+import { withChakraProvider, withWeb3ReactProvider } from '../src/hoc/index.js';
 import { THEME_COLORS } from '../src/constants/index.js';
 import { Provider } from 'react-redux';
-import { store } from '@owlprotocol/web3-redux';
+import { createStore } from '@owlprotocol/web3-redux';
 
+const store = createStore()
 export const parameters = {
     actions: { argTypesRegex: '^on[A-Z].*' },
     controls: {

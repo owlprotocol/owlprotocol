@@ -1,4 +1,6 @@
 import { Config, Network, Environment, Contract, TestData, Web3Redux } from '@owlprotocol/web3-redux';
+import { useEffect } from 'react';
+import { useDispatch } from 'react-redux';
 import { getEnvironment } from '../environment.js';
 
 Environment.setEnvironment(getEnvironment() as any);
@@ -29,7 +31,6 @@ export const useMockData = () => {
     Network.hooks.useNetwork('10', true);
     Network.hooks.useNetwork('137', true);
     Network.hooks.useNetwork('1337', true);
-    Network.hooks.useNetwork('31337', true);
     */
 
     /*

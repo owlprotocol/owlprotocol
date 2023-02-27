@@ -1,5 +1,5 @@
 import { ComponentStory, ComponentMeta } from "@storybook/react";
-import MagicConnect, { Props } from ".";
+import { MagicConnect, Props } from ".";
 
 export default {
     title: "Network/MagicConnect",

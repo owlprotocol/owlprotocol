@@ -9,10 +9,10 @@
   "homepage": "https://github.com/owlprotocol/contracts.git",
   "copyright": "Copyright 2021 Owl Protocol",
   "license": "MIT",
-  "type": "commonjs",
+  "type": "module",
   "main": "./lib/cjs/index.cjs",
   "module": "./lib/esm/index.mjs",
-  "types": "./lib/types/src/index.d.ts",
+  "types": "./lib/types/index.d.ts",
   "exports": {
     ".": {
       "types": "./lib/types/src/index.d.ts",
@@ -57,13 +57,11 @@
     "generate-types:ethers": "typechain --target=ethers-v5 --out-dir=src/typechain/ethers 'src/artifacts/+(contracts|@openzeppelin|@chainlink|@opengsn)/**/+([a-zA-Z0-9_]).json'",
     "node": "npm run node:anvil",
     "node:anvil": "anvil",
-    "deploy": "npm run deploy:shapes",
+    "deploy": "npm-run-all to:commonjs deploy:all to:module",
     "deploy:all": "hardhat deploy --tags All --network anvil",
-    "deploy:beacons": "hardhat deploy --tags UpgradeableBeacon --network anvil",
-    "deploy:shapes": "hardhat deploy --tags Shapes --network anvil",
-    "deploy:threadhaus": "hardhat deploy --deploy-scripts lib/cjs/deploy-hre --tags ThreadHaus --network anvil",
-    "hardhat-cjs": "node_modules/hardhat-cjs/bin --version",
-    "madge": "madge src/index.ts -c"
+    "madge": "madge src/index.ts -c",
+    "to:commonjs": "sed -i 's/\"type\": \"module\"/\"type\": \"commonjs\"/g' package.json",
+    "to:module": "sed -i 's/\"type\": \"commonjs\"/\"type\": \"module\"/g' package.json"
   },
   "dependencies": {
     "lodash": "4.17.21"

@@ -28,6 +28,7 @@ export const Contract = {
         getNonce: Actions.getNonceAction,
         getNonceSynced: Actions.getNonceSynced,
         send: Actions.send,
+        inferInterface: Actions.inferInterfaceAction
     },
     actionTypes: CRUDModel.actionTypes,
     db: CRUDModel.db,
@@ -74,6 +75,14 @@ export const Contract = {
         useSupportsInterface: Hooks.useSupportsInterface,
         useGetTags: Hooks.useGetTags,
         useForNetworkId: Hooks.useForNetworkId,
+        useContractWithInterfaceIds: Hooks.useContractsWithInterfaceIds,
+        useERC20Contracts: Hooks.useERC20Contracts,
+        useERC721Contracts: Hooks.useERC721Contracts,
+        useERC1155Contracts: Hooks.useERC1155Contracts,
+        useAccessControlContracts: Hooks.useAccessControlContracts,
+        useAssetRouterCraftContracts: Hooks.useAssetRouterCraftContracts,
+        useAssetRouterInputContracts: Hooks.useAssetRouterInputContracts,
+        useAssetRouterOutputContracts: Hooks.useAssetRouterOutputContracts
     },
     sagas: {
         ...CRUDModel.sagas,

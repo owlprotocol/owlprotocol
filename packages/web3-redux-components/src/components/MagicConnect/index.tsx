@@ -18,11 +18,11 @@ import {
 } from "./helpers";
 import MagicIcon from "./assets/magic-icon.png";
 
-interface Props {
+export interface Props {
     defaultNetworkIdx: number;
 }
 
-const MagicConnect = ({ defaultNetworkIdx = 0 }: Props) => {
+export const MagicConnect = ({ defaultNetworkIdx = 0 }: Props) => {
     const dispatch = useDispatch();
     const { web3, magic, Config } = useMagicConnect();
     const { web3Ethereum, web3Polygon, web3Optimism } = web3;
@@ -57,7 +57,7 @@ const MagicConnect = ({ defaultNetworkIdx = 0 }: Props) => {
     const [account, setAccount] = useState<string | null>(null);
     const [walletType, setWalletType] = useState<string | null>(null);
     const [currentNetwork, setCurrentNetwork] = useState<any>(
-        networks[defaultNetworkIdx]
+        networks[defaultNetworkIdx as keyof typeof networks]
     );
     const [balance, setBalance] = useState<string | number | null>(null);
 
@@ -126,7 +126,7 @@ const MagicConnect = ({ defaultNetworkIdx = 0 }: Props) => {
 
     const handleChangeNetwork = ({ target }: any) => {
         const chainId: number = target.value;
-        setCurrentNetwork(networks[chainId]);
+        setCurrentNetwork(networks[chainId as keyof typeof networks]);
     };
 
     const disconnect = async () => {
@@ -183,6 +183,7 @@ const MagicConnect = ({ defaultNetworkIdx = 0 }: Props) => {
                     <Badge
                         p={1}
                         textTransform={"none"}
+                        //@ts-expect-error
                         onClick={!account ? connectMagic : null}
                         cursor={"pointer"}
                     >

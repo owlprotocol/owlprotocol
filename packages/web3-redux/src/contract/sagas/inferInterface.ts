@@ -36,6 +36,12 @@ export function* inferInterface(networkId: string, address: string): Generator<a
         };
     }
 
+    if (address === Utils.ERC1167Factory.ERC1167FactoryAddress.toLowerCase()) {
+        return {
+            abi: Artifacts.IERC1167Factory.abi, interfaceIds: [interfaces.IERC1167Factory.interfaceId]
+        }
+    }
+
     const { network } = yield* call(fetchNetworkSaga, NetworkCRUD.actions.fetch({ networkId }));
     if (!network) throw new Error(`Network ${networkId} undefined`);
 

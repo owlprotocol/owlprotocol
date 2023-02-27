@@ -27,24 +27,27 @@ export function useMagicConnect() {
     const magicEthereum = new Magic(API_KEY, {
         locale,
         network: networks[0],
-        extensions: [new ConnectExtension()],
+        extensions: [new ConnectExtension() as any],
     });
+    //@ts-expect-error
     magicEthereum.network = "ethereum";
 
     // Polygon Instance
     const magicPolygon = new Magic(API_KEY, {
         locale,
         network: networks[1],
-        extensions: [new ConnectExtension()],
+        extensions: [new ConnectExtension() as any],
     });
+    //@ts-expect-error
     magicPolygon.network = "polygon";
 
     // Optimism Instance
     const magicOptimism = new Magic(API_KEY, {
         locale,
         network: networks[2],
-        extensions: [new ConnectExtension()],
+        extensions: [new ConnectExtension() as any],
     });
+    //@ts-expect-error
     magicOptimism.network = "optimism";
 
     const magic = {

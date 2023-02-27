@@ -122,5 +122,7 @@ export const eventGetPastIERC721TopDownAttachedChild1155 = eventGetPastFactory<C
 export const eventGetPastIERC721TopDownDetachedChild1155 = eventGetPastFactory<Contracts.Web3.IERC721TopDownDetachedChild1155Event['returnValues']>('DetachedChild1155')
 
 //AssetRouter
-export const eventGetPastAssetRouterSupportsAsset = eventGetPastFactory<Contracts.Web3.SupportsAsset['returnValues']>('SupportsAsset')
+export const eventGetPastAssetRouterSupportsInputAsset = eventGetPastFactory<Contracts.Web3.SupportsInputAsset['returnValues']>('SupportsInputAsset')
+export const eventGetPastAssetRouterSupportsOutputAsset = eventGetPastFactory<Contracts.Web3.SupportsOutputAsset['returnValues']>('SupportsOutputAsset')
 export const eventGetPastAssetRouterRouteBasket = eventGetPastFactory<Contracts.Web3.RouteBasket['returnValues']>('RouteBasket')
+export const eventGetPastAssetRouterUpdateBasket = eventGetPastFactory<Contracts.Web3.UpdateBasket['returnValues']>('UpdateBasket')

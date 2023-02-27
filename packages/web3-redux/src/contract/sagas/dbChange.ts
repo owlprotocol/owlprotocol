@@ -1,4 +1,4 @@
-import Contracts, { interfaceIdNames, interfaces, InterfaceName } from '@owlprotocol/contracts';
+import Contracts, { interfaceIdNames, InterfaceName } from '@owlprotocol/contracts';
 import { Web3ContractMethodParams } from '@owlprotocol/contracts/lib/types/web3/types.js';
 import { flatten, isEqual, uniq } from 'lodash-es';
 import { Action } from 'redux';
@@ -6,7 +6,6 @@ import { all, call, put, select } from 'typed-redux-saga'
 
 import ConfigCRUD from '../../config/crud.js';
 import { fetchSaga as fetchConfigSaga } from '../../config/sagas/fetch.js'
-import { EthCallCRUD } from '../../ethcall/crud.js';
 
 import { call as callAction, getCodeAction, inferInterfaceAction } from '../actions/index.js';
 import { ContractCRUD } from '../crud.js';
@@ -15,7 +14,8 @@ import {
     callSagaERC721OwnerOf,
 } from './call.js';
 import {
-    eventGetPastAssetRouterSupportsAsset,
+    eventGetPastAssetRouterSupportsInputAsset,
+    eventGetPastAssetRouterSupportsOutputAsset,
     eventGetPastIERC1155TransferBatch,
     eventGetPastIERC1155TransferSingle,
     eventGetPastIERC721Transfer,
@@ -156,6 +156,11 @@ export function* fetchContractData(networkId: string, address: string, account: 
             const tokenIds = tokens.map(({ tokenId }) => tokenId)
             actions.push(...fetchERC1155Dna(networkId, address, tokenIds).actions)
         }
+    }
+
+    if (interfaceNamesSet.has('IAssetRouterCraft')) {
+        const result = yield* call(fetchAssetRouterCraft, networkId, address, account)
+        actions.push(...result.actions)
     }
 
     if (interfaceNamesSet.has('IAssetRouterInput')) {
@@ -347,6 +352,37 @@ export function fetchERC1155Dna(networkId: string, address: string, tokens: stri
     return { actions }
 }
 
+export function* fetchAssetRouterCraft(networkId: string, address: string, account: string | undefined): Generator<any, {
+    actions: Action[]
+}> {
+    //Actions to dispatch
+    const actions: Action[] = []
+    if (account) {
+        actions.push(
+            eventGetPastAction<Contracts.Web3.RouteBasket['returnValues']>({ networkId, address, eventName: 'RouteBasket', filter: { from: account } }),
+            eventSubscribeAction<Contracts.Web3.RouteBasket['returnValues']>(({ networkId, address, eventName: 'RouteBasket', filter: { from: account } }))
+        )
+    }
+    //Add supported assets
+    const SupportsInputAsset = yield* call(eventGetPastAssetRouterSupportsInputAsset, eventGetPastAction<Contracts.Web3.SupportsInputAsset['returnValues']>({ networkId, address }))
+    const SupportsOutputAsset = yield* call(eventGetPastAssetRouterSupportsOutputAsset, eventGetPastAction<Contracts.Web3.SupportsOutputAsset['returnValues']>({ networkId, address }))
+    //Baskets
+    const inputBaskets = uniq(SupportsInputAsset.map((e) => e.returnValues?.basketIdx as string))
+    const outputBaskets = uniq(SupportsOutputAsset.map((e) => e.returnValues?.basketIdx as string))
+    actions.push(...inputBaskets.map((basketIdx) => {
+        return callAction<Web3ContractMethodParams<Contracts.Web3.IAssetRouterCraft, 'getInputBasket'>>({ networkId, address, method: 'getInputBasket', args: [basketIdx], maxCacheAge: 0 })
+    }))
+    actions.push(...outputBaskets.map((basketIdx) => {
+        return callAction<Web3ContractMethodParams<Contracts.Web3.IAssetRouterCraft, 'getOutputBasket'>>({ networkId, address, method: 'getOutputBasket', args: [basketIdx], maxCacheAge: 0 })
+    }))
+    //Tokens
+    const tokens = uniq([...SupportsInputAsset, ...SupportsOutputAsset].map((e) => e.returnValues?.contractAddr! as string))
+    //TODO: What is behaviour if asset already exists?
+    actions.push(...tokens.map((t) => ContractCRUD.actions.create({ networkId, address: t })))
+
+    return { actions }
+}
+
 export function* fetchAssetRouterInput(networkId: string, address: string, account: string | undefined): Generator<any, {
     actions: Action[]
 }> {
@@ -359,8 +395,14 @@ export function* fetchAssetRouterInput(networkId: string, address: string, accou
         )
     }
     //Add supported assets
-    const SupportsAsset = yield* call(eventGetPastAssetRouterSupportsAsset, eventGetPastAction<Contracts.Web3.SupportsAsset['returnValues']>({ networkId, address }))
-    const tokens = uniq(SupportsAsset.map((e) => e.returnValues?.contractAddr!))
+    const SupportsInputAsset = yield* call(eventGetPastAssetRouterSupportsInputAsset, eventGetPastAction<Contracts.Web3.SupportsInputAsset['returnValues']>({ networkId, address }))
+    //Baskets
+    const inputBaskets = uniq(SupportsInputAsset.map((e) => e.returnValues?.basketIdx as string))
+    actions.push(...inputBaskets.map((basketIdx) => {
+        return callAction<Web3ContractMethodParams<Contracts.Web3.IAssetRouterInput, 'getInputBasket'>>({ networkId, address, method: 'getInputBasket', args: [basketIdx], maxCacheAge: 0 })
+    }))
+    const tokens = uniq(SupportsInputAsset.map((e) => e.returnValues?.contractAddr!))
+    //Tokens
     //TODO: What is behaviour if asset already exists?
     actions.push(...tokens.map((t) => ContractCRUD.actions.create({ networkId, address: t })))
 
@@ -379,8 +421,14 @@ export function* fetchAssetRouterOutput(networkId: string, address: string, acco
         )
     }
     //Add supported assets
-    const SupportsAsset = yield* call(eventGetPastAssetRouterSupportsAsset, eventGetPastAction<Contracts.Web3.SupportsAsset['returnValues']>({ networkId, address }))
-    const tokens = uniq(SupportsAsset.map((e) => e.returnValues?.contractAddr!))
+    const SupportsOutputAsset = yield* call(eventGetPastAssetRouterSupportsOutputAsset, eventGetPastAction<Contracts.Web3.SupportsOutputAsset['returnValues']>({ networkId, address }))
+    //Baskets
+    const outputBaskets = uniq(SupportsOutputAsset.map((e) => e.returnValues?.basketIdx as string))
+    actions.push(...outputBaskets.map((basketIdx) => {
+        return callAction<Web3ContractMethodParams<Contracts.Web3.IAssetRouterOutput, 'getOutputBasket'>>({ networkId, address, method: 'getOutputBasket', args: [basketIdx], maxCacheAge: 0 })
+    }))
+    //Tokens
+    const tokens = uniq(SupportsOutputAsset.map((e) => e.returnValues?.contractAddr!))
     //TODO: What is behaviour if asset already exists?
     actions.push(...tokens.map((t) => ContractCRUD.actions.create({ networkId, address: t })))
 

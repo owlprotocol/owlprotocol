@@ -139,6 +139,6 @@ export const callSagaERC2981RoyaltyInfo = callSagaFactory<Contracts.Web3.IERC298
 
 //Plugins
 //IAssetRouterInput
-export const callSagaAssetRouterInputGetBasket = callSagaFactory<Contracts.Web3.AssetRouterInput, 'getBasket'>('getBasket')
+export const callSagaAssetRouterInputGetBasket = callSagaFactory<Contracts.Web3.AssetRouterInput, 'getInputBasket'>('getInputBasket')
 //IAssetRouterOutput
-export const callSagaAssetRouterOutputGetBasket = callSagaFactory<Contracts.Web3.AssetRouterOutput, 'getBasket'>('getBasket')
+export const callSagaAssetRouterOutputGetBasket = callSagaFactory<Contracts.Web3.AssetRouterOutput, 'getOutputBasket'>('getOutputBasket')

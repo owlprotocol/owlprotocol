@@ -44,8 +44,8 @@ export function useOutputBaskets(filter?: {
     }))
     const [baskets] = EthCallCRUD.hooks.useWhereMany(basketsFilter);
     return flatten(baskets) as EthCall<
-        Web3ContractMethodParams<Web3.IAssetRouterOutput, "getOutputBaskets">,
-        Web3ContractMethodCall<Web3.IAssetRouterOutput, "getOutputBaskets">
+        Web3ContractMethodParams<Web3.IAssetRouterOutput, "getOutputBasket">,
+        Web3ContractMethodCall<Web3.IAssetRouterOutput, "getOutputBasket">
     >[]
 }
 

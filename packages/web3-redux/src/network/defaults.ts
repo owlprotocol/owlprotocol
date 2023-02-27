@@ -104,7 +104,9 @@ export const defaultNetworks = () => {
             name: 'anvil',
             currency: ETHER,
             web3Rpc: ANVIL_RPC()
-        },
+        }
+        /*
+        ,
         '1337': {
             networkId: '1337',
             name: 'ganache',
@@ -338,6 +340,7 @@ export const defaultNetworks = () => {
             versionRegistry: '0x581648Bb9dB7e36360B8B551Cdaf23c481f106c3',
             paymaster: '0x41ddb318BB35cA0aD54b52f5b1708ff860161dCc',
         },
+        */
     } as { [networkId: string]: Network | undefined };
 };
 

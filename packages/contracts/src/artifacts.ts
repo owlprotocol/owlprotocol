@@ -11,6 +11,7 @@ export { default as Multicall } from './artifacts/contracts/utils/Multicall.sol/
 export { default as BlockNumber } from './artifacts/contracts/utils/BlockNumber.sol/BlockNumber.js';
 
 //Proxy
+export { default as IERC1167Factory } from './artifacts/contracts/proxy/ERC1167/IERC1167Factory.sol/IERC1167Factory.js';
 export { default as ERC1167Factory } from './artifacts/contracts/proxy/ERC1167/ERC1167Factory.sol/ERC1167Factory.js';
 export { default as BeaconProxy } from './artifacts/contracts/proxy/Beacon/BeaconProxy.sol/BeaconProxy.js';
 export { default as IBeacon } from './artifacts/contracts/proxy/Beacon/IBeacon.sol/IBeacon.js';

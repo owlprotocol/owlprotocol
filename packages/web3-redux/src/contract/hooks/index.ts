@@ -15,3 +15,4 @@ export * from './useDeploy.js';
 export * from './useEvents.js';
 export * from './useFetchAbi.js';
 export * from './useFetchTransactions.js';
+export * from './useContractsWithInterfaceIds.js'
