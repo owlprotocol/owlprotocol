@@ -1,0 +1,38 @@
+{
+  "network": {
+    "ganache": {
+      "name": "ganache",
+      "config": {
+        "accounts": [
+          "0x5b3208286264f409e1873e3709d3138acf47f6cc733e74a6b47a040b50472fd8",
+          "0xae6e55ee301653982277f9031e97e7a54ee258fd617214904baf62df3047e09b"
+        ],
+        "gas": "auto",
+        "gasPrice": 2e9,
+        "gasMultiplier": 1,
+        "httpHeaders": {},
+        "timeout": 20000,
+        "chainId": 1337,
+        "url": "http://127.0.0.1:8545/",
+        "from": "0x5b3208286264f409e1873e3709d3138acf47f6cc733e74a6b47a040b50472fd8"
+      }
+    },
+    "anvil": {
+      "name": "anvil",
+      "config": {
+        "accounts": [
+          "0xac0974bec39a17e36ba4a6b4d238ff944bacb478cbed5efcae784d7bf4f2ff80",
+          "0x59c6995e998f97a5a0044966f0945389dc9e86dae88c7a8412f4603b6b78690d"
+        ],
+        "gas": "auto",
+        "gasPrice": "auto",
+        "gasMultiplier": 1,
+        "httpHeaders": {},
+        "timeout": 20000,
+        "chainId": 31337,
+        "url": "http://127.0.0.1:8545/",
+        "from": "0xac0974bec39a17e36ba4a6b4d238ff944bacb478cbed5efcae784d7bf4f2ff80"
+      }
+    }
+  }
+}
