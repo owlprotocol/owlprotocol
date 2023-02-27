@@ -1,6 +1,8 @@
 /* eslint-disable import/no-unresolved */
 // @ts-nocheck
 export const chainId = '31337';
+export * as AssetRouterCraftBeacon from './AssetRouterCraftBeacon.js';
+export * as AssetRouterCraftImplementation from './AssetRouterCraftImplementation.js';
 export * as AssetRouterInput0 from './AssetRouterInput-0.js';
 export * as AssetRouterInputBeacon from './AssetRouterInputBeacon.js';
 export * as AssetRouterInputImplementation from './AssetRouterInputImplementation.js';
@@ -58,16 +60,16 @@ export * as ERC721Dna8 from './ERC721Dna-8.js';
 export * as ERC721Dna9 from './ERC721Dna-9.js';
 export * as ERC721DnaBeacon from './ERC721DnaBeacon.js';
 export * as ERC721DnaImplementation from './ERC721DnaImplementation.js';
-export * as ERC721Mintable0 from './ERC721Mintable-0.js';
-export * as ERC721Mintable1 from './ERC721Mintable-1.js';
-export * as ERC721Mintable2 from './ERC721Mintable-2.js';
-export * as ERC721Mintable3 from './ERC721Mintable-3.js';
-export * as ERC721Mintable4 from './ERC721Mintable-4.js';
-export * as ERC721Mintable5 from './ERC721Mintable-5.js';
-export * as ERC721Mintable6 from './ERC721Mintable-6.js';
-export * as ERC721Mintable7 from './ERC721Mintable-7.js';
-export * as ERC721Mintable8 from './ERC721Mintable-8.js';
-export * as ERC721Mintable9 from './ERC721Mintable-9.js';
+export * as ERC721MintableAutoId0 from './ERC721MintableAutoId-0.js';
+export * as ERC721MintableAutoId1 from './ERC721MintableAutoId-1.js';
+export * as ERC721MintableAutoId2 from './ERC721MintableAutoId-2.js';
+export * as ERC721MintableAutoId3 from './ERC721MintableAutoId-3.js';
+export * as ERC721MintableAutoId4 from './ERC721MintableAutoId-4.js';
+export * as ERC721MintableAutoId5 from './ERC721MintableAutoId-5.js';
+export * as ERC721MintableAutoId6 from './ERC721MintableAutoId-6.js';
+export * as ERC721MintableAutoId7 from './ERC721MintableAutoId-7.js';
+export * as ERC721MintableAutoId8 from './ERC721MintableAutoId-8.js';
+export * as ERC721MintableAutoId9 from './ERC721MintableAutoId-9.js';
 export * as ERC721MintableAutoIdBeacon from './ERC721MintableAutoIdBeacon.js';
 export * as ERC721MintableAutoIdImplementation from './ERC721MintableAutoIdImplementation.js';
 export * as ERC721MintableBeacon from './ERC721MintableBeacon.js';

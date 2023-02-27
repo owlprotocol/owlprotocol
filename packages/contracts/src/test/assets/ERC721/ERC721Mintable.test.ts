@@ -64,7 +64,7 @@ describe('ERC721Mintable', function () {
             symbol: `TK${tokenName}`,
             initBaseURI: `token.${tokenName}.com/token`,
             feeReceiver: signers[0].address,
-            feeNumerator: 0,
+
         };
         const initializerArgs = flattenInitArgsERC721Mintable(token);
         ERC721Mintable = await ERC721MintableFactory.deploy(...initializerArgs);

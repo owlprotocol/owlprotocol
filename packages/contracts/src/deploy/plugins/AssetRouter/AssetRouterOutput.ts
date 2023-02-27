@@ -7,6 +7,7 @@ import { getBeaconProxyFactories } from '../../../ethers/beaconProxyFactories.js
 import { AssetRouterOutput } from '../../../ethers';
 import { ERC1167FactoryAddress } from '../../../utils/ERC1167Factory/index.js';
 import { MINTER_ROLE } from '../../../utils/IAccessControl.js';
+import { validateAssetBasketOutput } from '../../../utils/AssetLib.js';
 
 export interface AssetRouterOutputDeployParams extends RunTimeEnvironment {
     routers: Pick<AssetRouterOutputInitializeArgs, 'outputBaskets' | 'routers'>[]
@@ -31,8 +32,7 @@ export const AssetRouterOutputDeploy = async ({ provider, signers, network, rout
     routers.forEach((r, i) => {
         deployments[`AssetRouterOutput-${i}`] = {
             admin: signerAddress,
-            contractUri: '',
-            outputBaskets: r.outputBaskets,
+            outputBaskets: r.outputBaskets.map(validateAssetBasketOutput),
             routers: r.routers
         }
     })
@@ -44,7 +44,6 @@ export const AssetRouterOutputDeploy = async ({ provider, signers, network, rout
 
         try {
             //Compute Deployment Address
-            let result: { address: string; contract: AssetRouterOutput; deployed: boolean; error?: Error };
             if (await AssetRouterOutputFactory.exists(...args)) {
                 return {
                     address,
@@ -71,21 +70,21 @@ export const AssetRouterOutputDeploy = async ({ provider, signers, network, rout
         const address = AssetRouterOutputFactory.getAddress(...args);
         return Promise.all(d.outputBaskets.map((b) => {
             //TODO: Non-mintable outputs
-            const erc20MintPromises = b.erc20Mint.map(async (c) => {
+            const erc20MintPromises = b.erc20Mint!.map(async (c) => {
                 const contract = factories.ERC20Mintable.attach(c.contractAddr);
                 const allowed = await contract.hasRole(MINTER_ROLE, address);
                 if (!allowed) {
                     return contract.grantRole(MINTER_ROLE, address, { nonce: nonce++, gasLimit: 10e6 });
                 }
             })
-            const erc721MintPromises = b.erc721Mint.map(async (c) => {
+            const erc721MintPromises = b.erc721MintAutoId!.map(async (c) => {
                 const contract = factories.ERC721Mintable.attach(c.contractAddr);
                 const allowed = await contract.hasRole(MINTER_ROLE, address);
                 if (!allowed) {
                     return contract.grantRole(MINTER_ROLE, address, { nonce: nonce++, gasLimit: 10e6 });
                 }
             })
-            const erc1155MintPromises = b.erc1155Mint.map(async (c) => {
+            const erc1155MintPromises = b.erc1155Mint!.map(async (c) => {
                 const contract = factories.ERC1155Mintable.attach(c.contractAddr);
                 const allowed = await contract.hasRole(MINTER_ROLE, address);
                 if (!allowed) {

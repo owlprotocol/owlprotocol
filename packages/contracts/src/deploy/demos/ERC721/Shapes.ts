@@ -47,14 +47,9 @@ const deploy = async ({ provider, signers, network }: RunTimeEnvironment) => {
     const shapesChild = {
         admin: signerAddress,
         contractUri: 'http://localhost:3000/shapesNested/collection-child.json',
-        gsnForwarder: constants.AddressZero,
         name: 'Shapes NFT Child Collection',
         symbol: 'SHP-Child',
-        initBaseURI: '',
-        feeReceiver: signerAddress,
-        feeNumerator: 0,
-        childContracts721: [],
-        childContracts1155: [],
+        initBaseURI: ''
     } as ERC721TopDownDna.ERC721TopDownDnaInitializeArgs;
 
     const initArgsChild = ERC721TopDownDna.flattenInitArgsERC721TopDownDna(shapesChild);
@@ -65,12 +60,9 @@ const deploy = async ({ provider, signers, network }: RunTimeEnvironment) => {
     const shapes = {
         admin: signerAddress,
         contractUri: 'http://localhost:3000/shapesNested/collection.json',
-        gsnForwarder: constants.AddressZero,
         name: 'Shapes NFT Collection',
         symbol: 'SHP',
         initBaseURI: '',
-        feeReceiver: signerAddress,
-        feeNumerator: 0,
         childContracts721: [addressChild],
         childContracts1155: [],
     } as ERC721TopDownDna.ERC721TopDownDnaInitializeArgs;

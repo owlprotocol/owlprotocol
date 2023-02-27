@@ -32,8 +32,7 @@ export const ERC20MintableDeploy = async ({ provider, signers, network, tokens, 
     for (let i = 0; i < tokens; i++) {
         deployments[`ERC20Mintable-${i}`] = {
             admin: signerAddress,
-            contractUri: '',
-            gsnForwarder: constants.AddressZero,
+
             name: `ERC20Mintable-${i}`,
             symbol: `TOK${i}`,
         }

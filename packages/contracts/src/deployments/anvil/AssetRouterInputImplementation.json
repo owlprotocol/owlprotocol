@@ -1,5 +1,5 @@
 {
-  "address": "0xB161e12295dC204bEe01eD9B6CE44eF1C5EF0875",
+  "address": "0xeA59F7b2488B13c4D70Ea11D6874017e5b8Fb784",
   "abi": [
     {
       "inputs": [],
@@ -90,11 +90,6 @@
               "internalType": "address",
               "name": "contractAddr",
               "type": "address"
-            },
-            {
-              "internalType": "uint256[]",
-              "name": "tokenIds",
-              "type": "uint256[]"
             }
           ],
           "internalType": "struct AssetERC721",
@@ -123,11 +118,6 @@
               "internalType": "address",
               "name": "contractAddr",
               "type": "address"
-            },
-            {
-              "internalType": "uint256[]",
-              "name": "tokenIds",
-              "type": "uint256[]"
             }
           ],
           "internalType": "struct AssetERC721",
@@ -156,11 +146,6 @@
               "internalType": "address",
               "name": "contractAddr",
               "type": "address"
-            },
-            {
-              "internalType": "uint256[]",
-              "name": "tokenIds",
-              "type": "uint256[]"
             }
           ],
           "internalType": "struct AssetERC721",
@@ -189,11 +174,6 @@
               "internalType": "address",
               "name": "contractAddr",
               "type": "address"
-            },
-            {
-              "internalType": "uint256[]",
-              "name": "tokenIds",
-              "type": "uint256[]"
             }
           ],
           "internalType": "struct AssetERC721",
@@ -222,11 +202,6 @@
               "internalType": "address",
               "name": "contractAddr",
               "type": "address"
-            },
-            {
-              "internalType": "uint256[]",
-              "name": "tokenIds",
-              "type": "uint256[]"
             }
           ],
           "internalType": "struct AssetERC721",
@@ -420,7 +395,7 @@
           "type": "uint256"
         }
       ],
-      "name": "SupportsAsset",
+      "name": "SupportsInputAsset",
       "type": "event"
     },
     {
@@ -487,6 +462,19 @@
       "type": "function"
     },
     {
+      "inputs": [],
+      "name": "getImplementation",
+      "outputs": [
+        {
+          "internalType": "address",
+          "name": "",
+          "type": "address"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
       "inputs": [
         {
           "internalType": "uint256",
@@ -494,7 +482,7 @@
           "type": "uint256"
         }
       ],
-      "name": "getBasket",
+      "name": "getInputBasket",
       "outputs": [
         {
           "components": [
@@ -543,11 +531,6 @@
                   "internalType": "address",
                   "name": "contractAddr",
                   "type": "address"
-                },
-                {
-                  "internalType": "uint256[]",
-                  "name": "tokenIds",
-                  "type": "uint256[]"
                 }
               ],
               "internalType": "struct AssetERC721[]",
@@ -560,11 +543,6 @@
                   "internalType": "address",
                   "name": "contractAddr",
                   "type": "address"
-                },
-                {
-                  "internalType": "uint256[]",
-                  "name": "tokenIds",
-                  "type": "uint256[]"
                 }
               ],
               "internalType": "struct AssetERC721[]",
@@ -577,11 +555,6 @@
                   "internalType": "address",
                   "name": "contractAddr",
                   "type": "address"
-                },
-                {
-                  "internalType": "uint256[]",
-                  "name": "tokenIds",
-                  "type": "uint256[]"
                 }
               ],
               "internalType": "struct AssetERC721[]",
@@ -641,19 +614,6 @@
           "internalType": "struct AssetBasketInput",
           "name": "",
           "type": "tuple"
-        }
-      ],
-      "stateMutability": "view",
-      "type": "function"
-    },
-    {
-      "inputs": [],
-      "name": "getImplementation",
-      "outputs": [
-        {
-          "internalType": "address",
-          "name": "",
-          "type": "address"
         }
       ],
       "stateMutability": "view",
@@ -784,11 +744,6 @@
                   "internalType": "address",
                   "name": "contractAddr",
                   "type": "address"
-                },
-                {
-                  "internalType": "uint256[]",
-                  "name": "tokenIds",
-                  "type": "uint256[]"
                 }
               ],
               "internalType": "struct AssetERC721[]",
@@ -801,11 +756,6 @@
                   "internalType": "address",
                   "name": "contractAddr",
                   "type": "address"
-                },
-                {
-                  "internalType": "uint256[]",
-                  "name": "tokenIds",
-                  "type": "uint256[]"
                 }
               ],
               "internalType": "struct AssetERC721[]",
@@ -818,11 +768,6 @@
                   "internalType": "address",
                   "name": "contractAddr",
                   "type": "address"
-                },
-                {
-                  "internalType": "uint256[]",
-                  "name": "tokenIds",
-                  "type": "uint256[]"
                 }
               ],
               "internalType": "struct AssetERC721[]",
@@ -1101,11 +1046,6 @@
                   "internalType": "address",
                   "name": "contractAddr",
                   "type": "address"
-                },
-                {
-                  "internalType": "uint256[]",
-                  "name": "tokenIds",
-                  "type": "uint256[]"
                 }
               ],
               "internalType": "struct AssetERC721[]",
@@ -1118,11 +1058,6 @@
                   "internalType": "address",
                   "name": "contractAddr",
                   "type": "address"
-                },
-                {
-                  "internalType": "uint256[]",
-                  "name": "tokenIds",
-                  "type": "uint256[]"
                 }
               ],
               "internalType": "struct AssetERC721[]",
@@ -1135,11 +1070,6 @@
                   "internalType": "address",
                   "name": "contractAddr",
                   "type": "address"
-                },
-                {
-                  "internalType": "uint256[]",
-                  "name": "tokenIds",
-                  "type": "uint256[]"
                 }
               ],
               "internalType": "struct AssetERC721[]",

@@ -31,13 +31,12 @@ export const ERC721DnaDeploy = async ({ provider, signers, network, tokens, bala
     for (let i = 0; i < tokens; i++) {
         deployments[`ERC721Dna-${i}`] = {
             admin: signerAddress,
-            contractUri: '',
-            gsnForwarder: constants.AddressZero,
+
             name: `ERC721Dna-${i}`,
             symbol: `NFT${i}`,
             initBaseURI: `http://localhost:8080/erc721/${i}/`,
-            feeReceiver: signerAddress,
-            feeNumerator: 0,
+
+
         }
     };
 

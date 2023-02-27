@@ -15,7 +15,6 @@ struct AssetERC20 {
  */
 struct AssetERC721 {
     address contractAddr;
-    uint256[] tokenIds;
 }
 
 /**

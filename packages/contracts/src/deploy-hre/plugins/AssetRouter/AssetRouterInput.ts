@@ -17,74 +17,30 @@ const deploy = async ({ ethers, network, deployments }: HardhatRuntimeEnvironmen
                     contractAddr: (await get('ERC20Mintable-0')).address,
                     amount: utils.parseUnits('1'),
                 }],
-                erc20Burned: [],
-                erc721Unaffected: [],
-                erc721Burned: [],
-                erc721NTime: [],
-                erc721NTimeMax: [],
-                erc1155Unaffected: [],
-                erc1155Burned: [],
             }, {
                 burnAddress: ADDRESS_ONE,
-                erc20Unaffected: [],
                 erc20Burned: [{
                     contractAddr: (await get('ERC20Mintable-1')).address,
                     amount: utils.parseUnits('1'),
                 }],
-                erc721Unaffected: [],
-                erc721Burned: [],
-                erc721NTime: [],
-                erc721NTimeMax: [],
-                erc1155Unaffected: [],
-                erc1155Burned: [],
             }, {
                 burnAddress: ADDRESS_ONE,
-                erc20Unaffected: [],
-                erc20Burned: [],
                 erc721Unaffected: [{
-                    contractAddr: (await get('ERC721Mintable-0')).address,
-                    tokenIds: []
+                    contractAddr: (await get('ERC721MintableAutoId-0')).address,
                 }],
-                erc721Burned: [],
-                erc721NTime: [],
-                erc721NTimeMax: [],
-                erc1155Unaffected: [],
-                erc1155Burned: [],
             }, {
                 burnAddress: ADDRESS_ONE,
-                erc20Unaffected: [],
-                erc20Burned: [],
-                erc721Unaffected: [],
                 erc721Burned: [{
-                    contractAddr: (await get('ERC721Mintable-1')).address,
-                    tokenIds: []
+                    contractAddr: (await get('ERC721MintableAutoId-1')).address,
                 }],
-                erc721NTime: [],
-                erc721NTimeMax: [],
-                erc1155Unaffected: [],
-                erc1155Burned: [],
             }, {
                 burnAddress: ADDRESS_ONE,
-                erc20Unaffected: [],
-                erc20Burned: [],
-                erc721Unaffected: [],
-                erc721Burned: [],
                 erc721NTime: [{
-                    contractAddr: (await get('ERC721Mintable-2')).address,
-                    tokenIds: []
+                    contractAddr: (await get('ERC721MintableAutoId-2')).address,
                 }],
                 erc721NTimeMax: [3],
-                erc1155Unaffected: [],
-                erc1155Burned: [],
             }, {
                 burnAddress: ADDRESS_ONE,
-                erc20Unaffected: [],
-                erc20Burned: [],
-                erc721Unaffected: [],
-                erc721Burned: [],
-                erc721NTime: [],
-                erc721NTimeMax: [],
-                erc1155Unaffected: [],
                 erc1155Burned: [{
                     contractAddr: (await get('ERC1155Mintable-0')).address,
                     tokenIds: [1],
@@ -92,18 +48,11 @@ const deploy = async ({ ethers, network, deployments }: HardhatRuntimeEnvironmen
                 }],
             }, {
                 burnAddress: ADDRESS_ONE,
-                erc20Unaffected: [],
-                erc20Burned: [],
-                erc721Unaffected: [],
-                erc721Burned: [],
-                erc721NTime: [],
-                erc721NTimeMax: [],
                 erc1155Unaffected: [{
                     contractAddr: (await get('ERC1155Mintable-1')).address,
                     tokenIds: [1],
                     amounts: [1]
                 }],
-                erc1155Burned: []
             }]
         },
     ]

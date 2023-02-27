@@ -57,8 +57,10 @@ export type { ERC1155Dna, ERC1155DnaInterface } from '../typechain/ethers/ERC115
 //export type { IERC4907 } from '../typechain/ethers/IERC4907';
 
 //Plugins
+export type { IAssetRouterCraft, IAssetRouterCraftInterface } from '../typechain/ethers/IAssetRouterCraft';
 export type { IAssetRouterInput, IAssetRouterInputInterface } from '../typechain/ethers/IAssetRouterInput';
 export type { IAssetRouterOutput, IAssetRouterOutputInterface } from '../typechain/ethers/IAssetRouterOutput';
+export type { AssetRouterCraft, AssetRouterCraftInterface } from '../typechain/ethers/AssetRouterCraft';
 export type { AssetRouterInput, AssetRouterInputInterface } from '../typechain/ethers/AssetRouterInput';
 export type { AssetRouterOutput, AssetRouterOutputInterface } from '../typechain/ethers/AssetRouterOutput';
 
@@ -163,8 +165,10 @@ export type { ERC1155Dna__factory } from '../typechain/ethers/factories/ERC1155D
 //export type { IERC4907__factory } from '../typechain/ethers/factories/IERC4907__factory';
 
 //Plugins
+export type { IAssetRouterCraft__factory } from '../typechain/ethers/factories/IAssetRouterCraft__factory';
 export type { IAssetRouterInput__factory } from '../typechain/ethers/factories/IAssetRouterInput__factory';
 export type { IAssetRouterOutput__factory } from '../typechain/ethers/factories/IAssetRouterOutput__factory';
+export type { AssetRouterCraft__factory } from '../typechain/ethers/factories/AssetRouterCraft__factory';
 export type { AssetRouterInput__factory } from '../typechain/ethers/factories/AssetRouterInput__factory';
 export type { AssetRouterOutput__factory } from '../typechain/ethers/factories/AssetRouterOutput__factory';
 /***** Openzeppelin *****/

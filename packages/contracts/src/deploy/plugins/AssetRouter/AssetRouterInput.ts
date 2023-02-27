@@ -5,8 +5,8 @@ import { getDeterministicFactories, getDeterministicInitializeFactories } from '
 import { AssetRouterInputInitializeArgs, flattenInitArgsAssetRouterInput } from '../../../utils/AssetRouterInput.js';
 import { constants } from 'ethers';
 import { getBeaconProxyFactories } from '../../../ethers/beaconProxyFactories.js';
-import { AssetRouterInput } from '../../../ethers';
 import { ERC1167FactoryAddress } from '../../../utils/ERC1167Factory/index.js';
+import { validateAssetBasketInput } from '../../../utils/AssetLib.js';
 
 export interface AssetRouterInputDeployParams extends RunTimeEnvironment {
     routers: Pick<AssetRouterInputInitializeArgs, 'inputBaskets'>[]
@@ -31,9 +31,7 @@ export const AssetRouterInputDeploy = async ({ provider, signers, network, route
     routers.forEach((r, i) => {
         deployments[`AssetRouterInput-${i}`] = {
             admin: signerAddress,
-            contractUri: '',
-            gsnForwarder: constants.AddressZero,
-            inputBaskets: r.inputBaskets,
+            inputBaskets: r.inputBaskets.map(validateAssetBasketInput),
         }
     })
 
@@ -43,7 +41,6 @@ export const AssetRouterInputDeploy = async ({ provider, signers, network, route
 
         try {
             //Compute Deployment Address
-            let result: { address: string; contract: AssetRouterInput; deployed: boolean };
             if (await AssetRouterInputFactory.exists(...args)) {
                 return {
                     address,

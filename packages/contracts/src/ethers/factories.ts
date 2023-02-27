@@ -12,6 +12,7 @@ import {
     ERC721TopDownDna__factory,
     ERC1155Mintable__factory,
     ERC1155Dna__factory,
+    AssetRouterCraft__factory,
     AssetRouterInput__factory,
     AssetRouterOutput__factory,
     BeaconProxy__factory,
@@ -31,6 +32,7 @@ import {
     ERC721TopDownDnaLib as ERC721TopDownDnaLibArtifact,
     ERC1155Mintable as ERC1155MintableArtifact,
     ERC1155Dna as ERC1155DnaArtifact,
+    AssetRouterCraft as AssetRouterCraftArtifact,
     AssetRouterInput as AssetRouterInputArtifact,
     AssetRouterOutput as AssetRouterOutputArtifact,
     BeaconProxy as BeaconProxyArtifact,
@@ -141,6 +143,11 @@ const ERC1155Mintable = new ContractFactory(
 
 const ERC1155Dna = new ContractFactory(ERC1155DnaArtifact.abi, ERC1155DnaArtifact.bytecode) as ERC1155Dna__factory;
 
+const AssetRouterCraft = new ContractFactory(
+    AssetRouterCraftArtifact.abi,
+    AssetRouterCraftArtifact.bytecode,
+) as AssetRouterCraft__factory;
+
 const AssetRouterInput = new ContractFactory(
     AssetRouterInputArtifact.abi,
     AssetRouterInputArtifact.bytecode,
@@ -167,6 +174,7 @@ export const factories = {
     ERC721TopDownDna,
     ERC1155Mintable,
     ERC1155Dna,
+    AssetRouterCraft,
     AssetRouterInput,
     AssetRouterOutput,
 };

@@ -53,7 +53,7 @@ describe('ERC721TopDownDna', function () {
                 symbol: `TK ${x} - ${nonce}`,
                 initBaseURI: `token${x}.${nonce}.com/api/`,
                 feeReceiver: signers[0].address,
-                feeNumerator: 0,
+
                 childContracts721: [],
                 childContracts1155: [],
             };

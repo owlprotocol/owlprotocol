@@ -37,30 +37,30 @@ struct AssetBasketInput {
  * to enable dynamic NFT mechanics that combine, mint, and burn NFTs with flexible logic.
  */
 library AssetInputLib {
-    event SupportsAsset(address indexed contractAddr, uint256 indexed tokenId, uint256 basketIdx);
+    event SupportsInputAsset(address indexed contractAddr, uint256 indexed tokenId, uint256 basketIdx);
 
     /**
-     * @dev Emit SupportsAsset events for supported assets. Used for on-chain indexing.
+     * @dev Emit SupportsInputAsset events for supported assets. Used for on-chain indexing.
      */
     function supportsBasket(AssetBasketInput memory basket, uint256 basketId) internal {
         for (uint256 j = 0; j < basket.erc20Unaffected.length; j++) {
-            emit SupportsAsset(basket.erc20Unaffected[j].contractAddr, 0, basketId);
+            emit SupportsInputAsset(basket.erc20Unaffected[j].contractAddr, 0, basketId);
         }
         for (uint256 j = 0; j < basket.erc20Burned.length; j++) {
-            emit SupportsAsset(basket.erc20Burned[j].contractAddr, 0, basketId);
+            emit SupportsInputAsset(basket.erc20Burned[j].contractAddr, 0, basketId);
         }
         for (uint256 j = 0; j < basket.erc721Unaffected.length; j++) {
-            emit SupportsAsset(basket.erc721Unaffected[j].contractAddr, 0, basketId);
+            emit SupportsInputAsset(basket.erc721Unaffected[j].contractAddr, 0, basketId);
         }
         for (uint256 j = 0; j < basket.erc721Burned.length; j++) {
-            emit SupportsAsset(basket.erc721Burned[j].contractAddr, 0, basketId);
+            emit SupportsInputAsset(basket.erc721Burned[j].contractAddr, 0, basketId);
         }
         for (uint256 j = 0; j < basket.erc721NTime.length; j++) {
-            emit SupportsAsset(basket.erc721NTime[j].contractAddr, 0, basketId);
+            emit SupportsInputAsset(basket.erc721NTime[j].contractAddr, 0, basketId);
         }
         for (uint256 j = 0; j < basket.erc1155Unaffected.length; j++) {
             for (uint256 k = 0; k < basket.erc1155Unaffected[j].tokenIds.length; k++) {
-                emit SupportsAsset(
+                emit SupportsInputAsset(
                     basket.erc1155Unaffected[j].contractAddr,
                     basket.erc1155Unaffected[j].tokenIds[k],
                     basketId
@@ -69,7 +69,11 @@ library AssetInputLib {
         }
         for (uint256 j = 0; j < basket.erc1155Burned.length; j++) {
             for (uint256 k = 0; k < basket.erc1155Burned[j].tokenIds.length; k++) {
-                emit SupportsAsset(basket.erc1155Burned[j].contractAddr, basket.erc1155Burned[j].tokenIds[k], basketId);
+                emit SupportsInputAsset(
+                    basket.erc1155Burned[j].contractAddr,
+                    basket.erc1155Burned[j].tokenIds[k],
+                    basketId
+                );
             }
         }
     }

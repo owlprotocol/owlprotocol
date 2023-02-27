@@ -1,5 +1,6 @@
 export * as AccessControl from './IAccessControl.js';
 export * as AssetLib from './AssetLib.js';
+export * as AssetRouterCraft from './AssetRouterCraft.js';
 export * as AssetRouterInput from './AssetRouterInput.js';
 export * as AssetRouterOutput from './AssetRouterOutput.js';
 export * as Clones from './Clones.js';
@@ -13,3 +14,6 @@ export * as ERC721TopDownDna from './ERC721TopDownDna.js';
 export * as ERC1155Mintable from './ERC1155Mintable.js';
 export * as ERC1167Factory from './ERC1167Factory/index.js';
 export * as ERC1820 from './ERC1820.js';
+export * as IERC20 from './IERC20.js';
+export * as IERC721 from './IERC721.js';
+export * as IERC1155 from './IERC1155.js';

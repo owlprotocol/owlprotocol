@@ -58,12 +58,12 @@ describe('AssetRouterOutput', function () {
                 outputBaskets: [
                     {
                         outputableAmount: 0,
-                        erc20Transfer: [],
+
                         erc20Mint: [],
-                        erc721Transfer: [],
-                        erc721Mint: [],
+
+
                         erc721MintAutoId: [],
-                        erc1155Transfer: [],
+
                         erc1155Mint: [],
                     },
                 ],
@@ -75,15 +75,15 @@ describe('AssetRouterOutput', function () {
         });
 
         it('getBasket', async () => {
-            await AssetRouterOutput.deposit(1, 0, [], []);
-            const b = await AssetRouterOutput.getBasket(0);
+            await AssetRouterOutput.deposit(1, 0);
+            const b = await AssetRouterOutput.getOutputBasket(0);
             expect(b.outputableAmount.toString()).to.be.eq('1');
         });
 
         it('success', async () => {
-            await AssetRouterOutput.deposit(1, 0, [], []);
+            await AssetRouterOutput.deposit(1, 0);
             await AssetRouterOutput.output(signers[0].address, 1, 0);
-            const b = await AssetRouterOutput.getBasket(0);
+            const b = await AssetRouterOutput.getOutputBasket(0);
             expect(b.outputableAmount.toString()).to.be.eq('0');
         });
     });
@@ -109,45 +109,6 @@ describe('AssetRouterOutput', function () {
             tokenName++;
         });
 
-        describe('erc20Transfer', () => {
-            beforeEach(async () => {
-                assetRouterOutput = {
-                    admin: signers[0].address,
-                    contractUri: `assetRouterOutput.${assetRouterOutputName}.com`,
-                    outputBaskets: [
-                        {
-                            outputableAmount: 0,
-                            erc20Transfer: [{ contractAddr: ERC20Mintable.address, amount: 1 }],
-                            erc20Mint: [],
-                            erc721Transfer: [],
-                            erc721Mint: [],
-                            erc721MintAutoId: [],
-                            erc1155Transfer: [],
-                            erc1155Mint: [],
-                        },
-                    ],
-                    routers: [signers[0].address],
-                };
-                assetRouterOutputName++;
-                const assetRouterInitArgs = flattenInitArgsAssetRouterOutput(assetRouterOutput);
-                AssetRouterOutput = await AssetRouterOutputFactory.deploy(...assetRouterInitArgs);
-            });
-
-            it('success', async () => {
-                await ERC20Mintable.mint(signers[0].address, 1);
-                await ERC20Mintable.increaseAllowance(AssetRouterOutput.address, 1);
-                await AssetRouterOutput.deposit(1, 0, [], []);
-                expect((await AssetRouterOutput.getBasket(0)).outputableAmount.toString()).to.be.eq('1');
-                expect(await ERC20Mintable.balanceOf(AssetRouterOutput.address)).to.be.eq('1');
-                expect(await ERC20Mintable.balanceOf(signers[0].address)).to.be.eq('0');
-
-                await AssetRouterOutput.output(signers[0].address, 1, 0);
-                expect((await AssetRouterOutput.getBasket(0)).outputableAmount.toString()).to.be.eq('0');
-                expect(await ERC20Mintable.balanceOf(AssetRouterOutput.address)).to.be.eq('0');
-                expect(await ERC20Mintable.balanceOf(signers[0].address)).to.be.eq('1');
-            });
-        });
-
         describe('erc20Mint', () => {
             beforeEach(async () => {
                 assetRouterOutput = {
@@ -156,12 +117,12 @@ describe('AssetRouterOutput', function () {
                     outputBaskets: [
                         {
                             outputableAmount: 0,
-                            erc20Transfer: [],
+
                             erc20Mint: [{ contractAddr: ERC20Mintable.address, amount: 1 }],
-                            erc721Transfer: [],
-                            erc721Mint: [],
+
+
                             erc721MintAutoId: [],
-                            erc1155Transfer: [],
+
                             erc1155Mint: [],
                         },
                     ],
@@ -174,110 +135,12 @@ describe('AssetRouterOutput', function () {
 
             it('success', async () => {
                 await ERC20Mintable.grantRole(MINTER_ROLE, AssetRouterOutput.address);
-                await AssetRouterOutput.deposit(1, 0, [], []);
-                expect((await AssetRouterOutput.getBasket(0)).outputableAmount.toString()).to.be.eq('1');
+                await AssetRouterOutput.deposit(1, 0);
+                expect((await AssetRouterOutput.getOutputBasket(0)).outputableAmount.toString()).to.be.eq('1');
 
                 await AssetRouterOutput.output(signers[0].address, 1, 0);
-                expect((await AssetRouterOutput.getBasket(0)).outputableAmount.toString()).to.be.eq('0');
+                expect((await AssetRouterOutput.getOutputBasket(0)).outputableAmount.toString()).to.be.eq('0');
                 expect(await ERC20Mintable.balanceOf(signers[0].address)).to.be.eq('1');
-            });
-        });
-    });
-
-    describe('erc721', () => {
-        let tokenName = 0;
-        let token: ERC721MintableInitializeArgs;
-        let ERC721MintableFactory: typeof deterministicInitFactories.ERC721Mintable;
-        let ERC721Mintable: ERC721Mintable;
-
-        beforeEach(async () => {
-            ERC721MintableFactory = deterministicInitFactories.ERC721Mintable;
-
-            token = {
-                admin: signers[0].address,
-                contractUri: `token.${tokenName}.com`,
-                gsnForwarder: ethers.constants.AddressZero,
-                name: `Token ${tokenName}`,
-                symbol: `TK${tokenName}`,
-                initBaseURI: `token.${tokenName}.com/token`,
-                feeReceiver: signers[0].address,
-                feeNumerator: 0,
-            };
-            const tokenInitArgs = flattenInitArgsERC721Mintable(token);
-            ERC721Mintable = await ERC721MintableFactory.deploy(...tokenInitArgs);
-            tokenName++;
-        });
-
-        describe('erc721Transfer', () => {
-            beforeEach(async () => {
-                assetRouterOutput = {
-                    admin: signers[0].address,
-                    contractUri: `assetRouterOutput.${assetRouterOutputName}.com`,
-                    outputBaskets: [
-                        {
-                            outputableAmount: 0,
-                            erc20Transfer: [],
-                            erc20Mint: [],
-                            erc721Transfer: [{ contractAddr: ERC721Mintable.address, tokenIds: [1] }],
-                            erc721Mint: [],
-                            erc721MintAutoId: [],
-                            erc1155Transfer: [],
-                            erc1155Mint: [],
-                        },
-                    ],
-                    routers: [signers[0].address],
-                };
-                assetRouterOutputName++;
-                const assetRouterInitArgs = flattenInitArgsAssetRouterOutput(assetRouterOutput);
-                AssetRouterOutput = await AssetRouterOutputFactory.deploy(...assetRouterInitArgs);
-            });
-
-            it('success', async () => {
-                await ERC721Mintable.mint(signers[0].address, 1);
-                await ERC721Mintable.setApprovalForAll(AssetRouterOutput.address, true);
-                await AssetRouterOutput.deposit(1, 0, [[1]], []);
-                expect((await AssetRouterOutput.getBasket(0)).outputableAmount.toString()).to.be.eq('1');
-                expect(await ERC721Mintable.balanceOf(AssetRouterOutput.address)).to.be.eq('1');
-                expect(await ERC721Mintable.balanceOf(signers[0].address)).to.be.eq('0');
-
-                await AssetRouterOutput.output(signers[0].address, 1, 0);
-                expect((await AssetRouterOutput.getBasket(0)).outputableAmount.toString()).to.be.eq('0');
-                expect(await ERC721Mintable.balanceOf(signers[0].address)).to.be.eq('1');
-            });
-        });
-
-        describe('erc721Mint', () => {
-            beforeEach(async () => {
-                assetRouterOutput = {
-                    admin: signers[0].address,
-                    contractUri: `assetRouterOutput.${assetRouterOutputName}.com`,
-                    outputBaskets: [
-                        {
-                            outputableAmount: 0,
-                            erc20Transfer: [],
-                            erc20Mint: [],
-                            erc721Transfer: [],
-                            erc721Mint: [{ contractAddr: ERC721Mintable.address, tokenIds: [1] }],
-                            erc721MintAutoId: [],
-                            erc1155Transfer: [],
-                            erc1155Mint: [],
-                        },
-                    ],
-                    routers: [signers[0].address],
-                };
-                assetRouterOutputName++;
-                const assetRouterInitArgs = flattenInitArgsAssetRouterOutput(assetRouterOutput);
-                AssetRouterOutput = await AssetRouterOutputFactory.deploy(...assetRouterInitArgs);
-            });
-
-            it('success', async () => {
-                await ERC721Mintable.grantRole(MINTER_ROLE, AssetRouterOutput.address);
-                await AssetRouterOutput.deposit(1, 0, [], [[1]]);
-                expect((await AssetRouterOutput.getBasket(0)).outputableAmount.toString()).to.be.eq('1');
-
-                await AssetRouterOutput.output(signers[0].address, 1, 0);
-                expect((await AssetRouterOutput.getBasket(0)).outputableAmount.toString()).to.be.eq('0');
-                expect(await ERC721Mintable.balanceOf(signers[0].address)).to.be.eq('1');
             });
         });
     });
@@ -299,7 +162,7 @@ describe('AssetRouterOutput', function () {
                 symbol: `TK${tokenName}`,
                 initBaseURI: `token.${tokenName}.com/token`,
                 feeReceiver: signers[0].address,
-                feeNumerator: 0,
+
             };
             const tokenInitArgs = flattenInitArgsERC721MintableAutoId(token);
             ERC721MintableAutoId = await ERC721MintableAutoIdFactory.deploy(...tokenInitArgs);
@@ -314,12 +177,12 @@ describe('AssetRouterOutput', function () {
                     outputBaskets: [
                         {
                             outputableAmount: 0,
-                            erc20Transfer: [],
+
                             erc20Mint: [],
-                            erc721Transfer: [],
-                            erc721Mint: [],
-                            erc721MintAutoId: [{ contractAddr: ERC721MintableAutoId.address, tokenIds: [] }],
-                            erc1155Transfer: [],
+
+
+                            erc721MintAutoId: [{ contractAddr: ERC721MintableAutoId.address }],
+
                             erc1155Mint: [],
                         },
                     ],
@@ -332,11 +195,11 @@ describe('AssetRouterOutput', function () {
 
             it('success', async () => {
                 await ERC721MintableAutoId.grantRole(MINTER_ROLE, AssetRouterOutput.address);
-                await AssetRouterOutput.deposit(1, 0, [], []);
-                expect((await AssetRouterOutput.getBasket(0)).outputableAmount.toString()).to.be.eq('1');
+                await AssetRouterOutput.deposit(1, 0);
+                expect((await AssetRouterOutput.getOutputBasket(0)).outputableAmount.toString()).to.be.eq('1');
 
                 await AssetRouterOutput.output(signers[0].address, 1, 0);
-                expect((await AssetRouterOutput.getBasket(0)).outputableAmount.toString()).to.be.eq('0');
+                expect((await AssetRouterOutput.getOutputBasket(0)).outputableAmount.toString()).to.be.eq('0');
                 expect(await ERC721MintableAutoId.balanceOf(signers[0].address)).to.be.eq('1');
             });
         });
@@ -357,49 +220,11 @@ describe('AssetRouterOutput', function () {
                 gsnForwarder: ethers.constants.AddressZero,
                 uri: `token.${tokenName}.com/token`,
                 feeReceiver: signers[0].address,
-                feeNumerator: 0,
+
             };
             const tokenInitArgs = flattenInitArgsERC1155Mintable(token);
             ERC1155Mintable = await ERC1155MintableFactory.deploy(...tokenInitArgs);
             tokenName++;
-        });
-
-        describe('erc1155Transfer', () => {
-            beforeEach(async () => {
-                assetRouterOutput = {
-                    admin: signers[0].address,
-                    contractUri: `assetRouterOutput.${assetRouterOutputName}.com`,
-                    outputBaskets: [
-                        {
-                            outputableAmount: 0,
-                            erc20Transfer: [],
-                            erc20Mint: [],
-                            erc721Transfer: [],
-                            erc721Mint: [],
-                            erc721MintAutoId: [],
-                            erc1155Transfer: [{ contractAddr: ERC1155Mintable.address, tokenIds: [1], amounts: [1] }],
-                            erc1155Mint: [],
-                        },
-                    ],
-                    routers: [signers[0].address],
-                };
-                assetRouterOutputName++;
-                const assetRouterInitArgs = flattenInitArgsAssetRouterOutput(assetRouterOutput);
-                AssetRouterOutput = await AssetRouterOutputFactory.deploy(...assetRouterInitArgs);
-            });
-
-            it('success', async () => {
-                await ERC1155Mintable.mint(signers[0].address, 1, 1, '0x');
-                await ERC1155Mintable.setApprovalForAll(AssetRouterOutput.address, true);
-                await AssetRouterOutput.deposit(1, 0, [], []);
-                expect((await AssetRouterOutput.getBasket(0)).outputableAmount.toString()).to.be.eq('1');
-                expect(await ERC1155Mintable.balanceOf(AssetRouterOutput.address, 1)).to.be.eq('1');
-                expect(await ERC1155Mintable.balanceOf(signers[0].address, 1)).to.be.eq('0');
-
-                await AssetRouterOutput.output(signers[0].address, 1, 0);
-                expect((await AssetRouterOutput.getBasket(0)).outputableAmount.toString()).to.be.eq('0');
-                expect(await ERC1155Mintable.balanceOf(signers[0].address, 1)).to.be.eq('1');
-            });
         });
 
         describe('erc1155Mint', () => {
@@ -410,12 +235,8 @@ describe('AssetRouterOutput', function () {
                     outputBaskets: [
                         {
                             outputableAmount: 0,
-                            erc20Transfer: [],
                             erc20Mint: [],
-                            erc721Transfer: [],
-                            erc721Mint: [],
                             erc721MintAutoId: [],
-                            erc1155Transfer: [],
                             erc1155Mint: [{ contractAddr: ERC1155Mintable.address, tokenIds: [1], amounts: [1] }],
                         },
                     ],
@@ -429,11 +250,11 @@ describe('AssetRouterOutput', function () {
 
             it('success', async () => {
                 await ERC1155Mintable.grantRole(MINTER_ROLE, AssetRouterOutput.address);
-                await AssetRouterOutput.deposit(1, 0, [], []);
-                expect((await AssetRouterOutput.getBasket(0)).outputableAmount.toString()).to.be.eq('1');
+                await AssetRouterOutput.deposit(1, 0);
+                expect((await AssetRouterOutput.getOutputBasket(0)).outputableAmount.toString()).to.be.eq('1');
 
                 await AssetRouterOutput.output(signers[0].address, 1, 0);
-                expect((await AssetRouterOutput.getBasket(0)).outputableAmount.toString()).to.be.eq('0');
+                expect((await AssetRouterOutput.getOutputBasket(0)).outputableAmount.toString()).to.be.eq('0');
                 expect(await ERC1155Mintable.balanceOf(signers[0].address, 1)).to.be.eq('1');
             });
         });

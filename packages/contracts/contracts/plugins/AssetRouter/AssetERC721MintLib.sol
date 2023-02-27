@@ -6,9 +6,9 @@ import {IERC721MintableAutoId} from '../../assets/ERC721/IERC721MintableAutoId.s
 
 import {AssetERC721} from './AssetStructs.sol';
 
-error InvalidERC721TokenIds(AssetERC721 asset, uint256 currTokenIdsLen, uint256 requiredTokenIdsLen);
-
 library AssetERC721MintLib {
+    error InvalidERC721TokenIds(AssetERC721 asset, uint256 currTokenIdsLen, uint256 requiredTokenIdsLen);
+
     /**
      * @dev Mint AssetERC721 scaled up by amount
      */

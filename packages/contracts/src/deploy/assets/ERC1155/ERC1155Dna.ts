@@ -30,11 +30,10 @@ export const ERC1155DnaDeploy = async ({ provider, signers, network, tokens, bal
     for (let i = 0; i < tokens; i++) {
         deployments[`ERC1155Dna-${i}`] = {
             admin: signerAddress,
-            contractUri: '',
-            gsnForwarder: constants.AddressZero,
+
             uri: `http://localhost:8080/erc1155/${i}/{id}`,
-            feeReceiver: signerAddress,
-            feeNumerator: 0,
+
+
         }
     };
 

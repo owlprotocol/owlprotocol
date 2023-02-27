@@ -10,3 +10,6 @@ export const ROUTER_ROLE = utils.keccak256(utils.toUtf8Bytes('ROUTER_ROLE'));
 export const ASSET_ROUTER_INPUT = utils.keccak256(utils.toUtf8Bytes('ASSET_ROUTER_ROLE'));
 export const EXPIRY_ROLE = utils.keccak256(utils.toUtf8Bytes('EXPIRY_ROLE'));
 export const SUPPLIER_ROLE = utils.keccak256(utils.toUtf8Bytes('SUPPLIER_ROLE'));
+
+export const DEPOSIT_ROLE = utils.keccak256(utils.toUtf8Bytes('DEPOSIT_ROLE'));
+export const WITHDRAW_ROLE = utils.keccak256(utils.toUtf8Bytes('WITHDRAW_ROLE'));

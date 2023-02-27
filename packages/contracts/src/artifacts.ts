@@ -49,8 +49,10 @@ export { default as ERC2981Setter } from './artifacts/contracts/assets/common/ER
 //export { default as IERC4907 } from './artifacts/contracts/assets/ERC721/IERC4907.sol/IERC4907.js';
 
 //Plugins
+export { default as IAssetRouterCraft } from './artifacts/contracts/plugins/AssetRouter/IAssetRouterCraft.sol/IAssetRouterCraft.js';
 export { default as IAssetRouterInput } from './artifacts/contracts/plugins/AssetRouter/IAssetRouterInput.sol/IAssetRouterInput.js';
 export { default as IAssetRouterOutput } from './artifacts/contracts/plugins/AssetRouter/IAssetRouterOutput.sol/IAssetRouterOutput.js';
+export { default as AssetRouterCraft } from './artifacts/contracts/plugins/AssetRouter/AssetRouterCraft.sol/AssetRouterCraft.js';
 export { default as AssetRouterInput } from './artifacts/contracts/plugins/AssetRouter/AssetRouterInput.sol/AssetRouterInput.js';
 export { default as AssetRouterOutput } from './artifacts/contracts/plugins/AssetRouter/AssetRouterOutput.sol/AssetRouterOutput.js';
 

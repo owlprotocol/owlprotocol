@@ -68,9 +68,11 @@ export type { ERC2981Setter } from '../typechain/web3/ERC2981Setter';
 //export type { IERC4907 } from '../typechain/web3/IERC4907.js';
 
 //Plugins
-export type { SupportsAsset, RouteBasket } from '../typechain/web3/IAssetRouter.js';
-export type { IAssetRouterInput } from '../typechain/web3/IAssetRouterInput.js';
-export type { IAssetRouterOutput } from '../typechain/web3/IAssetRouterOutput.js';
+export type { RouteBasket } from '../typechain/web3/IAssetRouter.js';
+export type { IAssetRouterCraft } from '../typechain/web3/IAssetRouterCraft.js';
+export type { IAssetRouterInput, SupportsInputAsset } from '../typechain/web3/IAssetRouterInput.js';
+export type { IAssetRouterOutput, SupportsOutputAsset, UpdateBasket } from '../typechain/web3/IAssetRouterOutput.js';
+export type { AssetRouterCraft } from '../typechain/web3/AssetRouterCraft.js';
 export type { AssetRouterInput } from '../typechain/web3/AssetRouterInput.js';
 export type { AssetRouterOutput } from '../typechain/web3/AssetRouterOutput.js';
 

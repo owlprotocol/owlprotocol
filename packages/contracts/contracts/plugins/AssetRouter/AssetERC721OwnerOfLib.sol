@@ -4,11 +4,11 @@ pragma solidity ^0.8.0;
 import {IERC721Upgradeable} from '@openzeppelin/contracts-upgradeable/token/ERC721/IERC721Upgradeable.sol';
 import {AssetERC721} from './AssetStructs.sol';
 
-error InvalidERC721TokenIds(AssetERC721 asset, uint256 currTokenIdsLen, uint256 requiredTokenIdsLen);
-error InvalidERC721TokenIdsDuplicate(AssetERC721 asset, uint256 preTokenId, uint256 curTokenId);
-error InvalidERC721OwnerOf(AssetERC721 asset, address currOwner, address requiredOwner);
-
 library AssetERC721OwnerOfLib {
+    error InvalidERC721TokenIds(AssetERC721 asset, uint256 currTokenIdsLen, uint256 requiredTokenIdsLen);
+    error InvalidERC721TokenIdsDuplicate(AssetERC721 asset, uint256 preTokenId, uint256 curTokenId);
+    error InvalidERC721OwnerOf(AssetERC721 asset, address currOwner, address requiredOwner);
+
     /**
      * @dev Checks ownership of ERC721 tokenIds for each AssetERC721.
      * Throws if asset is not owned.

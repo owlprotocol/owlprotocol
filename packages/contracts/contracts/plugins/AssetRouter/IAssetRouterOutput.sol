@@ -13,6 +13,15 @@ import {AssetBasketOutput} from './AssetOutputLib.sol';
  */
 interface IAssetRouterOutput is IAssetRouter {
     /**
+     * @dev Event for adding a supported asset.
+     * This enables filtering the blockchain for contracts that support an asset.
+     * @param contractAddr Address of asset
+     * @param tokenId TokenId of asset (for ERC1155, otherwise 0)
+     * @param basketIdx Basket this asset is part of
+     */
+    event SupportsOutputAsset(address indexed contractAddr, uint256 indexed tokenId, uint256 basketIdx);
+
+    /**
      * @dev Event for tracking basket updates (deposit/withdrawals)
      * @param basketIdx Basket index
      * @param amountChange Change + for deposit, - for withdrawal
@@ -20,10 +29,10 @@ interface IAssetRouterOutput is IAssetRouter {
     event UpdateBasket(uint256 indexed basketIdx, int256 amountChange);
 
     /**
-     * @dev Returns all inputs
-     * @param basketIdx Index of selected input basket
+     * @dev Returns all outputs
+     * @param basketIdx Index of selected output basket
      */
-    function getBasket(uint256 basketIdx) external view returns (AssetBasketOutput memory);
+    function getOutputBasket(uint256 basketIdx) external view returns (AssetBasketOutput memory);
 
     /**
      * @notice Must be `DEFAULT_ADMIN_ROLE`. Automatically sends from
@@ -31,16 +40,9 @@ interface IAssetRouterOutput is IAssetRouter {
      * @dev Used to deposit configuration outputs.
      * @param amount How many more times the configuration should be
      * craftable
-     * @param erc721TokenIdsTransfer 2D-array transfers ERC721s
-     * @param erc721TokenIdsMint 2D-array mint ERC721s
      * ```
      */
-    function deposit(
-        uint256 amount,
-        uint256 basketIdx,
-        uint256[][] calldata erc721TokenIdsTransfer,
-        uint256[][] calldata erc721TokenIdsMint
-    ) external;
+    function deposit(uint256 amount, uint256 basketIdx) external;
 
     /**
      * @notice Must be `DEFAULT_ADMIN_ROLE`

@@ -30,11 +30,10 @@ export const ERC1155MintableDeploy = async ({ provider, signers, network, tokens
     for (let i = 0; i < tokens; i++) {
         deployments[`ERC1155Mintable-${i}`] = {
             admin: signerAddress,
-            contractUri: '',
-            gsnForwarder: constants.AddressZero,
+
             uri: `http://localhost:8080/erc1155/${i}/{id}`,
-            feeReceiver: signerAddress,
-            feeNumerator: 0,
+
+
         }
     };
 

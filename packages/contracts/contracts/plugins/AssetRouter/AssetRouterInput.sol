@@ -112,7 +112,7 @@ contract AssetRouterInput is OwlBase, IAssetRouterInput, IERC721ReceiverUpgradea
     /**
      * inheritdoc IAssetRouterInput
      */
-    function getBasket(uint256 basketIdx) public view returns (AssetBasketInput memory) {
+    function getInputBasket(uint256 basketIdx) public view returns (AssetBasketInput memory) {
         return inputBaskets[basketIdx];
     }
 
@@ -130,8 +130,6 @@ contract AssetRouterInput is OwlBase, IAssetRouterInput, IERC721ReceiverUpgradea
     ) external override {
         address msgSender = _msgSender();
 
-        emit RouteBasket(msgSender, target, basketIdx, amount);
-
         //Consume inputs
         AssetInputLib.input(
             inputBaskets[basketIdx],
@@ -145,6 +143,8 @@ contract AssetRouterInput is OwlBase, IAssetRouterInput, IERC721ReceiverUpgradea
 
         //Route call
         IAssetRouterOutput(target).output(msgSender, amount, outBasketIdx);
+
+        emit RouteBasket(msgSender, target, basketIdx, amount);
     }
 
     /**
@@ -182,6 +182,7 @@ contract AssetRouterInput is OwlBase, IAssetRouterInput, IERC721ReceiverUpgradea
             erc721TokenIdsBurned,
             erc721NTime[basketId]
         );
+        emit RouteBasket(from, target, basketId, 1);
 
         //Route call
         IAssetRouterOutput(target).output(from, 1, outputBasketId);
@@ -220,6 +221,7 @@ contract AssetRouterInput is OwlBase, IAssetRouterInput, IERC721ReceiverUpgradea
             erc721TokenIdsBurned,
             erc721NTime[basketId]
         );
+        emit RouteBasket(from, target, basketId, amount);
 
         //Route call
         IAssetRouterOutput(target).output(from, amount, outputBasketId);

@@ -34,13 +34,12 @@ export const ERC721TopDownDnaDeploy = async ({ provider, signers, network, token
     tokens.forEach((t, i) => {
         deployments[`ERC721TopDownDna-${i}`] = {
             admin: signerAddress,
-            contractUri: '',
-            gsnForwarder: constants.AddressZero,
+
             name: `ERC721TopDownDna-${i}`,
             symbol: `NFT${i}`,
             initBaseURI: `http://localhost:8080/erc721/${i}/`,
-            feeReceiver: signerAddress,
-            feeNumerator: 0,
+
+
             childContracts721: t.childContracts721,
             childContracts1155: t.childContracts1155
         }

@@ -1,5 +1,5 @@
 {
-  "address": "0xE51B5eD1c7168Be6e3fb73E429dAbaaFC19b8940",
+  "address": "0xbf40Cbd08703Dcbb598CB3CC7B44A121d3567855",
   "abi": [
     {
       "anonymous": false,
@@ -54,7 +54,7 @@
           "type": "uint256"
         }
       ],
-      "name": "SupportsAsset",
+      "name": "SupportsInputAsset",
       "type": "event"
     },
     {
@@ -65,7 +65,7 @@
           "type": "uint256"
         }
       ],
-      "name": "getBasket",
+      "name": "getInputBasket",
       "outputs": [
         {
           "components": [
@@ -114,11 +114,6 @@
                   "internalType": "address",
                   "name": "contractAddr",
                   "type": "address"
-                },
-                {
-                  "internalType": "uint256[]",
-                  "name": "tokenIds",
-                  "type": "uint256[]"
                 }
               ],
               "internalType": "struct AssetERC721[]",
@@ -131,11 +126,6 @@
                   "internalType": "address",
                   "name": "contractAddr",
                   "type": "address"
-                },
-                {
-                  "internalType": "uint256[]",
-                  "name": "tokenIds",
-                  "type": "uint256[]"
                 }
               ],
               "internalType": "struct AssetERC721[]",
@@ -148,11 +138,6 @@
                   "internalType": "address",
                   "name": "contractAddr",
                   "type": "address"
-                },
-                {
-                  "internalType": "uint256[]",
-                  "name": "tokenIds",
-                  "type": "uint256[]"
                 }
               ],
               "internalType": "struct AssetERC721[]",

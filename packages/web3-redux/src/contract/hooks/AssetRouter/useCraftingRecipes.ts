@@ -5,60 +5,91 @@ import EthCallCRUD from "../../../ethcall/crud"
 import { EthCall, EthCallIndexInput } from "../../../ethcall/model/interface"
 import { useContractsWithInterfaceIds } from "../useContractsWithInterfaceIds"
 
-export function useInputRouterBaskets(filter?: {
-    networkIds?: string[],
-    inputRouters?: string[],
-    inputBasketIdx?: string[],
+export function useInputBaskets(filter?: {
+    contracts: { networkId: string, address: string }[],
+    basketIdx?: string[]
 }) {
-    const inputRoutersAddress = new Set(filter?.inputRouters)
-    const [inputRouters] = useContractsWithInterfaceIds([interfaces.IAssetRouterInput.interfaceId], filter?.networkIds)
-    const inputRoutersByAddress = filter?.inputRouters && filter?.inputRouters.length > 0 ?
-        inputRouters.filter((r) => inputRoutersAddress.has(r.address)) : inputRouters
-    const inputRouterBasketsFilter: EthCallIndexInput[] = flatten(inputRoutersByAddress.map(({ networkId, address }) => {
-        const f = {
+    const basketsFilter: EthCallIndexInput[] = flatten(filter?.contracts.map(({ networkId, address }) => {
+        const f: EthCallIndexInput = {
             networkId,
             to: address,
-            methodName: 'getBasket',
+            methodName: 'getInputBasket',
         }
-        if (filter?.inputBasketIdx) {
-            return filter.inputBasketIdx.map((basketIdx) => { return { ...f, argsHash: JSON.stringify({ basketIdx }) } })
+        if (filter?.basketIdx) {
+            return filter.basketIdx.map((basketIdx) => { return { ...f, argsHash: JSON.stringify({ basketIdx }) } })
         }
         return [f]
     }))
-    const [inputRouterBaskets] = EthCallCRUD.hooks.useWhereMany(inputRouterBasketsFilter);
-    return flatten(inputRouterBaskets) as EthCall<
-        Web3ContractMethodParams<Web3.IAssetRouterInput, "getBasket">,
-        Web3ContractMethodCall<Web3.IAssetRouterInput, "getBasket">
+    const [baskets] = EthCallCRUD.hooks.useWhereMany(basketsFilter);
+    return flatten(baskets) as EthCall<
+        Web3ContractMethodParams<Web3.IAssetRouterInput, "getInputBasket">,
+        Web3ContractMethodCall<Web3.IAssetRouterInput, "getInputBasket">
     >[]
+}
+
+export function useOutputBaskets(filter?: {
+    contracts: { networkId: string, address: string }[],
+    basketIdx?: string[]
+}) {
+    const basketsFilter: EthCallIndexInput[] = flatten(filter?.contracts.map(({ networkId, address }) => {
+        const f: EthCallIndexInput = {
+            networkId,
+            to: address,
+            methodName: 'getOutputBaskets',
+        }
+        if (filter?.basketIdx) {
+            return filter.basketIdx.map((basketIdx) => { return { ...f, argsHash: JSON.stringify({ basketIdx }) } })
+        }
+        return [f]
+    }))
+    const [baskets] = EthCallCRUD.hooks.useWhereMany(basketsFilter);
+    return flatten(baskets) as EthCall<
+        Web3ContractMethodParams<Web3.IAssetRouterOutput, "getOutputBaskets">,
+        Web3ContractMethodCall<Web3.IAssetRouterOutput, "getOutputBaskets">
+    >[]
+}
+
+export function useCraftRouterBaskets(filter?: {
+    networkIds?: string[],
+    address?: string[],
+    inputBasketIdx?: string[],
+    outputBasketIdx?: string[]
+}) {
+    const addressSet = new Set(filter?.address)
+    const [contracts] = useContractsWithInterfaceIds([interfaces.IAssetRouterCraft.interfaceId], filter?.networkIds)
+    const contractsByAddress = filter?.address && filter?.address.length > 0 ?
+        contracts.filter((r) => addressSet.has(r.address)) : contracts
+    const inputBaskets = useInputBaskets({ contracts: contractsByAddress, basketIdx: filter?.inputBasketIdx })
+    const outputBaskets = useOutputBaskets({ contracts: contractsByAddress, basketIdx: filter?.outputBasketIdx })
+    return { inputBaskets, outputBaskets }
+}
+
+export function useInputRouterBaskets(filter?: {
+    networkIds?: string[],
+    address?: string[],
+    inputBasketIdx?: string[],
+}) {
+    const addressSet = new Set(filter?.address)
+    const [contracts] = useContractsWithInterfaceIds([interfaces.IAssetRouterInput.interfaceId], filter?.networkIds)
+    const contractsByAddress = filter?.address && filter?.address.length > 0 ?
+        contracts.filter((r) => addressSet.has(r.address)) : contracts
+    const inputBaskets = useInputBaskets({ contracts: contractsByAddress, basketIdx: filter?.inputBasketIdx })
+    return { inputBaskets }
 }
 
 export function useOutputRouterBaskets(filter?: {
     networkIds?: string[],
-    outputRouters?: string[],
-    outputBasketIdx?: string[],
+    address?: string[],
+    outputBasketIdx?: string[]
 }) {
-    const outputRoutersAddress = new Set(filter?.outputRouters)
-    const [outputRouters] = useContractsWithInterfaceIds([interfaces.IAssetRouterOutput.interfaceId], filter?.networkIds)
-    const outputRoutersByAddress = filter?.outputRouters && filter?.outputRouters.length > 0 ?
-        outputRouters.filter((r) => outputRoutersAddress.has(r.address)) : outputRouters
-    const outputRouterBasketsFilter: EthCallIndexInput[] = flatten(outputRoutersByAddress.map(({ networkId, address }) => {
-        const f = {
-            networkId,
-            to: address,
-            methodName: 'getBasket',
-        }
-        if (filter?.outputBasketIdx) {
-            return filter.outputBasketIdx.map((basketIdx) => { return { ...f, argsHash: JSON.stringify({ basketIdx }) } })
-        }
-        return [f]
-    }))
-    const [outputRouterBaskets] = EthCallCRUD.hooks.useWhereMany(outputRouterBasketsFilter);
-    return flatten(outputRouterBaskets) as EthCall<
-        Web3ContractMethodParams<Web3.IAssetRouterOutput, "getBasket">,
-        Web3ContractMethodCall<Web3.IAssetRouterOutput, "getBasket">
-    >[]
-}
+    const addressSet = new Set(filter?.address)
+    const [contracts] = useContractsWithInterfaceIds([interfaces.IAssetRouterCraft.interfaceId], filter?.networkIds)
+    const contractsByAddress = filter?.address && filter?.address.length > 0 ?
+        contracts.filter((r) => addressSet.has(r.address)) : contracts
+    const outputBaskets = useOutputBaskets({ contracts: contractsByAddress, basketIdx: filter?.outputBasketIdx })
 
+    return { outputBaskets }
+}
 
 interface Crafting {
     inputRouter: string,

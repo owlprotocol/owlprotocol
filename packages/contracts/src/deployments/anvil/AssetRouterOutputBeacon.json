@@ -1,76 +1,10 @@
 {
-  "address": "0x756705C6B548cD1dE678AF55eB71763E890bd0f3",
+  "address": "0x3104C6875A3A104feF6F47d2348763ab650FB2f6",
   "abi": [
     {
       "inputs": [],
       "stateMutability": "nonpayable",
       "type": "constructor"
-    },
-    {
-      "inputs": [
-        {
-          "components": [
-            {
-              "internalType": "address",
-              "name": "contractAddr",
-              "type": "address"
-            },
-            {
-              "internalType": "uint256[]",
-              "name": "tokenIds",
-              "type": "uint256[]"
-            }
-          ],
-          "internalType": "struct AssetERC721",
-          "name": "asset",
-          "type": "tuple"
-        },
-        {
-          "internalType": "uint256",
-          "name": "currTokenIdsLen",
-          "type": "uint256"
-        },
-        {
-          "internalType": "uint256",
-          "name": "requiredTokenIdsLen",
-          "type": "uint256"
-        }
-      ],
-      "name": "InvalidERC721TokenIds",
-      "type": "error"
-    },
-    {
-      "inputs": [
-        {
-          "components": [
-            {
-              "internalType": "address",
-              "name": "contractAddr",
-              "type": "address"
-            },
-            {
-              "internalType": "uint256[]",
-              "name": "tokenIds",
-              "type": "uint256[]"
-            }
-          ],
-          "internalType": "struct AssetERC721",
-          "name": "asset",
-          "type": "tuple"
-        },
-        {
-          "internalType": "uint256",
-          "name": "currTokenIdsLen",
-          "type": "uint256"
-        },
-        {
-          "internalType": "uint256",
-          "name": "requiredTokenIdsLen",
-          "type": "uint256"
-        }
-      ],
-      "name": "InvalidERC721TokenIds",
-      "type": "error"
     },
     {
       "inputs": [
@@ -261,7 +195,7 @@
           "type": "uint256"
         }
       ],
-      "name": "SupportsAsset",
+      "name": "SupportsOutputAsset",
       "type": "event"
     },
     {
@@ -357,21 +291,24 @@
           "internalType": "uint256",
           "name": "basketIdx",
           "type": "uint256"
-        },
-        {
-          "internalType": "uint256[][]",
-          "name": "erc721TokenIdsTransfer",
-          "type": "uint256[][]"
-        },
-        {
-          "internalType": "uint256[][]",
-          "name": "erc721TokenIdsMint",
-          "type": "uint256[][]"
         }
       ],
       "name": "deposit",
       "outputs": [],
       "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "getImplementation",
+      "outputs": [
+        {
+          "internalType": "address",
+          "name": "",
+          "type": "address"
+        }
+      ],
+      "stateMutability": "view",
       "type": "function"
     },
     {
@@ -382,7 +319,7 @@
           "type": "uint256"
         }
       ],
-      "name": "getBasket",
+      "name": "getOutputBasket",
       "outputs": [
         {
           "components": [
@@ -390,23 +327,6 @@
               "internalType": "uint256",
               "name": "outputableAmount",
               "type": "uint256"
-            },
-            {
-              "components": [
-                {
-                  "internalType": "address",
-                  "name": "contractAddr",
-                  "type": "address"
-                },
-                {
-                  "internalType": "uint256",
-                  "name": "amount",
-                  "type": "uint256"
-                }
-              ],
-              "internalType": "struct AssetERC20[]",
-              "name": "erc20Transfer",
-              "type": "tuple[]"
             },
             {
               "components": [
@@ -431,71 +351,10 @@
                   "internalType": "address",
                   "name": "contractAddr",
                   "type": "address"
-                },
-                {
-                  "internalType": "uint256[]",
-                  "name": "tokenIds",
-                  "type": "uint256[]"
-                }
-              ],
-              "internalType": "struct AssetERC721[]",
-              "name": "erc721Transfer",
-              "type": "tuple[]"
-            },
-            {
-              "components": [
-                {
-                  "internalType": "address",
-                  "name": "contractAddr",
-                  "type": "address"
-                },
-                {
-                  "internalType": "uint256[]",
-                  "name": "tokenIds",
-                  "type": "uint256[]"
-                }
-              ],
-              "internalType": "struct AssetERC721[]",
-              "name": "erc721Mint",
-              "type": "tuple[]"
-            },
-            {
-              "components": [
-                {
-                  "internalType": "address",
-                  "name": "contractAddr",
-                  "type": "address"
-                },
-                {
-                  "internalType": "uint256[]",
-                  "name": "tokenIds",
-                  "type": "uint256[]"
                 }
               ],
               "internalType": "struct AssetERC721[]",
               "name": "erc721MintAutoId",
-              "type": "tuple[]"
-            },
-            {
-              "components": [
-                {
-                  "internalType": "address",
-                  "name": "contractAddr",
-                  "type": "address"
-                },
-                {
-                  "internalType": "uint256[]",
-                  "name": "amounts",
-                  "type": "uint256[]"
-                },
-                {
-                  "internalType": "uint256[]",
-                  "name": "tokenIds",
-                  "type": "uint256[]"
-                }
-              ],
-              "internalType": "struct AssetERC1155[]",
-              "name": "erc1155Transfer",
               "type": "tuple[]"
             },
             {
@@ -524,19 +383,6 @@
           "internalType": "struct AssetBasketOutput",
           "name": "",
           "type": "tuple"
-        }
-      ],
-      "stateMutability": "view",
-      "type": "function"
-    },
-    {
-      "inputs": [],
-      "name": "getImplementation",
-      "outputs": [
-        {
-          "internalType": "address",
-          "name": "",
-          "type": "address"
         }
       ],
       "stateMutability": "view",
@@ -636,23 +482,6 @@
                 }
               ],
               "internalType": "struct AssetERC20[]",
-              "name": "erc20Transfer",
-              "type": "tuple[]"
-            },
-            {
-              "components": [
-                {
-                  "internalType": "address",
-                  "name": "contractAddr",
-                  "type": "address"
-                },
-                {
-                  "internalType": "uint256",
-                  "name": "amount",
-                  "type": "uint256"
-                }
-              ],
-              "internalType": "struct AssetERC20[]",
               "name": "erc20Mint",
               "type": "tuple[]"
             },
@@ -662,71 +491,10 @@
                   "internalType": "address",
                   "name": "contractAddr",
                   "type": "address"
-                },
-                {
-                  "internalType": "uint256[]",
-                  "name": "tokenIds",
-                  "type": "uint256[]"
-                }
-              ],
-              "internalType": "struct AssetERC721[]",
-              "name": "erc721Transfer",
-              "type": "tuple[]"
-            },
-            {
-              "components": [
-                {
-                  "internalType": "address",
-                  "name": "contractAddr",
-                  "type": "address"
-                },
-                {
-                  "internalType": "uint256[]",
-                  "name": "tokenIds",
-                  "type": "uint256[]"
-                }
-              ],
-              "internalType": "struct AssetERC721[]",
-              "name": "erc721Mint",
-              "type": "tuple[]"
-            },
-            {
-              "components": [
-                {
-                  "internalType": "address",
-                  "name": "contractAddr",
-                  "type": "address"
-                },
-                {
-                  "internalType": "uint256[]",
-                  "name": "tokenIds",
-                  "type": "uint256[]"
                 }
               ],
               "internalType": "struct AssetERC721[]",
               "name": "erc721MintAutoId",
-              "type": "tuple[]"
-            },
-            {
-              "components": [
-                {
-                  "internalType": "address",
-                  "name": "contractAddr",
-                  "type": "address"
-                },
-                {
-                  "internalType": "uint256[]",
-                  "name": "amounts",
-                  "type": "uint256[]"
-                },
-                {
-                  "internalType": "uint256[]",
-                  "name": "tokenIds",
-                  "type": "uint256[]"
-                }
-              ],
-              "internalType": "struct AssetERC1155[]",
-              "name": "erc1155Transfer",
               "type": "tuple[]"
             },
             {
@@ -967,23 +735,6 @@
                 }
               ],
               "internalType": "struct AssetERC20[]",
-              "name": "erc20Transfer",
-              "type": "tuple[]"
-            },
-            {
-              "components": [
-                {
-                  "internalType": "address",
-                  "name": "contractAddr",
-                  "type": "address"
-                },
-                {
-                  "internalType": "uint256",
-                  "name": "amount",
-                  "type": "uint256"
-                }
-              ],
-              "internalType": "struct AssetERC20[]",
               "name": "erc20Mint",
               "type": "tuple[]"
             },
@@ -993,71 +744,10 @@
                   "internalType": "address",
                   "name": "contractAddr",
                   "type": "address"
-                },
-                {
-                  "internalType": "uint256[]",
-                  "name": "tokenIds",
-                  "type": "uint256[]"
-                }
-              ],
-              "internalType": "struct AssetERC721[]",
-              "name": "erc721Transfer",
-              "type": "tuple[]"
-            },
-            {
-              "components": [
-                {
-                  "internalType": "address",
-                  "name": "contractAddr",
-                  "type": "address"
-                },
-                {
-                  "internalType": "uint256[]",
-                  "name": "tokenIds",
-                  "type": "uint256[]"
-                }
-              ],
-              "internalType": "struct AssetERC721[]",
-              "name": "erc721Mint",
-              "type": "tuple[]"
-            },
-            {
-              "components": [
-                {
-                  "internalType": "address",
-                  "name": "contractAddr",
-                  "type": "address"
-                },
-                {
-                  "internalType": "uint256[]",
-                  "name": "tokenIds",
-                  "type": "uint256[]"
                 }
               ],
               "internalType": "struct AssetERC721[]",
               "name": "erc721MintAutoId",
-              "type": "tuple[]"
-            },
-            {
-              "components": [
-                {
-                  "internalType": "address",
-                  "name": "contractAddr",
-                  "type": "address"
-                },
-                {
-                  "internalType": "uint256[]",
-                  "name": "amounts",
-                  "type": "uint256[]"
-                },
-                {
-                  "internalType": "uint256[]",
-                  "name": "tokenIds",
-                  "type": "uint256[]"
-                }
-              ],
-              "internalType": "struct AssetERC1155[]",
-              "name": "erc1155Transfer",
               "type": "tuple[]"
             },
             {

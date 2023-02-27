@@ -20,13 +20,12 @@ const deploy = async ({ provider, signers, network }: RunTimeEnvironment) => {
     const deployments: { [key: string]: ERC721MintableInitializeArgs } = {
         test: {
             admin: signerAddress,
-            contractUri: '',
-            gsnForwarder: constants.AddressZero,
+
             name: 'test',
             symbol: 'TEST',
             initBaseURI: '',
-            feeReceiver: signerAddress,
-            feeNumerator: 0,
+
+
         },
     };
 

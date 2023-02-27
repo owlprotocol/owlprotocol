@@ -23,10 +23,19 @@ import {AssetBasketInput} from './AssetInputLib.sol';
  */
 interface IAssetRouterInput is IAssetRouter {
     /**
+     * @dev Event for adding a supported asset.
+     * This enables filtering the blockchain for contracts that support an asset.
+     * @param contractAddr Address of asset
+     * @param tokenId TokenId of asset (for ERC1155, otherwise 0)
+     * @param basketIdx Basket this asset is part of
+     */
+    event SupportsInputAsset(address indexed contractAddr, uint256 indexed tokenId, uint256 basketIdx);
+
+    /**
      * @dev Returns all input
      * @param basketIdx Index of selected input basket
      */
-    function getBasket(uint256 basketIdx) external view returns (AssetBasketInput memory);
+    function getInputBasket(uint256 basketIdx) external view returns (AssetBasketInput memory);
 
     /**
      * @notice Call `target` address with `amount` parameter using

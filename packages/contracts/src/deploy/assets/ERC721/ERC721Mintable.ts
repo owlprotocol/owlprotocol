@@ -29,15 +29,14 @@ export const ERC721MintableDeploy = async ({ provider, signers, network, tokens,
     //Contracts
     const deployments: { [key: string]: ERC721MintableInitializeArgs } = {}
     for (let i = 0; i < tokens; i++) {
-        deployments[`ERC721Mintable-${i}`] = {
+        deployments[`ERC721MintableAutoId-${i}`] = {
             admin: signerAddress,
-            contractUri: '',
-            gsnForwarder: constants.AddressZero,
-            name: `ERC721Mintable-${i}`,
+
+            name: `ERC721MintableAutoId-${i}`,
             symbol: `NFT${i}`,
             initBaseURI: `http://localhost:8080/erc721/${i}/`,
-            feeReceiver: signerAddress,
-            feeNumerator: 0,
+
+
         }
     };
 

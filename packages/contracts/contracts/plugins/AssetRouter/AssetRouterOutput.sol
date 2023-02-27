@@ -32,6 +32,8 @@ import {IContractURI} from '../../common/IContractURI.sol';
  */
 contract AssetRouterOutput is ERC721HolderUpgradeable, ERC1155HolderUpgradeable, OwlBase, IAssetRouterOutput {
     bytes32 internal constant ASSET_ROUTER_INPUT = keccak256('ASSET_ROUTER_INPUT');
+    bytes32 internal constant DEPOSIT_ROLE = keccak256('DEPOSIT_ROLE');
+    bytes32 internal constant WITHDRAW_ROLE = keccak256('WITHDRAW_ROLE');
 
     // Array of outputBaskets in this configurations
     AssetBasketOutput[] internal outputBaskets;
@@ -79,13 +81,18 @@ contract AssetRouterOutput is ERC721HolderUpgradeable, ERC1155HolderUpgradeable,
         //No GSN router initialized as calls are not using GSN
         __OwlBase_init_unchained(_admin);
 
-        __AssetRouterOutput_init_unchained(_outputBaskets, _routers);
+        __AssetRouterOutput_init_unchained(_outputBaskets, _admin, _admin, _routers);
     }
 
-    function __AssetRouterOutput_init_unchained(AssetBasketOutput[] calldata _outputBaskets, address[] memory _routers)
-        internal
-        onlyInitializing
-    {
+    function __AssetRouterOutput_init_unchained(
+        AssetBasketOutput[] calldata _outputBaskets,
+        address _depositRole,
+        address _withdrawRole,
+        address[] memory _routers
+    ) internal onlyInitializing {
+        _grantRole(DEPOSIT_ROLE, _depositRole);
+        _grantRole(WITHDRAW_ROLE, _withdrawRole);
+
         //Roles
         for (uint256 i = 0; i < _routers.length; i++) {
             _grantRole(ASSET_ROUTER_INPUT, _routers[i]);
@@ -109,37 +116,24 @@ contract AssetRouterOutput is ERC721HolderUpgradeable, ERC1155HolderUpgradeable,
     /**
      * inheritdoc IAssetRouterOutput
      */
-    function getBasket(uint256 basketIdx) public view returns (AssetBasketOutput memory) {
+    function getOutputBasket(uint256 basketIdx) public view returns (AssetBasketOutput memory) {
         return outputBaskets[basketIdx];
     }
 
     /**
      * inheritdoc IAssetRouterOutput
      */
-    function deposit(
-        uint256 amount,
-        uint256 basketIdx,
-        uint256[][] calldata erc721TokenIdsTransfer,
-        uint256[][] calldata erc721TokenIdsMint
-    ) external onlyRole(DEFAULT_ADMIN_ROLE) {
+    function deposit(uint256 amount, uint256 basketIdx) external onlyRole(DEPOSIT_ROLE) {
+        AssetOutputLib.deposit(outputBaskets[basketIdx], amount);
         emit UpdateBasket(basketIdx, int256(amount));
-
-        AssetOutputLib.deposit(
-            outputBaskets[basketIdx],
-            amount,
-            _msgSender(),
-            erc721TokenIdsTransfer,
-            erc721TokenIdsMint
-        );
     }
 
     /**
      * inheritdoc IAssetRouterOutput
      */
-    function withdraw(uint256 amount, uint256 basketIdx) external onlyRole(DEFAULT_ADMIN_ROLE) {
+    function withdraw(uint256 amount, uint256 basketIdx) external onlyRole(WITHDRAW_ROLE) {
+        AssetOutputLib.withdraw(outputBaskets[basketIdx], amount);
         emit UpdateBasket(basketIdx, -int256(amount));
-
-        AssetOutputLib.withdraw(outputBaskets[basketIdx], amount, _msgSender());
     }
 
     /**
@@ -150,9 +144,9 @@ contract AssetRouterOutput is ERC721HolderUpgradeable, ERC1155HolderUpgradeable,
         uint256 amount,
         uint256 basketIdx
     ) external onlyRole(ASSET_ROUTER_INPUT) {
-        emit RouteBasket(msg.sender, to, basketIdx, amount);
-
         AssetOutputLib.output(outputBaskets[basketIdx], amount, to);
+        emit RouteBasket(msg.sender, to, basketIdx, amount);
+        emit UpdateBasket(basketIdx, -int256(amount));
     }
 
     /**

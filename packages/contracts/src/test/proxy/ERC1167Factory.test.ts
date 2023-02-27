@@ -45,13 +45,9 @@ describe('ERC1167Factory.sol', function () {
 
         token = {
             admin: signers[0].address,
-            contractUri: '',
-            gsnForwarder: ethers.constants.AddressZero,
             name: 'test',
             symbol: 'TEST',
-            initBaseURI: '',
-            feeReceiver: signers[0].address,
-            feeNumerator: 0,
+            initBaseURI: ''
         };
     });
 

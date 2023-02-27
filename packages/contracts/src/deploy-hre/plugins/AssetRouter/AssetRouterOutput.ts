@@ -11,36 +11,17 @@ const deploy = async ({ ethers, network, deployments }: HardhatRuntimeEnvironmen
     const routers: AssetRouterOutputDeployParams['routers'] = [{
         outputBaskets: [{
             outputableAmount: 10,
-            erc20Transfer: [],
             erc20Mint: [{
                 contractAddr: (await get('ERC20Mintable-2')).address,
                 amount: utils.parseUnits('1')
             }],
-            erc721Transfer: [],
-            erc721Mint: [],
-            erc721MintAutoId: [],
-            erc1155Transfer: [],
-            erc1155Mint: [],
         }, {
             outputableAmount: 10,
-            erc20Transfer: [],
-            erc20Mint: [],
-            erc721Transfer: [],
-            erc721Mint: [{
-                contractAddr: (await get('ERC721Mintable-3')).address,
-                tokenIds: [100, 101, 102, 103, 104, 105, 106, 107, 108, 109]
+            erc721MintAutoId: [{
+                contractAddr: (await get('ERC721MintableAutoId-3')).address,
             }],
-            erc721MintAutoId: [],
-            erc1155Transfer: [],
-            erc1155Mint: [],
         }, {
             outputableAmount: 10,
-            erc20Transfer: [],
-            erc20Mint: [],
-            erc721Transfer: [],
-            erc721Mint: [],
-            erc721MintAutoId: [],
-            erc1155Transfer: [],
             erc1155Mint: [{
                 contractAddr: (await get('ERC1155Mintable-2')).address,
                 tokenIds: [1],

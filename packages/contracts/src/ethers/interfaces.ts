@@ -23,6 +23,7 @@ import type {
     IRouterReceiverInterface as IRouterReceiverInterfaceType,
     IBaseURIInterface as IBaseURIInterfaceType,
     IERC165Interface as IERC165InterfaceType,
+    IAssetRouterCraftInterface as IAssetRouterCraftInterfaceType,
     IAssetRouterInputInterface as IAssetRouterInputInterfaceType,
     IAssetRouterOutputInterface as IAssetRouterOutputInterfaceType,
     IERC1820RegistryInterface as IERC1820RegistryInterfaceType,
@@ -52,6 +53,7 @@ import {
     IRouterReceiver,
     IBaseURI,
     IERC165,
+    IAssetRouterCraft,
     IAssetRouterInput,
     IAssetRouterOutput,
     IERC1820Registry,
@@ -174,6 +176,9 @@ export const IRouterReceiverInterfaceId = interfaceId(IRouterReceiverInterface.f
 export const IBaseURIInterface = new utils.Interface(IBaseURI.abi) as IBaseURIInterfaceType;
 export const IBaseURIInterfaceId = interfaceId(IBaseURIInterface.fragments);
 
+export const IAssetRouterCraftInterface = new utils.Interface(IAssetRouterCraft.abi) as IAssetRouterCraftInterfaceType;
+export const IAssetRouterCraftInterfaceId = interfaceId(IAssetRouterCraftInterface.fragments);
+
 export const IAssetRouterInputInterface = new utils.Interface(IAssetRouterInput.abi) as IAssetRouterInputInterfaceType;
 export const IAssetRouterInputInterfaceId = interfaceId(IAssetRouterInputInterface.fragments);
 
@@ -206,6 +211,7 @@ export const interfaceIds: { [k: string]: AbiItem[] } = {
     [IERC1155MintableInterfaceId]: IERC1155Mintable.abi,
     [IERC1155DnaInterfaceId]: IERC1155Dna.abi,
     [IERC1155ReceiverInterfaceId]: IERC1155Receiver.abi,
+    [IAssetRouterCraftInterfaceId]: IAssetRouterCraft.abi,
     [IAssetRouterInputInterfaceId]: IAssetRouterInput.abi,
     [IAssetRouterOutputInterfaceId]: IAssetRouterOutput.abi,
 };
@@ -235,6 +241,7 @@ export const interfaceIdNames: { [k: string]: InterfaceName } = {
     [IERC1155MintableInterfaceId]: 'IERC1155Mintable',
     [IERC1155DnaInterfaceId]: 'IERC1155Dna',
     [IERC1155ReceiverInterfaceId]: 'IERC1155Receiver',
+    [IAssetRouterCraftInterfaceId]: 'IAssetRouterCraft',
     [IAssetRouterInputInterfaceId]: 'IAssetRouterInput',
     [IAssetRouterOutputInterfaceId]: 'IAssetRouterOutput',
 };
@@ -336,7 +343,10 @@ export const interfaces = {
         interface: IERC1155ReceiverInterface,
         interfaceId: IERC1155ReceiverInterfaceId,
     },
-
+    IAssetRouterCraft: {
+        interface: IAssetRouterCraftInterface,
+        interfaceId: IAssetRouterCraftInterfaceId,
+    },
     IAssetRouterInput: {
         interface: IAssetRouterInputInterface,
         interfaceId: IAssetRouterInputInterfaceId,

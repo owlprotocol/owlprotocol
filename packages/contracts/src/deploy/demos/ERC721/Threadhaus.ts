@@ -51,53 +51,33 @@ const deploy = async ({ provider, signers, network }: RunTimeEnvironment) => {
     const thGlassesChild = {
         admin: signerAddress,
         contractUri: 'http://localhost:3000/innovot/collection-child-glasses.json',
-        gsnForwarder: constants.AddressZero,
         name: 'Thread Haus - Innovot NFT Glasses Sub-Collection',
         symbol: 'ThreadHaus-Child-Glasses',
         initBaseURI: '',
-        feeReceiver: signerAddress,
-        feeNumerator: 0,
-        childContracts721: [],
-        childContracts1155: [],
     } as ERC721TopDownDna.ERC721TopDownDnaInitializeArgs;
 
     const thHatsChild = {
         admin: signerAddress,
         contractUri: 'http://localhost:3000/innovot/collection-child-hats.json',
-        gsnForwarder: constants.AddressZero,
         name: 'Thread Haus - Innovot NFT Hats Sub-Collection',
         symbol: 'ThreadHaus-Child-Glasses',
         initBaseURI: '',
-        feeReceiver: signerAddress,
-        feeNumerator: 0,
-        childContracts721: [],
-        childContracts1155: [],
     } as ERC721TopDownDna.ERC721TopDownDnaInitializeArgs;
 
     const thDressChild = {
         admin: signerAddress,
         contractUri: 'http://localhost:3000/innovot/collection-child-dress.json',
-        gsnForwarder: constants.AddressZero,
         name: 'Thread Haus - Innovot NFT Glasses Sub-Collection',
         symbol: 'ThreadHaus-Child-Glasses',
         initBaseURI: '',
-        feeReceiver: signerAddress,
-        feeNumerator: 0,
-        childContracts721: [],
-        childContracts1155: [],
     } as ERC721TopDownDna.ERC721TopDownDnaInitializeArgs;
 
     const thFacialHairChild = {
         admin: signerAddress,
         contractUri: 'http://localhost:3000/innovot/collection-child-facial_hair.json',
-        gsnForwarder: constants.AddressZero,
         name: 'Thread Haus - Innovot NFT Glasses Sub-Collection',
         symbol: 'ThreadHaus-Child-Glasses',
         initBaseURI: '',
-        feeReceiver: signerAddress,
-        feeNumerator: 0,
-        childContracts721: [],
-        childContracts1155: [],
     } as ERC721TopDownDna.ERC721TopDownDnaInitializeArgs;
 
 
@@ -133,14 +113,10 @@ const deploy = async ({ provider, signers, network }: RunTimeEnvironment) => {
     const thColl = {
         admin: signerAddress,
         contractUri: 'http://localhost:3000/innovot/collection.json',
-        gsnForwarder: constants.AddressZero,
         name: 'Thread Haus - Innovot NFT Collection',
         symbol: 'ThreadHaus',
         initBaseURI: 'http://localhost:3001/dev/metadata/getMetadata/',
-        feeReceiver: signerAddress,
-        feeNumerator: 0,
         childContracts721: childContracts,
-        childContracts1155: [],
     } as ERC721TopDownDna.ERC721TopDownDnaInitializeArgs;
     const initArgs = ERC721TopDownDna.flattenInitArgsERC721TopDownDna(thColl);
     const initData = ERC721TopDownDnaInitEncoder(...initArgs);

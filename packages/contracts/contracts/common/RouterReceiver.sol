@@ -23,7 +23,9 @@ contract RouterReceiver is AccessControlUpgradeable, IRouterReceiver {
      * @param _router router role
      */
     function __RouterReceiver_init_unchained(address _router) internal {
-        _grantRole(ROUTER_ROLE, _router);
+        if (_router != address(0)) {
+            _grantRole(ROUTER_ROLE, _router);
+        }
     }
 
     /**

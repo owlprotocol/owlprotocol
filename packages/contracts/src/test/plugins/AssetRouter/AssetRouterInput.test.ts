@@ -196,7 +196,7 @@ describe('AssetRouterInput', function () {
                 symbol: `TK${tokenName}`,
                 initBaseURI: `token.${tokenName}.com/token`,
                 feeReceiver: signers[0].address,
-                feeNumerator: 0,
+
             };
             const tokenInitArgs = flattenInitArgsERC721Mintable(token);
             ERC721Mintable = await ERC721MintableFactory.deploy(...tokenInitArgs);
@@ -214,7 +214,7 @@ describe('AssetRouterInput', function () {
                             burnAddress: signers[1].address,
                             erc20Unaffected: [],
                             erc20Burned: [],
-                            erc721Unaffected: [{ contractAddr: ERC721Mintable.address, tokenIds: [] }],
+                            erc721Unaffected: [{ contractAddr: ERC721Mintable.address }],
                             erc721Burned: [],
                             erc721NTime: [],
                             erc721NTimeMax: [],
@@ -256,7 +256,7 @@ describe('AssetRouterInput', function () {
                             erc20Unaffected: [],
                             erc20Burned: [],
                             erc721Unaffected: [],
-                            erc721Burned: [{ contractAddr: ERC721Mintable.address, tokenIds: [] }],
+                            erc721Burned: [{ contractAddr: ERC721Mintable.address }],
                             erc721NTime: [],
                             erc721NTimeMax: [],
                             erc1155Unaffected: [],
@@ -300,7 +300,7 @@ describe('AssetRouterInput', function () {
                             erc20Burned: [],
                             erc721Unaffected: [],
                             erc721Burned: [],
-                            erc721NTime: [{ contractAddr: ERC721Mintable.address, tokenIds: [] }],
+                            erc721NTime: [{ contractAddr: ERC721Mintable.address }],
                             erc721NTimeMax: [1],
                             erc1155Unaffected: [],
                             erc1155Burned: [],
@@ -350,7 +350,7 @@ describe('AssetRouterInput', function () {
                 gsnForwarder: ethers.constants.AddressZero,
                 uri: `token.${tokenName}.com/token`,
                 feeReceiver: signers[0].address,
-                feeNumerator: 0,
+
             };
             const tokenInitArgs = flattenInitArgsERC1155Mintable(token);
             ERC1155Mintable = await ERC1155MintableFactory.deploy(...tokenInitArgs);
