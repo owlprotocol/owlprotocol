@@ -58,6 +58,7 @@
     "@web3-react/gnosis-safe": "8.0.6-beta.0",
     "@web3-react/metamask": "8.0.28-beta.0",
     "@web3-react/network": "8.0.27-beta.0",
+    "@web3-react/store": "8.0.26-beta.0",
     "@web3-react/types": "8.0.20-beta.0",
     "@web3-react/url": "8.0.25-beta.0",
     "@web3-react/walletconnect": "8.0.35-beta.0",
@@ -66,7 +67,7 @@
     "classnames": "^2.3.1",
     "copy-to-clipboard": "^3.3.1",
     "ethereum-qr-code": "^0.3.0",
-    "ethers": "^5.7.2",
+    "ethers": "5.7.2",
     "framer-motion": "^6.0.0",
     "ipfs-http-client": "56.0.3",
     "js-base64": "^3.7.2",
@@ -82,7 +83,8 @@
     "react-router-dom": "^6.2.2",
     "redux": "4.1.2",
     "time-ago": "^0.2.1",
-    "web3": "^1.8.0"
+    "web3": "1.8.0",
+    "zustand": "^4.0.0"
   },
   "devDependencies": {
     "@babel/core": "^7.17.5",
@@ -110,7 +112,7 @@
     "global": "^4.4.0",
     "madge": "^5.0.1",
     "rc": "^1.2.8",
-    "typescript": "^4.8.3",
+    "typescript": "4.9.5",
     "vite": "3.0.2",
     "vite-plugin-svgr": "^2.1.0"
   }

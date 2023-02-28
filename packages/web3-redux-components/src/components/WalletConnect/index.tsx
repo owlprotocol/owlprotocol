@@ -1,10 +1,10 @@
 /* eslint-disable */
 import { useTheme, Button } from '@chakra-ui/react';
 import { useCallback, useEffect, useState } from 'react';
-import { hooks, metaMask } from '../../connectors/metaMask';
+//import { hooks, metaMask } from '../../connectors/metaMask';
 import useConnectWithSelect from '../../hooks/useConnectWithSelect';
 
-const { useChainId, useAccounts, useIsActivating, useIsActive, useProvider } = hooks;
+//const { useChainId, useAccounts, useIsActivating, useIsActive, useProvider } = hooks;
 
 export interface Chain {
     chainId: string;
@@ -24,6 +24,7 @@ export interface WalletConnect {
 }
 
 export const WalletConnect = ({ networkId, children }: WalletConnect) => {
+    /*
     const [retry, setRetry] = useState(true)
     const [error, setError] = useState<undefined | Error>();
     const { themes } = useTheme();
@@ -87,4 +88,7 @@ export const WalletConnect = ({ networkId, children }: WalletConnect) => {
         //Render children
         return <>{children}</>;
     }
+    */
+
+    return <>Fix code</>
 };

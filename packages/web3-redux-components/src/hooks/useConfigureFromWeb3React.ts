@@ -1,12 +1,13 @@
 import { useEffect, useMemo } from 'react';
 import { useDispatch } from 'react-redux';
 import { Config, Network, NetworkWithObjects } from '@owlprotocol/web3-redux';
-import { hooks } from '../connectors/metaMask.js';
+//import { hooks } from '../connectors/metaMask.js';
 import getLibrary from '../utils/getLibrary.js';
 
-const { useChainId, useAccounts, useProvider } = hooks;
+//const { useChainId, useAccounts, useProvider } = hooks;
 
 export function useConfigureFromWeb3React() {
+    /*
     const dispatch = useDispatch();
 
     //Web3React data
@@ -45,6 +46,5 @@ export function useConfigureFromWeb3React() {
             dispatch(Network.actions.upsert({ networkId: newNetworkId, web3Sender: newWeb3Sender }));
         }
     }, [dispatch, newNetworkId, isSameWeb3Provider, newWeb3Sender]);
+    */
 }
-
-export default useConfigureFromWeb3React;

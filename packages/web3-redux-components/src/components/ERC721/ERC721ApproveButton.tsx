@@ -1,14 +1,9 @@
 /* eslint-disable */
-import { useTheme, Button } from "@chakra-ui/react";
+import { Button } from "@chakra-ui/react";
 import { Contract } from "@owlprotocol/web3-redux";
 import { useCallback, useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
-import { hooks, metaMask } from "../../connectors/metaMask";
-import useConnectWithSelect from "../../hooks/useConnectWithSelect";
 import { WalletConnect } from "../WalletConnect";
-
-const { useChainId, useAccounts, useIsActivating, useIsActive, useProvider } =
-    hooks;
 
 export interface ERC721ApproveButtonProps {
     networkId: string | undefined;

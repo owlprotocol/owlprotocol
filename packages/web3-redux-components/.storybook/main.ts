@@ -33,8 +33,8 @@ module.exports = {
                     web3: "web3/dist/web3.min.js",
                     "ipfs-http-client": production
                         ? path.resolve(
-                              "node_modules/ipfs-http-client/index.min.js"
-                          )
+                            "node_modules/ipfs-http-client/index.min.js"
+                        )
                         : "ipfs-http-client",
                     "@remix-run/router":
                         "node_modules/@remix-run/router/dist/router.js",
@@ -44,6 +44,7 @@ module.exports = {
                     "@magic-ext/connect": path.resolve(
                         "node_modules/@magic-ext/connect/dist/es/index.js"
                     ),
+                    "zustand": path.resolve("node_modules/zustand/vanilla.js")
                 },
             },
             commonjsOptions: {
@@ -63,7 +64,7 @@ module.exports = {
                 },
             },
             optimizeDeps: {
-                include: ["magic-sdk", "@magic-ext/connect"],
+                include: ["magic-sdk", "@magic-ext/connect", "@web3-react/core"],
                 exclude: ["@magic-sdk/commons"],
             },
         };

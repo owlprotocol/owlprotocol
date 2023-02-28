@@ -43,6 +43,7 @@ const build = {
             '@web3-react/gnosis-safe',
             '@web3-react/metamask',
             '@web3-react/network',
+            '@web3-react/store',
             '@web3-react/types',
             '@web3-react/url',
             '@web3-react/walletconnect',
@@ -53,7 +54,6 @@ const build = {
             'framer-motion',
             'ipfs-http-client',
             'js-base64',
-            ,
             'rc-pagination',
             'react',
             'react-dom',
@@ -65,6 +65,7 @@ const build = {
             'redux',
             'web3',
             'lodash-es',
+            'zustand'
         ],
         output: {
             globals: {
@@ -76,6 +77,7 @@ const build = {
                 '@web3-react/metamask': '@web3-react/metamask',
                 '@web3-react/core': '@web3-react/core',
                 '@web3-react/injected-connector': '@web3-react/injected-connector',
+                '@web3-react/store': '@web3-react/store',
                 '@fortawesome/react-fontawesome': '@fortawesome/react-fontawesome',
                 '@fortawesome/free-solid-svg-icons': '@fortawesome/free-solid-svg-icons',
                 '@tanstack/react-table': '@tanstack/react-table',
@@ -92,7 +94,8 @@ const build = {
                 react: 'React',
                 'react-dom': 'ReactDOM',
                 'lodash-es': 'lodash-es',
-                'lodash': 'lodash'
+                'lodash': 'lodash',
+                'zustand': 'zustand'
             },
         },
     },
