@@ -1,16 +1,17 @@
 import { utils } from 'ethers';
 import type { HardhatRuntimeEnvironment } from 'hardhat/types';
 import DeterministicDeployer from '../../deploy/common/DeterministicDeployer.js';
+import { PRIVATE_KEY_0, PRIVATE_KEY_ANVIL } from '../../environment.js';
 
 //@ts-expect-error
 const deploy = async ({ ethers, network, deployments }: HardhatRuntimeEnvironment) => {
-    const wallet = new ethers.Wallet(process.env.PK_0 as string, ethers.provider);
+    const wallet = new ethers.Wallet(PRIVATE_KEY_0, ethers.provider);
     const walletAddress = await wallet.getAddress();
 
     if (network.name == 'anvil') {
         //Fund wallet when using anvil
         const anvil = new ethers.Wallet(
-            '0xac0974bec39a17e36ba4a6b4d238ff944bacb478cbed5efcae784d7bf4f2ff80',
+            PRIVATE_KEY_ANVIL,
             ethers.provider,
         );
         const balance = await ethers.provider.getBalance(walletAddress);

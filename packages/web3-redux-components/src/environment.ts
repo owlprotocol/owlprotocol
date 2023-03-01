@@ -7,6 +7,8 @@ let environment = {
     VITE_IPFS_URL: import.meta.env.VITE_IPFS_URL,
     VITE_CORS_PROXY: import.meta.env.VITE_CORS_PROXY,
     VITE_MAGIC_CONNECT_PK: import.meta.env.VITE_MAGIC_CONNECT_PK,
+    VITE_PUBLIC_ADDRESS_0: import.meta.env.VITE_PUBLIC_ADDRESS_0.toLowerCase(),
+    VITE_PUBLIC_ADDRESS_1: import.meta.env.VITE_PUBLIC_ADDRESS_1.toLowerCase()
 } as ImportMetaEnv;
 
 export const setEnvironment = (env: Partial<ImportMetaEnv>) => {

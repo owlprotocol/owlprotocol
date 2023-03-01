@@ -7,6 +7,7 @@ export * from './ERC721TopDown/index.js';
 export * from './ERC721TopDownDna/index.js';
 export * from './ERC1155/index.js';
 export * from './selectors/index.js';
+export * from './Wallet/index.js'
 export * from './web3/index.js';
 export * from './useContract.js';
 export * from './useContractCall.js';

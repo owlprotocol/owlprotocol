@@ -18,3 +18,4 @@ out/
 soljson-v*.js
 .openzeppelin/unknown-*.json
 *.py
+!.env.example

@@ -89,7 +89,7 @@ export function createCRUDHooks<
     const useAll = () => {
         const response = useLiveQuery(all, [], 'loading');
         const isLoading = response === 'loading';
-        const result = isLoading ? undefined : response;
+        const result = isLoading ? [] : response;
         const exists = !!result; //false while loading
         const returnOptions = { isLoading, exists };
         return [result, returnOptions] as [typeof result, typeof returnOptions];

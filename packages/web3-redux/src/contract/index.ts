@@ -82,7 +82,11 @@ export const Contract = {
         useAccessControlContracts: Hooks.useAccessControlContracts,
         useAssetRouterCraftContracts: Hooks.useAssetRouterCraftContracts,
         useAssetRouterInputContracts: Hooks.useAssetRouterInputContracts,
-        useAssetRouterOutputContracts: Hooks.useAssetRouterOutputContracts
+        useAssetRouterOutputContracts: Hooks.useAssetRouterOutputContracts,
+        useERC20WithBalance: Hooks.useERC20WithBalance,
+        useERC721Owned: Hooks.useERC721Owned,
+        useERC1155WithBalance: Hooks.useERC1155WithBalance,
+        useWallet: Hooks.useWallet
     },
     sagas: {
         ...CRUDModel.sagas,

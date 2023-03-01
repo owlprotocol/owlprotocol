@@ -11,15 +11,13 @@ import 'solidity-docgen';
 import 'solidity-coverage';
 
 import { ethers } from 'ethers';
-import dotenv from 'dotenv';
-dotenv.config();
-
 import lodash from 'lodash';
-const { mapValues } = lodash;
+import { PRIVATE_KEY_0, PRIVATE_KEY_1 } from './src/environment';
 
+const { mapValues } = lodash;
 const baseNetwork = {
-    from: process.env.PK_0!,
-    accounts: [process.env.PK_0!, process.env.PK_1!],
+    from: PRIVATE_KEY_0,
+    accounts: [PRIVATE_KEY_0, PRIVATE_KEY_1],
 };
 
 const config = {
@@ -216,20 +214,12 @@ config.networks = mapValues(config.networks, (n, k) => {
 
     //hardhat network, set balances
     const START_BALANCE = ethers.utils.parseUnits('10', 'ether').toString();
-
-    let mockAccounts = [1, 2, 3, 4].map((n) => {
-        return {
-            balance: START_BALANCE,
-            privateKey: ethers.utils.hexZeroPad(ethers.utils.hexlify(n), 32),
-        };
-    });
-    mockAccounts = [
+    let accounts = [
         { balance: START_BALANCE, privateKey: baseNetwork.accounts[0] },
         { balance: START_BALANCE, privateKey: baseNetwork.accounts[1] },
-        ...mockAccounts,
     ];
 
-    return { ...n, from: baseNetwork.from, accounts: mockAccounts };
+    return { ...n, from: baseNetwork.from, accounts };
 }) as any;
 
 export default config;

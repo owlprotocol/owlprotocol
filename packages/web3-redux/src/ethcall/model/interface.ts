@@ -37,9 +37,15 @@ export type EthCallIndexInput =
     | EthCallId
     | { networkId: string; to: string; methodName: string }
     | { networkId: string; to: string; methodName: string; argsHash: string }
+    | { networkId: string; methodName: string; argsHash: string }
+    | { networkId: string, methodName: string; }
 
 export const EthCallIndex =
-    '[networkId+to+data], [networkId+to+methodName], [networkId+to+methodName+argsHash]';
+    '[networkId+to+data],\
+[networkId+to+methodName],\
+[networkId+to+methodName+argsHash],\
+[networkId+methodName+argsHash],\
+[networkId+methodName]';
 
 /** @internal */
 export function validateId({ networkId, to, data }: EthCallId): EthCallId {
