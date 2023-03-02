@@ -60,8 +60,8 @@
     "deploy": "npm-run-all to:commonjs deploy:all to:module",
     "deploy:all": "hardhat deploy --tags All --network anvil",
     "madge": "madge src/index.ts -c",
-    "to:commonjs": "sed -i -e 's/\"type\": \"module\"/\"type\": \"commonjs\"/g' package.json",
-    "to:module": "sed -i -e 's/\"type\": \"commonjs\"/\"type\": \"module\"/g' package.json"
+    "to:commonjs": "sed 's/\"type\": \"module\"/\"type\": \"commonjs\"/g' package.json > ./temp.package.json && mv ./temp.package.json package.json",
+    "to:module": "sed 's/\"type\": \"commonjs\"/\"type\": \"module\"/g' package.json > ./temp.package.json && mv -f ./temp.package.json package.json"
   },
   "dependencies": {
     "lodash": "4.17.21"
