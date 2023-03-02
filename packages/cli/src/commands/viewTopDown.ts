@@ -21,7 +21,7 @@ export const command = 'viewTopDown';
 
 export const describe = `Introspect and view the NFT TopDownDna contract
 
-e.g. node lib/esm/index.js viewTopDown --root=0x48221206C91844aFE886445eCF4E53a4ec6acA55 --tokenId=1
+e.g. node lib/esm/index.js viewTopDown --root=0xbE705Ab239b7CE7c078E84965A518834Cb7CFE4b --tokenId=1
 
 
 

@@ -1,5 +1,5 @@
 import { Ethers, Utils } from '@owlprotocol/contracts';
-import { ERC721TopDownDna__factory } from '@owlprotocol/contracts/lib/types/src/typechain/ethers';
+import { ERC721TopDownDna__factory } from '@owlprotocol/contracts/lib/types/typechain/ethers';
 
 export type ContractConfig = {
     address?: string;

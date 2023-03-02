@@ -21,7 +21,7 @@ export const describe = `Deploy the collection to the configured chain
 collectionJS - Relative path to the collection's JS file
 itemsFolder - (Optional) The path to the folder with the item DNA JSONs, defaults to folder "items" in the same directory as the collectionJS
 
-e.g. node lib/esm/index.js detachTopDown --root=0x48221206C91844aFE886445eCF4E53a4ec6acA55 -c 0xecB0Be88463C74C92c0D9855C94C0CBe271bBe80 --tokenId=1
+e.g. node lib/esm/index.js detachTopDown --root=0xbE705Ab239b7CE7c078E84965A518834Cb7CFE4b -c 0xD5D77A8145dC8e49A52947f20C59cf55E1135083 --tokenId=1
 
 
 

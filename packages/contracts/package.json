@@ -15,7 +15,7 @@
   "types": "./lib/types/index.d.ts",
   "exports": {
     ".": {
-      "types": "./lib/types/src/index.d.ts",
+      "types": "./lib/types/index.d.ts",
       "require": "./lib/cjs/index.js",
       "import": "./lib/esm/index.js"
     }
@@ -49,8 +49,10 @@
     "node:hardhat": "hardhat node --no-deploy",
     "ipfs": "jsipfs daemon",
     "ipfs:configure": "jsipfs config --json API.HTTPHeaders.Access-Control-Allow-Methods '[\"PUT\", \"POST\"]' && jsipfs config --json API.HTTPHeaders.Access-Control-Allow-Origin '[\"http://127.0.0.1:5002\", \"http://localhost:3000\", \"http://127.0.0.1:5001\", \"https://webui.ipfs.io\"]'",
-    "clean": "rimraf types lib",
-    "clean:types": "rimraf types && hardhat clean",
+    "clean": "npm-run-all to:commonjs clean:lib clean:types clean:hardhat to:module",
+    "clean:hardhat": "hardhat clean",
+    "clean:lib": "rimraf lib",
+    "clean:types": "rimraf types",
     "coverage": "hardhat coverage --solcoverjs .solcover.js --testfiles 'test/**/*.test.ts'",
     "coverage:gsn": "hardhat --network local coverage --solcoverjs .solcover.js --testfiles 'test/**/*.test.ts'",
     "test": "hardhat test",
