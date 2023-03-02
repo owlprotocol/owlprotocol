@@ -1,35 +1,33 @@
-import { Link } from '@tanstack/react-router';
-import { Box, Tr, Td, useTheme } from '@chakra-ui/react';
-import { Contract, Network } from '@owlprotocol/web3-redux';
-
-import { AddressDisplay } from '../../Address/AddressDisplay';
-import { NetworkIcon } from '../../NetworkIcon'
+import { Link } from "@tanstack/react-router";
+import { Box, Tr, Td, useTheme, Badge } from "@chakra-ui/react";
+import { Network } from "@owlprotocol/web3-redux";
+import { AddressDisplay } from "../../Address/AddressDisplay";
+import { NetworkIcon } from "../../NetworkIcon";
+import { interfaceIdNames } from "@owlprotocol/contracts";
 
 export interface ContractsManagerTableRowPropsProps {
     networkId: string;
     address: string;
+    interfaceIds: string[];
 }
 
-const SUPPORTED_INTERFACES = new Set(['ERC20', 'ERC721', 'ERC1155']);
-
-export const ContractsManagerTableRow = ({ networkId, address }: ContractsManagerTableRowPropsProps) => {
+export const ContractsManagerTableRow = ({
+    networkId,
+    address,
+    interfaceIds = [],
+}: ContractsManagerTableRowPropsProps) => {
     const { themes } = useTheme();
     const [network] = Network.hooks.useNetwork(networkId);
     const networkName = network?.name;
 
-    const [contract] = Contract.hooks.useContract(networkId, address);
-    const indexIds = contract?.tags ?? [];
-    const interfaces = indexIds.filter((idx) => SUPPORTED_INTERFACES.has(idx));
-    console.log(interfaces);
-
     return (
         <Tr>
-            <Td px={0}>
+            <Td px={0} py={1}>
                 <Box
                     pl={4}
-                    h={'60px'}
-                    display={'flex'}
-                    alignItems={'center'}
+                    h={"60px"}
+                    display={"flex"}
+                    alignItems={"center"}
                     bg={themes.color6}
                     color={themes.color9}
                     borderLeftRadius={12}
@@ -38,23 +36,33 @@ export const ContractsManagerTableRow = ({ networkId, address }: ContractsManage
                     <Box marginLeft={3}>{networkName}</Box>
                 </Box>
             </Td>
-            <Td px={0}>
-                <AddressDisplay networkId={networkId} address={address} borderRadius={0} bg={themes.color5} />
+            <Td px={0} py={1}>
+                <AddressDisplay
+                    networkId={networkId}
+                    address={address}
+                    borderRadius={0}
+                    bg={themes.color5}
+                />
             </Td>
-            <Td px={0}>
+            <Td px={0} py={1}>
                 <Box
                     p={6}
-                    h={'60px'}
-                    display={'flex'}
-                    alignItems={'center'}
+                    h={"60px"}
+                    display={"flex"}
+                    alignItems={"center"}
                     bg={themes.color6}
                     color={themes.color1}
                     borderRightRadius={12}
                 >
-                    {interfaces.map((i, key) => (
-                        <Link key={key} to={`/manage/${i.toLowerCase()}/${address}?networkId=${networkId}`}>
-                            {i}
-                        </Link>
+                    {interfaceIds.map((id, key) => (
+                        <Badge bg={themes.color4} mr={2}>
+                            <Link
+                                key={key}
+                                to={`/explore/${id}/${address}?networkId=${networkId}`}
+                            >
+                                {interfaceIdNames[id]}
+                            </Link>
+                        </Badge>
                     ))}
                 </Box>
             </Td>

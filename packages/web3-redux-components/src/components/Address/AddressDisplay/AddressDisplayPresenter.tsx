@@ -80,6 +80,7 @@ export const AddressDisplayPresenter = ({
 
     return (
         <Flex
+            p={2}
             h={"60px"}
             alignItems={"center"}
             justify={"space-between"}
@@ -100,6 +101,7 @@ export const AddressDisplayPresenter = ({
                         borderRadius={0}
                         lineHeight={1}
                         borderBottom={"1px solid"}
+                        fontSize={"lg"}
                         type="text"
                         placeholder="Label"
                         value={editLabelText}
@@ -115,18 +117,29 @@ export const AddressDisplayPresenter = ({
                     fontSize={14}
                     fontWeight={400}
                     flex={1}
-                    mx={2}
                     w={["30%", "40%", "75%"]}
                 >
                     {label ? (
                         <Flex>
-                            <Text isTruncated maxW={"50%"} mx={1}>
+                            <Text
+                                fontSize={16}
+                                isTruncated
+                                maxW={"50%"}
+                                mx={2}
+                                ml={4}
+                            >
                                 {label}
                             </Text>
-                            &lt;<Text isTruncated>{address}</Text>&gt;
+                            &lt;
+                            <Text isTruncated fontSize={16}>
+                                {address}
+                            </Text>
+                            &gt;
                         </Flex>
                     ) : (
-                        <Text isTruncated>{address}</Text>
+                        <Text isTruncated fontSize={16} px={2}>
+                            {address}
+                        </Text>
                     )}
                 </Box>
             )}
@@ -152,7 +165,7 @@ export const AddressDisplayPresenter = ({
                             bg={"transparent"}
                             onClick={handleCopy}
                             aria-label={"copy to clipboard"}
-                            icon={<Icon icon="copy" />}
+                            icon={<Icon icon="copy" size={20} />}
                         />
                     )}
                     {controls.includes("favorite") && (

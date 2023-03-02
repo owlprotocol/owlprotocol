@@ -24,7 +24,7 @@
     "build:watch": "vite build --watch",
     "tsc": "tsc",
     "tsc:watch": "tsc -w",
-    "storybook": "start-storybook -p 6007",
+    "storybook": "start-storybook -p 6007 --no-open",
     "build-storybook": "cross-env NODE_OPTIONS='--max-old-space-size=4096' build-storybook",
     "madge": "madge src/index.ts -c"
   },

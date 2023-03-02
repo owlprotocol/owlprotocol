@@ -1,6 +1,21 @@
-import { Box, TableContainer, Table, Thead, Tr, Th, Tbody, useTheme } from '@chakra-ui/react';
-import { Contract } from '@owlprotocol/web3-redux';
-import { ContractsManagerTableRow } from '../ContractsManagerTableRow';
+import {
+    Box,
+    TableContainer,
+    Table,
+    Thead,
+    Tr,
+    Th,
+    Tbody,
+    useTheme,
+} from "@chakra-ui/react";
+import { Contract } from "@owlprotocol/web3-redux";
+import composeHooks from "react-hooks-compose";
+import { ContractsManagerTableRow } from "../ContractsManagerTableRow";
+
+export const useContractsManagerTableHook = () => {
+    const [contracts] = Contract.hooks.useERC721Contracts();
+    return { contracts };
+};
 
 export interface ContractListProps {
     networkId: string;
@@ -8,13 +23,15 @@ export interface ContractListProps {
 }
 
 export interface ContractsManagerTableProps {
-    data: ContractListProps[];
+    contracts: ContractListProps[];
 }
 
-export const ContractsManagerTable = ({ data }: ContractsManagerTableProps) => {
+const ContractsManagerTablePresenter = ({
+    contracts,
+}: ContractsManagerTableProps) => {
     const { themes } = useTheme();
 
-    if (data.length < 1) {
+    if (contracts.length < 1) {
         return (
             <Box mt={4} px={4} p={3} borderWidth={1} borderRadius={12}>
                 No contracts found
@@ -27,15 +44,21 @@ export const ContractsManagerTable = ({ data }: ContractsManagerTableProps) => {
             <Table variant="unstyled">
                 <Thead>
                     <Tr>
-                        {['network', 'address', 'interfaces'].map((title: string, key) => (
-                            <Th key={key} textTransform={'capitalize'} color={themes.color9}>
-                                {title}
-                            </Th>
-                        ))}
+                        {["network", "address", "interfaces"].map(
+                            (title: string, key) => (
+                                <Th
+                                    key={key}
+                                    textTransform={"capitalize"}
+                                    color={themes.color9}
+                                >
+                                    {title}
+                                </Th>
+                            )
+                        )}
                     </Tr>
                 </Thead>
                 <Tbody>
-                    {data.map((props: ContractListProps, key) => (
+                    {contracts.map((props: ContractListProps, key: any) => (
                         <ContractsManagerTableRow key={key} {...props} />
                     ))}
                 </Tbody>
@@ -44,9 +67,27 @@ export const ContractsManagerTable = ({ data }: ContractsManagerTableProps) => {
     );
 };
 
-export const ContractsManagerTableWhere = ({ networkId, tags }: { networkId?: string, tags?: string }) => {
+export const ContractsManagerTableWhere = ({
+    networkId,
+    tags,
+}: {
+    networkId?: string;
+    tags?: string;
+}) => {
     //@ts-ignore
-    const [contracts] = Contract.hooks.useWhere({ networkId, tags })
-    const data = (contracts ?? []).map(({ networkId, address }) => { return { networkId, address } });
-    return <ContractsManagerTable data={data} />
-}
+    const [contracts] = Contract.hooks.useWhere({ networkId, tags });
+    const data = (contracts ?? []).map(({ networkId, address }) => {
+        return { networkId, address };
+    });
+    return <ContractsManagerTablePresenter contracts={data} />;
+};
+
+const ContractsManagerTable = composeHooks((props: Props) => ({
+    useContractsManagerTable: () => useContractsManagerTableHook(props),
+}))(ContractsManagerTablePresenter) as (props: Props) => JSX.Element;
+
+//@ts-expect-error
+ContractsManagerTable.displayName = "ContractsManagerTable";
+
+export { ContractsManagerTablePresenter, ContractsManagerTable };
+export default ContractsManagerTable;
