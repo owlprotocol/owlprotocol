@@ -41,7 +41,7 @@ temp.*
 
 # local env files
 .env
-.env.*
+!.env.example
 
 # other
 .turbo
