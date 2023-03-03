@@ -12,6 +12,7 @@ Developer tool for deploying, introspecting, and managing Owl Protocol's smart c
 - [x] Detach a child NFT from a parent NFT
 - [ ] Attach a NFT to a parent NFT
 - [x] View a NFT's information by tokenId, including DNA and attributes
+- [ ] Create a test with a local IPFS, and ganache
 
 ### AssetRouter
 - [ ] Deploy an AssetRouter smart contract for NFT logic
