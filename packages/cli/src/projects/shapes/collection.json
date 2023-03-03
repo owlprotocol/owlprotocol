@@ -1,0 +1,50 @@
+{
+  "name": "Shapes",
+  "description": "Generative Shapes NFT Collection",
+  "traits": [
+    {
+      "name": "shape0_colormap",
+      "type": "colormap",
+      "colormap": "shape0_colormap",
+      "options": [
+        {
+          "value": "grey"
+        },
+        {
+          "value": "rg"
+        },
+        {
+          "value": "rb"
+        },
+        {
+          "value": "gb"
+        }
+      ],
+      "bitSize": 2
+    },
+    {
+      "name": "shape0_color",
+      "type": "color",
+      "colormap": "shape0_colormap",
+      "min": 0,
+      "max": 255,
+      "bitSize": 8
+    },
+    {
+      "name": "shape0",
+      "type": "image",
+      "image_type": "png",
+      "options": [
+        {
+          "value": "circle",
+          "image_url": "Circle.svg"
+        },
+        {
+          "value": "square",
+          "image_url": "Square.svg"
+        }
+      ],
+      "bitSize": 1
+    }
+  ]
+}

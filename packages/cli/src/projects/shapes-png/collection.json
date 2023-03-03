@@ -1,0 +1,98 @@
+{
+  "name": "Shapes PNG",
+  "description": "Generative Shapes NFT Collection - PNG",
+  "traits": [
+    {
+      "name": "shape0",
+      "type": "image",
+      "image_type": "png",
+      "options": [
+        {
+          "value": "blank"
+        },
+        {
+          "value": "circle",
+          "image_url": "circle.png"
+        },
+        {
+          "value": "square",
+          "image_url": "square.png"
+        },
+        {
+          "value": "triangle",
+          "image_url": "triangle.png"
+        }
+      ],
+      "bitSize": 2
+    },
+    {
+      "name": "shape1",
+      "type": "image",
+      "image_type": "png",
+      "options": [
+        {
+          "value": "blank"
+        },
+        {
+          "value": "circle",
+          "image_url": "circle.png"
+        },
+        {
+          "value": "square",
+          "image_url": "square.png"
+        },
+        {
+          "value": "triangle",
+          "image_url": "triangle.png"
+        }
+      ],
+      "bitSize": 2
+    },
+    {
+      "name": "shape2",
+      "type": "image",
+      "image_type": "png",
+      "options": [
+        {
+          "value": "blank"
+        },
+        {
+          "value": "circle",
+          "image_url": "circle.png"
+        },
+        {
+          "value": "square",
+          "image_url": "square.png"
+        },
+        {
+          "value": "triangle",
+          "image_url": "triangle.png"
+        }
+      ],
+      "bitSize": 2
+    },
+    {
+      "name": "shape3",
+      "type": "image",
+      "image_type": "png",
+      "options": [
+        {
+          "value": "blank"
+        },
+        {
+          "value": "circle",
+          "image_url": "circle.png"
+        },
+        {
+          "value": "square",
+          "image_url": "square.png"
+        },
+        {
+          "value": "triangle",
+          "image_url": "triangle.png"
+        }
+      ],
+      "bitSize": 2
+    }
+  ]
+}

@@ -1,0 +1,114 @@
+{
+  "name": "Shapes",
+  "description": "Generative Shapes NFT Collection",
+  "traits": [
+    {
+      "name": "layer0",
+      "type": "image",
+      "options": [
+        {
+          "value": "empty",
+          "image_url": "Layer0_0.svg",
+          "image_type": "svg"
+        },
+        {
+          "value": "square",
+          "image_url": "Layer0_1.svg",
+          "image_type": "svg"
+        },
+        {
+          "value": "circle",
+          "image_url": "Layer0_2.svg",
+          "image_type": "svg"
+        },
+        {
+          "value": "triangle",
+          "image_url": "Layer0_3.svg",
+          "image_type": "svg"
+        }
+      ],
+      "bitSize": 2
+    },
+    {
+      "name": "layer1",
+      "type": "image",
+      "options": [
+        {
+          "value": "empty",
+          "image_url": "Layer1_0.svg",
+          "image_type": "svg"
+        },
+        {
+          "value": "square",
+          "image_url": "Layer1_1.svg",
+          "image_type": "svg"
+        },
+        {
+          "value": "circle",
+          "image_url": "Layer1_2.svg",
+          "image_type": "svg"
+        },
+        {
+          "value": "triangle",
+          "image_url": "Layer1_3.svg",
+          "image_type": "svg"
+        }
+      ],
+      "bitSize": 2
+    },
+    {
+      "name": "layer2",
+      "type": "image",
+      "options": [
+        {
+          "value": "empty",
+          "image_url": "Layer2_0.svg",
+          "image_type": "svg"
+        },
+        {
+          "value": "square",
+          "image_url": "Layer2_1.svg",
+          "image_type": "svg"
+        },
+        {
+          "value": "circle",
+          "image_url": "Layer2_2.svg",
+          "image_type": "svg"
+        },
+        {
+          "value": "triangle",
+          "image_url": "Layer2_3.svg",
+          "image_type": "svg"
+        }
+      ],
+      "bitSize": 2
+    },
+    {
+      "name": "layer3",
+      "type": "image",
+      "options": [
+        {
+          "value": "empty",
+          "image_url": "Layer3_0.svg",
+          "image_type": "svg"
+        },
+        {
+          "value": "square",
+          "image_url": "Layer3_1.svg",
+          "image_type": "svg"
+        },
+        {
+          "value": "circle",
+          "image_url": "Layer3_2.svg",
+          "image_type": "svg"
+        },
+        {
+          "value": "triangle",
+          "image_url": "Layer3_3.svg",
+          "image_type": "svg"
+        }
+      ],
+      "bitSize": 2
+    }
+  ]
+}
