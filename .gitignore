@@ -49,4 +49,7 @@ temp.*
 .ipfs
 *.sqlite
 
+# git-filter-repo
+.git-filter-repo-replace_text
+
 traceOutputDir
