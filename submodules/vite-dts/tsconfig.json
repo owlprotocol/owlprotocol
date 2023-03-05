@@ -1,0 +1,17 @@
+{
+  "compilerOptions": {
+    "target": "es2020",
+    "module": "es2020",
+    "moduleResolution": "node",
+    "skipLibCheck": true,
+    "outDir": "dist",
+    "lib": [
+      "esnext",
+    ],
+    "declaration": true,
+    "emitDeclarationOnly": true,
+  },
+  "include": [
+    "src/index.ts"
+  ],
+}
