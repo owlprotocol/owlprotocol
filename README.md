@@ -54,11 +54,26 @@ Owl Protocol - Web3 Tools & Dynamic NFTs.
 ## TL;DR
 
 ```
-git clone --recursive git@github.com:owlprotocol/owlprotocol.git
+git clone git@github.com:owlprotocol/owlprotocol-2023.git
 npx turbo login
 npx turbo link
 pnpm i
 ```
+
+Supply your own `.env` file in `packages/contracts` or:
+`cp .env.example .env`
+
+*This is required for the next build command*
+
+```
+pnpm run build
+```
+
+## Getting Started
+
+### Tutorial
+
+- Dynamic NFT Equipment/Attachability - [ERC721TopDownDna Tutorial](https://docs.owlprotocol.xyz)
 
 ## Packages
 | Package  | Version |  Description |
