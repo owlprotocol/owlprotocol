@@ -1,0 +1,19 @@
+{
+  "rootContract": {
+    "tokenSymbol": "ExampleNFT",
+    "tokenIdStart": 1,
+    "cfg": {
+      "ipfsEndpointHTTP": "https://leovigna.mypinata.cloud/ipfs",
+      "owlApiEndpoint": "http://metadata.owlprotocol.xyz:32001/metadata/getMetadata",
+      "metadataIPFS": "Qmc7Aih1P67dmHF4PDMg5KfLABMtR6DXmDaxRvgF8Wgoe9"
+    }
+  },
+  "children": {
+    "Hats": {
+      "tokenIdStart": 1,
+      "cfg": {
+        "metadataIPFS": "QmSYm8ksGSH7fi1XXm78Y6tkKiZ2ASpdyzZNtcVEV1h7G3"
+      }
+    }
+  }
+}

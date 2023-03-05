@@ -28,7 +28,7 @@ packages/contracts/packages/owlprotocol-contracts/deployments/ganache/*
 .DS_Store
 *.pem
 .idea
-output
+!example-omo/output
 
 # debug
 npm-debug.log*
