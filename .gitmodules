@@ -1,0 +1,4 @@
+[submodule "submodules/vite-dts"]
+	path = submodules/vite-dts
+	url = https://github.com/owlprotocol/vite-dts.git
+	branch = master

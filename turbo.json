@@ -1,0 +1,73 @@
+{
+  "$schema": "https://turborepo.org/schema.json",
+  "pipeline": {
+    "build": {
+      "dependsOn": [
+        "^build"
+      ],
+      "outputs": [
+        "build/**",
+        "dist/**",
+        "lib/**",
+        ".next/**",
+        ".docusaurus/**",
+        "src/artifacts/**",
+        "src/typechain/**",
+        "docs/web3-redux-reference/**",
+        "docs/contracts-reference/**"
+      ]
+    },
+    "build-storybook": {
+      "dependsOn": [
+        "^build"
+      ],
+      "outputs": [
+        "storybook-static/**"
+      ]
+    },
+    "build:watch": {
+      "cache": false
+    },
+    "storybook": {
+      "dependsOn": [
+        "^build"
+      ],
+      "cache": false
+    },
+    "dev": {
+      "cache": false
+    },
+    "clean": {
+      "cache": false
+    },
+    "start": {
+      "cache": false
+    },
+    "test": {
+      "dependsOn": [
+        "build"
+      ]
+    },
+    "madge": {
+      "outputs": []
+    },
+    "lint": {
+      "outputs": []
+    },
+    "lint:fix": {
+      "outputs": []
+    },
+    "lint:staged": {
+      "outputs": []
+    },
+    "deploy": {
+      "cache": false
+    },
+    "node": {
+      "cache": false
+    },
+    "serve": {
+      "cache": false
+    }
+  }
+}
