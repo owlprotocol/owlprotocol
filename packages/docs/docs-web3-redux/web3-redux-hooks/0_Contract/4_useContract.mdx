@@ -3,7 +3,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { Provider } from 'react-redux';
-import { store } from '@owlprotocol/web3-redux';
 
 import App from './App';
 
@@ -19,8 +18,9 @@ ReactDOM.render(
 ```
 
 ```tsx  title="src/App.tsx"
-import { Abi, Network } from '@owlprotocol/web3-redux';
+import { createStore, Abi, Network } from '@owlprotocol/web3-redux';
 
+const store = createStore();
 const defaultNetwork = { web3Rpc: 'ws://localhost:8545' };
 const USDC = '0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48';
 const defaultContract = { abi: Abi.IERC20.abi };

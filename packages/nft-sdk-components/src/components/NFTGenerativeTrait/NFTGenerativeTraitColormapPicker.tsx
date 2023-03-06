@@ -89,7 +89,7 @@ export const NFTGenerativeTraitColormapPicker = ({
                     </Box>
                 </Button>
                 <Box h={'52px'} w={'100%'} maxW={'482px'} borderRadius={8} overflow={'hidden'}>
-                    {selected?.colors.map((color, key) => (
+                    {selected?.colors?.map((color, key) => (
                         <Box
                             key={key}
                             w={'calc(100% / 255)'}

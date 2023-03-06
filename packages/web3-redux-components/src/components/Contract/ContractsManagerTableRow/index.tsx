@@ -8,7 +8,7 @@ import { interfaceIdNames } from "@owlprotocol/contracts";
 export interface ContractsManagerTableRowPropsProps {
     networkId: string;
     address: string;
-    interfaceIds: string[];
+    interfaceIds?: string[];
 }
 
 export const ContractsManagerTableRow = ({
@@ -56,10 +56,7 @@ export const ContractsManagerTableRow = ({
                 >
                     {interfaceIds.map((id, key) => (
                         <Badge bg={themes.color4} mr={2}>
-                            <Link
-                                key={key}
-                                to={`/explore/${id}/${address}?networkId=${networkId}`}
-                            >
+                            <Link key={key} to={`/explore/${id}/${address}?networkId=${networkId}` as any}>
                                 {interfaceIdNames[id]}
                             </Link>
                         </Badge>

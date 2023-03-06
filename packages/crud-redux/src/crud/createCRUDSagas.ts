@@ -1,6 +1,7 @@
-import { put as putDispatch, select as selectSaga, call, all as allSaga, takeEvery, spawn, take } from 'typed-redux-saga';
+import { put as putDispatch, select as selectSaga, call, all as allSaga, takeEvery, spawn, take, actionChannel, fork } from 'typed-redux-saga';
 import { compact, isEqual } from 'lodash-es';
 import type { BroadcastChannel } from 'broadcast-channel';
+import { multicastChannel } from 'redux-saga'
 
 import { wrapSagaWithErrorHandler } from '../error/sagas/wrapSagaWithErrorHandler.js';
 import { T_Encoded_Base } from './model.js';
@@ -9,7 +10,8 @@ import { createCRUDDB } from './createCRUDDB.js';
 import { createCRUDSelectors } from './createCRUDSelectors.js';
 import { createCRUDValidators } from './createCRUDValidators.js';
 import { buffers, EventChannel, eventChannel } from 'redux-saga';
-import { IndexableType, Transaction } from 'dexie';
+import { IndexableType } from 'dexie';
+import { actionChannelPut, channelBuffer, channelMap, channelMapPut } from '../sagas/channel.js';
 
 /**
  *
@@ -92,7 +94,10 @@ export function createCRUDSagas<
                 //this.onsuccess = (primKey) => emitter({ type: DexieHookType.creating, primKey, obj })
             })
             t.hook('updating', function (mods, primKey, obj, trans) {
-                trans.on('complete', function () { emitter({ type: DexieHookType.updating, primKey, obj, mods: mods as Partial<T_Encoded> }) });
+                const modKeys = Object.keys(mods)
+                if (!(modKeys.length <= 1 && modKeys[0] === 'updatedAt')) {
+                    trans.on('complete', function () { emitter({ type: DexieHookType.updating, primKey, obj, mods: mods as Partial<T_Encoded> }) });
+                }
                 //this.onsuccess = (updatedObj) => emitter({ type: DexieHookType.updating, primKey, obj, mods: mods as Partial<T_Encoded>, updatedObj })
             })
             t.hook('deleting', function (primKey, obj, trans) {
@@ -103,6 +108,8 @@ export function createCRUDSagas<
             // The subscriber must return an unsubscribe function
             return () => {
                 t.hook('creating').unsubscribe(() => { });
+                t.hook('updating').unsubscribe(() => { });
+                t.hook('deleting').unsubscribe(() => { });
             };
             //TODO: Buffered channel?
         }, buffers.expanding(10));
@@ -135,32 +142,66 @@ export function createCRUDSagas<
         }
     }
     /** Dexie Sagas */
-    const createSaga = function* (action: CreateAction) {
-        yield* call(add, action.payload)
-    };
+    const watchCreateSaga = function* () {
+        const chan = yield* actionChannel<CreateAction>(actionTypes.CREATE);
+        const chanBuff = yield* call(channelBuffer<CreateAction>, chan, 1000, 100)
+        const chanBatched = yield* call(channelMap<CreateAction[], CreateBatchedAction>, chanBuff, (e: CreateAction[]) => {
+            return actions.createBatched(e.map((a) => a.payload))
+        })
+        yield* fork(actionChannelPut, chanBatched)
+    }
+    const watchPutSaga = function* () {
+        const chan = yield* actionChannel<PutAction>(actionTypes.PUT);
+        const chanBuff = yield* call(channelBuffer<PutAction>, chan, 1000, 100)
+        const chanBatched = yield* call(channelMap<PutAction[], PutBatchedAction>, chanBuff, (e: PutAction[]) => {
+            return actions.putBatched(e.map((a) => a.payload))
+        })
+        yield* fork(actionChannelPut, chanBatched)
+    }
+    const watchUpdateSaga = function* () {
+        const chan = yield* actionChannel<UpdateAction>(actionTypes.UPDATE);
+        const chanBuff = yield* call(channelBuffer<UpdateAction>, chan, 1000, 100)
+        const chanBatched = yield* call(channelMap<UpdateAction[], UpdateBatchedAction>, chanBuff, (e: UpdateAction[]) => {
+            return actions.updateBatched(e.map((a) => a.payload))
+        })
+        yield* fork(actionChannelPut, chanBatched)
+    }
+    const watchUpsertSaga = function* () {
+        const chan = yield* actionChannel<UpsertAction>(actionTypes.UPSERT);
+        const chanBuff = yield* call(channelBuffer<UpsertAction>, chan, 1000, 100)
+        const chanBatched = yield* call(channelMap<UpsertAction[], UpsertBatchedAction>, chanBuff, (e: UpsertAction[]) => {
+            return actions.upsertBatched(e.map((a) => a.payload))
+        })
+        yield* fork(actionChannelPut, chanBatched)
+    }
+    const watchDeleteSaga = function* () {
+        const chan = yield* actionChannel<DeleteAction>(actionTypes.UPSERT);
+        const chanBuff = yield* call(channelBuffer<DeleteAction>, chan, 1000, 100)
+        const chanBatched = yield* call(channelMap<DeleteAction[], DeleteBatchedAction>, chanBuff, (e: DeleteAction[]) => {
+            return actions.deleteBatched(e.map((a) => a.payload))
+        })
+        yield* fork(actionChannelPut, chanBatched)
+    }
+
+    /*
+    const createMulticast = function* () {
+        const createChannel = yield* actionChannel<CreateAction>(actionTypes.CREATE)
+        const createMulticastChannel = multicastChannel<CreateAction>()
+        yield* fork(channelMapPut, createChannel, (e: CreateAction) => e, createMulticastChannel)
+        return createMulticastChannel
+    }
+    */
     const createBatchedSaga = function* (action: CreateBatchedAction) {
         yield* call(bulkAdd, action.payload);
-    };
-    const putSaga = function* (action: PutAction) {
-        yield* call(put, action.payload);
     };
     const putBatchedSaga = function* (action: PutBatchedAction) {
         yield* call(bulkPut, action.payload);
     };
-    const updateSaga = function* (action: UpdateAction) {
-        yield* call(update, action.payload);
-    };
     const updateBatchedSaga = function* (action: UpdateBatchedAction) {
         yield* call(bulkUpdate, action.payload);
     };
-    const upsertSaga = function* (action: UpsertAction) {
-        yield* call(upsert, action.payload);
-    };
     const upsertBatchedSaga = function* (action: UpsertBatchedAction) {
         yield* call(bulkUpsert, action.payload);
-    };
-    const deleteSaga = function* (action: DeleteAction) {
-        yield* call(deleteDB, action.payload);
     };
     const deleteBatchedSaga = function* (action: DeleteBatchedAction) {
         yield* call(bulkDelete, action.payload);
@@ -195,24 +236,25 @@ export function createCRUDSagas<
     const crudRootSaga = function* () {
         yield* allSaga([
             spawn(watchChangesSaga),
-            takeEvery(actionTypes.CREATE, wrapSagaWithErrorHandler(createSaga, actionTypes.CREATE)),
+            spawn(watchCreateSaga),
+            spawn(watchPutSaga),
+            spawn(watchUpdateSaga),
+            spawn(watchUpsertSaga),
+            spawn(watchDeleteSaga),
+            //takeEvery(actionTypes.CREATE, wrapSagaWithErrorHandler(createSaga, actionTypes.CREATE)),
             takeEvery(
                 actionTypes.CREATE_BATCHED,
                 wrapSagaWithErrorHandler(createBatchedSaga, actionTypes.CREATE_BATCHED),
             ),
-            takeEvery(actionTypes.PUT, wrapSagaWithErrorHandler(putSaga, actionTypes.PUT)),
             takeEvery(actionTypes.PUT_BATCHED, wrapSagaWithErrorHandler(putBatchedSaga, actionTypes.PUT_BATCHED)),
-            takeEvery(actionTypes.UPDATE, wrapSagaWithErrorHandler(updateSaga, actionTypes.UPDATE)),
             takeEvery(
                 actionTypes.UPDATE_BATCHED,
                 wrapSagaWithErrorHandler(updateBatchedSaga, actionTypes.UPDATE_BATCHED),
             ),
-            takeEvery(actionTypes.UPSERT, wrapSagaWithErrorHandler(upsertSaga, actionTypes.UPSERT)),
             takeEvery(
                 actionTypes.UPSERT_BATCHED,
                 wrapSagaWithErrorHandler(upsertBatchedSaga, actionTypes.UPSERT_BATCHED),
             ),
-            takeEvery(actionTypes.DELETE, wrapSagaWithErrorHandler(deleteSaga, actionTypes.DELETE)),
             takeEvery(
                 actionTypes.DELETE_BATCHED,
                 wrapSagaWithErrorHandler(deleteBatchedSaga, actionTypes.DELETE_BATCHED),
@@ -227,15 +269,10 @@ export function createCRUDSagas<
     };
 
     const sagas = {
-        create: createSaga,
         createBatched: createBatchedSaga,
-        put: putSaga,
         putBatched: putBatchedSaga,
-        update: updateSaga,
         updateBatched: updateBatchedSaga,
-        upsert: upsertSaga,
         upsertBatched: upsertBatchedSaga,
-        delete: deleteSaga,
         deleteBatched: deleteBatchedSaga,
         hydrate: hydrateSaga,
         hydrateBatched: hydrateBatchedSaga,

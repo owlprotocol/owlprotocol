@@ -17,7 +17,7 @@ export const describe = `Generates the Schema JSON from the default export of th
 
 The "collectionJS" file is relative to the required project folder option.
 
-e.g. node lib/esm/index.js generateSchemaJSON collection/acme-collections.js --project=projects/acme
+e.g. node dist/index.cjs generateSchemaJSON collections.js --project=projects/example-omo
 
 
 
@@ -58,10 +58,10 @@ export const handler = async (argv: yargs.ArgumentsCamelCase & Argv) => {
 
     const collParent = nftGenerativeCollectionClass.default;
 
-    await fs.writeFileSync(path.resolve(outputFolder, 'collection-parent.json'), JSON.stringify(collParent));
+    await fs.writeFileSync(path.resolve(outputFolder, 'collection-parent.json'), JSON.stringify(collParent, null, 2));
 
     const promises = mapValues(collParent.children, async (childColl: NFTGenerativeCollectionClass, key) => {
-        await fs.writeFileSync(path.resolve(outputFolder, `collection-child-${key}.json`), JSON.stringify(childColl));
+        await fs.writeFileSync(path.resolve(outputFolder, `collection-child-${key}.json`), JSON.stringify(childColl, null, 2));
     });
 
     await Promise.all(Object.values(promises));

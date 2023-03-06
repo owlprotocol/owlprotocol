@@ -103,7 +103,9 @@ export const defaultNetworks = () => {
             networkId: '31337',
             name: 'anvil',
             currency: ETHER,
-            web3Rpc: ANVIL_RPC()
+            web3Rpc: ANVIL_RPC(),
+            syncContracts: true,
+            //syncBlocks: true
         }
         /*
         ,

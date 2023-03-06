@@ -3,7 +3,7 @@ import * as Contracts from '@owlprotocol/contracts';
 
 import { ContractEvent } from '../../contractevent/model/interface.js';
 import { eventGetPastRawSaga } from './eventGetPastRaw.js';
-import { getBlockNumber } from '../../network/sagas/getBlockNumber.js';
+import { getBlockNumberSaga } from '../../network/sagas/getBlockNumber.js';
 import { getBlockNumberAction } from '../../network/actions/getBlockNumber.js';
 import { findBuckets } from './eventGetPastBuckets.js';
 import { EventGetPastAction } from '../actions/eventGetPast.js';
@@ -21,7 +21,7 @@ export function* eventGetPastSaga(action: EventGetPastAction): Generator<
     //Ranged queries
     let toBlockInitial: number;
     if (!toBlock || toBlock === 'latest') {
-        const { latestBlockNumber } = yield* call(getBlockNumber, getBlockNumberAction({ networkId }, action.meta.uuid));
+        const { latestBlockNumber } = yield* call(getBlockNumberSaga, getBlockNumberAction({ networkId }, action.meta.uuid));
         toBlockInitial = latestBlockNumber;
     } else {
         toBlockInitial = toBlock;

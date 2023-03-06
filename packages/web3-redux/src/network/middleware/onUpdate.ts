@@ -21,7 +21,7 @@ export const onNetworkUpdate = (store: Store) => (next: (action: AnyAction) => a
             return { networkId, address };
         });
 
-        console.log(`Network ${networkId} reduxUpsert. Hydrating ${JSON.stringify(contractIds)}`);
+        //console.log(`Network ${networkId} reduxUpsert. Hydrating ${JSON.stringify(contractIds)}`);
 
         if ((web3Changed || web3SenderChanged) && contractIds.length > 0)
             store.dispatch(ContractCRUD.actions.hydrateBatched(contractIds));

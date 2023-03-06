@@ -2,7 +2,6 @@ import type { HardhatRuntimeEnvironment } from 'hardhat/types';
 import { IERC721Dna, IERC721TopDown } from '../../../artifacts.js';
 import { ERC721TopDownDnaDeploy, ERC721TopDownDnaDeployParams } from '../../../deploy/assets/ERC721/ERC721TopDownDna.js';
 
-//@ts-expect-error
 const deploy = async ({ ethers, network, deployments }: HardhatRuntimeEnvironment) => {
     const signers = await ethers.getSigners()
     const { get, save, getOrNull } = deployments;

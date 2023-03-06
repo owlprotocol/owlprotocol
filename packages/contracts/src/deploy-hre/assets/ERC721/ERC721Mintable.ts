@@ -2,7 +2,6 @@ import type { HardhatRuntimeEnvironment } from 'hardhat/types';
 import { IERC721Mintable } from '../../../artifacts.js';
 import { ERC721MintableDeploy } from '../../../deploy/assets/ERC721/ERC721Mintable.js';
 
-//@ts-expect-error
 const deploy = async ({ ethers, network, deployments }: HardhatRuntimeEnvironment) => {
     const results = await ERC721MintableDeploy({
         provider: ethers.provider, signers: await ethers.getSigners(), network,

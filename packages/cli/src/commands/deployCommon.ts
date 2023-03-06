@@ -22,6 +22,11 @@ export const describe = `Deploy the base smart contracts:
 - Proxy Factory
 - Implementations of all our smart contracts
 - UpgradeableBeacon
+
+e.g. node dist/index.cjs deployCommon
+
+
+
 `;
 
 export const builder = (yargs: ReturnType<yargs.Argv>) => {

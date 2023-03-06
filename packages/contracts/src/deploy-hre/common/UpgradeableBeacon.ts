@@ -2,7 +2,6 @@ import type { HardhatRuntimeEnvironment } from 'hardhat/types';
 import { mapValues, zipObject } from '../../lodash.js';
 import UpgradeableBeacon from '../../deploy/common/UpgradeableBeacon.js';
 
-//@ts-expect-error
 const deploy = async ({ ethers, network, deployments }: HardhatRuntimeEnvironment) => {
     const { save, getOrNull } = deployments;
 

@@ -15,7 +15,7 @@ export const ContractEventsTable = ({ networkId, address, eventName }: ContractE
     });
     const { error } = options;
 
-    if (error) return <>Error: {error.message}</>;
+    if (error) return <>Error: {(error as Error).message}</>;
     else
         return (
             <Table variant="unstyled">

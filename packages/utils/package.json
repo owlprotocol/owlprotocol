@@ -33,7 +33,7 @@
         "README.md"
     ],
     "engines": {
-        "node": ">=16.0.0"
+        "node": "^16.0.0"
     },
     "scripts": {
         "build": "npm-run-all -p tsc esbuild",

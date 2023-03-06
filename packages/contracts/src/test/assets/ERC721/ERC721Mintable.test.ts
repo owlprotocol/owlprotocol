@@ -1,5 +1,4 @@
 import { SignerWithAddress } from '@nomiclabs/hardhat-ethers/signers';
-//@ts-expect-error
 import hre, { ethers } from 'hardhat';
 import { ERC721Mintable } from '../../../ethers/types.js';
 import deployProxyNick from '../../../deploy-hre/common/DeterministicDeployer.js';
@@ -7,7 +6,7 @@ import deployProxyFactory from '../../../deploy-hre/common/ProxyFactory.js';
 import deployERC1820 from '../../../deploy-hre/common/ERC1820.js';
 import { ERC721MintableInitializeArgs, flattenInitArgsERC721Mintable } from '../../../utils/ERC721Mintable.js';
 import { expect, assert } from 'chai';
-import { factories, Factories, getFactories } from '../../../ethers/factories.js';
+import { Factories, getFactories } from '../../../ethers/factories.js';
 import { getDeterministicInitializeFactories, InitializeFactories } from '../../../ethers/deterministicFactories.js';
 import {
     IAccessControlInterfaceId,

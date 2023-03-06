@@ -2,7 +2,7 @@ import { testSaga } from 'redux-saga-test-plan';
 
 import { assert } from 'chai';
 import Web3 from 'web3';
-import { getBlockNumber } from './getBlockNumber.js';
+import { getBlockNumberSaga } from './getBlockNumber.js';
 import { getBlockNumberAction } from '../actions/index.js';
 import { name } from '../common.js';
 import NetworkCRUD from '../../network/crud.js';
@@ -17,7 +17,7 @@ const action = getBlockNumberAction({ networkId }, '');
 describe(`${name}/sagas/getBlockNumber.test.ts`, () => {
     describe('unit', () => {
         it('getBlockNumber', async () => {
-            testSaga(getBlockNumber, action)
+            testSaga(getBlockNumberSaga, action)
                 .next()
                 .call(NetworkCRUD.actions.fetch, networkId, action.meta.uuid)
                 .next({ networkId, web3 })

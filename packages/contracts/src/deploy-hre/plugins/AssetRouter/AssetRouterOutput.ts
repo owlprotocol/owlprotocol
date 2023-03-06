@@ -1,9 +1,9 @@
 import { utils } from 'ethers';
+import "@nomiclabs/hardhat-ethers";
 import type { HardhatRuntimeEnvironment } from 'hardhat/types';
 import { IAssetRouterOutput } from '../../../artifacts.js';
 import { AssetRouterOutputDeploy, AssetRouterOutputDeployParams } from '../../../deploy/plugins/AssetRouter/AssetRouterOutput.js';
 
-//@ts-expect-error
 const deploy = async ({ ethers, network, deployments }: HardhatRuntimeEnvironment) => {
     const signers = await ethers.getSigners()
     const { get, save, getOrNull } = deployments;

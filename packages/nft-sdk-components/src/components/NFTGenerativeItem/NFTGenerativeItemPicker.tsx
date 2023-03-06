@@ -4,7 +4,7 @@ import { NFTGenerativeTraitPicker } from '../NFTGenerativeTrait/NFTGenerativeTra
 
 export interface NFTGenerativeItemPickerProps {
     item: NFTGenerativeItemClass;
-    showItemChildren?: boolean
+    showItemChildren?: boolean;
     setValue?: (key: string, value: string | number) => any;
 }
 
@@ -14,7 +14,7 @@ export const NFTGenerativeItemPicker = ({
     setValue = (key: string, value: string | number) => console.debug(`Selected ${key} ${value}`),
 }: NFTGenerativeItemPickerProps) => {
     const traits = item.collection.traits;
-    console.debug({ showItemChildren, children: item.children })
+    console.debug({ showItemChildren, children: item.children });
 
     if (!showItemChildren || !item.children) {
         return (
@@ -33,23 +33,23 @@ export const NFTGenerativeItemPicker = ({
         );
     }
 
-    return <>
-        {Object.values(traits).map((t) => {
-            return (
-                <NFTGenerativeTraitPicker
-                    key={t.name}
-                    item={item}
-                    name={t.name}
-                    setValue={(value: string | number) => setValue(t.name, value)}
-                />
-            );
-        })}
-        {
-            Object.values(item.children).map((c, i) => {
-                return <NFTGenerativeItemPicker item={c} />
-            })
-        }
-    </>
+    return (
+        <>
+            {Object.values(traits).map((t) => {
+                return (
+                    <NFTGenerativeTraitPicker
+                        key={t.name}
+                        item={item}
+                        name={t.name}
+                        setValue={(value: string | number) => setValue(t.name, value)}
+                    />
+                );
+            })}
+            {Object.values(item.children).map((c, i) => {
+                return <NFTGenerativeItemPicker key={i} item={c as any} />;
+            })}
+        </>
+    );
 };
 
 export const NFTGenerativeItemPickerWithState = ({ item, showItemChildren }: NFTGenerativeItemPickerProps) => {
@@ -59,6 +59,7 @@ export const NFTGenerativeItemPickerWithState = ({ item, showItemChildren }: NFT
         <NFTGenerativeItemPicker
             item={currItem}
             showItemChildren={showItemChildren}
+            //@ts-expect-error
             setValue={(trait: string, value: string | number) => setItem(currItem.withAttribute(trait, value))}
         />
     );

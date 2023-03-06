@@ -82,9 +82,9 @@ export const ContractsManagerTableWhere = ({
     return <ContractsManagerTablePresenter contracts={data} />;
 };
 
-const ContractsManagerTable = composeHooks((props: Props) => ({
-    useContractsManagerTable: () => useContractsManagerTableHook(props),
-}))(ContractsManagerTablePresenter) as (props: Props) => JSX.Element;
+const ContractsManagerTable = composeHooks(() => ({
+    useContractsManagerTable: () => useContractsManagerTableHook(),
+}))(ContractsManagerTablePresenter) as () => JSX.Element;
 
 //@ts-expect-error
 ContractsManagerTable.displayName = "ContractsManagerTable";

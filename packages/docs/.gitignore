@@ -1,7 +1,9 @@
 # TypeDoc Reference
-/docs/docs-web3-redux/web3-redux-reference
-/docs/web3-redux-reference
-/docs/web3-redux-components-reference
+/docs-web3-redux/reference
+/docs-crud-redux/reference
+/docs-contracts/reference/**/*
+/docs-contracts/reference-js
+/docs-contracts/reference-solidity
 
 # Dependencies
 /node_modules
@@ -12,7 +14,6 @@
 # Generated files
 .docusaurus
 .cache-loader
-docs-contracts/reference/**/*
 
 # Misc
 .DS_Store

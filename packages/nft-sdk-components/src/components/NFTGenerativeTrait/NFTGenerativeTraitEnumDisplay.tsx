@@ -28,7 +28,10 @@ export const NFTGenerativeTraitEnumDisplay = ({ item, name }: NFTGenerativeTrait
                 {name}
             </Badge>
             <Text fontWeight={400} textTransform={'none'}>
-                {attribute.value}
+                {
+                    //@ts-expect-error
+                    attribute.value
+                }
             </Text>
         </VStack>
     );

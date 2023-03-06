@@ -25,7 +25,11 @@ export const createStore = (options?: CreateStoreOptions) => {
     //Enable redux-devtools support, tracing
     const reduxDevToolsExists = isClient() && (window as any).__REDUX_DEVTOOLS_EXTENSION_COMPOSE__;
     const composeEnhancers = reduxDevToolsExists
-        ? (window as any).__REDUX_DEVTOOLS_EXTENSION_COMPOSE__({ trace: true, traceLimit: 10 })
+        ? (window as any).__REDUX_DEVTOOLS_EXTENSION_COMPOSE__({
+            trace: true,
+            traceLimit: 10,
+            actionsBlacklist: []
+        })
         : compose;
     const sagaMiddleware = createSagaMiddleware();
     const rootMiddleware = applyMiddleware(...(middleware ?? defaultMiddleware), sagaMiddleware);

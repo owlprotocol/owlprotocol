@@ -9,7 +9,6 @@ export interface ERC1155ImageProps {
 
 export const ERC1155Image = ({ networkId, address, tokenId }: ERC1155ImageProps) => {
     const { metadata } = Contract.hooks.useERC1155(networkId, address, undefined, tokenId, {
-        balanceOf: false,
         metadata: true,
     });
     const src = metadata?.image;

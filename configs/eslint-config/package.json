@@ -18,7 +18,7 @@
         ".eslintrc.cjs"
     ],
     "engines": {
-        "node": ">=16.0.0"
+        "node": "^16.0.0"
     },
     "exports": {
         ".": "./.eslintrc.cjs"

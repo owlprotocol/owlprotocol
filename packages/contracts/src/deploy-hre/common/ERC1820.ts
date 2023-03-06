@@ -3,7 +3,6 @@ import ERC1820 from '../../deploy/common/ERC1820.js';
 import { IERC1820Registry } from '../../artifacts.js';
 import { PRIVATE_KEY_0 } from '../../environment.js';
 
-//@ts-expect-error
 const deploy = async ({ ethers, network, deployments }: HardhatRuntimeEnvironment) => {
     const wallet = new ethers.Wallet(PRIVATE_KEY_0, ethers.provider);
     const { address } = await ERC1820({

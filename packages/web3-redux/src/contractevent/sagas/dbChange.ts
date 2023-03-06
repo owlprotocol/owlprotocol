@@ -1,7 +1,6 @@
-import { Artifacts, Utils } from '@owlprotocol/contracts'
+import { Utils } from '@owlprotocol/contracts'
 import { call, put } from 'typed-redux-saga'
 import { ContractCRUD } from '../../contract/crud.js';
-import { TransferBatchERC1155Topic, TransferSingleERC1155Topic, TransferERC20Topic } from '../constants.js';
 import { ContractEventCRUD } from "../crud.js";
 
 //Handle contract creation
@@ -23,8 +22,9 @@ export function* dbCreatingSaga(action: ReturnType<typeof ContractEventCRUD.acti
     }
 
     const contract = yield* call(ContractCRUD.db.get, { networkId, address: address })
+    // TODO: Fetch, maxCacheAge 1s (for initial bulk writes)
     if (!contract) {
-        if (topic0 === TransferERC20Topic || topic0 === TransferSingleERC1155Topic || topic0 === TransferBatchERC1155Topic) {
+        if (topic0 === Utils.IERC20.TransferTopic || topic0 === Utils.IERC1155.TransferSingleTopic || topic0 === Utils.IERC1155.TransferBatchTopic) {
             yield* put(ContractCRUD.actions.create({ networkId, address }))
         }
     }

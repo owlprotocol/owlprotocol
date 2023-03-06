@@ -1,5 +1,5 @@
 //@ts-nocheck
-//@ts-expect-error
+
 import { ethers, network } from 'hardhat';
 import { expect } from 'chai';
 import { VRFBeacon, VRFBeacon__factory, VRFCoordinatorV2 } from '../../../typechain';
@@ -48,7 +48,7 @@ describe('VRFRandom beacon', () => {
                 50000, //gas limit
                 1,
             ),
-            //@ts-expect-error
+
         ).to.be.revertedWith('VRFBeacon: invalid number for _epoch period');
     });
 

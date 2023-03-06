@@ -33,10 +33,10 @@
         "README.md"
     ],
     "engines": {
-        "node": ">=16.0.0"
+        "node": "^16.0.0"
     },
     "scripts": {
-        "test": "mocha 'lib/cjs/**/*.test.js'",
+        "test": "mocha 'lib/esm/**/*.test.js'",
         "start": "npm run build:watch",
         "build": "npm-run-all -p tsc esbuild",
         "build:watch": "npm-run-all -p tsc:watch esbuild:watch",

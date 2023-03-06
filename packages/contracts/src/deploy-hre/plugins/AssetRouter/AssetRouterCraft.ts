@@ -4,7 +4,6 @@ import { IAssetRouterCraft } from '../../../artifacts.js';
 import { ADDRESS_ONE } from '../../../constants.js';
 import { AssetRouterCraftDeploy, AssetRouterCraftDeployParams } from '../../../deploy/plugins/AssetRouter/AssetRouterCraft.js';
 
-//@ts-expect-error
 const deploy = async ({ ethers, network, deployments }: HardhatRuntimeEnvironment) => {
     const signers = await ethers.getSigners()
     const { get, save, getOrNull } = deployments;

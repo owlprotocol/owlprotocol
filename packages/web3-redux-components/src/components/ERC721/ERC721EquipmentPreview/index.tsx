@@ -10,7 +10,7 @@ export interface ERC721EquipmentPreviewProps {
 }
 
 export const ERC721EquipmentPreview = ({
-    item = [],
+    item = undefined,
     itemName = "",
 }: ERC721EquipmentPreviewProps) => {
     const { themes } = useTheme();
@@ -31,7 +31,7 @@ export const ERC721EquipmentPreview = ({
                 borderRadius={12}
                 mb={6}
             >
-                <NFTGenerativeItemImageDisplay item={item} />
+                <NFTGenerativeItemImageDisplay item={item as any} />
             </Box>
             <Text
                 p={[3, 5]}

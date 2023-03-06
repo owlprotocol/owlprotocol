@@ -2,8 +2,8 @@ import { Box, Button, useTheme } from '@chakra-ui/react';
 import { AssetPicker, Asset } from '@owlprotocol/web3-redux'
 import { ReactComponent as XIcon } from './assets/x-icon.svg';
 import Icon from '../Icon';
-import { ERC721Instance } from '../ERC721/ERC721Instance';
-import { ERC721InstanceGridModal } from '../ERC721/ERC721InstanceGridModal';
+//import { ERC721Instance } from '../ERC721/ERC721Instance';
+//import { ERC721InstanceGridModal } from '../ERC721/ERC721InstanceGridModal';
 
 export interface AssetPickerProps {
     id: string
@@ -34,7 +34,9 @@ export const AssetPickerModal = ({ id, choices }: AssetPickerProps) => {
                                 >
                                     <XIcon />
                                 </Button>
-                                <ERC721Instance networkId={a.networkId} address={a.address} tokenId={a.tokenId} />
+                                {
+                                    //<ERC721Instance networkId={a.networkId} address={a.address} tokenId={a.tokenId} />
+                                }
                                 <Button onClick={() => toggleSelected()} variant={'link'}>
                                     Replace
                                 </Button>
@@ -50,6 +52,7 @@ export const AssetPickerModal = ({ id, choices }: AssetPickerProps) => {
                     w={'138px'}
                     h={'138px'}
                     bg={themes.color5}
+                    //@ts-expect-error
                     justify={'center'}
                     align={'center'}
                     my={4}
@@ -77,8 +80,9 @@ export const AssetPickerModal = ({ id, choices }: AssetPickerProps) => {
         }
     } else {
         return (
-            <>
-                <ERC721InstanceGridModal isOpen={true} tokens={choices as any[]} onClick={setSelected} />
+            <>{
+                //<ERC721InstanceGridModal isOpen={true} tokens={choices as any[]} onClick={setSelected} />
+            }
             </>
         );
     }

@@ -19,6 +19,7 @@ const BASE_URL = "https://owlprotocol.github.io";
 
 export const useERC20Metadata = (address: string) => {
     const checksumdAddress = web3.utils.toChecksumAddress(address);
+    //@ts-expect-error
     const [metadataObject, set] = <IERC20Metadata>(<any>useState({}));
     const URL = `${BASE_URL}/blockchains/ethereum/assets/${checksumdAddress}/info.json`;
 

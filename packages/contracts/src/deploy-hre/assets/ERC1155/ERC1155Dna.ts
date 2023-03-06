@@ -1,8 +1,10 @@
+import "@nomiclabs/hardhat-ethers";
+import 'hardhat-deploy';
+import 'hardhat-deploy-ethers';
 import type { HardhatRuntimeEnvironment } from 'hardhat/types';
 import { IERC1155Dna } from '../../../artifacts.js';
 import { ERC1155DnaDeploy } from '../../../deploy/assets/ERC1155/ERC1155Dna.js';
 
-//@ts-expect-error
 const deploy = async ({ ethers, network, deployments }: HardhatRuntimeEnvironment) => {
     const results = await ERC1155DnaDeploy({
         provider: ethers.provider, signers: await ethers.getSigners(), network,

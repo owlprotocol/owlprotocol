@@ -91,7 +91,8 @@ describe(`${name}/sagas/call.ts`, () => {
             address = web3Contract.options.address.toLowerCase();
 
             store = createStore();
-            store.dispatch(NetworkCRUD.actions.create(network1336));
+            store.dispatch(NetworkCRUD.actions.create({ networkId: networkId }));
+            store.dispatch(NetworkCRUD.actions.reduxUpsert(network1336));
             store.dispatch(
                 ContractCRUD.actions.create({
                     networkId,
@@ -150,6 +151,12 @@ describe(`${name}/sagas/call.ts`, () => {
 
                 assert.equal(value, 42, 'getValue');
                 assert.strictEqual(value, '42', 'getValue');
+
+                const ethCall = await EthCallCRUD.db.get({
+                    networkId, to: address,
+                    methodSignature: 'getValue()',
+                })
+                console.debug(ethCall)
                 //assert.equal(rpcBatch - rpcBatchInitial, 0, 'rpc_batch rpc calls != expected');
                 //assert.equal(ethCall - ethCallInitial, 1, 'eth_call rpc calls != expected');
             });

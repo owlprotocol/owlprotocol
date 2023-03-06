@@ -1,5 +1,4 @@
-import { SignerWithAddress } from '@nomiclabs/hardhat-ethers/signers';
-//@ts-expect-error
+import type { SignerWithAddress } from '@nomiclabs/hardhat-ethers/signers';
 import hre, { ethers } from 'hardhat';
 import { AssetRouterInput, ERC20Mintable, ERC721Mintable, ERC1155Mintable, Fallback } from '../../../ethers/types.js';
 import deployProxyNick from '../../../deploy-hre/common/DeterministicDeployer.js';
@@ -7,8 +6,9 @@ import deployProxyFactory from '../../../deploy-hre/common/ProxyFactory.js';
 import { ERC20MintableInitializeArgs, flattenInitArgsERC20Mintable } from '../../../utils/ERC20Mintable.js';
 import { ERC721MintableInitializeArgs, flattenInitArgsERC721Mintable } from '../../../utils/ERC721Mintable.js';
 import { ERC1155MintableInitializeArgs, flattenInitArgsERC1155Mintable } from '../../../utils/ERC1155Mintable.js';
+import '@nomicfoundation/hardhat-chai-matchers'
 import { expect } from 'chai';
-import { factories, Factories, getFactories } from '../../../ethers/factories.js';
+import { Factories, getFactories } from '../../../ethers/factories.js';
 import {
     getDeterministicFactories,
     getDeterministicInitializeFactories,
@@ -124,7 +124,7 @@ describe('AssetRouterInput', function () {
             });
 
             it('fail: InvalidERC20BalanceOf', async () => {
-                //@ts-expect-error
+
                 await expect(AssetRouterInput.input(Fallback.address, 1, 0, [], [], [], 0)).to.be.revertedWith(
                     `InvalidERC20BalanceOf(["${ERC20Mintable.address}", 1], 0, 1)`,
                 );
@@ -163,7 +163,7 @@ describe('AssetRouterInput', function () {
             });
 
             it('fail: InvalidERC20BalanceOf', async () => {
-                //@ts-expect-error
+
                 await expect(AssetRouterInput.input(Fallback.address, 1, 0, [], [], [], 0)).to.be.revertedWith(
                     'ERC20: insufficient allowance',
                 );
@@ -230,7 +230,7 @@ describe('AssetRouterInput', function () {
 
             it('fail', async () => {
                 await ERC721Mintable.mint(signers[1].address, 1);
-                //@ts-expect-error
+
                 await expect(AssetRouterInput.input(Fallback.address, 1, 0, [[1]], [], [], 0)).to.be.revertedWith(
                     `InvalidERC721OwnerOf(["${ERC721Mintable.address}", []], "${signers[1].address}", "${signers[0].address}")`,
                 );
@@ -271,7 +271,7 @@ describe('AssetRouterInput', function () {
 
             it('fail', async () => {
                 await ERC721Mintable.mint(signers[2].address, 1);
-                //@ts-expect-error
+
                 await expect(AssetRouterInput.input(Fallback.address, 1, 0, [], [], [[1]], 0)).to.be.revertedWith(
                     'ERC721: caller is not token owner nor approved',
                 );
@@ -314,7 +314,7 @@ describe('AssetRouterInput', function () {
 
             it('fail', async () => {
                 await ERC721Mintable.mint(signers[1].address, 1);
-                //@ts-expect-error
+
                 await expect(AssetRouterInput.input(Fallback.address, 1, 0, [], [[1]], [], 0)).to.be.revertedWith(
                     `InvalidERC721OwnerOf(["${ERC721Mintable.address}", []], "${signers[1].address}", "${signers[0].address}")`,
                 );
@@ -327,7 +327,7 @@ describe('AssetRouterInput', function () {
                 await expect(await ERC721Mintable.balanceOf(signers[0].address)).to.be.eq('1');
 
                 //Fail re-use
-                //@ts-expect-error
+
                 await expect(AssetRouterInput.input(Fallback.address, 1, 0, [], [[1]], [], 0)).to.be.revertedWith(
                     `InvalidERC721NTime(["${ERC721Mintable.address}", []], 1, 1`,
                 );
@@ -384,7 +384,7 @@ describe('AssetRouterInput', function () {
 
             it('fail', async () => {
                 await ERC1155Mintable.mint(signers[1].address, 1, 1, '0x');
-                //@ts-expect-error
+
                 await expect(AssetRouterInput.input(Fallback.address, 1, 0, [], [[1]], [], 0)).to.be.revertedWith(
                     `InvalidERC1155BalanceOfBatch(["${ERC1155Mintable.address}", [1], [1]], 1, 0, 1)`,
                 );
@@ -425,7 +425,7 @@ describe('AssetRouterInput', function () {
 
             it('fail', async () => {
                 await ERC1155Mintable.mint(signers[1].address, 1, 1, '0x');
-                //@ts-expect-error
+
                 await expect(AssetRouterInput.input(Fallback.address, 1, 0, [], [[1]], [], 0)).to.be.revertedWith(
                     'ERC1155: caller is not token owner nor approved',
                 );

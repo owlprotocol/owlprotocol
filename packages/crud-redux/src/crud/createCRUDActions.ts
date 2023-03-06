@@ -41,6 +41,7 @@ export function createCRUDActions<
 
     const REDUX = `${name}/REDUX`
     const REDUX_UPSERT = `${REDUX}/UPSERT`
+    const REDUX_UPSERT_BATCHED = `${REDUX_UPSERT}/BATCHED`
     const REDUX_DELETE = `${REDUX}/DELETE`
 
     //(name)_CRUD_(BATCHED) Actions Write to IndexedDB
@@ -85,6 +86,10 @@ export function createCRUDActions<
     const reduxUpsertAction = createAction2(REDUX_UPSERT, (payload: T) => {
         return validate(payload)
     })
+    const reduxUpsertBatchedAction = createAction2(REDUX_UPSERT_BATCHED, (payload: T[]) => {
+        return payload.map(validate)
+    });
+
     const reduxDeleteAction = createAction2(REDUX_DELETE, (payload: T_ID) => {
         return toPrimaryKeyString(payload)
     })
@@ -158,6 +163,7 @@ export function createCRUDActions<
         DB_UPDATING,
         DB_DELETING,
         REDUX_UPSERT,
+        REDUX_UPSERT_BATCHED,
         REDUX_DELETE,
         CREATE,
         CREATE_BATCHED,
@@ -181,6 +187,7 @@ export function createCRUDActions<
         dbUpdating: dbUpdatingAction,
         dbDeleting: dbDeletingAction,
         reduxUpsert: reduxUpsertAction,
+        reduxUpsertBatched: reduxUpsertBatchedAction,
         reduxDelete: reduxDeleteAction,
         create: createAction,
         createBatched: createBatchedAction,
@@ -200,6 +207,7 @@ export function createCRUDActions<
     const isReduxAction = (action: Action) => {
         return (
             actions.reduxUpsert.match(action) ||
+            actions.reduxUpsertBatched.match(action) ||
             actions.reduxDelete.match(action)
         );
     }

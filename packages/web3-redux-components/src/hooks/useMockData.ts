@@ -10,7 +10,7 @@ const defaultConfig = { corsProxy };
 
 export const useMockData = () => {
     //Config
-    Config.hooks.useConfig(defaultConfig);
+    //Config.hooks.useConfig(defaultConfig);
     Web3Redux.hooks.useInitialize();
     //Networks
     /*

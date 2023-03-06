@@ -41,7 +41,7 @@ export const describe = `Deploy the collection defined by the metadataIPFS to th
 
 For now this always expects the nftItems in the folder "./output/items/" relative to the projectFolder
 
-e.g. node lib/esm/index.js deployTopDown --projectFolder=projects/innovot --deployCommon=true --debug=true
+e.g. node dist/index.cjs deployTopDown --projectFolder=projects/example-omo --deployCommon=true --debug=true
 
 
 
@@ -78,29 +78,15 @@ export const handler = async (argv: Argv) => {
     argvCheck(argv);
     debug = !!argv.debug || false;
 
-    // TODO: allow override for items folder
     const itemsFolder = getProjectSubfolder(argv, 'output/items');
 
-    // TODO: accept all these as option overrides
     const owlProjectPath = path.resolve(getProjectFolder(argv), 'owlproject.json');
+
     const owlProject = await getOwlProject(owlProjectPath);
 
     console.log(`Creating JSON(s) from folder: ${itemsFolder} with IPFS metadata defined at ${owlProjectPath}`);
 
-    const metadataSchemaJSON_url = new URL(
-        owlProject.rootContract.cfg.metadataIPFS,
-        owlProject.rootContract.cfg.ipfsEndpointHTTP,
-    );
-
-    const collMetadataRes = await fetch(metadataSchemaJSON_url);
-    if (!collMetadataRes.ok) {
-        console.error(`Error fetching ${metadataSchemaJSON_url}`);
-        process.exit();
-    }
-
-    const collectionClass = await collMetadataRes.json();
-
-    const collMetadata = NFTGenerativeCollectionClass.fromData(collectionClass);
+    const collMetadata = NFTGenerativeCollectionClass.fromData(owlProject.metadata);
 
     const nftItemResults = await getNftItems(collMetadata, itemsFolder);
 
@@ -215,15 +201,18 @@ const getOwlProject = async (owlProjectFilepath: string): Promise<OwlProject> =>
         process.exit();
     }
 
-    const metadataSchemaJSON_url = new URL(
-        owlProject.rootContract.cfg.metadataIPFS,
-        owlProject.rootContract.cfg.ipfsEndpointHTTP,
+    const rootCfg = owlProject.rootContract.cfg;
+
+    const schemaJsonUrl = new URL(
+        path.join(rootCfg.ipfsPath, rootCfg.schemaJsonIpfs!),
+        rootCfg.ipfsEndpoint,
     );
+
     // TODO: add fetch-retry handling from nft-sdk-api
-    const collMetadataRes = await fetch(metadataSchemaJSON_url);
+    const collMetadataRes = await fetch(schemaJsonUrl);
 
     if (!collMetadataRes.ok) {
-        console.error(`Error fetching ${metadataSchemaJSON_url}`);
+        console.error(`Error fetching ${schemaJsonUrl}`);
         process.exit();
     }
 
@@ -267,18 +256,6 @@ const initializeFactories = async (signer: Signer): Promise<any> => {
         msgSender: signerAddress,
     });
 
-    /*
-    const beaconFactory = deterministicInitializeFactories.UpgradeableBeacon;
-    const beaconProxyFactories = Ethers.getBeaconProxyFactories(
-        deterministicFactories,
-        cloneFactory,
-        beaconFactory,
-        signerAddress,
-    );
-    const ERC721TopDownDnaFactory = beaconProxyFactories.ERC721TopDownDna;
-
-
-     */
     return {
         msgSender: signerAddress,
         ERC721TopDownDna: factories.ERC721TopDownDna,
@@ -287,8 +264,6 @@ const initializeFactories = async (signer: Signer): Promise<any> => {
         beaconAddress,
         initialized: true,
     };
-
-
 };
 
 /**
@@ -300,15 +275,27 @@ const initializeFactories = async (signer: Signer): Promise<any> => {
  * @param factories - current output from initializeFactories
  */
 const initializeArgs = (owlProject: OwlProject, factories: any) => {
+
+    const rootCfg = owlProject.rootContract.cfg;
+
     // For each child, generate the initialization args
     mapValues(owlProject.children, (c, k) => {
         const metadata = owlProject.metadata;
+
+        const schemaJsonUrl = new URL(
+            path.join(rootCfg.ipfsPath, c.cfg.schemaJsonIpfs!),
+            rootCfg.ipfsEndpoint,
+        );
+        const baseUri = new URL(
+            path.join(rootCfg.apiPath!, c.cfg.schemaJsonIpfs!),
+            rootCfg.apiEndpoint,
+        );
         const contractInit = {
             admin: factories.msgSender,
-            contractUri: path.join(owlProject.rootContract.cfg.ipfsEndpointHTTP!, c.cfg.metadataIPFS),
+            contractUri: schemaJsonUrl.toString(),
             name: metadata.children[k].name,
             symbol: metadata.children[k].name.substring(0, 12),
-            initBaseURI: path.join(owlProject.rootContract.cfg.owlApiEndpoint!, c.cfg.metadataIPFS) + '/',
+            initBaseURI: `${baseUri}/`,
             feeReceiver: metadata.fee_recipient,
         } as Utils.ERC721TopDownDna.ERC721TopDownDnaInitializeArgs;
 
@@ -324,12 +311,20 @@ const initializeArgs = (owlProject: OwlProject, factories: any) => {
         };
     });
 
+    const schemaJsonUrl = new URL(
+        path.join(rootCfg.ipfsPath, rootCfg.schemaJsonIpfs!),
+        rootCfg.ipfsEndpoint,
+    );
+    const baseUri = new URL(
+        path.join(rootCfg.apiPath!, rootCfg.schemaJsonIpfs!),
+        rootCfg.apiEndpoint,
+    );
     const parentInit = {
         admin: factories.msgSender,
-        contractUri: path.join(owlProject.rootContract.cfg.ipfsEndpointHTTP!, owlProject.rootContract.cfg.metadataIPFS),
+        contractUri: schemaJsonUrl.toString(),
         name: owlProject.metadata.name,
         symbol: owlProject.metadata.name.substring(0, 12),
-        initBaseURI: path.join(owlProject.rootContract.cfg.owlApiEndpoint!, owlProject.rootContract.cfg.metadataIPFS) + '/',
+        initBaseURI: `${baseUri}/`,
         feeReceiver: owlProject.metadata.fee_recipient,
         childContracts721: map(owlProject.children, (c) => c.cfg.address),
         childContracts1155: [],

@@ -42,7 +42,7 @@ export const NFTItemCard = ({
                     right={2}
                     position={"absolute"}
                     defaultChecked={isSelected}
-                    onChange={onSelect}
+                    onChange={onSelect as any}
                 />
             )}
             <Box

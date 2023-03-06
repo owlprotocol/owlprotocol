@@ -41,6 +41,9 @@ module.exports = {
                     "magic-sdk": path.resolve(
                         "node_modules/magic-sdk/dist/es/index.js"
                     ),
+                    "@magic-sdk/commons": path.resolve(
+                        "node_modules/@magic-sdk/commons/dist/es/index.js"
+                    ),
                     "@magic-ext/connect": path.resolve(
                         "node_modules/@magic-ext/connect/dist/es/index.js"
                     ),
@@ -57,6 +60,9 @@ module.exports = {
                     ),
                     "magic-sdk": path.resolve(
                         "node_modules/magic-sdk/dist/es/index.js"
+                    ),
+                    "@magic-sdk/commons": path.resolve(
+                        "node_modules/@magic-sdk/commons/dist/es/index.js"
                     ),
                     "@magic-ext/connect": path.resolve(
                         "node_modules/@magic-ext/connect/dist/es/index.js"

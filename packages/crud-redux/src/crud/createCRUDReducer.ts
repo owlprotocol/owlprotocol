@@ -32,6 +32,10 @@ export function createCRUDReducer<
         const Model = sess[name];
         if (actions.reduxUpsert.match(action)) {
             Model.upsert(hydrate(action.payload, sess), sess);
+        } else if (actions.reduxUpsertBatched.match(action)) {
+            action.payload.forEach((p) => {
+                Model.upsert(hydrate(p, sess), sess);
+            })
         } else if (actions.reduxDelete.match(action)) {
             Model.withId(action.payload)?.delete();
         }

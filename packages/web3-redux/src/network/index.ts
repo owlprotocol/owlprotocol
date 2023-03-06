@@ -33,6 +33,7 @@ export const Network = {
         useNetwork: Hooks.useNetwork,
         useLatestBlock: Hooks.useLatestBlock,
         useLatestBlockNumber: Hooks.useLatestBlockNumber,
+        useNetworkIds: Hooks.useNetworkIds
     },
     defaultNetworks,
     selectors: CRUDModel.selectors,

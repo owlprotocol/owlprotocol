@@ -48,8 +48,9 @@ For more info on complex sync strategies, see the [Advanced/Contract Call Sync](
 Under the hood, the [useContractCall](#) selector to read the result from the state.
 
 ```typescript title="src/createContractCall.ts" showLineNumbers
-import { store, Contract, Network, EthCall, TestData } from '@owlprotocol/web3-redux';
+import { createStore, Contract, Network, EthCall, TestData } from '@owlprotocol/web3-redux';
 
+const store = createStore();
 const networkId = '1'
 const USDC = '0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48';
 const VITALIK = '0xab5801a7d398351b8be11c439e05c5b3259aec9b';

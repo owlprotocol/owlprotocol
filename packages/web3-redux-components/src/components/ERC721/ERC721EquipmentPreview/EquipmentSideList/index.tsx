@@ -31,7 +31,7 @@ const EquipmentSideList = ({ tokens }: Props) => {
                 {items.map((item, key) => (
                     <Box key={key}>
                         <ERC721GenerativeInstanceSelectWithState
-                            tokens={tokens}
+                            tokens={tokens as any}
                         />
                     </Box>
                 ))}

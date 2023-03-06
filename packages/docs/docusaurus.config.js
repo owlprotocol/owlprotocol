@@ -85,9 +85,41 @@ const config = {
         [
             "docusaurus-plugin-typedoc",
             {
+                id: "contracts",
+                entryPoints: ["../contracts/src"],
+                out: "../docs-contracts/reference-js",
+                tsconfig: "../contracts/tsconfig.json",
+                watch:
+                    process.env.TYPEDOC_WATCH === "true" ||
+                    process.env.TYPEDOC_WATCH === "1",
+                readme: "none",
+                sidebar: {
+                    categoryLabel: "Reference",
+                },
+            },
+        ],
+        [
+            "docusaurus-plugin-typedoc",
+            {
+                id: "crud-redux",
+                entryPoints: ["../crud-redux/src"],
+                out: "../docs-crud-redux/reference",
+                tsconfig: "../crud-redux/tsconfig.json",
+                watch:
+                    process.env.TYPEDOC_WATCH === "true" ||
+                    process.env.TYPEDOC_WATCH === "1",
+                readme: "none",
+                sidebar: {
+                    categoryLabel: "Reference",
+                },
+            },
+        ],
+        [
+            "docusaurus-plugin-typedoc",
+            {
                 id: "web3-redux",
                 entryPoints: ["../web3-redux/src"],
-                out: "./docs-web3-redux/web3-redux-reference",
+                out: "../docs-web3-redux/reference",
                 tsconfig: "../web3-redux/tsconfig.json",
                 watch:
                     process.env.TYPEDOC_WATCH === "true" ||
@@ -103,7 +135,7 @@ const config = {
             {
                 id: "web3-redux-components",
                 entryPoints: ["../web3-redux-components/src"],
-                out: "./docs-web3-redux/web3-redux-components-reference",
+                out: "../docs-web3-redux/reference-components",
                 tsconfig: "../web3-redux-components/tsconfig.json",
                 watch:
                     process.env.TYPEDOC_WATCH === "true" ||
@@ -112,6 +144,15 @@ const config = {
                 sidebar: {
                     categoryLabel: "Web3 Redux Components Reference",
                 },
+            },
+        ],
+        [
+            "@docusaurus/plugin-content-docs",
+            {
+                id: "crud-redux",
+                path: "docs-crud-redux",
+                routeBasePath: "crud-redux",
+                sidebarPath: require.resolve("./sidebars.js"),
             },
         ],
         [

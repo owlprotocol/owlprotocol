@@ -24,7 +24,7 @@ export const ERC721GenerativeImage = (props: ERC721GenerativeImageProps) => {
     const nft = status == "onchain" ? nftOnchain.item : nftLocal.item;
 
     if (nft) {
-        return <NFTGenerativeItemImageDisplay {...imageProps} item={nft} />;
+        return <NFTGenerativeItemImageDisplay {...imageProps} item={nft as any} />;
     } else {
         return <Skeleton w={"100%"} h={"100%"} speed={1} />;
     }

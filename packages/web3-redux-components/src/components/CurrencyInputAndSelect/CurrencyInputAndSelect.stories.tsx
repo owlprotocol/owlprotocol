@@ -16,5 +16,6 @@ const Template: ComponentStory<typeof CurrencyInputAndSelect> = (args: any) => <
 export const Main = Template.bind({});
 
 Main.args = {
+    //@ts-expect-error
     disabled: false,
 };

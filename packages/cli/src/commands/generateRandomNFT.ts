@@ -16,7 +16,7 @@ For now this always outputs to the folder "./output/items/" relative to the proj
 
 collectionJS - path to the collection's JS file, relative from the projectFolder
 
-e.g. node lib/esm/index.js generateRandomNFT collection/acme-collections.js 99 --project=projects/acme
+e.g. node dist/index.cjs generateRandomNFT collections.js 3 --project=projects/example-omo
 
 
 

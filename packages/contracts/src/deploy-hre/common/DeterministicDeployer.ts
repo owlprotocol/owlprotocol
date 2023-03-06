@@ -3,7 +3,6 @@ import type { HardhatRuntimeEnvironment } from 'hardhat/types';
 import DeterministicDeployer from '../../deploy/common/DeterministicDeployer.js';
 import { PRIVATE_KEY_0, PRIVATE_KEY_ANVIL } from '../../environment.js';
 
-//@ts-expect-error
 const deploy = async ({ ethers, network, deployments }: HardhatRuntimeEnvironment) => {
     const wallet = new ethers.Wallet(PRIVATE_KEY_0, ethers.provider);
     const walletAddress = await wallet.getAddress();

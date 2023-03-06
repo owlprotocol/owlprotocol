@@ -28,6 +28,7 @@ export const ContractCallForm = ({ networkId, address, namePrefix = '', name, in
     const validArgs = argsDefined && noInputErrors;
 
     const [returnValue, { error: callError }] = Contract.hooks.useContractCall(networkId, address, name, args, {
+        //@ts-expect-error
         sync: validArgs ? 'once' : false,
     });
 

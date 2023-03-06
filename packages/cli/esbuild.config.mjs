@@ -1,3 +1,8 @@
-import { buildLib } from '@owlprotocol/esbuild-config';
+import { buildAll, distConfigs } from '@owlprotocol/esbuild-config';
 
-await buildLib();
+distConfigs.forEach((c) => {
+    c.platform = 'node';
+    c.plugins = [];
+})
+
+await buildAll();

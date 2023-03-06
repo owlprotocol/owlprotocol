@@ -1,6 +1,4 @@
 import { ComponentStory, ComponentMeta } from '@storybook/react';
-import { TestData } from '@owlprotocol/web3-redux';
-import { networkIdArgType } from '../../../test/storybookArgs.js';
 import { AssetPickerModal } from './AssetPickerModal.js';
 
 // eslint-disable-next-line import/no-default-export

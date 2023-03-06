@@ -1,5 +1,6 @@
 import { assert } from 'chai';
-//@ts-expect-error
+
+import "@nomiclabs/hardhat-ethers";
 import hre, { ethers } from 'hardhat';
 import { SignerWithAddress } from '@nomiclabs/hardhat-ethers/signers';
 import {

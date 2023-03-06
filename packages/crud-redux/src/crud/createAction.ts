@@ -1,13 +1,8 @@
 import * as ReduxJSToolkit from '@reduxjs/toolkit';
 import { v4 as uuidv4 } from 'uuid';
 
-/*
-//CommonJS
-//@ts-expect-error
-const { createAction } = (ReduxJSToolkit.default) as typeof ReduxJSToolkit;
-*/
-const { createAction } = (ReduxJSToolkit) as typeof ReduxJSToolkit;
-export { createAction };
+const { createAction } = ((ReduxJSToolkit as any).default ?? ReduxJSToolkit) as typeof ReduxJSToolkit;
+export { createAction }
 
 export function createAction2<U extends (p: any) => any = (p: any) => any, T extends string = string>(name: T, payloadCreator: U) {
     return createAction(name, (payload: Parameters<U>[0], uuid?: string, ts?: number) => {

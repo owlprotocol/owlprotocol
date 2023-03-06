@@ -18,6 +18,8 @@ export interface NetworkId {
 export interface Network extends NetworkId, T_Encoded_Base {
     /** Human readable name for the network */
     readonly name?: string;
+    /** Average blockTime in seconds */
+    readonly blockTime?: number;
     /** Native currency */
     readonly currency?: {
         readonly name: string;
@@ -40,7 +42,6 @@ export interface Network extends NetworkId, T_Encoded_Base {
     readonly explorerApiKey?: string;
     /** Ens domain */
     readonly ens?: string;
-
     /** Relay Hub address */
     readonly relayHub?: string;
     /** Trusted Forwarder address */
@@ -49,6 +50,13 @@ export interface Network extends NetworkId, T_Encoded_Base {
     readonly versionRegistry?: string;
     /** Paymaster address */
     readonly paymaster?: string;
+    /** Sync */
+    /** Sync Contracts using ERC1820 */
+    readonly syncContracts?: boolean;
+    /** Sync blocks */
+    readonly syncBlocks?: boolean;
+    /** Sync asset transfer events */
+    readonly syncAssets?: boolean;
 }
 
 export interface NetworkWithObjects extends Network {

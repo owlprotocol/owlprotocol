@@ -78,6 +78,7 @@ export const AbiItemForm = ({
     const validArgs = argsDefined && noInputErrors;
 
     const [returnValue, { error: callError }] = Contract.hooks.useContractCall(networkId, address, name, args, {
+        //@ts-expect-error
         sync: !write && validArgs ? 'once' : false,
     });
 

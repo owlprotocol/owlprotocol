@@ -14,7 +14,7 @@ export const getBlockNumberAction = createAction2(GET_BLOCK_NUMBER, (payload: Ge
     const { networkId, maxCacheAge } = payload;
     return {
         networkId,
-        maxCacheAge: maxCacheAge ?? 0
+        maxCacheAge: maxCacheAge
     };
 });
 

@@ -32,7 +32,7 @@ export const plugins = [
     }),
     DTSPlugin(),
     CheckerPlugin({
-        typescript: false, //TODO: Disable for now
+        typescript: true, //TODO: Disable for now
         overlay: true,
         /*
         eslint: {

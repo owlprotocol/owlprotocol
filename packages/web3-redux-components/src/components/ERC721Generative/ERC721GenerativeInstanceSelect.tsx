@@ -118,10 +118,10 @@ export const ERC721GenerativeInstanceSelect = ({
 };
 
 export interface ERC721GenerativeInstanceSelectWithState {
-    tokens: NFTGenerativeItemId[];
+    tokens?: NFTGenerativeItemId[];
 }
 export const ERC721GenerativeInstanceSelectWithState = ({
-    tokens,
+    tokens = [],
 }: ERC721GenerativeInstanceSelectWithState) => {
     const [selecting, setSelecting] = useState(false);
     const [selected, setSelected] = useState<NFTGenerativeItemId | undefined>();

@@ -3,7 +3,6 @@ import { IERC20Mintable } from '../../../artifacts.js';
 import { ERC20MintableDeploy } from '../../../deploy/assets/ERC20/ERC20Mintable.js';
 
 //https://github.com/wighawag/hardhat-deploy/blob/master/types.ts#L358
-//@ts-expect-error
 const deploy = async ({ ethers, network, deployments }: HardhatRuntimeEnvironment) => {
     const results = await ERC20MintableDeploy({
         provider: ethers.provider, signers: await ethers.getSigners(), network,

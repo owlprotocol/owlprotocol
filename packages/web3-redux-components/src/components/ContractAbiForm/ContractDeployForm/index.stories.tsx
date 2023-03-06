@@ -31,7 +31,8 @@ const privateKey = ethers.utils.hexZeroPad(ethers.utils.hexlify(1), 32)
 const signer = new ethers.Wallet(privateKey);
 const factories = Ethers.getFactories(signer);
 const factoriesDeterministic = Ethers.getDeterministicFactories(factories);
-const factoriesDeterministicInit = Ethers.getDeterministicInitializeFactories(factories, from);
+//TODO: Patch this, need cloneFactory
+const factoriesDeterministicInit = factoriesDeterministic//Ethers.getDeterministicInitializeFactories(factories, from);
 
 const ERC721MintableImplementation = factoriesDeterministic.ERC721Mintable.getAddress()
 const UpgradeableBeaconFactory = factoriesDeterministicInit.UpgradeableBeacon;

@@ -12,9 +12,11 @@ To setup our store, we follow the standard `react-redux` configuration [guide](h
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { Provider } from 'react-redux';
-import { store } from '@owlprotocol/web3-redux';
+import { createStore } from '@owlprotocol/web3-redux';
 
 import App from './App';
+
+const store = createStore();
 
 ReactDOM.render(
     <React.StrictMode>

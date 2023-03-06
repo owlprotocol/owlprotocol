@@ -10,6 +10,7 @@ import { ContractWithObjects } from '../model/interface.js';
 import { EthCall } from '../../ethcall/model/interface.js';
 import type { Web3ContractMethodCall, Web3ContractMethodParams } from '@owlprotocol/contracts/lib/types/web3/types.js';
 import { BaseContract } from '@owlprotocol/contracts/lib/types/typechain/web3/types.js';
+import { ethers } from 'ethers';
 
 const ADDRESS_0 = '0x0000000000000000000000000000000000000000';
 
@@ -28,9 +29,13 @@ export function* callSaga(action: CallAction): Generator<
     //Make sure required parameters defined
     if (!method) throw new Error('method undefined');
 
-    const web3Contract = contract.web3Contract!;
+    const web3Contract = contract.web3Contract;
+    if (!web3Contract) throw new Error('contract undefined')
+    const methodAbi = contract.abi!.find((f) => f.type === 'function' && f.name === method)
     const methodFn = web3Contract.methods[method];
-    if (!methodFn) throw new Error(`Contract ${ContractCRUD.toPrimaryKey(payload)} has no such method ${payload.method}`);
+    if (!methodFn || !methodAbi) throw new Error(`Contract ${ContractCRUD.toPrimaryKey(payload)} has no such method ${payload.method}`);
+    const methodFragment = ethers.utils.FunctionFragment.from(methodAbi as any)
+    const methodSignature = methodFragment.format(ethers.utils.FormatTypes.sighash)
 
     let tx: Contracts.Web3.NonPayableTransactionObject<any>;
     if (!args || args.length == 0) tx = methodFn();
@@ -47,6 +52,7 @@ export function* callSaga(action: CallAction): Generator<
         to: contract.address,
         data,
         methodName: method,
+        methodSignature,
         args,
         from: fromDefined,
         status: 'LOADING' as const,
@@ -67,10 +73,7 @@ export function* callSaga(action: CallAction): Generator<
         networkId,
         to: contract.address,
         data,
-        methodName: method,
         args,
-        from: fromDefined,
-        gas: gasDefined,
         returnValue,
         status: 'SUCCESS' as const,
     }

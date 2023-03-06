@@ -1,5 +1,5 @@
 import { SignerWithAddress } from '@nomiclabs/hardhat-ethers/signers';
-//@ts-expect-error
+
 import hre, { ethers } from 'hardhat';
 import { ERC721TopDownDna } from '../../../ethers/types.js';
 import deployProxyNick from '../../../deploy-hre/common/DeterministicDeployer.js';

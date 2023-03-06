@@ -15,11 +15,13 @@ export const Main = Template.bind({});
 Main.args = {
     tokens: [
         {
+            //@ts-expect-error
             networkId: networkIdArgType.options[0],
             address: TestData.OZ_TEAM,
             tokenId: '1',
         },
         {
+            //@ts-expect-error
             networkId: networkIdArgType.options[0],
             address: TestData.OZ_TEAM,
             tokenId: '2',

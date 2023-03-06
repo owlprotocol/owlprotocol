@@ -1,46 +1,49 @@
 ---
 sidebar_position: 3
-slug: '/getting-started'
-sidebarCollapsed: false
 ---
 
 # Getting Started
 
-One of the most common use-cases of Owl Protocol's Dynamic NFT smart contracts is when a game wants to encode more data
-about the asset onto the on-chain NFT itself.
+## Installation
 
-This decreases the NFT's dependency on the game, *once the crucial data of the asset exists independent the game*, it can
-start to evolve and allow others to create new utilities, decentralized mechanics, and features.
+### Requirements
+
+- **pnpm** - `npm install -g pnpm`
+- **turbo** - See: [https://turbo.build](https://turbo.build/) for more info and to sign up.
+
+### Setup
+
+```
+git clone --recursive git@github.com:owlprotocol/owlprotocol.git
+npx turbo login
+npx turbo link
+pnpm i
+```
+
+Supply your own `.env` file in `packages/contracts` or: `cp .env.example .env`
+
+*This is required for the next build command:*
+
+```
+pnpm run build
+```
+
+If successful, it should show *(otherwise consult the `Dockerfile` for environment issues)*:
+
+```
+ Tasks:    12 successful, 12 total
+Cached:    3 cached, 12 total
+  Time:    2m32.857s
+```
+
+## Tutorials
+
+We have a set of tutorials for the common use cases, this is also a good way to get started and experiment with the basic
+use cases.
+
+- [**DNA Encoding - ERC721TopDownDna**](/contracts/tutorial-topdowndna) - create a Dynamic NFT with detachable child NFTs and proper onchain data encoding.
 
 :::info
-*The owner of the NFT **should always have full access to use their NFT in any way they choose**. Free from the dependencies of a centralized system.*
+We are still in **Alpha**, If you experience any issues please email us at [contact@owlprotocol.xyz](mailto:contact@owlprotocol.xyz).
 :::
 
-### You may want to encode data and **state** such as the:
-
-- Stats of the character of item
-- A visual representation of a character or item
-- Associate the NFT with **equipped items, enchantments, and special effects**
-- Attach achievements, player statistics, and custom payload data
-
-## Why It's Important
-
-It's important to ensure that the critical data about the NFT, such as its visual representation, parameters, and state are on-chain because:
-
-1. Marketplaces such as **Opensea, Blur, and Rarible** can render the full character with equipment, accessories, and cosmetics.
-
-2. Other games, metaverses, and blockchain projects can integrate your NFTs, thus creating new mechanics, utilities, and **value for your NFTs**.
-
-3. Gaming guilds, DAOs, and other ecosystems will give **special access, unlockable content, or benefits** to popular NFT communities and user bases.
-
-## Initial Steps
-
-Dynamic NFTs require a bit of planning ahead of time, although new traits can be easily added, it's much more difficult
-to remove or modify traits.
-
-However, adding more layers (options) to an **Image** trait is supported, as long as there is enough storage left,
-this can be configured with the **`bitSize`** field. For more detailed information see: [IERC721Dna](/contracts/contract-guides/IERC721Dna).
-
-:::caution Under Development
-We are still launching our SDK and UI - Tutorials Coming Soon
-:::

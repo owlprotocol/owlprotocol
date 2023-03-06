@@ -19,13 +19,7 @@ const build = {
     rollupOptions: {
         //Library Mode
         ...config.build.rollupOptions,
-        external: [
-            'react',
-            'react-dom',
-            '@chakra-ui/react',
-            '@emotion/react',
-            '@emotion/styled',
-        ],
+        external: ['react', 'react-dom', '@chakra-ui/react', '@emotion/react', '@emotion/styled'],
         output: {
             globals: {
                 react: 'React',

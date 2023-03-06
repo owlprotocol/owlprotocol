@@ -31,7 +31,7 @@ export const NFTGenerativeTraitImagePicker = ({
                     <div key={option.value} onClick={() => setValue(option.value)}>
                         <NFTGenerativeTraitImageDisplay
                             key={option.value}
-                            item={newItem}
+                            item={newItem as any}
                             name={name}
                             active={selected.value == option.value}
                         />

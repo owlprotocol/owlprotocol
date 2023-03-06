@@ -1,0 +1,21 @@
+{
+  "rootContract": {
+    "tokenSymbol": "ExampleOmoNFT",
+    "tokenIdStart": 1,
+    "cfg": {
+      "ipfsEndpoint": "https://leovigna.mypinata.cloud",
+      "ipfsPath": "ipfs",
+      "apiEndpoint": "http://metadata.owlprotocol.xyz:32001",
+      "apiPath": "metadata/getMetadata",
+      "schemaJsonIpfs": "QmRNrcuGtaqefB72NHuGdDtvzEZjNvX6m2E1AgBXW65EKq"
+    }
+  },
+  "children": {
+    "Hats": {
+      "tokenIdStart": 1,
+      "cfg": {
+        "schemaJsonIpfs": "QmcYC3fcqxU2gqS7VWEeC7jLDjpFQunMXmfkijXq325RHf"
+      }
+    }
+  }
+}

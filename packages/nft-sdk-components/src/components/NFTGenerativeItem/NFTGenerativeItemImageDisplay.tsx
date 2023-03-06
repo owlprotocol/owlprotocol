@@ -39,12 +39,11 @@ export const NFTGenerativeItemImageDisplay = (props: NFTGenerativeItemImageDispl
     if (!showItemChildren || !item.children) {
         return <Image {...imageProps} src={imageData} alt={item.dna()} />;
     }
-    
     return (
         <>
             <Image {...imageProps} src={imageData} alt={item.dna()} objectFit={'contain'} />
             {Object.values(item.children!).map((c, i) => {
-                return <NFTGenerativeItemImageDisplay {...imageProps} item={c} />;
+                return <NFTGenerativeItemImageDisplay key={i} {...imageProps} item={c as any} />;
             })}
         </>
     );

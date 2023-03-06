@@ -11,13 +11,13 @@ import Icon from "../../Icon/index.js";
 
 export interface AddressDropdownProps {
     address: string[];
-    onChange: (address: string) => string;
+    onChange?: (address: string) => any;
     placeholder?: string;
 }
 
 export const AddressDropdown = ({
     address = [],
-    onChange,
+    onChange = (address) => { console.debug(address) },
     placeholder = "Select address",
 }: AddressDropdownProps) => {
     const { themes } = useTheme();
