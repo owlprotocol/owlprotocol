@@ -1,7 +1,6 @@
 # Web3 Redux
 Core Redux Library. See [README.md](../../README.md) for more info.
 
-
 ## Models
 In total we have 13 data models.
 ### Simple Primary Key

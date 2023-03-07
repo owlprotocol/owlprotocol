@@ -1,9 +1,13 @@
 {
-  "name": "owlprotocol-2023",
+  "name": "owlprotocol",
   "version": "1.0.0",
   "description": "Owl Protocol Public Repo",
   "scripts": {
     "build": "turbo run build --continue",
+    "build:contracts": "turbo run build --filter @owlprotocol/contracts",
+    "build:web3-redux": "turbo run build --filter @owlprotocol/web3-redux",
+    "build:web3-redux-components": "turbo run build --filter @owlprotocol/web3-redux-components",
+    "build-storybook:web3-redux-components": "turbo run build-storybook --filter @owlprotocol/web3-redux-components",
     "clean:node_modules": "rimraf node_modules ./**/node_modules"
   },
   "keywords": [],

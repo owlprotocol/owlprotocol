@@ -1,6 +1,7 @@
 # OWL Protocol Contracts
 
 This repository contains all Owl Protocol Smart production smart contracts.
+
 ## What is it?
 We're developing plug-and-play smart contracts and libraries to make it easier for developers and creators to focus on what they do best: **making great games and content**.
 
