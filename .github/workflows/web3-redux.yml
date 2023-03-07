@@ -1,0 +1,79 @@
+name: Web3 Redux
+
+on:
+  push:
+    branches:
+      - subrepo-clean
+      - subrepo-public
+    paths:
+      - configs/**
+      - packages/utils/**
+      - packages/contracts/**
+      - packages/web3-redux/**
+      - packages/web3-redux-components/**
+  pull_request:
+    paths:
+      - configs/**
+      - packages/utils/**
+      - packages/contracts/**
+      - packages/web3-redux/**
+      - packages/web3-redux-components/**
+
+env:
+  TURBO_TOKEN: ${{ secrets.TURBO_TOKEN }}
+  TURBO_TEAM: ${{ secrets.TURBO_TEAM }}
+  PRIVATE_KEY_ANVIL: ${{ secrets.PRIVATE_KEY_ANVIL }}
+  PRIVATE_KEY_0: ${{ secrets.PRIVATE_KEY_0 }}
+  PRIVATE_KEY_1: ${{ secrets.PRIVATE_KEY_1 }}
+  PUBLIC_ADDRESS_0: ${{ secrets.PUBLIC_ADDRESS_0 }}
+  PUBLIC_ADDRESS_1: ${{ secrets.PUBLIC_ADDRESS_1 }}
+  VITE_INFURA_API_KEY: ${{ secrets.VITE_INFURA_API_KEY }}
+  VITE_MAGIC_CONNECT_PK: ${{ secrets.VITE_MAGIC_CONNECT_PK }}
+  VITE_PUBLIC_ADDRESS_0: ${{ secrets.VITE_PUBLIC_ADDRESS_0 }}
+  VITE_PUBLIC_ADDRESS_1: ${{ secrets.VITE_PUBLIC_ADDRESS_1 }}
+  ALGOLIA_API_KEY: ${{ secrets.ALGOLIA_API_KEY }}
+  ALGOLIA_APP_ID: ${{ secrets.ALGOLIA_APP_ID }}
+
+jobs:
+  build:
+    name: Build
+    runs-on: ubuntu-latest
+    steps:
+      # Git Checkout
+      - uses: actions/checkout@v3
+        with:
+          submodules: true
+      # Node Setup
+      - uses: actions/setup-node@v3
+        with:
+          node-version: "16.14"
+      # PNPM Setup
+      - uses: pnpm/action-setup@v2.0.1
+        name: Install pnpm
+        id: pnpm-install
+        with:
+          version: 7
+          run_install: false
+      - name: Set pnpm store directory
+        if: ${{ !env.ACT }}
+        id: pnpm-cache
+        run: |
+          echo "::set-output name=pnpm_cache_dir::$(pnpm store path)"
+      - uses: actions/cache@v3
+        if: ${{ !env.ACT }}
+        name: Setup pnpm cache
+        with:
+          path: ${{ steps.pnpm-cache.outputs.pnpm_cache_dir }}
+          key: ${{ runner.os }}-pnpm-store-${{ hashFiles('**/pnpm-lock.yaml') }}
+          restore-keys: |
+            ${{ runner.os }}-pnpm-store-
+      # Install
+      - run: pnpm i
+        name: Install dependencies
+      # Build
+      - run: pnpm run build:web3-redux
+        name: Build @owlprotocol/web3-redux
+      - run: pnpm run build:web3-redux-components
+        name: Build @owlprotocol/web3-redux-components
+      - run: pnpm run build-storybook:web3-redux-components
+        name: Build Storybook @owlprotocol/web3-redux-components
