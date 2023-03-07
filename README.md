@@ -40,14 +40,28 @@
 
 # Owl Protocol
 
+![contracts workflow](https://github.com/owlprotocol/owlprotocol/actions/workflows/contracts.yml/badge.svg)
+![web3-redux workflow](https://github.com/owlprotocol/owlprotocol/actions/workflows/web3-redux.yml/badge.svg)
+
+
 Owl Protocol - Web3 Tools & Dynamic NFTs.
 
 ## TL;DR
 
 ```
 git clone --recursive git@github.com:owlprotocol/owlprotocol.git
+```
+
+
+If you are using [Turbo](https://turbo.build/) - OPTIONAL but recommended for devs
+```
 npx turbo login
 npx turbo link
+```
+
+Then:
+
+```
 pnpm i
 ```
 

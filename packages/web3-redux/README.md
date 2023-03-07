@@ -27,12 +27,20 @@
 [web3-redux-npm]: https://img.shields.io/npm/v/@owlprotocol/web3-redux.svg
 
 # Web3 Redux
-web3 state management library using [Redux], [Dexie.js], [Redux ORM], [Redux Sagas]
+Core Redux Library. See [README.md](../../README.md) for more info.
 
-## Install
-```
-pnpm install @owlprotocol/web3-redux
-```
+## Models
+In total we have 13 data models.
+### Simple Primary Key
+These models have a single id as a primary key.
+* `4Byte`: `signatureHash`
+* `Config`: `id`
+* `ContractSend`: `uuid` generated randomly
+* `Error`: `id`
+* `HTTPCache`
+* `IPFSCache`
+* `Network`: `networkId`
+* `Sync`
 
 ## Packages
 | Package  | Version |  Description |
