@@ -6,7 +6,7 @@ const Template: ComponentStory<typeof NetworkTable> = (args: any) => (
 );
 export const Main = Template.bind({});
 export default {
-    title: "Tables/NetworkTable",
+    title: "Tables/Network/Main",
     component: NetworkTable,
     parameters: {
         docs: {

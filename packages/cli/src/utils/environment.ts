@@ -7,6 +7,7 @@ let defaultEnv = '';
 if (NODE_ENV === 'production') defaultEnv = '.env';
 else if (NODE_ENV === 'development') defaultEnv = '.env.development';
 else if (NODE_ENV === 'test') defaultEnv = '.env.test';
+else if (NODE_ENV === 'mumbai') defaultEnv = '.env.mumbai';
 
 const envFile = path.resolve(process.cwd(), defaultEnv);
 
@@ -19,5 +20,6 @@ if (dotenvRes.error) {
 }
 
 export const NETWORK = process.env.NETWORK || 'anvil';
-export const HD_WALLET_MNEMONIC =
-    process.env.HD_WALLET_MNEMONIC || 'test test test test test test test test test test test junk';
+export const HD_WALLET_MNEMONIC = process.env.HD_WALLET_MNEMONIC;
+
+export const PRIVATE_KEY_0 = process.env.PRIVATE_KEY_0;

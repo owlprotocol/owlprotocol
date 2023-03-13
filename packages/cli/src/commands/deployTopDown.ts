@@ -8,7 +8,7 @@ import { constants, ethers, Signer, utils } from 'ethers';
 import { NFTGenerativeItemInterface, NFTGenerativeCollectionClass, NFTGenerativeItemClass } from '@owlprotocol/nft-sdk';
 import { Deploy, Ethers, Utils, Artifacts } from '@owlprotocol/contracts';
 import { Argv, getProjectFolder, getProjectSubfolder } from '../utils/pathHandlers.js';
-import { HD_WALLET_MNEMONIC, NETWORK } from '../utils/environment.js';
+import { HD_WALLET_MNEMONIC, NETWORK, PRIVATE_KEY_0 } from '../utils/environment.js';
 import {
     OwlProject,
     InitArgs,
@@ -90,7 +90,15 @@ export const handler = async (argv: Argv) => {
 
     const nftItemResults = await getNftItems(collMetadata, itemsFolder);
 
-    const signers = new Array<ethers.Wallet>(ethers.Wallet.fromMnemonic(HD_WALLET_MNEMONIC).connect(provider));
+    const signers = new Array<ethers.Wallet>();
+    if (HD_WALLET_MNEMONIC) {
+        signers[0] = ethers.Wallet.fromMnemonic(HD_WALLET_MNEMONIC);
+    } else if (PRIVATE_KEY_0) {
+        signers[0] = new ethers.Wallet(PRIVATE_KEY_0);
+    } else {
+        throw new Error('ENV variable HD_WALLET_MNEMONIC or PRIVATE_KEY_0 must be provided');
+    }
+    signers[0] = signers[0].connect(provider);
     const network: Deploy.RunTimeEnvironment['network'] = config.get(`network.${NETWORK}`);
 
     if (argv.deployCommon) {
@@ -406,6 +414,8 @@ const deployContracts = async (owlProject: OwlProject, factories: any) => {
 
 /**
  * We grant approval to the parent NFT to transfer the children to itself
+ *
+ * Note: initial value of provider.getTransactionCount(signerAddress); We use that and then increment.
  * @param signer
  * @param contracts
  */
@@ -414,20 +424,22 @@ const setApprovalsForChildren = async (signer: ethers.Wallet, contracts: Record<
     let nonce = await provider.getTransactionCount(signerAddress);
     const rootContractAddr = contracts.root.address;
 
-    const approvalPromises = mapValues(contracts, async (mint: any, k) => {
+    const approvalPromises = mapValues(contracts, async (mint: any, k): Promise<any> => {
         if (k === 'root') {
             return; // new Promise(() => Promise.resolve());
         }
 
-        debug && console.debug(`setApprovalForAll: ${mint.address} - ${k} `);
+        debug && console.debug(`setApprovalForAll: ${mint.address} - ${k} - nonce: ${nonce}`);
 
         const childContract = new ethers.Contract(mint.address, Artifacts.ERC721TopDownDna.abi, signer);
 
-        await childContract.setApprovalForAll(rootContractAddr, true, {
+        const tx = await childContract.setApprovalForAll(rootContractAddr, true, {
             nonce: nonce++,
             // gasPrice: 2e9,
             gasLimit: 10e6,
         });
+
+        return await tx.wait(1);
     });
 
     return await awaitAllObj(approvalPromises);

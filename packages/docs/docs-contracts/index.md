@@ -15,7 +15,15 @@ keywords:
 
 import { SimpleGrid } from '@chakra-ui/react'
 
-## Our **standards** are Smart Contract **Primitives** that can be combined to create amazing use cases for Dynamic NFTs.
+:::tip NEW TUTORIAL
+## Learn from example through our [Dynamic NFT with DNA Tutorial](/contracts/tutorial-topdowndna)!
+
+Explore step by step, how to create a new collection NFT profile pic, with dynamic detachable elements.
+
+[**CLICK HERE**](/contracts/tutorial-topdowndna)
+:::
+
+## Our **standards** are Smart Contract **Primitives** that can be combined to create amazing use cases for Dynamic NFTs (DNFTs).
 
 ### 1. Dynamic NFT Data
 

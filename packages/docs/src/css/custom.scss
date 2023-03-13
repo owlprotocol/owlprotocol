@@ -30,18 +30,21 @@ html[data-theme="light"] {
     --ifm-color-primary-lighter: #32d8b4;
     --ifm-color-primary-lightest: #4fddbf;
 
-    .homepage-hero,
-    .homepage-features {
+    .homepage-hero {
         background-color: #dbe4e6;
     }
 
+    .homepage-features {
+        background-color: rgba(93,94,158, 0.5);
+    }
+
     .footer {
-        background-color: #dbe4e6;
+        background-color: rgba(93,94,158, 0.5);
         color: #000;
     }
 
     .features-section {
-        background-color: #92929d;
+        background-color: #eee;
     }
 
     a,
@@ -93,8 +96,7 @@ html[data-theme="light"] .homepage-hero {
 
 .homepage-hero {
     background: linear-gradient(217deg, rgba(38,40,53,.8), rgba(38,40,53,0) 70.71%),
-    linear-gradient(127deg, rgba(93,94,158,1), rgba(93,94,158,0) 70.71%),
-    linear-gradient(336deg, rgba(62,64,78,.8), rgba(62,64,78,0) 70.71%);
+    linear-gradient(127deg, rgba(93,94,158,1), rgba(93,94,158,0) 70.71%);
 }
 
 .homepage-features:hover {
@@ -240,7 +242,7 @@ Internal Pages (Markdown)
 
             strong {
                 font-size: 1.5rem;
-                color: #e75dff;
+                color: #ad5dff;
             }
 
             p {
@@ -288,7 +290,7 @@ html[data-theme="dark"] .markdown {
     }
 
     strong {
-        color: #e75dff;
+        color: #ad5dff;
     }
 
     .docusaurus-highlight-code-line {
@@ -308,3 +310,32 @@ html[data-theme="light"] .markdown {
     color: var(--ifm-link-color) !important;
 }
 
+.sidebar-divider {
+    border-top: 1px solid var(--ifm-color-gray-200);
+    display: block;
+    margin: 0.5rem 0 0.25rem 1rem;
+}
+
+html[data-theme='dark'] .sidebar-divider {
+    border-top: 1px solid var(--ifm-color-gray-800);
+}
+
+.sidebar-title {
+    font-size: 0.8rem;
+    letter-spacing: 0.05rem;
+    text-transform: uppercase;
+    font-weight: 600;
+    color: var(--ifm-color-gray-600);
+    background-color: rgba(0, 0, 0, 0.1);
+    border-radius: 4px;
+}
+
+html[data-theme='dark'] .sidebar-title {
+    background-color: rgba(255, 255, 255, 0.2);
+}
+
+
+
+html[data-theme='dark'] .sidebar-divider {
+    color: var(--ifm-color-gray-200);
+}

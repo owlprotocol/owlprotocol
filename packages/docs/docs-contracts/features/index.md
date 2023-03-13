@@ -1,11 +1,11 @@
 ---
-sidebar_position: 5
+sidebar_position: 1
 slug: '/features'
 ---
 
 import { SimpleGrid } from '@chakra-ui/react'
 
-# Features
+# Index
 
 The primary features supported by Owl Protocol are:
 

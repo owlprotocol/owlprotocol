@@ -2,13 +2,13 @@ import yargs from 'yargs';
 import _ from 'lodash';
 
 import { Argv } from '../utils/pathHandlers.js';
-import { HD_WALLET_MNEMONIC, NETWORK } from '../utils/environment.js';
+import { HD_WALLET_MNEMONIC, NETWORK, PRIVATE_KEY_0 } from '../utils/environment.js';
 
 import { ethers } from 'ethers';
 
 const { mapValues } = _;
 
-import { Artifacts } from '@owlprotocol/contracts';
+import { Artifacts, Deploy } from '@owlprotocol/contracts';
 import config from 'config';
 
 const jsonRpcEndpoint: string = config.get(`network.${NETWORK}.config.url`);
@@ -51,13 +51,21 @@ export const handler = async (argv: Argv) => {
 
     debug = !!argv.debug || false;
 
-    const signers = new Array<ethers.Wallet>(ethers.Wallet.fromMnemonic(HD_WALLET_MNEMONIC).connect(provider));
-    // const network: Deploy.RunTimeEnvironment['network'] = config.get(`network.${NETWORK}`);
+    const signers = new Array<ethers.Wallet>();
+    if (HD_WALLET_MNEMONIC) {
+        signers[0] = ethers.Wallet.fromMnemonic(HD_WALLET_MNEMONIC);
+    } else if (PRIVATE_KEY_0) {
+        signers[0] = new ethers.Wallet(PRIVATE_KEY_0);
+    } else {
+        throw new Error('ENV variable HD_WALLET_MNEMONIC or PRIVATE_KEY_0 must be provided');
+    }
+    signers[0] = signers[0].connect(provider);
+
     const rootContractAddr = argv.rootContractAddr as string;
     const tokenId = argv.tokenId as number;
 
     const rootContract = new ethers.Contract(rootContractAddr, Artifacts.ERC721TopDownDna.abi, signers[0]);
-    const contractURI = await rootContract.contractURI()
+    const contractURI = await rootContract.contractURI();
 
     console.log(`Fetching Metadata Schema JSON from: ${contractURI}`);
     const collMetadataRes = await fetch(contractURI);

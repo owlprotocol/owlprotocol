@@ -1,4 +1,4 @@
-import { Box } from "@chakra-ui/react";
+import { Box, Image } from "@chakra-ui/react";
 import { ReactComponent as EthereumIcon } from "./icons/eth.svg";
 import { ReactComponent as OptimismIcon } from "./icons/optimism.svg";
 import { ReactComponent as ArbitrumIcon } from "./icons/arbitrum.svg";
@@ -6,6 +6,7 @@ import { ReactComponent as PolygonIcon } from "./icons/polygon.svg";
 import { ReactComponent as MoonbeamIcon } from "./icons/moonbeam.svg";
 import { ReactComponent as MoonriverIcon } from "./icons/moonriver.svg";
 import { ReactComponent as BNBIcon } from "./icons/bnb.svg";
+import AnvilIcon from "./icons/anvil-logo-sm.png";
 
 export interface Props {
     networkId?: number | string | undefined;
@@ -32,6 +33,8 @@ export const NetworkIcon = ({ networkId = "1", size = 30 }: Props) => {
                 return <MoonriverIcon />;
             case "binance":
                 return <BNBIcon />;
+            case "31337":
+                return <Image src={AnvilIcon} />;
             default:
                 return (
                     <Box borderRadius={"50%"} bg={"#eee"} boxSize={"100%"} />

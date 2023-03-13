@@ -1,5 +1,5 @@
 ---
-sidebar_position: 1
+sidebar_position: 2
 ---
 
 import { Box } from '@chakra-ui/react'
@@ -11,9 +11,17 @@ import { Box } from '@chakra-ui/react'
 Many other NFT projects may add additional methods to their NFT token contract, which is difficult for integration,
 because they are non-standard, requiring developers to customize integrations for each NFT collection.
 
-Our approach is to expose the dynamic features through the standard `tokenURI` method.
+:::tip Jump to the Tutorial
+## Learn from example through our [Dynamic NFT Data Tutorial](/contracts/tutorial-nftdata)!
 
-```
+Explore step by step, how to encode arbitrary data for your NFT, for any use case.
+
+[CLICK HERE](/contracts/tutorial-nftdata)
+:::
+
+### Our approach starts with exposing the dynamic features (DNA) through the standard `tokenURI` method.
+
+```js
 /***** Dna (NFT Data) *****/
 /**
  * @dev returns uri for token metadata. If no baseURI, returns Dna as string
@@ -75,7 +83,7 @@ NFT rendering/image either as a link or a base64 encoded image.
 The **Collection Schema JSON** defines how the traits of an NFT are encoded into bytes, for example a typical Schema JSON
 may look like this:
 
-```
+```json
 {
   "name": "Owl Protocol Example",
   "description": "Example Collection",
@@ -153,7 +161,7 @@ Calling the `tokenURI` would return the NFT **metadata JSON**, which conforms to
 
 Which is the descriptive JSON that looks somewhat like:
 
-```
+```js
 {
   "description": "NFT Marketplace compatible metadata JSON for the Owl Protocol Example docs.",
   "external_url": "https://docs.owlprotocol.xyz",

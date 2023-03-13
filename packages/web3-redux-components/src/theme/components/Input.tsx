@@ -10,9 +10,9 @@ const Input = (CURRENT_THEME: string) => {
             form: {
                 field: {
                     height: "52px",
+                    bg: theme.color5,
                     color: theme.color7,
                     borderRadius: 8,
-                    backgroundColor: theme.color5,
                     outline: 0,
                     border: 0,
                     _placeholder: {

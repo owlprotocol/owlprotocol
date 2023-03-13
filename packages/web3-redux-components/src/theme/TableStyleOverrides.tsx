@@ -1,12 +1,14 @@
 import styled from "@emotion/styled";
 
+// style overrides for various browsers support
+
 // @ts-ignore
 const TableWrapper = styled.div`
     table {
         border-spacing: 0;
         border-collapse: seperate;
-        border-radius: 12px;
-        overflow: hidden;
+        // border-radius: 12px;
+        // overflow: hidden;
     }
 
     table tr:nth-child(odd) {

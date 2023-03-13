@@ -12,7 +12,11 @@ export { default as NetworkIcon } from "./components/NetworkIcon/index.js";
 export { default as TransactionProgressBar } from "./components/TransactionProgressBar/index.js";
 export { default as Erc20QRGenerator } from "./components/Erc20QRGenerator/index.js";
 export { default as QRCodePopover } from "./components/QRCodePopover/index.js";
-export { default as TransactionsTable } from "./components/TransactionsTable/index.js";
+
+// Data Tables
+export { ContractsManagerTable, TransactionTable } from './components/DataTables'
+
+
 export * from "./components/ContractAbiForm/index.js";
 export * from "./components/FileUpload/index.js";
 export * from "./components/IPFS/index.js";
@@ -25,7 +29,7 @@ export * from "./components/NFT/index.js";
 
 //Address
 export * from "./components/Address/index.js";
-export * from "./components/Contract/index.js";
+export * from "./components/DataTables/Contract/index.js";
 
 //ERC
 export * from "./components/ERC721/index.js";

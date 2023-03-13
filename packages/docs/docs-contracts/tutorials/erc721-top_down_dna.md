@@ -1,6 +1,6 @@
 ---
-sidebar_position: 1
-sidebar_label: 'Dynamic NFT with DNA'
+sidebar_position: 3
+sidebar_label: 'DNFT Image Layers with DNA'
 slug: '/tutorial-topdowndna'
 ---
 
@@ -10,12 +10,31 @@ import { SimpleGrid } from '@chakra-ui/react'
 
 ## Tutorial
 
-The **ERC721TopDownDna** contract combines two of our primary features:
+The **ERC721TopDownDna** smart contract combines two of our primary features:
 
 1. **TopDown** - Allows NFTs to own other child NFTs in a meaningful way onchain - [ERC721TopDownBase.sol](https://github.com/owlprotocol/owlprotocol/blob/main/packages/contracts/contracts/assets/ERC721/ERC721TopDownBase.sol)
-2. **DNA** - Allows NFTs to encode data onchain in a universal way with offchain schemas - [ERC721TopDownDna.sol](https://github.com/owlprotocol/owlprotocol/blob/main/packages/contracts/contracts/assets/ERC721/ERC721TopDownDna.sol)
+2. **DNA** - Allows NFTs to encode data onchain in a universal way with offchain schemas - [ERC721DnaBase.sol](https://github.com/owlprotocol/owlprotocol/blob/main/packages/contracts/contracts/assets/ERC721/ERC721DnaBase.sol)
+
+Combined we have the contract: [ERC721TopDownDna.sol](https://github.com/owlprotocol/owlprotocol/blob/main/packages/contracts/contracts/assets/ERC721/ERC721TopDownDna.sol)
 
 ## Use Case: PFPs with Detachable Accessories or Equipment
+
+<SimpleGrid className="features-grid" columns={{sm: 2, md: 4}} spacing={8}>
+<Box>
+    <div>
+    <img src="/img/tutorial/attached.png"/>
+    <br/>
+    <strong>NFT with Hat</strong>
+    </div>
+</Box>
+<Box>
+    <div>
+    <img src="/img/tutorial/detached.png"/>
+    <br/>
+    <strong>NFT with Hat Removed</strong>
+    </div>
+</Box>
+</SimpleGrid>
 
 In this example we are creating a Dynamic PFP (Profile Picture NFT).
 
@@ -48,17 +67,19 @@ The sample will have a small number of layers for each `trait`:
     <div>
     <img src="/img/tutorial/bg-dunes.png"/>
     <br/>
-    Dunes
+    <strong>Dunes</strong>
     </div>
 </Box>
 <Box>
     <div>
     <img src="/img/tutorial/bg-downtown.png"/>
     <br/>
-    Downtown
+    <strong>Downtown</strong>
     </div>
 </Box>
 </SimpleGrid>
+
+**And no background at all.**
 
 ### Body
 
@@ -67,19 +88,17 @@ The sample will have a small number of layers for each `trait`:
     <div>
     <img src="/img/tutorial/body-base.png"/>
     <br/>
-    Dunes
+    <strong>Common</strong>
     </div>
 </Box>
 <Box>
     <div>
     <img src="/img/tutorial/body-albino.png"/>
     <br/>
-    Albino
+    <strong>Albino</strong>
     </div>
 </Box>
 </SimpleGrid>
-
-And no background at all.
 
 ### Hats (Detachable Accessory)
 
@@ -88,28 +107,28 @@ And no background at all.
     <div>
     <img src="/img/tutorial/hats-cap.png"/>
     <br/>
-    Regular Cap
+    <strong>Regular Cap</strong>
     </div>
 </Box>
 <Box>
     <div>
     <img src="/img/tutorial/hats-beanie.png"/>
     <br/>
-    Beanie
+    <strong>Beanie</strong>
     </div>
 </Box>
 <Box>
     <div>
     <img src="/img/tutorial/hats-beret.png"/>
     <br/>
-    Beret
+    <strong>Beret</strong>
     </div>
 </Box>
 <Box>
     <div>
     <img src="/img/tutorial/hats-cowboy.png"/>
     <br/>
-    Cowboy Hat
+    <strong>Cowboy Hat</strong>
     </div>
 </Box>
 </SimpleGrid>
@@ -593,7 +612,7 @@ Which gives us the `tokenUri`, `http://metadata.owlprotocol.xyz:32001/metadata/g
 
 But you may have noticed the image is accessible simply via the `getImage` path instead of the `getMetadata` path.
 
-So just calling: `http://metadata.owlprotocol.xyz:32001/metadata/getImage/Qmc7Aih1P67dmHF4PDMg5KfLABMtR6DXmDaxRvgF8Wgoe9/AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAADAAEBAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=`
+So just calling: [http://metadata.owlprotocol.xyz:32001/metadata/getImage/Qmc7Aih1P67dmHF4PDMg5KfLABMtR6DXmDaxRvgF8Wgoe9/AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAADAAEBAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=](http://metadata.owlprotocol.xyz:32001/metadata/getImage/Qmc7Aih1P67dmHF4PDMg5KfLABMtR6DXmDaxRvgF8Wgoe9/AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAADAAEBAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=)
 
 Gives us:
 

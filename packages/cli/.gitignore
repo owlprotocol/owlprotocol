@@ -43,7 +43,11 @@ logs
 .env.development
 .env.test
 .env.production
+.env.mumbai
 .env
+
+# configs
+config/*.json
 
 # turbo
 .turbo

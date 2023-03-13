@@ -1,7 +1,7 @@
 import yargs from 'yargs';
 import config from 'config';
 import { ethers } from 'ethers';
-import { HD_WALLET_MNEMONIC, NETWORK } from '../utils/environment.js';
+import { HD_WALLET_MNEMONIC, PRIVATE_KEY_0, NETWORK } from '../utils/environment.js';
 import { Deploy } from '@owlprotocol/contracts';
 
 const jsonRpcEndpoint: string = config.get(`network.${NETWORK}.config.url`);
@@ -42,7 +42,15 @@ export const handler = async (argv: yargs.ArgumentsCamelCase) => {
     console.log(`Deploying Common Beacons and Implementations to ${NETWORK}`);
 
     const signers: Array<ethers.Wallet> = [];
-    const walletOne = ethers.Wallet.fromMnemonic(HD_WALLET_MNEMONIC);
+
+    let walletOne: ethers.Wallet;
+    if (HD_WALLET_MNEMONIC) {
+        walletOne = ethers.Wallet.fromMnemonic(HD_WALLET_MNEMONIC);
+    } else if (PRIVATE_KEY_0) {
+        walletOne = new ethers.Wallet(PRIVATE_KEY_0);
+    } else {
+        throw new Error('ENV variable HD_WALLET_MNEMONIC or PRIVATE_KEY_0 must be provided');
+    }
     const network: Deploy.RunTimeEnvironment['network'] = config.get(`network.${NETWORK}`);
 
     signers[0] = walletOne.connect(provider);

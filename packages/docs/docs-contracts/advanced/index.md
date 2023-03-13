@@ -1,9 +1,9 @@
 ---
-sidebar_position: 9
+sidebar_position: 1
 slug: '/advanced'
 ---
 
-# Advanced
+# Overview
 
 ### Deployment
 

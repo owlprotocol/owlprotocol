@@ -1,14 +1,16 @@
 import { Link } from "@tanstack/react-router";
 import { Box, Tr, Td, useTheme, Badge } from "@chakra-ui/react";
 import { Network } from "@owlprotocol/web3-redux";
-import { AddressDisplay } from "../../Address/AddressDisplay";
-import { NetworkIcon } from "../../NetworkIcon";
+import { AddressDisplay } from "../../../../Address/AddressDisplay";
+import { NetworkIcon } from "../../../../NetworkIcon";
 import { interfaceIdNames } from "@owlprotocol/contracts";
 
 export interface ContractsManagerTableRowPropsProps {
+    id?: string;
     networkId: string;
     address: string;
     interfaceIds?: string[];
+    updatedAt?: number;
 }
 
 export const ContractsManagerTableRow = ({
@@ -56,7 +58,12 @@ export const ContractsManagerTableRow = ({
                 >
                     {interfaceIds.map((id, key) => (
                         <Badge bg={themes.color4} mr={2}>
-                            <Link key={key} to={`/explore/${id}/${address}?networkId=${networkId}` as any}>
+                            <Link
+                                key={key}
+                                to={
+                                    `/explore/${id}/${address}?networkId=${networkId}` as any
+                                }
+                            >
                                 {interfaceIdNames[id]}
                             </Link>
                         </Badge>

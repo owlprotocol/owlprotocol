@@ -2,11 +2,11 @@ import { ComponentStory, ComponentMeta } from "@storybook/react";
 import {
     networkIdArgType,
     contractTagsArgType,
-} from "../../../test/storybookArgs";
+} from "../../../../test/storybookArgs";
 import { ContractsManagerTable, ContractsManagerTableWhere } from ".";
 
 export default {
-    title: "Contract/ContractsManagerTable",
+    title: "Tables/Contract/Manage",
     component: ContractsManagerTable,
 } as ComponentMeta<typeof ContractsManagerTable>;
 
@@ -21,7 +21,7 @@ const TableWhereTemplate: ComponentStory<typeof ContractsManagerTableWhere> = (
 export const TableWhere = TableWhereTemplate.bind({});
 TableWhere.args = {
     networkId: "31337",
-    tags: "Favorites",
+    tags: ["Favorites"],
 };
 TableWhere.argTypes = {
     networkId: networkIdArgType,

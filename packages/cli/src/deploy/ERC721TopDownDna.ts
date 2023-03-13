@@ -39,7 +39,10 @@ export const deployERC721TopDownDna = async (
     const signer = signers[0];
     const signerAddress = await signer.getAddress();
 
+    let rootTokenId: number;
     let nonce = await provider.getTransactionCount(signerAddress);
+
+    console.log(`deployERC721TopDownDna - nonce start: ${nonce}`);
 
     const contractPromises = mapValues(contracts, async (c, k): Promise<MintNFTResult> => {
         let tokenId: number;
@@ -48,6 +51,7 @@ export const deployERC721TopDownDna = async (
 
         if (k === 'root') {
             tokenId = owlProject.rootContract.tokenIdStart;
+            rootTokenId = tokenId;
             owlProject.rootContract.tokenIdStart++;
             dna = nftItem.dna();
         } else {
@@ -104,9 +108,9 @@ export const deployERC721TopDownDna = async (
 
     tokenIdUpdates = zip(...tokenIdUpdates);
 
-    await rootContract.setChildren(
+    const txSetChildren = await rootContract.setChildren(
         ...Utils.ERC721TopDownDna.flattenSetChildrenArgsERC721TopDownDna({
-            tokenId: 1,
+            tokenId: rootTokenId!,
             childContracts721Set: tokenIdUpdates[0],
             childTokenIds721Set: tokenIdUpdates[1],
         }),
@@ -116,7 +120,7 @@ export const deployERC721TopDownDna = async (
         },
     );
 
+    await txSetChildren.wait(1);
+
     return mints;
 };
-
-const attachChildren = async (mints: Array<any>) => {};

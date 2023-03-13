@@ -1,7 +1,7 @@
 import yargs from 'yargs';
 import lodash from 'lodash';
 import { Argv } from '../utils/pathHandlers.js';
-import { HD_WALLET_MNEMONIC, NETWORK } from '../utils/environment.js';
+import { HD_WALLET_MNEMONIC, NETWORK, PRIVATE_KEY_0 } from '../utils/environment.js';
 import { ethers, utils } from 'ethers';
 
 const { mapValues } = lodash;
@@ -57,7 +57,15 @@ export const handler = async (argv: Argv) => {
     // TODO: consider LOG_LEVEL
     debug = !!argv.debug || false;
 
-    const signers = new Array<ethers.Wallet>(ethers.Wallet.fromMnemonic(HD_WALLET_MNEMONIC).connect(provider));
+    const signers = new Array<ethers.Wallet>();
+    if (HD_WALLET_MNEMONIC) {
+        signers[0] = ethers.Wallet.fromMnemonic(HD_WALLET_MNEMONIC);
+    } else if (PRIVATE_KEY_0) {
+        signers[0] = new ethers.Wallet(PRIVATE_KEY_0);
+    } else {
+        throw new Error('ENV variable HD_WALLET_MNEMONIC or PRIVATE_KEY_0 must be provided');
+    }
+    signers[0] = signers[0].connect(provider);
     const network: Deploy.RunTimeEnvironment['network'] = config.get(`network.${NETWORK}`);
 
     const rootContractAddr = argv.rootContractAddr as string;
@@ -110,7 +118,7 @@ const detachTopDown = async (
     childContractAddr: string,
     tokenId: number,
 ) => {
-    await rootContract.setChildren(
+    const tx = await rootContract.setChildren(
         ...Utils.ERC721TopDownDna.flattenSetChildrenArgsERC721TopDownDna({
             tokenId,
             childContracts721Set: [childContractAddr],
@@ -121,4 +129,6 @@ const detachTopDown = async (
             gasLimit: 10e6,
         },
     );
+
+    return tx.wait(1);
 };

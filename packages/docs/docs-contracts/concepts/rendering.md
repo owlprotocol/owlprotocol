@@ -1,6 +1,8 @@
 ---
-sidebar_position: 2
+sidebar_position: 3
 ---
+
+import { SimpleGrid } from '@chakra-ui/react'
 
 # Dynamic NFT Rendering
 
@@ -16,6 +18,14 @@ We **DO NOT USE** a centralized API Endpoint. Otherwise it’s too easy, and bas
 Having already put the crucial Dynamic NFT's data on-chain, and the **Collection Schema JSON** to translate the on-chain
 data on **IPFS**, the final piece of the puzzle is a **Client-Side SDK** that would allow any dApp, Web3 game or website
 to integrate and render the NFT, **without relying on a back-end server.**
+
+:::tip Jump to the Tutorial
+## Learn from example through our [dNFT Image DNA Tutorial](/contracts/tutorial-topdowndna)!
+
+Explore step by step, how to create a new collection NFT profile pic, with dynamic detachable elements.
+
+[CLICK HERE](/contracts/tutorial-topdowndna)
+:::
 
 ## How It Works
 
@@ -44,3 +54,36 @@ to integrate and render the NFT, **without relying on a back-end server.**
 5. In either case, a **metadata.json** is produced with the base64 encoded image for rendering, and the list of traits as usual.
     In more advanced cases where the rendering is 3D, we recommend taking a static 2D snapshot of the 3D model, but you can
     conceivably also return 3D graphics files, and or an animated MP4/GIF/video which is supported by some marketplaces.
+
+## See It In Action
+
+You can deploy a [ERC721TopDownDna Smart Contract](https://github.com/owlprotocol/owlprotocol/blob/main/packages/contracts/contracts/assets/ERC721/ERC721TopDownDna.sol) by
+following our tutorial here: [DNA Encoding - ERC721TopDownDna](/contracts/tutorial-topdowndna) where you can experiment with a few layers
+and an example collection.
+
+<SimpleGrid className="features-grid" columns={{sm: 2, md: 4}} spacing={8}>
+    <Box>
+    <div>
+    <img src="/img/tutorial/attached.png"/>
+    <br/>
+    <strong>NFT with Hat</strong>
+    </div>
+    </Box>
+    <Box>
+    <div>
+    <img src="/img/tutorial/detached.png"/>
+    <br/>
+    <strong>NFT with Hat Removed</strong>
+    </div>
+    </Box>
+</SimpleGrid>
+
+In this example we are creating a Dynamic PFP (Profile Picture NFT).
+
+- **The hat is its own NFT!** And can be detached/removed, or re-attached to the base NFT.
+- When attached/removed the NFT will show the hat on or off.
+- The hat once removed can be traded on its own with other hats, or sold, it's up the owner.
+- The onchain data, and IPFS hosted Schema JSON is all that is required to render the NFT graphics.
+- No centralized back-ends, or dependencies on other tools. **Our `nft-sdk` is the only thing a client/browser needs to render the NFT.**
+
+> [CLICK HERE](/contracts/tutorial-topdowndna) to go to the tutorial.

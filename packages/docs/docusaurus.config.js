@@ -170,7 +170,7 @@ const config = {
                 id: "contracts",
                 path: "docs-contracts",
                 routeBasePath: "contracts",
-                sidebarPath: require.resolve("./sidebars.js"),
+                sidebarPath: require.resolve("./docs-contracts/sidebars.js"),
             },
         ],
     ],
