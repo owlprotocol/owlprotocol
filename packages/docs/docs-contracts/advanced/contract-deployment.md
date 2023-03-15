@@ -32,6 +32,14 @@ These deployment strategies rely on key pieces of blockchain infrastructure:
 - [EIP-2470]: A CREATE2 deployer, deployed using Nick's method to ensure multichain addressing and implemented by [Arachnid/deterministic-deployment-proxy](https://github.com/Arachnid/deterministic-deployment-proxy)
 - [ERC1167Factory]: A more advanced deployer, enabling atomic initialization (call an initializer after constructor), deployment of [EIP-1167] proxies, and enabling optional address-based replay protection (only msg.sender can re-deploy to same address).
 
+:::tip
+
+## This describes how the deployment architecture is designed.
+
+For practical deployment steps of our base smart contracts see:
+
+:::
+
 ### CREATE2
 `CREATE2` opcode introduced by [EIP-1014] enables deterministic deployment of smart contracts based on the sender `address`, the `initCodeHash`, and a user provided `salt`. This decouples the deployed smart contract's address from the nonce of the account as is the case with the regular `CREATE` opcode. We can use `CREATE2` to then build larger primitives such as the [EIP-2470](https://eips.ethereum.org/EIPS/eip-2470) universal deployer that enables multichain deployment of smart contracts to the same address.
 

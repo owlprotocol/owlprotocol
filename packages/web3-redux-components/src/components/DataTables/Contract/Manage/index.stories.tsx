@@ -6,7 +6,7 @@ import {
 import { ContractsManagerTable, ContractsManagerTableWhere } from ".";
 
 export default {
-    title: "Tables/Contract/Manage",
+    title: "Tables/Contract/Manage/Table",
     component: ContractsManagerTable,
 } as ComponentMeta<typeof ContractsManagerTable>;
 

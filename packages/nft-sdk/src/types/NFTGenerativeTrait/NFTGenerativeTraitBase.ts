@@ -12,5 +12,25 @@ export interface NFTGenerativeTraitBase {
     /** Attribute description */
     readonly description?: string;
     /** Trait Abi, default is uint8 */
-    readonly abi?: 'uint8' | 'uint16' | 'int8' | 'int16';
+    readonly abi?:
+        | 'uint8'
+        | 'uint16'
+        | 'uint24'
+        | 'uint32'
+        | 'uint48'
+        | 'uint64'
+        | 'uint96'
+        | 'uint128'
+        | 'uint196'
+        | 'uint256'
+        | 'int8'
+        | 'int16'
+        | 'int24'
+        | 'int32'
+        | 'int48'
+        | 'int64'
+        | 'int96'
+        | 'int128'
+        | 'int196'
+        | 'int256';
 }

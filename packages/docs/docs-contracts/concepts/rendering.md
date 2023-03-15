@@ -86,4 +86,6 @@ In this example we are creating a Dynamic PFP (Profile Picture NFT).
 - The onchain data, and IPFS hosted Schema JSON is all that is required to render the NFT graphics.
 - No centralized back-ends, or dependencies on other tools. **Our `nft-sdk` is the only thing a client/browser needs to render the NFT.**
 
-> [CLICK HERE](/contracts/tutorial-topdowndna) to go to the tutorial.
+:::info Learn Through Example
+[CLICK HERE](/contracts/tutorial-topdowndna) to go to the tutorial.
+:::

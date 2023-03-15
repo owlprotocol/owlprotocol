@@ -49,7 +49,8 @@
     "lint:fix": "eslint . --fix",
     "generate:json": "node generate.mjs",
     "serve": "npm run serve:testdata",
-    "serve:testdata": "serve testdata -C"
+    "serve:testdata": "serve testdata -C",
+    "prettier": "prettier --write src"
   },
   "dependencies": {
     "bn.js": "^5.2.1",

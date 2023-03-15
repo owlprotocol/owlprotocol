@@ -48,17 +48,17 @@ In this example we are creating a Dynamic PFP (Profile Picture NFT).
 Ensure you're able to build the entire project before starting - **READ: [Getting Started](/contracts/getting-started/)**.
 :::
 
+---
+
 ## Step 1: Prepare the layers
 
 :::info
-For this tutorial we're borrowing a partner's unreleased PFP project, stay tuned to hear about them soon!
-:::
-
 The sample will have a small number of layers for each `trait`:
 
 > These **MUST** be transparent PNGs, which will be combined, therefore the positioning must be taken into account.
 
 > You **MUST** upload these images to ideally IPFS, but an accessible image host works as well.
+:::
 
 ### Background
 
@@ -138,6 +138,8 @@ We'll also encode into the DNA/on-chain data of the NFT an `enum` **Vibe**, whic
 - Boring
 - Eccentric
 
+---
+
 ## Step 2: Setup the Project and Declare the Traits in Javascript
 
 We will be using the [CLI Tool](/contracts/getting-started/cli) for this, so firstly
@@ -207,6 +209,8 @@ See: [/packages/cli/src/projects/example-omo/traits.ts](https://github.com/owlpr
 `probabilities` are normalized, correspond in order with the values, and there must be the same number of probabilities as values.
 :::
 
+---
+
 ## Step 3: Create the `collection.ts` that connects the traits/collection together:
 
 ```typescript
@@ -275,12 +279,14 @@ export default collExample;
 ```
 
 :::caution
-For now, the trait key, must be the same as the trait name.
+For now the trait key must be the same as the trait name.
 
 e.g. `traitImageBg` has the field name as `Background` capitalized, and therefore `collExample` also declares its trait as `Background`.
 :::
 
 See: [/packages/cli/src/projects/example-omo/collection.ts](https://github.com/owlprotocol/owlprotocol/blob/tutorial-example-omo/packages/cli/src/projects/example-omo/collection.ts)
+
+---
 
 ## Step 4: Generate the Schema JSON
 
@@ -310,15 +316,15 @@ pnpm run build
 3. Now call the `generateSchemaJSON` command on the CLI Tool. We're building the index JS file to `lib/esm/index.js` for now (this will be changed to dist soon).
 
 ```
-| => node dist/index.cjs generateSchemaJSON collection.js --projectFolder=projects/example-omo
+| => node dist/index.cjs generateSchemaJSON collections.js --projectFolder=projects/example-omo
 ```
 
 Which should output:
 
 ```
 getProjectSubfolder /Users/owl/owl_protocol/owlprotocol/packages/cli/src/projects/example-omo/output
-Creating JSON(s) for collection.js to folder: /Users/owl/owl_protocol/owlprotocol/packages/cli/src/projects/example-omo/output
-projects/example-omo collection.js
+Creating JSON(s) for collections.js to folder: /Users/owl/owl_protocol/owlprotocol/packages/cli/src/projects/example-omo/output
+projects/example-omo collections.js
 Done
 ```
 
@@ -327,6 +333,8 @@ Done
 Now you should see a new folder in `projects/example-omo` called `output`, and inside 2 JSON files:
 - collection-parent.json
 - collection-child-Hats.json
+
+---
 
 ## Step 5: Upload the Schema JSON to IPFS
 
@@ -345,12 +353,14 @@ In this case and for your reference, we have uploaded these example JSONs here:
 - [collection-parent.json](https://leovigna.mypinata.cloud/ipfs/Qmc7Aih1P67dmHF4PDMg5KfLABMtR6DXmDaxRvgF8Wgoe9) - Hash: `Qmc7Aih1P67dmHF4PDMg5KfLABMtR6DXmDaxRvgF8Wgoe9`
 - [collection-child-Hats.json](https://leovigna.mypinata.cloud/ipfs/QmSYm8ksGSH7fi1XXm78Y6tkKiZ2ASpdyzZNtcVEV1h7G3) - Hahs: `QmSYm8ksGSH7fi1XXm78Y6tkKiZ2ASpdyzZNtcVEV1h7G3`
 
+---
+
 ## Step 6: Generate a Few NFTs
 
 For generating NFTs we use the CLI command: `generateRandomNFT`.
 
 ```
-| => node dist/index.cjs generateRandomNFT collection.js 3 --project=projects/example-omo
+| => node dist/index.cjs generateRandomNFT collections.js 3 --project=projects/example-omo
 ```
 
 This will generate 3 items in the subfolder `output/items` in the project folder with their DNAs. For now these are the
@@ -367,11 +377,13 @@ Then use `nftItem.attributesFormattedWithChildren()` to view the traits in human
 See: [cli/src/commands/viewTopDown.ts](https://github.com/owlprotocol/owlprotocol/blob/tutorial-example-omo/packages/cli/src/commands/viewTopDown.ts)
 :::
 
+---
+
 ## Step 7: Configure the Deployment
 
 You will need to create an `owlproject.json` file in the project folder:
 
-```
+```json
 {
   "rootContract": {
     "tokenSymbol": "ExampleNFT",
@@ -397,6 +409,8 @@ You will need to create an `owlproject.json` file in the project folder:
 - You need a working IPFS endpoint for now for `ipfsEndpointHTTP`, we are using [Pinata](https://pinata.cloud/)
 - Do not change `owlApiEndpoint`, this is the fallback API for browsers/clients that do not support the `nft-sdk`
 - Replace the `metadataIPFS` for the parent and children according to the **Schema JSON** from earlier, this is misnamed at the moment.
+
+---
 
 ## Step 8: Deploy and Mint the NFTs
 
@@ -483,6 +497,8 @@ Also the NFT item JSON files will be updated to track the deployment:
 }
 ```
 
+---
+
 ## Step 9: View and Check the NFTs
 
 You can use the `viewTopDown` command on the CLI to quickly view the NFT:
@@ -492,7 +508,7 @@ node dist/index.cjs viewTopDown --root=0xe3f62b8f72E49e75081B991685AeA19dd783b44
 ```
 
 This should show something similar to:
-```
+```json
 View ERC721TopDownDna 0xe3f62b8f72E49e75081B991685AeA19dd783b44a on ganache
 Fetching Metadata Schema JSON from: https:/leovigna.mypinata.cloud/ipfs/Qmc7Aih1P67dmHF4PDMg5KfLABMtR6DXmDaxRvgF8Wgoe9
 {
@@ -543,7 +559,7 @@ Yes, that's a very ugly `base64` encoded DNA string, but that's never seen by us
 
 If you `curl` that URL, you will get:
 
-```
+```json
 | => curl -s http://metadata.owlprotocol.xyz:32001/metadata/getMetadata/Qmc7Aih1P67dmHF4PDMg5KfLABMtR6DXmDaxRvgF8Wgoe9/AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAADAAEBAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAKAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAEBAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA | jq '.'
 {
   "description": "Example from https://docs.owlprotocol.xyz/contracts/tutorial-topdowndna",
@@ -577,7 +593,9 @@ Which is:
 
 ![NFT](/img/tutorial/attached.png)
 
-## Step 10: Let's Detach the Hat!
+---
+
+## Step 10: Detaching / Removing the Hat!
 
 We use the `detachTopDown` command to remove/detach the NFT:
 
@@ -585,7 +603,7 @@ We use the `detachTopDown` command to remove/detach the NFT:
 
 Outputs:
 
-```
+```json
 Detaching from ERC721TopDownDna on ganache
 Fetching Metadata Schema JSON from: https:/leovigna.mypinata.cloud/ipfs/Qmc7Aih1P67dmHF4PDMg5KfLABMtR6DXmDaxRvgF8Wgoe9
 {

@@ -43,7 +43,7 @@ export const builder = (yargs: ReturnType<yargs.Argv>) => {
             alias: ['token'],
             type: 'number'
         })
-        .demandOption(['rootContractAddr']);
+        .demandOption(['rootContractAddr', 'tokenId']);
 };
 
 export const handler = async (argv: Argv) => {
@@ -81,8 +81,8 @@ export const handler = async (argv: Argv) => {
 
     debug && console.debug(collectionClass);
 
-    const fullDna = await rootContract.getDna(tokenId);
-    const nftItem = collectionClass.createFromFullDna(fullDna);
+    const fullDnaWithChildren = await rootContract.getDna(tokenId);
+    const nftItem = collectionClass.createFromFullDna(fullDnaWithChildren);
 
     const attrWithChildren = nftItem.attributesFormattedWithChildren();
 
@@ -92,5 +92,5 @@ export const handler = async (argv: Argv) => {
     });
 
     debug && console.log('tokenUri', await rootContract.tokenURI(tokenId));
-    debug && console.debug('fullDna', fullDna);
+    debug && console.debug('fullDnaWithChildren', fullDnaWithChildren);
 }

@@ -8,6 +8,8 @@ import { Argv, getProjectSubfolder, importCollectionClass } from '../utils/pathH
 
 const { map } = lodash;
 
+let debug = false;
+
 export const command = 'generateRandomNFT <collectionJS> <numItems>';
 
 export const describe = `Devtool - Generates random instances for NFTGenerativeCollection
@@ -33,12 +35,18 @@ export const builder = (yargs: ReturnType<yargs.Argv>) => {
             `,
             type: 'string'
         })
+        .option('debug', {
+            describe: 'Outputs debug statements',
+            type: 'boolean',
+        })
         .demandOption(['projectFolder']);
 };
 
 // TODO: this should have an option to import from Schema JSON
 export const handler = async (argv: Argv & { numItems?: number }) => {
     argvCheck(argv);
+
+    debug = !!argv.debug || false;
 
     let projectFolder = argv.projectFolder!;
     const collectionJS = argv.collectionJS!;
@@ -55,14 +63,14 @@ export const handler = async (argv: Argv & { numItems?: number }) => {
         collParent.generateInstance(),
     );
 
-    const promises = map(nftItems, async (nftItem, i) => {
-        await fs.writeFileSync(
+    debug && console.debug('nftItems', nftItems);
+
+    map(nftItems, async (nftItem, i) => {
+        fs.writeFileSync(
             path.resolve(outputFolder, `collection-item-${i + 1}.json`),
             JSON.stringify(nftItem.fullDnaWithChildren(), null, 2),
         );
     });
-
-    await Promise.all(promises);
 
     console.log('Done');
 };

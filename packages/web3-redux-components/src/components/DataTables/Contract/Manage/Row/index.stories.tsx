@@ -10,7 +10,7 @@ import {
 } from ".";
 
 export default {
-    title: "Tables/Contract/Manage/Row",
+    title: "Tables/Contract/Manage/Editable Row (with AddressDisplay)",
     component: ContractsManagerTableRow,
 } as ComponentMeta<typeof ContractsManagerTableRow>;
 

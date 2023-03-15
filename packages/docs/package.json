@@ -9,6 +9,7 @@
     "docusaurus": "docusaurus",
     "start": "TYPEDOC_WATCH=true docusaurus start",
     "build": "TYPEDOC_WATCH=false NODE_OPTIONS='--max-old-space-size=8192' docusaurus build",
+    "build:rewrite_code_block": "",
     "clean": "rimraf build docs-contracts/reference-js docs-crud-redux/reference docs-web3-redux/reference",
     "swizzle": "docusaurus swizzle",
     "deploy": "docusaurus deploy",

@@ -77,6 +77,9 @@ import { ReactComponent as Copy } from "./functions/copy.svg";
 import { ReactComponent as Pencil } from "./functions/pencil.svg";
 import { ReactComponent as Search } from "./functions/search.svg";
 import { ReactComponent as AddRounded } from "./functions/add-rounded.svg";
+import { ReactComponent as Grid } from "./functions/grid.svg";
+import { ReactComponent as Rows } from "./functions/rows.svg";
+import { ReactComponent as Refresh } from "./functions/refresh.svg";
 
 // Signs
 import { ReactComponent as ExclamationMark } from "./signs/ExclamationMark.svg";
@@ -154,6 +157,9 @@ export const ICONS = {
     DNA: <DNA />,
     AddRounded: <AddRounded />,
     USD: <USDCurrency />,
+    Grid: <Grid />,
+    Rows: <Rows />,
+    Refresh: <Refresh />,
 };
 
 // @ts-ignore

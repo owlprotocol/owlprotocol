@@ -1,6 +1,6 @@
-import {assert} from 'chai';
-import {NFTGenerativeTraitEnumClass} from './NFTGenerativeTraitEnumClass.js';
-import {NFTGenerativeTraitEnum} from '../../types/index.js';
+import { assert } from 'chai';
+import { NFTGenerativeTraitEnumClass } from './NFTGenerativeTraitEnumClass.js';
+import { NFTGenerativeTraitEnum } from '../../types/index.js';
 
 describe('NFTGenerativeTraitEnumClass', () => {
     const attributeDef: NFTGenerativeTraitEnum = {
@@ -25,12 +25,12 @@ describe('NFTGenerativeTraitEnumClass', () => {
     });
 
     it('generateInstance with fixed probabilities', () => {
-        const {name, type, options} = attributeDef;
+        const { name, type, options } = attributeDef;
         const onlyEarthProbabilities = [1, 0, 0, 0];
-        const fixedProbabilitiesTraitEnum = {name, type, options, probabilities: onlyEarthProbabilities};
+        const fixedProbabilitiesTraitEnum = { name, type, options, probabilities: onlyEarthProbabilities };
         const fixedTrait = new NFTGenerativeTraitEnumClass(fixedProbabilitiesTraitEnum);
 
-        const generatedAttribute = fixedTrait.randomAttribute()
+        const generatedAttribute = fixedTrait.randomAttribute();
         const expectedAttribute = 'earth';
 
         assert.equal(generatedAttribute, expectedAttribute, 'generateInstance');
@@ -50,7 +50,7 @@ describe('NFTGenerativeTraitEnumClass', () => {
 
         // TODO: this makes no sense, I assume the attribute passed in should be 'earth' or the gene for earth?
         it.skip('format', () => {
-            assert.deepEqual(attribute.format('faction', {subfaction: 'europe'}), 'earth europe', 'format');
+            assert.deepEqual(attribute.format('faction', { subfaction: 'europe' }), 'earth europe', 'format');
         });
     });
 });

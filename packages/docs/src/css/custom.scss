@@ -148,11 +148,20 @@ Internal Pages (Markdown)
         padding-left: var(--ifm-list-left-padding);
     }
 
-    p,
+    a {
+        color: #2276c1 !important;
+        text-decoration: underline;
+        text-decoration-color: var(--ifm-alert-border-color);
+    }
+
     i,
     b,
     li,
     a {
+        font-weight: 400;
+    }
+
+    p {
         font-weight: 200;
     }
 
@@ -187,7 +196,7 @@ Internal Pages (Markdown)
 
     // strong
     strong {
-        color: #9c00e3;
+        color: #ad5dff;
         font-weight: 600;
     }
 
@@ -284,7 +293,7 @@ html[data-theme="dark"] .markdown {
     }
 
     a {
-        color: var(--ifm-link-color);
+        color: var(--ifm-link-color) !important;
         text-decoration: underline;
         text-decoration-color: var(--ifm-alert-border-color);
     }

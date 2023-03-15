@@ -14,7 +14,7 @@ export { default as Erc20QRGenerator } from "./components/Erc20QRGenerator/index
 export { default as QRCodePopover } from "./components/QRCodePopover/index.js";
 
 // Data Tables
-export { ContractsManagerTable, TransactionTable } from './components/DataTables'
+export * from './components/DataTables'
 
 
 export * from "./components/ContractAbiForm/index.js";

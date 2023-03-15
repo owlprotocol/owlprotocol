@@ -2,7 +2,7 @@ import { ComponentStory, ComponentMeta } from "@storybook/react";
 import { TransactionTablePresenter } from "./presenter";
 
 export default {
-    title: "Tables/Transaction/Main Table + Pagination",
+    title: "Tables/Transaction/Table",
     component: TransactionTablePresenter,
 } as ComponentMeta<typeof TransactionTablePresenter>;
 

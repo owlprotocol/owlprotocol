@@ -22,6 +22,7 @@ import {IAccessControlUpgradeable} from '@openzeppelin/contracts-upgradeable/acc
 import {IRouterReceiver} from '../../common/IRouterReceiver.sol';
 import {IContractURI} from '../../common/IContractURI.sol';
 import {IBaseURI} from '../../common/IBaseURI.sol';
+import {IERC4906} from '../../common/ERC4906/IERC4906.sol';
 
 /**
  * @dev This implements the standard OwlProtocol `ERC721` contract that is an
@@ -29,7 +30,7 @@ import {IBaseURI} from '../../common/IBaseURI.sol';
  * happens through initializers for compatibility with a EIP1167 minimal-proxy
  * deployment strategy. No external mint functions are defined.
  */
-abstract contract ERC721Base is ERC721BurnableUpgradeable, OwlBase, BaseURI, ERC2981Setter {
+abstract contract ERC721Base is ERC721BurnableUpgradeable, OwlBase, BaseURI, ERC2981Setter, IERC4906 {
     //https://docs.openzeppelin.com/contracts/4.x/upgradeable#storage_gaps
     uint256[50] private __gap;
 
@@ -120,5 +121,7 @@ abstract contract ERC721Base is ERC721BurnableUpgradeable, OwlBase, BaseURI, ERC
             interfaceId == type(IAccessControlUpgradeable).interfaceId ||
             interfaceId == type(IRouterReceiver).interfaceId ||
             interfaceId == type(IContractURI).interfaceId;
+            // TODO: uncomment after library refactor - contract size limit issues
+            // interfaceId == bytes4(0x49064906);
     }
 }

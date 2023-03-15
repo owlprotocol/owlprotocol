@@ -61,7 +61,7 @@ added to the NFT smart contract as part of the **`baseURI`**.
 
 For example a typical `tokenURI( tokenId )` method call to the *smart contract* itself will return something like:
 
-> `https://api.owlprotocol.xyz`/metadata/getMetadata/**QmePBmfWYbZ6rtt93E9L5AnpAdeuVu7pbkjHAxDSQe5bjw**/**4758836350748**
+> `https://metadata.owlprotocol.xyz`/metadata/getMetadata/**QmbUcD2MRhHYVwEw3YEX3izMzVvZfT49CGfLhqdVRVcnZd**/**AAAAAA...**
 
 Which follows the format:
 
@@ -90,10 +90,10 @@ may look like this:
   "traits": [
     {
       "name": "Item Level",
-      "type": "number"
-      "display_type": "number",
+      "type": "number",
+      "min": 1,
       "max": 9999,
-      "bitSize": 16
+      "abi": "uint16"
     },
     {
       "name": "Base Item",
@@ -148,14 +148,14 @@ Therefore, if we had a "Level 5" sword, with a ruby enchantment the **`dna`** wo
 :::info Result
 This gives us a final bit representation for the data of: **`00000000000001010000000000000001`**.
 
-Which in base 10 is the number: **`327681`**.
+Which is translated to `base64`.
 :::
 
 So for example, if the IPFS hash for the **Collection Schema JSON** is `QmePBmfWYbZ6rtt93E9L5AnpAdeuVu7pbkjHAxDSQe5bjw`,
 then `tokenURI` would return:
 
 > `https://api.owlprotocol.xyz`/metadata/
-> getMetadata/**QmePBmfWYbZ6rtt93E9L5AnpAdeuVu7pbkjHAxDSQe5bjw**/**327681**
+> getMetadata/**QmePBmfWYbZ6rtt93E9L5AnpAdeuVu7pbkjHAxDSQe5bjw**/**[base64 of dna]**
 
 Calling the `tokenURI` would return the NFT **metadata JSON**, which conforms to https://docs.opensea.io/docs/metadata-standards at the very minimum.
 
@@ -173,6 +173,7 @@ Which is the descriptive JSON that looks somewhat like:
 
 Notice that the image here is shown as a `base64`, but this also supports a link to an IPFS hosted image, or just any API.
 
-### Read on about the [NFT Rendering](/contracts/concepts/rendering) process in the next page, or [click here](/contracts/concepts/rendering).
+### Read on about the [NFT Rendering](/contracts/concepts/rendering) process in the next page.
+### Or try it out with our tutorial: [click here](/contracts/tutorial-nftdata).
 
 

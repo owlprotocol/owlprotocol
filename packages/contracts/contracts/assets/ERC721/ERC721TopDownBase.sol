@@ -151,6 +151,8 @@ abstract contract ERC721TopDownBase is ERC721Base, IERC721TopDown, IERC721Receiv
                 childTokenIds1155Add
             );
         }
+
+        emit MetadataUpdate(tokenId);
     }
 
     /***** Overrides ******/
@@ -183,6 +185,8 @@ abstract contract ERC721TopDownBase is ERC721Base, IERC721TopDown, IERC721Receiv
             childTokenId,
             true
         );
+
+        emit MetadataUpdate(tokenId);
 
         return IERC721ReceiverUpgradeable.onERC721Received.selector;
     }

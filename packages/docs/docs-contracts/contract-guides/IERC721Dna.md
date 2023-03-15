@@ -1,5 +1,5 @@
 ---
-sidebar_position: 4
+sidebar_position: 5
 sidebar_label: 'IERC721Dna'
 ---
 
@@ -53,7 +53,7 @@ The goal of the `IERC721Dna.sol` standard is to be as flexible as possible. As s
 
 ## Interface
 The [IERC721Dna.sol] interface itself is quite minimal defining only 4 functions:
-```solidity
+```js
 interface IERC721Dna {
     function mintWithDna(address to, bytes memory dna) external returns (uint256);
     function safeMintWithDna(address to, bytes memory dna) external returns (uint256);

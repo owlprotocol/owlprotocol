@@ -94,6 +94,7 @@ export const AddressList = ({
                     </Box>
                     <Input
                         variant={"form"}
+                        bg={themes.color6}
                         onChange={({ target }) =>
                             handleSearchInput(target.value)
                         }

@@ -6,7 +6,7 @@ import {IERC165Upgradeable} from '@openzeppelin/contracts-upgradeable/utils/intr
 
 import {CountersUpgradeable} from '@openzeppelin/contracts-upgradeable/utils/CountersUpgradeable.sol';
 import {AddressUpgradeable} from '@openzeppelin/contracts-upgradeable/utils/AddressUpgradeable.sol';
-import {Base64Upgradeable} from '@openzeppelin/contracts-upgradeable/utils/Base64Upgradeable.sol';
+import {Base64UrlUpgradeable} from '../../utils/Base64UrlUpgradeable.sol';
 import {EnumerableSetUpgradeable} from '@openzeppelin/contracts-upgradeable/utils/structs/EnumerableSetUpgradeable.sol';
 
 import {ERC1155Mintable} from './ERC1155Mintable.sol';
@@ -16,7 +16,7 @@ import {IERC1155Dna} from './IERC1155Dna.sol';
  * @dev ERC1155DNA
  */
 contract ERC1155Dna is ERC1155Mintable, IERC1155Dna {
-    using Base64Upgradeable for bytes;
+    using Base64UrlUpgradeable for bytes;
     using AddressUpgradeable for address;
     using CountersUpgradeable for CountersUpgradeable.Counter;
     using EnumerableSetUpgradeable for EnumerableSetUpgradeable.AddressSet;

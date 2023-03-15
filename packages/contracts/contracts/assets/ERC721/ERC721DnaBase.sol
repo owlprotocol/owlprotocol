@@ -6,7 +6,7 @@ import {IERC165Upgradeable} from '@openzeppelin/contracts-upgradeable/utils/intr
 
 import {CountersUpgradeable} from '@openzeppelin/contracts-upgradeable/utils/CountersUpgradeable.sol';
 import {AddressUpgradeable} from '@openzeppelin/contracts-upgradeable/utils/AddressUpgradeable.sol';
-import {Base64Upgradeable} from '@openzeppelin/contracts-upgradeable/utils/Base64Upgradeable.sol';
+import {Base64UrlUpgradeable} from '../../utils/Base64UrlUpgradeable.sol';
 import {EnumerableSetUpgradeable} from '@openzeppelin/contracts-upgradeable/utils/structs/EnumerableSetUpgradeable.sol';
 
 import {ERC721Base} from './ERC721Base.sol';
@@ -16,7 +16,7 @@ import {IERC721Dna} from './IERC721Dna.sol';
  * @dev ERC721DNA
  */
 abstract contract ERC721DnaBase is ERC721Base, IERC721Dna {
-    using Base64Upgradeable for bytes;
+    using Base64UrlUpgradeable for bytes;
     using AddressUpgradeable for address;
     using CountersUpgradeable for CountersUpgradeable.Counter;
     using EnumerableSetUpgradeable for EnumerableSetUpgradeable.AddressSet;
@@ -78,8 +78,10 @@ abstract contract ERC721DnaBase is ERC721Base, IERC721Dna {
     /**
      * inheritdoc IERC721Dna
      */
-    function updateDna(uint256 tokenId, bytes memory dna) external onlyRole(DNA_ROLE) {
+    function updateDna(uint256 tokenId, bytes memory dna) external virtual onlyRole(DNA_ROLE) {
         inherentDna[tokenId] = dna;
+
+        emit MetadataUpdate(tokenId);
     }
 
     /**

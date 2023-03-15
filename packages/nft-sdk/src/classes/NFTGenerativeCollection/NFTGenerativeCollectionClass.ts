@@ -1,14 +1,14 @@
-import type {IPFS} from 'ipfs-core-types';
-import type {CID} from 'ipfs-http-client';
-import {pick, omitBy, isUndefined, mapValues, keys, values, compact, isEmpty} from 'lodash-es';
-import mergeImages, {Options as MergeImagesOptions} from 'merge-images';
-import {BytesLike} from '@ethersproject/bytes';
-import {ethers} from 'ethers';
-import {Buffer} from 'buffer';
-import {join} from 'path';
+import type { IPFS } from 'ipfs-core-types';
+import type { CID } from 'ipfs-http-client';
+import { pick, omitBy, isUndefined, mapValues, keys, values, compact, isEmpty } from 'lodash-es';
+import mergeImages, { Options as MergeImagesOptions } from 'merge-images';
+import { BytesLike } from '@ethersproject/bytes';
+import { ethers } from 'ethers';
+import { Buffer } from 'buffer';
+import { join } from 'path';
 
-import type {Gene, NFTGenerativeCollectionInterface} from './NFTGenerativeCollectionInterface.js';
-import type {NFTGenerativeItem} from '../../types/NFTGenerativeItem.js';
+import type { Gene, NFTGenerativeCollectionInterface } from './NFTGenerativeCollectionInterface.js';
+import type { NFTGenerativeItem } from '../../types/NFTGenerativeItem.js';
 
 import {
     AttributeFormatted,
@@ -20,10 +20,10 @@ import {
     NFTGenerativeTraitImageOption,
 } from '../../types/index.js';
 
-import {mergeSVG} from '../../utils/mergeSVG.js';
-import {defaultColormapOptions} from '../../utils/colormap.js';
-import {asyncIterableToArray} from '../../utils/asyncIterableToArray.js';
-import {TopologicalSort} from '../../utils/TopologicalSort.js';
+import { mergeSVG } from '../../utils/mergeSVG.js';
+import { defaultColormapOptions } from '../../utils/colormap.js';
+import { asyncIterableToArray } from '../../utils/asyncIterableToArray.js';
+import { TopologicalSort } from '../../utils/TopologicalSort.js';
 
 import {
     createFromNFTGenerativeGenerativeAttributeBase,
@@ -35,9 +35,9 @@ import {
     NFTGenerativeTraitImageClass,
 } from '../NFTGenerativeTrait/index.js';
 
-import type {NFTGenerativeTraitBaseInterface} from '../NFTGenerativeTrait/NFTGenerativeTraitBaseInterface.js';
-import type {NFTGenerativeItemInterface} from '../NFTGenerativeItem/NFTGenerativeItemInterface.js';
-import {NFTGenerativeItemClass} from '../NFTGenerativeItem/NFTGenerativeItemClass.js';
+import type { NFTGenerativeTraitBaseInterface } from '../NFTGenerativeTrait/NFTGenerativeTraitBaseInterface.js';
+import type { NFTGenerativeItemInterface } from '../NFTGenerativeItem/NFTGenerativeItemInterface.js';
+import { NFTGenerativeItemClass } from '../NFTGenerativeItem/NFTGenerativeItemClass.js';
 
 const isEmptyOrUndefined = (x: any) => isUndefined(x) || isEmpty(x);
 
@@ -169,25 +169,25 @@ export class NFTGenerativeCollectionClass<
 
                     const filePath = join(folder, option.image_url);
                     const file = fs.readFileSync(filePath);
-                    return {...option, image: file};
+                    return { ...option, image: file };
                 });
 
-                return {...trait, options};
+                return { ...trait, options };
             } else if (isNFTGenerativeTraitColormap(trait)) {
                 //Add default colormap option definitions (grey, rg, rb, gb)
                 const options = trait.options.map((option) => {
                     const colors = option.colors ?? defaultColormapOptions[option.value];
                     if (!colors) throw new Error(`Colormap ${trait.name} option ${option.value} missing colors`);
 
-                    return {...option, colors};
+                    return { ...option, colors };
                 });
 
-                return {...trait, options};
+                return { ...trait, options };
             }
             return trait;
         });
 
-        const collectionSpec = {...collectionSpecInput, traits};
+        const collectionSpec = { ...collectionSpecInput, traits };
         //@ts-expect-error
         const collection = new NFTGenerativeCollectionClass(collectionSpec);
 
@@ -199,16 +199,16 @@ export class NFTGenerativeCollectionClass<
         attributes,
         children,
     }: {
-        attributes: {[K in keyof Traits]: AttributeValue};
+        attributes: { [K in keyof Traits]: AttributeValue };
         children?: Children extends Record<
             string,
             NFTGenerativeCollectionInterface<Record<string, NFTGenerativeTraitBaseInterface>, undefined>
         >
-        ? {[K in keyof Children]: Parameters<Children[K]['create']>[0]}
-        : undefined;
+            ? { [K in keyof Children]: Parameters<Children[K]['create']>[0] }
+            : undefined;
     }) {
         //@ts-expect-error
-        return NFTGenerativeItemClass.fromAttributes({collection: this, attributes, children});
+        return NFTGenerativeItemClass.fromAttributes({ collection: this, attributes, children });
     }
 
     createFromDna({
@@ -220,12 +220,12 @@ export class NFTGenerativeCollectionClass<
             string,
             NFTGenerativeCollectionInterface<Record<string, NFTGenerativeTraitBaseInterface>, undefined>
         >
-        ? {[K in keyof Children]: Parameters<Children[K]['createFromDna']>[0]}
-        : undefined;
+            ? { [K in keyof Children]: Parameters<Children[K]['createFromDna']>[0] }
+            : undefined;
     }): NFTGenerativeItemInterface<
         NFTGenerativeCollectionInterface<Record<string, NFTGenerativeTraitBaseInterface>, undefined>
     > {
-        return this.create(this.dnaToAttributesWithChildren({dna, children}));
+        return this.create(this.dnaToAttributesWithChildren({ dna, children }));
     }
 
     createFromFullDna(
@@ -283,8 +283,8 @@ export class NFTGenerativeCollectionClass<
     abiWithChildren() {
         const abiChildren = this.children
             ? mapValues(this.children, (c) => {
-                return c.abiWithChildren();
-            })
+                  return c.abiWithChildren();
+              })
             : [];
 
         return [this.abi(), ...Object.values(abiChildren)];
@@ -313,8 +313,8 @@ export class NFTGenerativeCollectionClass<
     }: {
         dna: BytesLike;
         children: Children extends Record<string, NFTGenerativeCollectionInterface>
-        ? {[K in keyof Children]: Parameters<Children[K]['dnaToGenesWithChildren']>[0]}
-        : undefined;
+            ? { [K in keyof Children]: Parameters<Children[K]['dnaToGenesWithChildren']>[0] }
+            : undefined;
     }) {
         const genes = this.dnaToGenes(dna);
         const existingChildren = pick(this.children, keys(omitBy(children, isUndefined))) as Record<
@@ -324,17 +324,17 @@ export class NFTGenerativeCollectionClass<
         const genesChildren =
             this.children && children
                 ? mapValues(existingChildren, (c, k) => {
-                    return c.dnaToGenesWithChildren(children[k]);
-                })
+                      return c.dnaToGenesWithChildren(children[k]);
+                  })
                 : undefined;
-        return omitBy({genes, children: genesChildren}, isEmptyOrUndefined) as {
-            genes: {[K in keyof Traits]: number};
+        return omitBy({ genes, children: genesChildren }, isEmptyOrUndefined) as {
+            genes: { [K in keyof Traits]: number };
             children: Children extends Record<
                 string,
                 NFTGenerativeCollectionInterface<Record<string, NFTGenerativeTraitBaseInterface>, undefined>
             >
-            ? {[K in keyof Children]: ReturnType<Children[K]['dnaToGenesWithChildren']>}
-            : undefined;
+                ? { [K in keyof Children]: ReturnType<Children[K]['dnaToGenesWithChildren']> }
+                : undefined;
         };
     }
 
@@ -354,8 +354,8 @@ export class NFTGenerativeCollectionClass<
     }: {
         dna: BytesLike;
         children?: Children extends Record<string, NFTGenerativeCollectionInterface>
-        ? {[K in keyof Children]: Parameters<Children[K]['dnaToAttributesWithChildren']>[0]}
-        : undefined;
+            ? { [K in keyof Children]: Parameters<Children[K]['dnaToAttributesWithChildren']>[0] }
+            : undefined;
     }) {
         const attributes = this.dnaToAttributes(dna);
         const existingChildren = pick(this.children, keys(omitBy(children, isUndefined))) as Record<
@@ -365,15 +365,15 @@ export class NFTGenerativeCollectionClass<
         const childrenAttributes =
             this.children && children
                 ? mapValues(existingChildren, (c, k) => {
-                    return c.dnaToAttributesWithChildren(children[k]);
-                })
+                      return c.dnaToAttributesWithChildren(children[k]);
+                  })
                 : undefined;
 
-        return omitBy({attributes, children: childrenAttributes}, isEmptyOrUndefined) as {
-            attributes: {[K in keyof Traits]: AttributeValue};
+        return omitBy({ attributes, children: childrenAttributes }, isEmptyOrUndefined) as {
+            attributes: { [K in keyof Traits]: AttributeValue };
             children?: Children extends Record<string, NFTGenerativeCollectionInterface>
-            ? {[K in keyof Children]: ReturnType<Children[K]['dnaToAttributesWithChildren']>}
-            : undefined;
+                ? { [K in keyof Children]: ReturnType<Children[K]['dnaToAttributesWithChildren']> }
+                : undefined;
         };
     }
 
@@ -381,7 +381,7 @@ export class NFTGenerativeCollectionClass<
     attributeToGene(attribute: any, name: keyof Traits): Gene {
         return this.traits[name].encode(attribute);
     }
-    attributesToGenes(attributes: {[K in keyof Traits]: AttributeValue}): {[K in keyof Traits]: Gene} {
+    attributesToGenes(attributes: { [K in keyof Traits]: AttributeValue }): { [K in keyof Traits]: Gene } {
         return mapValues(this.traits, (t, i) => {
             const attribute = attributes[i];
             if (t instanceof NFTGenerativeTraitColorClass || t instanceof NFTGenerativeTraitNumberClass) {
@@ -405,13 +405,13 @@ export class NFTGenerativeCollectionClass<
         attributes,
         children,
     }: {
-        attributes: {[K in keyof Traits]: AttributeValue};
+        attributes: { [K in keyof Traits]: AttributeValue };
         children: Children extends Record<
             string,
             NFTGenerativeCollectionInterface<Record<string, NFTGenerativeTraitBaseInterface>, undefined>
         >
-        ? {[K in keyof Children]: Parameters<Children[K]['attributesToGenesWithChildren']>[0]}
-        : undefined;
+            ? { [K in keyof Children]: Parameters<Children[K]['attributesToGenesWithChildren']>[0] }
+            : undefined;
     }) {
         const genes = this.attributesToGenes(attributes);
         const existingChildren = pick(this.children, keys(omitBy(children, isUndefined))) as Record<
@@ -421,22 +421,22 @@ export class NFTGenerativeCollectionClass<
         const genesChildren =
             this.children && children
                 ? mapValues(existingChildren, (c, k) => {
-                    return c.attributesToGenesWithChildren(children[k]);
-                })
+                      return c.attributesToGenesWithChildren(children[k]);
+                  })
                 : undefined;
-        return omitBy({genes, children: genesChildren}, isEmptyOrUndefined) as {
-            genes: {[K in keyof Traits]: number};
+        return omitBy({ genes, children: genesChildren }, isEmptyOrUndefined) as {
+            genes: { [K in keyof Traits]: number };
             children: Children extends Record<
                 string,
                 NFTGenerativeCollectionInterface<Record<string, NFTGenerativeTraitBaseInterface>, undefined>
             >
-            ? {[K in keyof Children]: ReturnType<Children[K]['attributesToGenesWithChildren']>}
-            : undefined;
+                ? { [K in keyof Children]: ReturnType<Children[K]['attributesToGenesWithChildren']> }
+                : undefined;
         };
     }
 
     /** Gene to DNA */
-    genesToDna(genes: {[K in keyof Traits]: Gene}): string {
+    genesToDna(genes: { [K in keyof Traits]: Gene }): string {
         //TODO: Fix sorting bug
         return ethers.utils.solidityPack(this.abi(), Object.values(genes));
     }
@@ -444,10 +444,10 @@ export class NFTGenerativeCollectionClass<
         genes,
         children,
     }: {
-        genes: {[K in keyof Traits]: Gene};
+        genes: { [K in keyof Traits]: Gene };
         children: Children extends Record<string, NFTGenerativeCollectionInterface>
-        ? {[K in keyof Children]: Parameters<Children[K]['genesToDnaWithChildren']>[0]}
-        : undefined;
+            ? { [K in keyof Children]: Parameters<Children[K]['genesToDnaWithChildren']>[0] }
+            : undefined;
     }) {
         const dna = this.genesToDna(genes);
         const existingChildren = pick(this.children, keys(omitBy(children, isUndefined))) as Record<
@@ -457,33 +457,33 @@ export class NFTGenerativeCollectionClass<
         const dnaChildren =
             this.children && children
                 ? mapValues(existingChildren, (c, k) => {
-                    return c.genesToDnaWithChildren(children[k]);
-                })
+                      return c.genesToDnaWithChildren(children[k]);
+                  })
                 : undefined;
 
-        return omitBy({dna, children: dnaChildren}, isEmptyOrUndefined) as {
+        return omitBy({ dna, children: dnaChildren }, isEmptyOrUndefined) as {
             dna: string;
             children: Children extends Record<string, NFTGenerativeCollectionInterface>
-            ? {[K in keyof Children]: ReturnType<Children[K]['genesToDnaWithChildren']>}
-            : undefined;
+                ? { [K in keyof Children]: ReturnType<Children[K]['genesToDnaWithChildren']> }
+                : undefined;
         };
     }
 
     /** Attributes to DNA */
-    attributesToDna(attributes: {[K in keyof Traits]: AttributeValue}): string {
+    attributesToDna(attributes: { [K in keyof Traits]: AttributeValue }): string {
         return this.genesToDna(this.attributesToGenes(attributes));
     }
     attributesToDnaWithChildren({
         attributes,
         children,
     }: {
-        attributes: {[K in keyof Traits]: AttributeValue};
+        attributes: { [K in keyof Traits]: AttributeValue };
         children: Children extends Record<
             string,
             NFTGenerativeCollectionInterface<Record<string, NFTGenerativeTraitBaseInterface>, undefined>
         >
-        ? {[K in keyof Children]: Parameters<Children[K]['attributesToDnaWithChildren']>[0]}
-        : undefined;
+            ? { [K in keyof Children]: Parameters<Children[K]['attributesToDnaWithChildren']>[0] }
+            : undefined;
     }) {
         const dna = this.attributesToDna(attributes);
         // @ts-ignore
@@ -494,15 +494,15 @@ export class NFTGenerativeCollectionClass<
         const dnaChildren =
             this.children && children
                 ? mapValues(existingChildren, (c, k) => {
-                    return c.attributesToDnaWithChildren(children[k]);
-                })
+                      return c.attributesToDnaWithChildren(children[k]);
+                  })
                 : undefined;
 
-        return omitBy({dna, children: dnaChildren}, isEmptyOrUndefined) as {
+        return omitBy({ dna, children: dnaChildren }, isEmptyOrUndefined) as {
             dna: string;
             children: Children extends Record<string, NFTGenerativeCollectionInterface>
-            ? {[K in keyof Children]: ReturnType<Children[K]['attributesToDnaWithChildren']>}
-            : undefined;
+                ? { [K in keyof Children]: ReturnType<Children[K]['attributesToDnaWithChildren']> }
+                : undefined;
         };
     }
 
@@ -516,30 +516,30 @@ export class NFTGenerativeCollectionClass<
         let i = 0;
         const dnaChildren = this.children
             ? omitBy(
-                mapValues(this.children, (c) => {
-                    if (fullDnaChildren[i] != undefined && fullDnaChildren[i] != '0x') {
-                        const result = c.fullDnaToDnaWithChildren(fullDnaChildren[i]);
-                        i++;
-                        return result;
-                    } else {
-                        i++;
-                        return undefined;
-                    }
-                }),
-                isUndefined,
-            )
+                  mapValues(this.children, (c) => {
+                      if (fullDnaChildren[i] != undefined && fullDnaChildren[i] != '0x') {
+                          const result = c.fullDnaToDnaWithChildren(fullDnaChildren[i]);
+                          i++;
+                          return result;
+                      } else {
+                          i++;
+                          return undefined;
+                      }
+                  }),
+                  isUndefined,
+              )
             : undefined;
 
-        return omitBy({dna, children: dnaChildren}, isEmptyOrUndefined) as {
+        return omitBy({ dna, children: dnaChildren }, isEmptyOrUndefined) as {
             dna: string;
             children: Children extends Record<string, NFTGenerativeCollectionInterface>
-            ? {[K in keyof Children]: ReturnType<Children[K]['fullDnaToDnaWithChildren']>}
-            : undefined;
+                ? { [K in keyof Children]: ReturnType<Children[K]['fullDnaToDnaWithChildren']> }
+                : undefined;
         };
     }
 
     /** Attributes to Full DNA */
-    attributesToFullDna(attributes: {[K in keyof Traits]: AttributeValue}): string {
+    attributesToFullDna(attributes: { [K in keyof Traits]: AttributeValue }): string {
         const dna = this.attributesToDna(attributes);
         return NFTGenerativeCollectionClass.fullDnaEncode(dna, []);
     }
@@ -548,35 +548,35 @@ export class NFTGenerativeCollectionClass<
         attributes,
         children,
     }: {
-        attributes: {[K in keyof Traits]: AttributeValue};
+        attributes: { [K in keyof Traits]: AttributeValue };
         children?: Children extends Record<
             string,
             NFTGenerativeCollectionInterface<Record<string, NFTGenerativeTraitBaseInterface>, undefined>
         >
-        ? {[K in keyof Children]: Parameters<Children[K]['attributesToFullDnaWithChildren']>[0]}
-        : undefined;
+            ? { [K in keyof Children]: Parameters<Children[K]['attributesToFullDnaWithChildren']>[0] }
+            : undefined;
     }) {
         const dna = this.attributesToDna(attributes);
         const fullDnaChildren =
             this.children && children
                 ? mapValues(this.children, (c, k) => {
-                    if (children[k]) {
-                        return c.attributesToFullDnaWithChildren(children[k]);
-                    } else {
-                        return {
-                            fullDna: '0x',
-                        };
-                    }
-                })
+                      if (children[k]) {
+                          return c.attributesToFullDnaWithChildren(children[k]);
+                      } else {
+                          return {
+                              fullDna: '0x',
+                          };
+                      }
+                  })
                 : undefined;
 
         const fullDnaChildrenFlat = fullDnaChildren ? Object.values(fullDnaChildren).map((r) => r.fullDna) : [];
         const fullDna = NFTGenerativeCollectionClass.fullDnaEncode(dna, fullDnaChildrenFlat);
-        return omitBy({fullDna, children: fullDnaChildren}, isEmptyOrUndefined) as {
+        return omitBy({ fullDna, children: fullDnaChildren }, isEmptyOrUndefined) as {
             fullDna: string;
             children: Children extends Record<string, NFTGenerativeCollectionInterface>
-            ? {[K in keyof Children]: ReturnType<Children[K]['attributesToFullDnaWithChildren']>}
-            : undefined;
+                ? { [K in keyof Children]: ReturnType<Children[K]['attributesToFullDnaWithChildren']> }
+                : undefined;
         };
     }
 
@@ -584,7 +584,7 @@ export class NFTGenerativeCollectionClass<
      * This assumes that the trait.name matches the collection metadata trait key
      * @param attributes
      */
-    attributesToAttributesFormatted(attributes: {[K in keyof Traits]: AttributeValue}): {
+    attributesToAttributesFormatted(attributes: { [K in keyof Traits]: AttributeValue }): {
         [K in keyof Traits]: AttributeFormatted;
     } {
         // console.debug(attributes);
@@ -620,13 +620,13 @@ export class NFTGenerativeCollectionClass<
         attributes,
         children,
     }: {
-        attributes: {[K in keyof Traits]: AttributeValue};
+        attributes: { [K in keyof Traits]: AttributeValue };
         children: Children extends Record<
             string,
             NFTGenerativeCollectionInterface<Record<string, NFTGenerativeTraitBaseInterface>, undefined>
         >
-        ? {[K in keyof Children]: Parameters<Children[K]['attributesToAttributesFormattedWithChildren']>[0]}
-        : undefined;
+            ? { [K in keyof Children]: Parameters<Children[K]['attributesToAttributesFormattedWithChildren']>[0] }
+            : undefined;
     }) {
         const attributesFormatted = this.attributesToAttributesFormatted(attributes);
         const existingChildren = pick(this.children, keys(omitBy(children, isUndefined))) as Record<
@@ -636,18 +636,18 @@ export class NFTGenerativeCollectionClass<
         const attributesFormattedChildren =
             this.children && children
                 ? mapValues(existingChildren, (c, k) => {
-                    return c.attributesToAttributesFormattedWithChildren(children[k]);
-                })
+                      return c.attributesToAttributesFormattedWithChildren(children[k]);
+                  })
                 : undefined;
 
         return omitBy(
-            {attributes: attributesFormatted, children: attributesFormattedChildren},
+            { attributes: attributesFormatted, children: attributesFormattedChildren },
             isEmptyOrUndefined,
         ) as {
-            attributes: {[K in keyof Traits]: Gene};
+            attributes: { [K in keyof Traits]: Gene };
             children: Children extends Record<string, NFTGenerativeCollectionInterface>
-            ? {[K in keyof Children]: ReturnType<Children[K]['attributesToAttributesFormattedWithChildren']>}
-            : undefined;
+                ? { [K in keyof Children]: ReturnType<Children[K]['attributesToAttributesFormattedWithChildren']> }
+                : undefined;
         };
     }
 
@@ -658,7 +658,7 @@ export class NFTGenerativeCollectionClass<
      * @param dna
      * @returns name or number of assigned value formatted
      */
-    dnaToAttributesFormatted(dna: BytesLike): {[K in keyof Traits]: AttributeFormatted} {
+    dnaToAttributesFormatted(dna: BytesLike): { [K in keyof Traits]: AttributeFormatted } {
         return this.attributesToAttributesFormatted(this.dnaToAttributes(dna));
     }
 
@@ -671,25 +671,25 @@ export class NFTGenerativeCollectionClass<
             string,
             NFTGenerativeCollectionInterface<Record<string, NFTGenerativeTraitBaseInterface>, undefined>
         >
-        ? {[K in keyof Children]: Parameters<Children[K]['dnaToAttributesWithChildrenFormatted']>[0]}
-        : undefined;
+            ? { [K in keyof Children]: Parameters<Children[K]['dnaToAttributesWithChildrenFormatted']>[0] }
+            : undefined;
     }) {
         const result = this.attributesToAttributesFormattedWithChildren(
             //@ts-expect-error
-            this.dnaToAttributesWithChildren({dna, children}),
+            this.dnaToAttributesWithChildren({ dna, children }),
         );
 
         return omitBy(result, isEmptyOrUndefined) as unknown as {
-            attributes: {[K in keyof Traits]: AttributeFormatted};
+            attributes: { [K in keyof Traits]: AttributeFormatted };
             children: Children extends Record<string, NFTGenerativeCollectionInterface>
-            ? {[K in keyof Children]: ReturnType<Children[K]['dnaToAttributesWithChildrenFormatted']>}
-            : undefined;
+                ? { [K in keyof Children]: ReturnType<Children[K]['dnaToAttributesWithChildrenFormatted']> }
+                : undefined;
         };
     }
 
     /***** Encoding *****/
     async getImage(
-        attributes: {[K in keyof Traits]: AttributeFormatted},
+        attributes: { [K in keyof Traits]: AttributeFormatted },
         mergeOptions?: MergeImagesOptions,
         width = 800,
         height = 800,
@@ -728,13 +728,13 @@ export class NFTGenerativeCollectionClass<
             attributes,
             children,
         }: {
-            attributes: {[K in keyof Traits]: AttributeFormatted};
+            attributes: { [K in keyof Traits]: AttributeFormatted };
             children: Children extends Record<
                 string,
                 NFTGenerativeCollectionInterface<Record<string, NFTGenerativeTraitBaseInterface>, undefined>
             >
-            ? {[K in keyof Children]: Parameters<Children[K]['getImageWithChildren']>[0]}
-            : undefined;
+                ? { [K in keyof Children]: Parameters<Children[K]['getImageWithChildren']>[0] }
+                : undefined;
         },
         mergeOptions?: mergeImages.Options | undefined,
         width?: number | undefined,
@@ -751,11 +751,11 @@ export class NFTGenerativeCollectionClass<
         const imagesChildren =
             this.children && children
                 ? omitBy(
-                    mapValues(existingChildren, (c, k) => {
-                        if (children[k]) return c.getImageWithChildren(children[k], mergeOptions, width, height);
-                    }),
-                    isUndefined,
-                )
+                      mapValues(existingChildren, (c, k) => {
+                          if (children[k]) return c.getImageWithChildren(children[k], mergeOptions, width, height);
+                      }),
+                      isUndefined,
+                  )
                 : undefined;
 
         const layers = compact(await Promise.all([image, ...Object.values(imagesChildren ?? [])]));
@@ -786,7 +786,7 @@ export class NFTGenerativeCollectionClass<
 
         if (isUndefined(this.children)) {
             //@ts-expect-error
-            return NFTGenerativeItemClass.fromAttributes({collection: this, attributes});
+            return NFTGenerativeItemClass.fromAttributes({ collection: this, attributes });
         }
 
         const childrenItems: Record<string, NFTGenerativeItem | undefined> = {};
@@ -795,7 +795,7 @@ export class NFTGenerativeCollectionClass<
         });
 
         //@ts-expect-error
-        return NFTGenerativeItemClass.fromAttributes({collection: this, attributes, children: childrenItems});
+        return NFTGenerativeItemClass.fromAttributes({ collection: this, attributes, children: childrenItems });
     }
 
     async uploadIPFS(client: IPFS): Promise<CID> {
