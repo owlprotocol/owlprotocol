@@ -1,5 +1,5 @@
 import { ComponentStory, ComponentMeta } from "@storybook/react";
-import { Collections } from "@owlprotocol/nft-sdk";
+import { BaseCollections } from "@owlprotocol/template-data";
 import { TestData } from "@owlprotocol/web3-redux";
 import { networkIdArgType } from "../../../test/storybookArgs.js";
 import ERC721EquipmentPresentation from ".";
@@ -17,7 +17,7 @@ const Template: ComponentStory<typeof ERC721EquipmentPresentation> = (
 export const Main = Template.bind({});
 
 Main.args = {
-    item: Object.values(Collections.shapesItemChoices)[0],
+    item: Object.values(BaseCollections.shapesItemChoices)[0],
     itemName: "OWL #1",
     tokens: [
         {

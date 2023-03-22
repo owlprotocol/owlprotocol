@@ -1,0 +1,39 @@
+{
+  "rootContract": {
+    "tokenSymbol": "InnovotDNFT",
+    "tokenIdStart": 11,
+    "cfg": {
+      "ipfsEndpoint": "https://leovigna.mypinata.cloud",
+      "ipfsPath": "/ipfs",
+      "apiEndpoint": "http://metadata.owlprotocol.xyz:32001",
+      "apiPath": "/metadata/getMetadata",
+      "schemaJsonIpfs": "QmbUcD2MRhHYVwEw3YEX3izMzVvZfT49CGfLhqdVRVcnZd"
+    }
+  },
+  "children": {
+    "Glasses": {
+      "tokenIdStart": 11,
+      "cfg": {
+        "schemaJsonIpfs": "Qmf9mfLFpUxYtRmh5gRfxPRmb49Q4UCJ5pTFaLMdhozRCJ"
+      }
+    },
+    "Dress": {
+      "tokenIdStart": 11,
+      "cfg": {
+        "schemaJsonIpfs": "QmSeraohgSP1RG7pWwoYLrZGhCJcQMzDbwvHg2JdQvBAw9"
+      }
+    },
+    "Hat": {
+      "tokenIdStart": 11,
+      "cfg": {
+        "schemaJsonIpfs": "QmW7y1CdMuRhNhgBWafTcLjamC4MX8EBo94XeMkGrJVG85"
+      }
+    },
+    "Facial_Hair": {
+      "tokenIdStart": 11,
+      "cfg": {
+        "schemaJsonIpfs": "QmNxFeLeq38tqVFBZ4DBgFgad9bDS3TeEUadtYyHVRJxf6"
+      }
+    }
+  }
+}

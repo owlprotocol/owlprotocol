@@ -16,6 +16,8 @@ export const THEME_COLORS = {
         color12: "#77C875",
         color13: "#E4A951",
         color14: "#41C4A5",
+        gradpurple: 'linear-gradient(99.23deg, #942457 1.6%, #8318DD 97.94%)',
+        grad1: 'linear-gradient(51.77deg, #9C01F5 21.85%, #1DA1F4 83.42%)',
     },
 };
 

@@ -1,0 +1,6 @@
+<svg width="801" height="801" viewBox="0 0 801 801" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path d="M399.885 300.19C399.885 268.706 425.408 243.184 456.891 243.184H489.895V276.187C489.895 307.671 464.372 333.193 432.889 333.193H399.885V300.19Z" fill="{eye_right_color}" stroke="{stroke_color}" stroke-width="6.00064"/>
+<circle cx="444.89" cy="288.188" r="16.0017" fill="{stroke_color}"/>
+<path d="M397.884 300.19C397.884 268.706 372.362 243.184 340.878 243.184H307.875V276.187C307.875 307.671 333.397 333.193 364.881 333.193H397.884V300.19Z" fill="{eye_left_color}" stroke="{stroke_color}" stroke-width="6.00064"/>
+<circle r="16.0017" transform="matrix(-1 0 0 1 352.88 288.188)" fill="{stroke_color}"/>
+</svg>

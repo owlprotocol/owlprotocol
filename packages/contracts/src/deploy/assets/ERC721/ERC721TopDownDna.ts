@@ -1,4 +1,4 @@
-import { logDeployment, RunTimeEnvironment } from '../../utils.js';
+import { getContractURIs, logDeployment, RunTimeEnvironment } from '../../utils.js';
 import { mapValues } from '../../../lodash.js';
 import { getFactories } from '../../../ethers/factories.js';
 import { getDeterministicFactories, getDeterministicInitializeFactories } from '../../../ethers/deterministicFactories.js';
@@ -29,15 +29,20 @@ export const ERC721TopDownDnaDeploy = async ({ provider, signers, network, token
     const beaconProxyFactories = getBeaconProxyFactories(deterministicFactories, cloneFactory, beaconFactory, signerAddress);
     const ERC721TopDownDnaFactory = beaconProxyFactories.ERC721TopDownDna;
 
+    const { chainId } = network.config;
+
     //Contracts
     const deployments: { [key: string]: ERC721TopDownDnaInitializeArgs } = {}
     tokens.forEach((t, i) => {
-        deployments[`ERC721TopDownDna-${i}`] = {
+        const name = `ERC721TopDownDna-${i}`;
+        deployments[name] = {
             admin: signerAddress,
 
-            name: `ERC721TopDownDna-${i}`,
+            name,
             symbol: `NFT${i}`,
-            initBaseURI: `http://localhost:8080/erc721/${i}/`,
+
+            initBaseURI: getContractURIs({ chainId, name, tokenId: i }).tokenUri,
+            contractUri: getContractURIs({ chainId, name }).contractUri,
 
 
             childContracts721: t.childContracts721,

@@ -1,0 +1,4 @@
+<svg width="801" height="801" viewBox="0 0 801 801" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path d="M492.658 188.629C475.057 177.428 428.652 188.63 398.648 214.632V390.651C456.655 378.65 496.659 340.646 514.661 288.641C529.062 247.036 515.994 218.633 502.659 218.633C506.66 213.299 510.26 199.831 492.658 188.629Z" fill="{face_left_color}" stroke="{stroke_color}" stroke-width="6.00064" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M304.924 188.629C322.526 177.428 368.931 188.63 398.934 214.632V390.651C340.928 378.65 300.924 340.646 282.922 288.641C268.52 247.036 281.588 218.633 294.923 218.633C290.923 213.299 287.322 199.831 304.924 188.629Z" fill="{face_right_color}" stroke="{stroke_color}" stroke-width="6.00064" stroke-linecap="round" stroke-linejoin="round"/>
+</svg>

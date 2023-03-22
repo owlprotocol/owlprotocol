@@ -1,0 +1,8 @@
+<svg width="800" height="800" viewBox="0 0 800 800" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path d="M466.429 654.182V565H497.857V676.727H499.857V565H535V687H482C454.938 687 433 665.062 433 638V565H464.429V654.182H466.429Z" fill="{wing_right_color}" stroke="{stroke_color}" stroke-width="2"/>
+<path d="M442 405H535V643H442C425.984 643 413 630.016 413 614V434C413 417.984 425.984 405 442 405Z" fill="#525252" stroke="{stroke_color}" stroke-width="2"/>
+<path d="M482 437H535V611H482C465.984 611 453 598.016 453 582V466C453 449.984 465.984 437 482 437Z" fill="{wing_right_color}" stroke="{stroke_color}" stroke-width="2"/>
+<path d="M337.571 654.182V565H306.143V676.727H304.143V565H269V687H322C349.062 687 371 665.062 371 638V565H339.571V654.182H337.571Z" fill="{wing_left_color}" stroke="{stroke_color}" stroke-width="2"/>
+<path d="M362 405H269V643H362C378.016 643 391 630.016 391 614V434C391 417.984 378.016 405 362 405Z" fill="#A7A5A5" stroke="{stroke_color}" stroke-width="2"/>
+<path d="M322 437H269V611H322C338.016 611 351 598.016 351 582V466C351 449.984 338.016 437 322 437Z" fill="{wing_left_color}" stroke="{stroke_color}" stroke-width="2"/>
+</svg>

@@ -77,7 +77,7 @@ export const handler = async (argv: Argv) => {
     await detachTopDown({ provider, signers, network }, rootContract, childContractAddr, tokenId);
 
     const fullDna = await rootContract.getDna(tokenId);
-    const contractURI = await rootContract.contractURI()
+    const contractURI = await rootContract.contractURI();
 
     console.log(`Fetching Metadata Schema JSON from: ${contractURI}`);
     const collMetadataRes = await fetch(contractURI);
@@ -92,7 +92,6 @@ export const handler = async (argv: Argv) => {
     const collectionClass = NFTGenerativeCollectionClass.fromData(collMetadata);
 
     if (debug) {
-
         const [dna, fullDnaChildren] = utils.defaultAbiCoder.decode(['bytes', 'bytes[]'], fullDna);
 
         console.debug(dna);

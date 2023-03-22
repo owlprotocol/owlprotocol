@@ -1,0 +1,8 @@
+<svg width="800" height="800" viewBox="0 0 800 800" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path d="M416 500V628C457.6 628 490.667 572 502 544C521.2 544 527.333 518.667 528 506C555.2 506 560.667 476.667 560 462C609.6 462 618 415.333 616 392H534C460 392 416 462 416 500Z" fill="{wing_right_color}" stroke="{stroke_color}" stroke-width="2" stroke-linejoin="round"/>
+<path d="M436.074 582C434.741 541.333 450.874 460 526.074 460" stroke="{stroke_color}" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M512.074 504C496.074 508 464.074 528 464.074 576" stroke="{stroke_color}" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M384.266 500V628C342.666 628 309.599 572 298.266 544C279.066 544 272.932 518.667 272.266 506C245.066 506 239.599 476.667 240.266 462C190.666 462 182.266 415.333 184.266 392H266.266C340.266 392 384.266 462 384.266 500Z" fill="{wing_left_color}" stroke="{stroke_color}" stroke-width="2" stroke-linejoin="round"/>
+<path d="M364.191 582C365.525 541.333 349.391 460 274.191 460" stroke="{stroke_color}" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M288.191 504C304.191 508 336.191 528 336.191 576" stroke="{stroke_color}" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+</svg>

@@ -1,4 +1,4 @@
-import { logDeployment, RunTimeEnvironment } from '../../utils.js';
+import { getContractURIs, logDeployment, RunTimeEnvironment } from '../../utils.js';
 import { mapValues } from '../../../lodash.js';
 import { getFactories } from '../../../ethers/factories.js';
 import { getDeterministicFactories, getDeterministicInitializeFactories } from '../../../ethers/deterministicFactories.js';
@@ -26,17 +26,19 @@ export const ERC721MintableAutoIdDeploy = async ({ provider, signers, network, t
     const beconProxyFactories = getBeaconProxyFactories(deterministicFactories, cloneFactory, beaconFactory, signerAddress);
     const ERC721MintableAutoIdFactory = beconProxyFactories.ERC721MintableAutoId;
 
+    const { chainId } = network.config;
+
     //Contracts
     const deployments: { [key: string]: ERC721MintableAutoIdInitializeArgs } = {}
     for (let i = 0; i < tokens; i++) {
-        deployments[`ERC721MintableAutoId-${i}`] = {
+        const name = `ERC721MintableAutoId-${i}`;
+
+        deployments[name] = {
             admin: signerAddress,
-
-            name: `ERC721MintableAutoId-${i}`,
+            name,
             symbol: `NFT${i}`,
-            initBaseURI: `http://localhost:8080/erc721/${i}/`,
-
-
+            initBaseURI: getContractURIs({ chainId, name, tokenId: i }).tokenUri,
+            contractUri: getContractURIs({ chainId, name }).contractUri,
         }
     };
 

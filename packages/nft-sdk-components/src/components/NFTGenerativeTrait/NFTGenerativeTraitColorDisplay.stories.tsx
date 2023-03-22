@@ -1,4 +1,4 @@
-import { Collections } from '@owlprotocol/nft-sdk';
+import { BaseCollections } from '@owlprotocol/template-data';
 import { ComponentStory, ComponentMeta } from '@storybook/react';
 import {
     NFTGenerativeTraitColorDisplay,
@@ -17,14 +17,14 @@ const Template: ComponentStory<typeof NFTGenerativeTraitColorDisplay> = (args: a
 
 export const Main = Template.bind({});
 Main.args = {
-    item: Object.values(Collections.colorItemChoices)[0],
+    item: Object.values(BaseCollections.colorItemChoices)[0],
     name: 'bg_color',
 } as NFTGenerativeTraitColorDisplayProps;
 
 Main.argTypes = {
     item: {
-        options: Object.keys(Collections.colorItemChoices),
-        mapping: Collections.colorItemChoices,
+        options: Object.keys(BaseCollections.colorItemChoices),
+        mapping: BaseCollections.colorItemChoices,
         control: {
             type: 'select',
         },

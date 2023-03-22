@@ -1,4 +1,4 @@
-import { logDeployment, RunTimeEnvironment } from '../../utils.js';
+import { getContractURIs, logDeployment, RunTimeEnvironment } from '../../utils.js';
 import { mapValues } from '../../../lodash.js';
 import { getFactories } from '../../../ethers/factories.js';
 import { getDeterministicFactories, getDeterministicInitializeFactories } from '../../../ethers/deterministicFactories.js';
@@ -27,13 +27,18 @@ export const AssetRouterOutputDeploy = async ({ provider, signers, network, rout
     const beconProxyFactories = getBeaconProxyFactories(deterministicFactories, cloneFactory, beaconFactory, signerAddress);
     const AssetRouterOutputFactory = beconProxyFactories.AssetRouterOutput;
 
+    const { chainId } = network.config;
+
     //Contracts
     const deployments: { [key: string]: AssetRouterOutputInitializeArgs } = {}
     routers.forEach((r, i) => {
-        deployments[`AssetRouterOutput-${i}`] = {
+        const name = `AssetRouterOutput-${i}`;
+
+        deployments[name] = {
             admin: signerAddress,
             outputBaskets: r.outputBaskets.map(validateAssetBasketOutput),
-            routers: r.routers
+            routers: r.routers,
+            contractUri: getContractURIs({ chainId, name }).contractUri,
         }
     })
 

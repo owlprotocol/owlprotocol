@@ -33,7 +33,7 @@ export const builder = (yargs: ReturnType<yargs.Argv>) => {
             This is usually relative to the compiled src, by default we use a folder called "projects".
             e.g. "projects/acme"
             `,
-            type: 'string'
+            type: 'string',
         })
         .option('debug', {
             describe: 'Outputs debug statements',
@@ -70,12 +70,8 @@ export const handler = async (argv: Argv & { nftItemJS?: string }) => {
 };
 
 const argvCheck = (argv: Argv) => {
-    if (!check.string(argv.nftItemJS) || (!check.undefined(argv.outputFolder) && !check.string(argv.outputFolder))) {
-        console.error(`Args collectionJS and outputPath must both be strings`);
+    if (!check.string(argv.nftItemJS) || (!check.undefined(argv.projectFolder) && !check.string(argv.projectFolder))) {
+        console.error(`ERROR: Options "collectionJS" and "outputPath" must both be strings.`);
         process.exit();
-    }
-
-    if (!check.undefined(argv.outputFolder) && fs.existsSync(argv.outputFolder)) {
-        console.error(`Args collectionJS and outputPath must both be strings`);
     }
 };

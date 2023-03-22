@@ -1,4 +1,4 @@
-import { Collections } from '@owlprotocol/nft-sdk';
+import { BaseCollections } from '@owlprotocol/template-data';
 import { ComponentStory, ComponentMeta } from '@storybook/react';
 import { NFTGenerativeTraitEnumPicker, NFTGenerativeTraitEnumPickerProps } from './NFTGenerativeTraitEnumPicker.js';
 
@@ -14,14 +14,14 @@ const Template: ComponentStory<typeof NFTGenerativeTraitEnumPicker> = (args: any
 
 export const Main = Template.bind({});
 Main.args = {
-    item: Object.values(Collections.enumItemChoices)[0],
+    item: Object.values(BaseCollections.enumItemChoices)[0],
     name: 'faction',
 } as NFTGenerativeTraitEnumPickerProps;
 
 Main.argTypes = {
     item: {
-        options: Object.keys(Collections.enumItemChoices),
-        mapping: Collections.enumItemChoices,
+        options: Object.keys(BaseCollections.enumItemChoices),
+        mapping: BaseCollections.enumItemChoices,
         control: {
             type: 'select',
         },

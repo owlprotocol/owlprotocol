@@ -1,0 +1,21 @@
+{
+  "attributes": {
+    "class": "Common",
+    "background": "Party - Blue",
+    "light": "Yellow",
+    "base": "Default",
+    "glasses": "Designer - Basic"
+  },
+  "children": {
+    "shirt": {
+      "attributes": {
+        "image": "Designer - Kani"
+      }
+    },
+    "hat": {
+      "attributes": {
+        "image": "Designer - 40 Arce 2"
+      }
+    }
+  }
+}

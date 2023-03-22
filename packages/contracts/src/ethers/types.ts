@@ -47,6 +47,7 @@ export type { ERC721MintableAutoId, ERC721MintableAutoIdInterface } from '../typ
 export type { ERC721Dna, ERC721DnaInterface } from '../typechain/ethers/ERC721Dna';
 export type { ERC721TopDownMintable, ERC721TopDownMintableInterface } from '../typechain/ethers/ERC721TopDownMintable';
 export type { ERC721TopDownMintableAutoId, ERC721TopDownMintableAutoIdInterface } from '../typechain/ethers/ERC721TopDownMintableAutoId';
+export type { ERC721TopDownDnaMintable, ERC721TopDownDnaMintableInterface } from '../typechain/ethers/ERC721TopDownDnaMintable';
 export type { ERC721TopDownDna, ERC721TopDownDnaInterface } from '../typechain/ethers/ERC721TopDownDna';
 
 export type { IERC1155Dna, IERC1155DnaInterface } from '../typechain/ethers/IERC1155Dna';
@@ -156,6 +157,7 @@ export type { ERC721MintableAutoId__factory } from '../typechain/ethers/factorie
 export type { ERC721Dna__factory } from '../typechain/ethers/factories/ERC721Dna__factory';
 export type { ERC721TopDownMintable__factory } from '../typechain/ethers/factories/ERC721TopDownMintable__factory';
 export type { ERC721TopDownMintableAutoId__factory } from '../typechain/ethers/factories/ERC721TopDownMintableAutoId__factory';
+export type { ERC721TopDownDnaMintable__factory } from '../typechain/ethers/factories/ERC721TopDownDnaMintable__factory';
 export type { ERC721TopDownDna__factory } from '../typechain/ethers/factories/ERC721TopDownDna__factory';
 
 export type { IERC1155Dna__factory } from '../typechain/ethers/factories/IERC1155Dna__factory';

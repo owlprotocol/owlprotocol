@@ -1,4 +1,4 @@
-import { Collections } from '@owlprotocol/nft-sdk';
+import { BaseCollections } from '@owlprotocol/template-data';
 import { ComponentStory, ComponentMeta } from '@storybook/react';
 import {
     NFTGenerativeTraitColormapPicker,
@@ -17,14 +17,14 @@ const Template: ComponentStory<typeof NFTGenerativeTraitColormapPicker> = (args:
 
 export const Main = Template.bind({});
 Main.args = {
-    item: Object.values(Collections.colormapItemChoices)[0],
+    item: Object.values(BaseCollections.colormapItemChoices)[0],
     name: 'colormap',
 } as NFTGenerativeTraitColormapPickerProps;
 
 Main.argTypes = {
     item: {
-        options: Object.keys(Collections.colormapItemChoices),
-        mapping: Collections.colormapItemChoices,
+        options: Object.keys(BaseCollections.colormapItemChoices),
+        mapping: BaseCollections.colormapItemChoices,
         control: {
             type: 'select',
         },

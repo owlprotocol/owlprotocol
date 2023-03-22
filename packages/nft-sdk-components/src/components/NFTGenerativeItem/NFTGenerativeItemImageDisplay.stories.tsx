@@ -1,4 +1,4 @@
-import { Collections } from '@owlprotocol/nft-sdk';
+import { BaseCollections } from '@owlprotocol/template-data';
 import { ComponentStory, ComponentMeta } from '@storybook/react';
 import { NFTGenerativeItemImageDisplay, NFTGenerativeItemImageDisplayProps } from './NFTGenerativeItemImageDisplay.js';
 
@@ -14,13 +14,13 @@ const Template: ComponentStory<typeof NFTGenerativeItemImageDisplay> = (args: an
 
 export const Main = Template.bind({});
 Main.args = {
-    item: Object.values(Collections.shapesItemChoices)[0],
+    item: Object.values(BaseCollections.shapesItemChoices)[0],
 } as NFTGenerativeItemImageDisplayProps;
 
 Main.argTypes = {
     item: {
-        options: Object.keys(Collections.shapesItemChoices),
-        mapping: Collections.shapesItemChoices,
+        options: Object.keys(BaseCollections.shapesItemChoices),
+        mapping: BaseCollections.shapesItemChoices,
         control: {
             type: 'select',
         },
@@ -29,14 +29,14 @@ Main.argTypes = {
 
 export const Children = Template.bind({});
 Children.args = {
-    item: Object.values(Collections.shapesNestedItemChoices)[0],
+    item: Object.values(BaseCollections.shapesNestedItemChoices)[0],
     showItemChildren: true
 } as NFTGenerativeItemImageDisplayProps;
 
 Children.argTypes = {
     item: {
-        options: Object.keys(Collections.shapesNestedItemChoices),
-        mapping: Collections.shapesNestedItemChoices,
+        options: Object.keys(BaseCollections.shapesNestedItemChoices),
+        mapping: BaseCollections.shapesNestedItemChoices,
         control: {
             type: 'select',
         },

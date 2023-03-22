@@ -75,7 +75,7 @@
     "chai": "^4.3.6",
     "colormap": "^2.3.2",
     "cross-env": "^7.0.3",
-    "dotenv": "^10.0.0",
+    "dotenv": "^16.0.3",
     "interface-datastore": "^7.0.0",
     "ipfs-core": "^0.16.1",
     "ipfs-core-types": "^0.12.1",

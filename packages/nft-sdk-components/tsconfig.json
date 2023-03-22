@@ -14,7 +14,7 @@
     "strict": true,
     "forceConsistentCasingInFileNames": true,
     "module": "ESNext",
-    "moduleResolution": "Node",
+    "moduleResolution": "node",
     "resolveJsonModule": true,
     "isolatedModules": false,
     "noEmit": true,
@@ -24,6 +24,7 @@
     "emitDeclarationOnly": false,
     "types": [
       "node",
+      "mocha",
       "react",
       "vite-plugin-svgr/client"
     ]

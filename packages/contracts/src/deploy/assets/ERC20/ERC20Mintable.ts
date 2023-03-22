@@ -1,4 +1,4 @@
-import { logDeployment, RunTimeEnvironment } from '../../utils.js';
+import { getContractURIs, logDeployment, RunTimeEnvironment } from '../../utils.js';
 import { mapValues } from '../../../lodash.js';
 import { getFactories } from '../../../ethers/factories.js';
 import { getDeterministicFactories, getDeterministicInitializeFactories } from '../../../ethers/deterministicFactories.js';
@@ -27,14 +27,17 @@ export const ERC20MintableDeploy = async ({ provider, signers, network, tokens, 
     const beaconProxyFactories = getBeaconProxyFactories(deterministicFactories, cloneFactory, beaconFactory, signerAddress);
     const ERC20MintableFactory = beaconProxyFactories.ERC20Mintable;
 
+    const { chainId } = network.config;
+
     //Contracts
     const deployments: { [key: string]: ERC20MintableInitializeArgs } = {}
     for (let i = 0; i < tokens; i++) {
-        deployments[`ERC20Mintable-${i}`] = {
+        const name = `ERC20Mintable-${i}`;
+        deployments[name] = {
             admin: signerAddress,
-
-            name: `ERC20Mintable-${i}`,
+            name,
             symbol: `TOK${i}`,
+            contractUri: getContractURIs({ chainId, name }).contractUri,
         }
     }
 

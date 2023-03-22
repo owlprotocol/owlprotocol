@@ -1,21 +1,20 @@
 import yargs from 'yargs';
-import _ from 'lodash';
-
+import lodash from 'lodash';
 import { Argv } from '../utils/pathHandlers.js';
 import { HD_WALLET_MNEMONIC, NETWORK, PRIVATE_KEY_0 } from '../utils/environment.js';
 
 import { ethers } from 'ethers';
 
-const { mapValues } = _;
-
-import { Artifacts, Deploy } from '@owlprotocol/contracts';
+import { Artifacts } from '@owlprotocol/contracts';
 import config from 'config';
+
+const { mapValues } = lodash;
 
 const jsonRpcEndpoint: string = config.get(`network.${NETWORK}.config.url`);
 const provider = new ethers.providers.JsonRpcProvider(jsonRpcEndpoint);
 let debug = false;
 
-import { NFTGenerativeCollectionClass, NFTGenerativeItemClass } from '@owlprotocol/nft-sdk';
+import { NFTGenerativeCollectionClass, NFTGenerativeItemInterface } from '@owlprotocol/nft-sdk';
 
 export const command = 'viewTopDown';
 
@@ -36,12 +35,12 @@ export const builder = (yargs: ReturnType<yargs.Argv>) => {
         .option('rootContractAddr', {
             describe: 'Parent/root contract address',
             alias: ['r', 'root'],
-            type: 'string'
+            type: 'string',
         })
         .option('tokenId', {
             describe: 'tokenId',
             alias: ['token'],
-            type: 'number'
+            type: 'number',
         })
         .demandOption(['rootContractAddr', 'tokenId']);
 };
@@ -64,7 +63,7 @@ export const handler = async (argv: Argv) => {
     const rootContractAddr = argv.rootContractAddr as string;
     const tokenId = argv.tokenId as number;
 
-    const rootContract = new ethers.Contract(rootContractAddr, Artifacts.ERC721TopDownDna.abi, signers[0]);
+    const rootContract = new ethers.Contract(rootContractAddr, Artifacts.ERC721TopDownDnaMintable.abi, signers[0]);
     const contractURI = await rootContract.contractURI();
 
     console.log(`Fetching Metadata Schema JSON from: ${contractURI}`);
@@ -84,13 +83,21 @@ export const handler = async (argv: Argv) => {
     const fullDnaWithChildren = await rootContract.getDna(tokenId);
     const nftItem = collectionClass.createFromFullDna(fullDnaWithChildren);
 
+    const owner = (await rootContract.ownerOf(tokenId)) as string;
+
+    dumpInfoNFT(tokenId, owner, nftItem);
+
+    debug && console.log('tokenUri', await rootContract.tokenURI(tokenId));
+    debug && console.debug('fullDnaWithChildren', fullDnaWithChildren);
+};
+
+const dumpInfoNFT = (tokenId: number, owner: string, nftItem: NFTGenerativeItemInterface) => {
+    console.log(`NFT tokenId: ${tokenId} - owned by ${owner}`);
+
     const attrWithChildren = nftItem.attributesFormattedWithChildren();
 
     console.log(nftItem.attributesFormatted());
     mapValues(attrWithChildren.children, (c: any, k) => {
         console.log(k, c.attributes);
     });
-
-    debug && console.log('tokenUri', await rootContract.tokenURI(tokenId));
-    debug && console.debug('fullDnaWithChildren', fullDnaWithChildren);
-}
+};

@@ -1,5 +1,5 @@
 import { assert } from 'chai';
-import { waterEnumItem, fireEnumItem } from '../../collections/enum.js';
+import { waterEnumItem, fireEnumItem } from '../../../testdata/collections/index.js';
 
 describe('NFTGenerativeItemClass', () => {
     it('withAttribute', () => {

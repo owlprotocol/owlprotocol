@@ -18,6 +18,59 @@ See our [Tutorials](/contracts/tutorials) for how we use the CLI - [**LINK**](/c
 
 > View the help with: `node dist/index.cjs --help`
 
+---
+
+## Commands
+
+### generateSchemaJSON
+
+**Usage:**
+```
+node dist/index.cjs generateSchemaJSON <collectionJS> --project=projects/[folder]
+```
+
+Generates the Schema JSON used by the **nft-sdk** to translate the on-chain data.
+
+> Reads the **collectionJS** file relative to the project folder and
+> outputs the Schema JSON to the **output** subfolder.
+
+:::info
+To create a new collection this is usually the first step, where you define the collection
+in 1 or more Typescript files.
+
+Then run `pnpm run build:projects`, to generate the required JS file.
+
+e.g. `node dist/index.cjs generateSchemaJSON collections.js --project=projects/example-omo`
+:::
+
+---
+
+### generateItemNFT
+
+**Usage:**
+```
+node dist/index.cjs generateItemNFT <nftItemJS> --project=projects/[folder]`
+```
+
+Generates an NFT Item's JSON with DNA attributes for minting.
+
+> Reads the **nftItemJS** file relative to the project folder and
+> outputs the Schema JSON to the **output** subfolder.
+
+:::info
+Use this command if you know exactly what NFT attributes you want to mint.
+
+> Otherwise use the **generateRandomNFT** command to randomly generate NFTs using defined probabilities.
+
+Run `pnpm run build:projects`, to generate the required NFT Item's JS file.
+
+e.g. `node dist/index.cjs generateItemNFT items/collection-item-1.js --project=projects/example-omo`
+:::
+
+---
+
+**TODO:**
+
 ```
 index.cjs <command>
 
@@ -27,6 +80,17 @@ Commands:
                                                          The "collectionJS" file is relative to the required project folder option.
 
                                                          e.g. node dist/index.cjs generateSchemaJSON collections.js --project=projects/example-omo
+
+
+
+
+  index.cjs generateItemNFT <nftItemJS>                  Devtool - Generates the NFT Item's JS
+
+                                                         For now this always outputs to the folder "./output/items/" relative to the projectFolder
+
+                                                         nftItemJS - path to the NFT item file, relative from the projectFolder
+
+                                                         e.g. node dist/index.cjs generateItemNFT items/collection-item-1.js --project=projects/example-omo
 
 
 
@@ -68,6 +132,22 @@ Commands:
 
 
 
+  index.cjs updateDnaNFT                                 Introspect and view the NFT TopDownDna contract
+
+                                                         e.g. node dist/index.cjs updateDnaNFT --root=0xbE705Ab239b7CE7c078E84965A518834Cb7CFE4b --tokenId=1 --trait='xyz' --attr='abc'
+
+                                                         OR
+
+                                                         node dist/index.cjs updateDnaNFT --root=0xbE705Ab239b7CE7c078E84965A518834Cb7CFE4b --tokenId=1 --json=src/projects/example-loyalty/exampleUpdateDnaNFT.json
+
+
+  index.cjs burnNFT                                      Burns the NFT and all children (if any)
+
+                                                         e.g. node dist/index.cjs burnNFT --contract=0x74Dbc83C18fE41B8db1d8A31A9B5E665d974D55b --tokenId=3
+
+
+
+
   index.cjs deployCommon                                 Deploy the base smart contracts:
 
                                                          - Deterministic Deployer
@@ -76,4 +156,5 @@ Commands:
                                                          - UpgradeableBeacon
 
                                                          e.g. node dist/index.cjs deployCommon
+
 ```

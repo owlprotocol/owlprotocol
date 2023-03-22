@@ -16,8 +16,10 @@ import {
 import { ERC721TopDownDna, ERC1167Factory } from '../../../utils/index.js';
 import { ERC1167FactoryAddress } from '../../../utils/ERC1167Factory/index.js';
 
+import { circleOnSquareNestedItem, collectionShapesNestedChild, collectionShapesNested } from './ShapesData.js'
+
 const deploy = async ({ provider, signers, network }: RunTimeEnvironment) => {
-    const SDK = await import('@owlprotocol/nft-sdk');
+
     const signer = signers[0];
     const signerAddress = await signer.getAddress();
     let nonce = await provider.getTransactionCount(signerAddress);
@@ -116,13 +118,13 @@ const deploy = async ({ provider, signers, network }: RunTimeEnvironment) => {
         shapesChild: {
             [1]: {
                 to: signerAddress,
-                dna: SDK.Collections.circleOnSquareNestedItem.children.fg.dna(),
+                dna: circleOnSquareNestedItem.children.fg.dna(),
             },
         },
         shapes: {
             [1]: {
                 to: signerAddress,
-                dna: SDK.Collections.circleOnSquareNestedItem.dna(),
+                dna: circleOnSquareNestedItem.dna(),
             },
         },
     };
@@ -130,7 +132,7 @@ const deploy = async ({ provider, signers, network }: RunTimeEnvironment) => {
     const promisesMints = mapValues(tokens, async (tokens, k) => {
         const contract = contracts[k].contract!;
         const collection =
-            k == 'shapesChild' ? SDK.Collections.collectionShapesNestedChild : SDK.Collections.collectionShapesNested;
+            k == 'shapesChild' ? collectionShapesNestedChild : collectionShapesNested;
 
         const mints = mapValues(tokens, async ({ to, dna }, tokenId) => {
             try {

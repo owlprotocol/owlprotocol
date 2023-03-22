@@ -1,6 +1,7 @@
 import { constants } from 'ethers';
 import type { ERC721TopDownDna } from '../ethers/types.js';
 
+// This is also used for ERC721TopDownDnaMintable
 export interface ERC721TopDownDnaInitializeArgs {
     admin: Parameters<ERC721TopDownDna['initialize']>[0];
     contractUri?: Parameters<ERC721TopDownDna['initialize']>[1];

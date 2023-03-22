@@ -1,0 +1,4 @@
+<svg width="800" height="800" viewBox="0 0 800 800" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path d="M270 246L302 186C305.2 173.2 298 155.333 294 148C294 114.4 248.667 83.3333 226 72C210 94 234 150 246 170C255.6 186 266 227.333 270 246Z" fill="{ear_left_color}" stroke="{stroke_color}" stroke-width="1.5"/>
+<path d="M528.797 246L496.797 186C493.597 173.2 500.797 155.333 504.797 148C504.797 114.4 550.13 83.3333 572.797 72C588.797 94 564.797 150 552.797 170C543.197 186 532.797 227.333 528.797 246Z" fill="{ear_right_color}" stroke="{stroke_color}" stroke-width="1.5"/>
+</svg>

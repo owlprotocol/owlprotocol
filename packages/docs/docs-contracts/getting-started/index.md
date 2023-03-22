@@ -36,6 +36,15 @@ If successful, it should show *(otherwise consult the `Dockerfile` for environme
 Cached:    3 cached, 12 total
   Time:    2m32.857s
 ```
+---
+
+## CLI Tool
+
+We include a handy CLI Tool for common use cases and interactions.
+
+[CLICK HERE for the CLI Tool Docs](/contracts/getting-started/cli)
+
+---
 
 ## Tutorials
 

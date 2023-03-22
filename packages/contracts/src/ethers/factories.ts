@@ -9,6 +9,7 @@ import {
     ERC721Dna__factory,
     ERC721TopDownMintable__factory,
     ERC721TopDownMintableAutoId__factory,
+    ERC721TopDownDnaMintable__factory,
     ERC721TopDownDna__factory,
     ERC1155Mintable__factory,
     ERC1155Dna__factory,
@@ -27,6 +28,7 @@ import {
     ERC721Dna as ERC721DnaArtifact,
     ERC721TopDownMintable as ERC721TopDownMintableArtifact,
     ERC721TopDownMintableAutoId as ERC721TopDownMintableAutoIdArtifact,
+    ERC721TopDownDnaMintable as ERC721TopDownDnaMintableArtifact,
     ERC721TopDownDna as ERC721TopDownDnaArtifact,
     ERC721TopDownLib as ERC721TopDownLibArtifact,
     ERC721TopDownDnaLib as ERC721TopDownDnaLibArtifact,
@@ -130,6 +132,12 @@ const ERC721TopDownMintableAutoId = new ContractFactory(
     ERC721TopDownMintableAutoIdBytecode,
 ) as ERC721TopDownMintableAutoId__factory;
 
+let ERC721TopDownDnaMintableBytecode = linkLibraryBytecode(ERC721TopDownDnaMintableArtifact, deployedLinkReferences);
+const ERC721TopDownDnaMintable = new ContractFactory(
+    ERC721TopDownDnaMintableArtifact.abi,
+    ERC721TopDownDnaMintableBytecode,
+) as ERC721TopDownDnaMintable__factory;
+
 let ERC721TopDownDnaBytecode = linkLibraryBytecode(ERC721TopDownDnaArtifact, deployedLinkReferences);
 const ERC721TopDownDna = new ContractFactory(
     ERC721TopDownDnaArtifact.abi,
@@ -171,6 +179,7 @@ export const factories = {
     ERC721TopDownDnaLib,
     ERC721TopDownMintable,
     ERC721TopDownMintableAutoId,
+    ERC721TopDownDnaMintable,
     ERC721TopDownDna,
     ERC1155Mintable,
     ERC1155Dna,

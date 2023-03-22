@@ -1,0 +1,6 @@
+<svg width="800" height="800" viewBox="0 0 800 800" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path d="M386 380V518L306 462L268 380V280L344 312L386 380Z" fill="{wing_left_color}" stroke="{stroke_color}" stroke-width="2" stroke-linejoin="round"/>
+<path d="M326 440L292 368M360 456L330 390" stroke="{stroke_color}" stroke-width="1.5"/>
+<path d="M416 380V518L496 462L534 380V280L458 312L416 380Z" fill="{wing_right_color}" stroke="{stroke_color}" stroke-width="2" stroke-linejoin="round"/>
+<path d="M476 440L510 368M442 456L472 390" stroke="{stroke_color}" stroke-width="1.5" stroke-linejoin="round"/>
+</svg>

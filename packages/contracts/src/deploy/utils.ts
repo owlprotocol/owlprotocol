@@ -23,3 +23,13 @@ export function logDeployment(
         );
     }
 }
+
+interface Props {
+    chainId: number;
+    name: string;
+    tokenId?: number;
+}
+export const getContractURIs = ({ chainId, name, tokenId }: Props) => ({
+    contractUri: `http://localhost:3020/${chainId}/${name}/metadata`,
+    tokenUri: `http://localhost:3020/${chainId}/${name}/metadata/${tokenId}`,
+})

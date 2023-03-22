@@ -1,4 +1,4 @@
-import { Collections } from '@owlprotocol/nft-sdk';
+import { BaseCollections } from '@owlprotocol/template-data';
 import { ComponentStory, ComponentMeta } from '@storybook/react';
 import { BN } from 'bn.js';
 import { zip } from 'lodash-es';
@@ -19,14 +19,14 @@ const Template: ComponentStory<typeof NFTGenerativeTraitNumberDisplay> = (args: 
 
 export const Main = Template.bind({});
 Main.args = {
-    item: Object.values(Collections.numberItemChoices)[0],
+    item: Object.values(BaseCollections.numberItemChoices)[0],
     name: 'strokeWidth',
 } as NFTGenerativeTraitNumberDisplayProps;
 
 Main.argTypes = {
     item: {
-        options: Object.keys(Collections.numberItemChoices),
-        mapping: Collections.numberItemChoices,
+        options: Object.keys(BaseCollections.numberItemChoices),
+        mapping: BaseCollections.numberItemChoices,
         control: {
             type: 'select',
         },

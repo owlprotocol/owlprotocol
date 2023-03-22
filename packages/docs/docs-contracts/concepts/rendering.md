@@ -6,17 +6,14 @@ import { SimpleGrid } from '@chakra-ui/react'
 
 # Dynamic NFT Rendering
 
-:::caution Do Not Support Centralization!
-One of the key goals at Owl Protocol is to ensure that the user has full ownership of their NFT, including the graphical
-assets, even if it's a dynamic NFT.
+### Client-Side Rendering
 
-We **DO NOT USE** a centralized API Endpoint. Otherwise it’s too easy, and basically cheating in our view.
-:::
+Owl Protocol advocates for client-side rendering where possible.
 
-### Client-Side Rendering to the Rescue
+With all of the Dynamic NFT's data on-chain, and the IPFS hosted **Collection Schema JSON** you have all the data
+you need to recreate any NFT's rendering.
 
-Having already put the crucial Dynamic NFT's data on-chain, and the **Collection Schema JSON** to translate the on-chain
-data on **IPFS**, the final piece of the puzzle is a **Client-Side SDK** that would allow any dApp, Web3 game or website
+The final piece of the puzzle is a **Client-Side SDK** that would allow any dApp, Web3 game or website
 to integrate and render the NFT, **without relying on a back-end server.**
 
 :::tip Jump to the Tutorial

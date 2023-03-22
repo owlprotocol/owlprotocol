@@ -1,4 +1,4 @@
-import { Collections } from '@owlprotocol/nft-sdk';
+import { BaseCollections } from '@owlprotocol/template-data';
 import { ComponentStory, ComponentMeta } from '@storybook/react';
 import { NFTGenerativeTraitDisplay, NFTGenerativeTraitDisplayProps } from './NFTGenerativeTraitDisplay.js';
 
@@ -14,21 +14,21 @@ const Template: ComponentStory<typeof NFTGenerativeTraitDisplay> = (args: any) =
 
 export const Main = Template.bind({});
 Main.args = {
-    item: Object.values(Collections.shapesItemChoices)[0],
+    item: Object.values(BaseCollections.shapesItemChoices)[0],
     name: 'faction',
 } as NFTGenerativeTraitDisplayProps;
 
 Main.argTypes = {
     item: {
-        options: Object.keys(Collections.shapesItemChoices),
-        mapping: Collections.shapesItemChoices,
+        options: Object.keys(BaseCollections.shapesItemChoices),
+        mapping: BaseCollections.shapesItemChoices,
         control: {
             type: 'select',
         },
     },
     name: {
         defaultValue: 'faction',
-        options: Object.keys(Collections.collectionShapes.traits),
+        options: Object.keys(BaseCollections.collectionShapes.traits),
         control: {
             type: 'select',
         },

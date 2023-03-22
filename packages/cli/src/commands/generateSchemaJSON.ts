@@ -33,13 +33,13 @@ export const builder = (yargs: ReturnType<yargs.Argv>) => {
             This is usually relative to the compiled src, by default we use a folder called "projects".
             e.g. "projects/acme"
             `,
-            type: 'string'
+            type: 'string',
         })
         .option('outputFolder', {
             alias: ['overrideOutputFolder', 'overrideOutput'],
             describe: `Optional output folder, should be an absolute path.
             Otherwise this command defaults to a subfolder called "output" in the same folder as collectionJS`,
-            type: 'string'
+            type: 'string',
         })
         .demandOption(['projectFolder']);
 };
@@ -61,7 +61,10 @@ export const handler = async (argv: yargs.ArgumentsCamelCase & Argv) => {
     await fs.writeFileSync(path.resolve(outputFolder, 'collection-parent.json'), JSON.stringify(collParent, null, 2));
 
     const promises = mapValues(collParent.children, async (childColl: NFTGenerativeCollectionClass, key) => {
-        await fs.writeFileSync(path.resolve(outputFolder, `collection-child-${key}.json`), JSON.stringify(childColl, null, 2));
+        await fs.writeFileSync(
+            path.resolve(outputFolder, `collection-child-${key}.json`),
+            JSON.stringify(childColl, null, 2),
+        );
     });
 
     await Promise.all(Object.values(promises));
@@ -70,7 +73,11 @@ export const handler = async (argv: yargs.ArgumentsCamelCase & Argv) => {
 };
 
 const argvCheck = (argv: Argv) => {
-    if (!check.string(argv.collectionJS) || !check.string(argv.projectFolder) || (!check.undefined(argv.outputFolder) && !check.string(argv.outputFolder))) {
+    if (
+        !check.string(argv.collectionJS) ||
+        !check.string(argv.projectFolder) ||
+        (!check.undefined(argv.outputFolder) && !check.string(argv.outputFolder))
+    ) {
         console.error(`Args collectionJS, projectFolder, and outputFolder if defined, must all be strings`);
         process.exit();
     }

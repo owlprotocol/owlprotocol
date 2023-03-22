@@ -1,5 +1,5 @@
 import { ComponentStory, ComponentMeta } from "@storybook/react";
-import { Collections } from "@owlprotocol/nft-sdk";
+import { BaseCollections } from "@owlprotocol/template-data";
 import { ERC721EquipmentPreview } from ".";
 
 // eslint-disable-next-line import/no-default-export
@@ -15,6 +15,6 @@ const Template: ComponentStory<typeof ERC721EquipmentPreview> = (args: any) => (
 export const Main = Template.bind({});
 
 Main.args = {
-    item: Object.values(Collections.shapesItemChoices)[0],
+    item: Object.values(BaseCollections.shapesItemChoices)[0],
     itemName: "Name of Item",
 };

@@ -1,0 +1,12 @@
+<svg width="801" height="801" viewBox="0 0 801 801" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path d="M416.316 520.43C416.316 457.697 466.108 406.593 528.328 404.485V636.442H472.322C441.391 636.442 416.316 611.367 416.316 580.436V520.43Z" fill="{wing_right_color}" stroke="{stroke_color}" stroke-width="8.00085"/>
+<path d="M452.319 436.421C476.322 436.421 526.727 446.022 528.327 484.426" stroke="{stroke_color}" stroke-width="8.00085" stroke-linecap="round"/>
+<path d="M424.316 484.427C452.319 470.425 526.727 494.028 528.327 532.432" stroke="{stroke_color}" stroke-width="8.00085" stroke-linecap="round"/>
+<path d="M416.315 542.432C444.318 528.43 526.727 550.104 528.327 588.508" stroke="{stroke_color}" stroke-width="8.00085" stroke-linecap="round"/>
+<path d="M420.316 600.713C448.319 586.711 524.327 612.438 524.327 636.44" stroke="{stroke_color}" stroke-width="8.00085" stroke-linecap="round"/>
+<path d="M388.312 520.43C388.312 457.697 338.52 406.593 276.3 404.485V636.442H332.306C363.237 636.442 388.312 611.367 388.312 580.436V520.43Z" fill="{wing_left_color}" stroke="{stroke_color}" stroke-width="8.00085"/>
+<path d="M352.308 436.421C328.306 436.421 277.9 446.022 276.3 484.426" stroke="{stroke_color}" stroke-width="8.00085" stroke-linecap="round"/>
+<path d="M380.312 484.427C352.309 470.425 277.901 494.028 276.301 532.432" stroke="{stroke_color}" stroke-width="8.00085" stroke-linecap="round"/>
+<path d="M388.313 542.432C360.31 528.43 277.901 550.104 276.301 588.508" stroke="{stroke_color}" stroke-width="8.00085" stroke-linecap="round"/>
+<path d="M384.312 600.713C356.31 586.711 280.301 612.438 280.301 636.44" stroke="{stroke_color}" stroke-width="8.00085" stroke-linecap="round"/>
+</svg>

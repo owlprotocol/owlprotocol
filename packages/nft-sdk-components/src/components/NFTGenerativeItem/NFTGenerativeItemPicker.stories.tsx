@@ -1,4 +1,4 @@
-import { Collections } from '@owlprotocol/nft-sdk';
+import { BaseCollections } from '@owlprotocol/template-data';
 import { ComponentStory, ComponentMeta } from '@storybook/react';
 import {
     NFTGenerativeItemPicker,
@@ -18,13 +18,13 @@ const Template: ComponentStory<typeof NFTGenerativeItemPicker> = (args: any) => 
 
 export const Main = Template.bind({});
 Main.args = {
-    item: Object.values(Collections.shapesItemChoices)[0],
+    item: Object.values(BaseCollections.shapesItemChoices)[0],
 } as NFTGenerativeItemPickerProps;
 
 Main.argTypes = {
     item: {
-        options: Object.keys(Collections.shapesItemChoices),
-        mapping: Collections.shapesItemChoices,
+        options: Object.keys(BaseCollections.shapesItemChoices),
+        mapping: BaseCollections.shapesItemChoices,
         control: {
             type: 'select',
         },
@@ -37,13 +37,13 @@ const TemplateWithState: ComponentStory<typeof NFTGenerativeItemPickerWithState>
 
 export const MainWithState = TemplateWithState.bind({});
 MainWithState.args = {
-    item: Object.values(Collections.shapesItemChoices)[0],
+    item: Object.values(BaseCollections.shapesItemChoices)[0],
 } as NFTGenerativeItemPickerProps;
 
 MainWithState.argTypes = {
     item: {
-        options: Object.keys(Collections.shapesItemChoices),
-        mapping: Collections.shapesItemChoices,
+        options: Object.keys(BaseCollections.shapesItemChoices),
+        mapping: BaseCollections.shapesItemChoices,
         control: {
             type: 'select',
         },
@@ -53,13 +53,13 @@ MainWithState.argTypes = {
 export const ChildrenWithState = TemplateWithState.bind({});
 ChildrenWithState.args = {
     showItemChildren: true,
-    item: Object.values(Collections.shapesNestedItemChoices)[0],
+    item: Object.values(BaseCollections.shapesNestedItemChoices)[0],
 } as NFTGenerativeItemPickerProps;
 
 ChildrenWithState.argTypes = {
     item: {
-        options: Object.keys(Collections.shapesNestedItemChoices),
-        mapping: Collections.shapesNestedItemChoices,
+        options: Object.keys(BaseCollections.shapesNestedItemChoices),
+        mapping: BaseCollections.shapesNestedItemChoices,
         control: {
             type: 'select',
         },

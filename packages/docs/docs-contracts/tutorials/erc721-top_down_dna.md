@@ -209,6 +209,16 @@ See: [/packages/cli/src/projects/example-omo/traits.ts](https://github.com/owlpr
 `probabilities` are normalized, correspond in order with the values, and there must be the same number of probabilities as values.
 :::
 
+:::caution About IPFS Hashes for Images
+
+You need to manually upload images to IPFS, and add the `image_url` as `ipfs://[hash]/[path]`.
+
+The `ipfs://` will be replaced by the `ENV` variable `IPFS_GATEWAY` that used by our provided API, so you don't need to be concerned about that.
+
+We'll have more tools and a UI for uploading to IPFS soon.
+
+:::
+
 ---
 
 ## Step 3: Create the `collection.ts` that connects the traits/collection together:
@@ -284,7 +294,7 @@ For now the trait key must be the same as the trait name.
 e.g. `traitImageBg` has the field name as `Background` capitalized, and therefore `collExample` also declares its trait as `Background`.
 :::
 
-See: [/packages/cli/src/projects/example-omo/collection.ts](https://github.com/owlprotocol/owlprotocol/blob/tutorial-example-omo/packages/cli/src/projects/example-omo/collection.ts)
+See: [/packages/cli/projects/example-omo/collection.ts](https://github.com/owlprotocol/owlprotocol/blob/tutorial-example-omo/packages/cli/projects/example-omo/collection.ts)
 
 ---
 
@@ -322,8 +332,8 @@ pnpm run build
 Which should output:
 
 ```
-getProjectSubfolder /Users/owl/owl_protocol/owlprotocol/packages/cli/src/projects/example-omo/output
-Creating JSON(s) for collections.js to folder: /Users/owl/owl_protocol/owlprotocol/packages/cli/src/projects/example-omo/output
+getProjectSubfolder ~/owl_protocol/owlprotocol/packages/cli/projects/example-omo/output
+Creating JSON(s) for collections.js to folder: ~/owl_protocol/owlprotocol/packages/cli/projects/example-omo/output
 projects/example-omo collections.js
 Done
 ```
@@ -350,8 +360,8 @@ We generally prefer Pinata, but of course you can choose a more decentralized op
 For this example we will use Pinata, **upload both Schema JSONs to IPFS, and take note of the IPFS hashes.**
 
 In this case and for your reference, we have uploaded these example JSONs here:
-- [collection-parent.json](https://leovigna.mypinata.cloud/ipfs/Qmc7Aih1P67dmHF4PDMg5KfLABMtR6DXmDaxRvgF8Wgoe9) - Hash: `Qmc7Aih1P67dmHF4PDMg5KfLABMtR6DXmDaxRvgF8Wgoe9`
-- [collection-child-Hats.json](https://leovigna.mypinata.cloud/ipfs/QmSYm8ksGSH7fi1XXm78Y6tkKiZ2ASpdyzZNtcVEV1h7G3) - Hahs: `QmSYm8ksGSH7fi1XXm78Y6tkKiZ2ASpdyzZNtcVEV1h7G3`
+- [collection-parent.json](https://leovigna.mypinata.cloud/ipfs/QmRNrcuGtaqefB72NHuGdDtvzEZjNvX6m2E1AgBXW65EKq) - Hash: `QmRNrcuGtaqefB72NHuGdDtvzEZjNvX6m2E1AgBXW65EKq`
+- [collection-child-Hats.json](https://leovigna.mypinata.cloud/ipfs/QmcYC3fcqxU2gqS7VWEeC7jLDjpFQunMXmfkijXq325RHf) - Hahs: `QmcYC3fcqxU2gqS7VWEeC7jLDjpFQunMXmfkijXq325RHf`
 
 ---
 
@@ -386,19 +396,21 @@ You will need to create an `owlproject.json` file in the project folder:
 ```json
 {
   "rootContract": {
-    "tokenSymbol": "ExampleNFT",
+    "tokenSymbol": "ExampleOmoNFT",
     "tokenIdStart": 1,
     "cfg": {
-      "ipfsEndpointHTTP": "https://leovigna.mypinata.cloud/ipfs/",
-      "owlApiEndpoint": "http://metadata.owlprotocol.xyz:32001/metadata/getMetadata/",
-      "metadataIPFS": "Qmc7Aih1P67dmHF4PDMg5KfLABMtR6DXmDaxRvgF8Wgoe9"
+      "ipfsEndpoint": "https://leovigna.mypinata.cloud",
+      "ipfsPath": "ipfs",
+      "apiEndpoint": "https://metadata.owlprotocol.xyz",
+      "apiPath": "metadata/getMetadata",
+      "schemaJsonIpfs": "QmRNrcuGtaqefB72NHuGdDtvzEZjNvX6m2E1AgBXW65EKq"
     }
   },
   "children": {
     "Hats": {
       "tokenIdStart": 1,
       "cfg": {
-        "metadataIPFS": "QmSYm8ksGSH7fi1XXm78Y6tkKiZ2ASpdyzZNtcVEV1h7G3"
+        "schemaJsonIpfs": "QmcYC3fcqxU2gqS7VWEeC7jLDjpFQunMXmfkijXq325RHf"
       }
     }
   }
@@ -406,9 +418,9 @@ You will need to create an `owlproject.json` file in the project folder:
 ```
 
 ### Important
-- You need a working IPFS endpoint for now for `ipfsEndpointHTTP`, we are using [Pinata](https://pinata.cloud/)
-- Do not change `owlApiEndpoint`, this is the fallback API for browsers/clients that do not support the `nft-sdk`
-- Replace the `metadataIPFS` for the parent and children according to the **Schema JSON** from earlier, this is misnamed at the moment.
+- You need a working IPFS endpoint for now for `ipfsEndpoint`, we are using [Pinata](https://pinata.cloud/)
+- Do not change `apiEndpoint`, this is the fallback API for browsers/clients that do not support the `nft-sdk`
+- Replace the `schemaJsonIpfs` for the parent and children according to the **Schema JSON** from earlier, this is misnamed at the moment.
 
 ---
 
@@ -459,7 +471,7 @@ Requirements:
 - Network configured properly in `.env.[NODE_ENV]` file and `cli/config/default.json`.
 - NFT item JSONs generated in `output/items`
 
-This will deploy and mint all NFT JSONs in that folder.
+**This will deploy and mint all NFT JSONs in that folder.**
 
 If it works you should see:
 ```
@@ -560,7 +572,7 @@ Yes, that's a very ugly `base64` encoded DNA string, but that's never seen by us
 If you `curl` that URL, you will get:
 
 ```json
-| => curl -s http://metadata.owlprotocol.xyz:32001/metadata/getMetadata/Qmc7Aih1P67dmHF4PDMg5KfLABMtR6DXmDaxRvgF8Wgoe9/AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAADAAEBAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAKAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAEBAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA | jq '.'
+| => curl -s https://metadata.owlprotocol.xyz/metadata/getMetadata/Qmc7Aih1P67dmHF4PDMg5KfLABMtR6DXmDaxRvgF8Wgoe9/AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAADAAEBAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAKAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAEBAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA | jq '.'
 {
   "description": "Example from https://docs.owlprotocol.xyz/contracts/tutorial-topdowndna",
   "external_url": "https://docs.owlprotocol.xyz/contracts/tutorial-topdowndna",
@@ -626,11 +638,11 @@ Again we run:
 node dist/index.cjs viewTopDown --root=0xe3f62b8f72E49e75081B991685AeA19dd783b44a  --tokenId=1 --debug
 ```
 
-Which gives us the `tokenUri`, `http://metadata.owlprotocol.xyz:32001/metadata/getMetadata/Qmc7Aih1P67dmHF4PDMg5KfLABMtR6DXmDaxRvgF8Wgoe9/AAAAAAAAAA...`
+Which gives us the `tokenUri`, `https://metadata.owlprotocol.xyz/metadata/getMetadata/Qmc7Aih1P67dmHF4PDMg5KfLABMtR6DXmDaxRvgF8Wgoe9/AAAAAAAAAA...`
 
 But you may have noticed the image is accessible simply via the `getImage` path instead of the `getMetadata` path.
 
-So just calling: [http://metadata.owlprotocol.xyz:32001/metadata/getImage/Qmc7Aih1P67dmHF4PDMg5KfLABMtR6DXmDaxRvgF8Wgoe9/AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAADAAEBAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=](http://metadata.owlprotocol.xyz:32001/metadata/getImage/Qmc7Aih1P67dmHF4PDMg5KfLABMtR6DXmDaxRvgF8Wgoe9/AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAADAAEBAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=)
+So just calling: [https://metadata.owlprotocol.xyz/metadata/getImage/Qmc7Aih1P67dmHF4PDMg5KfLABMtR6DXmDaxRvgF8Wgoe9/AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAADAAEBAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=](http://metadata.owlprotocol.xyz:32001/metadata/getImage/Qmc7Aih1P67dmHF4PDMg5KfLABMtR6DXmDaxRvgF8Wgoe9/AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAADAAEBAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=)
 
 Gives us:
 

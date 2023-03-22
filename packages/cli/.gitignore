@@ -21,6 +21,11 @@ dist-ssr
 lib
 .serverless
 
+# adjacent js for projects
+projects/**/*.js
+projects/**/*.d.ts
+projects/**/output
+
 # local deployments
 packages/contracts/packages/owlprotocol-contracts/deployments/ganache/*
 
@@ -28,7 +33,7 @@ packages/contracts/packages/owlprotocol-contracts/deployments/ganache/*
 .DS_Store
 *.pem
 .idea
-output
+
 
 # debug
 npm-debug.log*

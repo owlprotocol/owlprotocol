@@ -15,7 +15,6 @@
 const sidebars = {
     docs: [
         'index',
-        'index-cont',
         {
             type: 'html',
             value: '<span class="sidebar-divider" />',

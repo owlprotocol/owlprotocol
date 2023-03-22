@@ -65,7 +65,7 @@ However for NFTs that represent characters/items in a game, it's typical that th
 
 ### Data Types
 
-Each trait can be a visual element, attribute, or any other arbitrary data that the creator believes is relevant to external decentralized protocols.
+Each trait can be a visual element, number, or any other arbitrary data that the creator believes is relevant to external decentralized protocols.
 
 Currently supported data types are:
 
