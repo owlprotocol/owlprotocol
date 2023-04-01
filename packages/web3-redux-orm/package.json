@@ -1,0 +1,78 @@
+{
+    "name": "@owlprotocol/web3-redux-orm",
+    "version": "1.2.2",
+    "private": false,
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/owlprotocol/owlprotocol.git"
+    },
+    "homepage": "https://github.com/owlprotocol/owlprotocol/tree/main/packages/web3-redux-orm",
+    "copyright": "Copyright 2022 Owl Protocol",
+    "author": {
+        "name": "Leo Vigna",
+        "email": "leo.vigna@gmail.com",
+        "url": "https://github.com/leovigna"
+    },
+    "license": "MIT",
+    "type": "module",
+    "main": "./lib/cjs/index.js",
+    "module": "./lib/esm/index.js",
+    "types": "./lib/types/index.d.ts",
+    "exports": {
+        ".": {
+            "types": "./lib/types/index.d.ts",
+            "require": "./lib/cjs/index.js",
+            "import": "./lib/esm/index.js"
+        }
+    },
+    "files": [
+        "dist/*",
+        "lib/*",
+        "src/*",
+        "LICENSE",
+        "README.md"
+    ],
+    "engines": {
+        "node": "^16.0.0"
+    },
+    "scripts": {
+        "test": "mocha 'lib/esm/**/*.test.js'",
+        "build": "npm-run-all -p tsc esbuild",
+        "build:watch": "npm-run-all -p tsc:watch esbuild:watch",
+        "esbuild": "node esbuild.config.mjs",
+        "esbuild:watch": "ESBUILD_WATCH=true node esbuild.config.mjs",
+        "tsc": "tsc",
+        "tsc:watch": "tsc -w",
+        "clean": "rimraf lib dist",
+        "madge": "madge src/index.ts -c",
+        "lint": "eslint 'src/**/*.ts'",
+        "lint:fix": "eslint --fix 'src/**/*.ts'"
+    },
+    "dependencies": {
+        "lodash-es": "4.17.21",
+        "@owlprotocol/crud-redux-orm": "workspace:*",
+        "@owlprotocol/web3-models": "workspace:*",
+        "@owlprotocol/web3-actions": "workspace:*",
+        "@owlprotocol/utils": "workspace:*",
+        "@reduxjs/toolkit": "^1.6.2",
+        "redux": "4.1.2",
+        "redux-orm": "^0.16.2"
+    },
+    "devDependencies": {
+        "@owlprotocol/esbuild-config": "workspace:*",
+        "@owlprotocol/eslint-config": "workspace:*",
+        "@owlprotocol/prettier-config": "workspace:*",
+        "@types/chai": "^4.3.3",
+        "@types/mocha": "^9.1.1",
+        "@types/node": "^16.11.26",
+        "@types/dotenv": "^8.2.0",
+        "chai": "^4.3.6",
+        "cross-env": "^7.0.3",
+        "dotenv": "^16.0.3",
+        "madge": "^5.0.2",
+        "mocha": "^9.2.2",
+        "npm-run-all": "^4.1.5",
+        "rimraf": "^3.0.2",
+        "typescript": "4.9.5"
+    }
+}

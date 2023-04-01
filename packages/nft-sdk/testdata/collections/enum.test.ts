@@ -1,7 +1,12 @@
 import { assert } from 'chai';
 import { ethers } from 'ethers';
-import { NFTGenerativeCollectionClass, NFTGenerativeTraitEnumClass, NFTGenerativeCollectionInterface, NFTGenerativeTraitEnum } from '../../src/index.js';
 import { collectionEnum, traitEnum } from './enum.js';
+import {
+    NFTGenerativeCollectionClass,
+    NFTGenerativeTraitEnumClass,
+    NFTGenerativeCollectionInterface,
+    NFTGenerativeTraitEnum,
+} from '../../src/index.js';
 
 describe('NFTGenerativeCollectionClass', () => {
     describe('enum attribute', () => {

@@ -12,7 +12,18 @@ export interface NFTGenerativeTraitImageOption {
 /** NFTGenerativeTraitImage describes a generative attribute from a set of choices */
 export interface NFTGenerativeTraitImage extends NFTGenerativeTraitBase {
     /** Trait Abi */
-    readonly abi?: 'uint8' | 'uint16';
+    readonly abi?:
+        | 'uint8'
+        | 'uint16'
+        | 'uint24'
+        | 'uint32'
+        | 'uint48'
+        | 'uint64'
+        | 'uint96'
+        | 'uint128'
+        | 'uint160'
+        | 'uint192'
+        | 'uint256';
     /** This is what the data encodes. Usually, will refer to items in options array */
     readonly type: 'image';
     /** File type */

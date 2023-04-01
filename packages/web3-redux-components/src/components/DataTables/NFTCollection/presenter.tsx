@@ -22,7 +22,7 @@ import {
     Td,
     HStack,
 } from "@chakra-ui/react";
-import TableWrapper from "../../../theme/TableStyleOverrides";
+import { TableWrapper } from "@owlprotocol/owl-theme";
 import { TableHeader } from "./TableHeader";
 import { AvatarCell } from "./Cells/AvatarCell";
 import { PreviewAvatarsCell } from "./Cells/PreviewAvatarsCell";

@@ -1,5 +1,5 @@
 {
-  "address": "0x436E6d3238f4721d5D6FE23b95Ce926F7180B2Ed",
+  "address": "0x596A303DA6C5e01406F84afaDD7a4C10840dbc1c",
   "abi": [
     {
       "inputs": [],
@@ -647,44 +647,6 @@
     {
       "inputs": [
         {
-          "internalType": "address",
-          "name": "_admin",
-          "type": "address"
-        },
-        {
-          "internalType": "string",
-          "name": "_initContractURI",
-          "type": "string"
-        },
-        {
-          "internalType": "address",
-          "name": "_gsnForwarder",
-          "type": "address"
-        },
-        {
-          "internalType": "string",
-          "name": "_uri",
-          "type": "string"
-        },
-        {
-          "internalType": "address",
-          "name": "_feeReceiver",
-          "type": "address"
-        },
-        {
-          "internalType": "uint96",
-          "name": "_feeNumerator",
-          "type": "uint96"
-        }
-      ],
-      "name": "proxyInitialize",
-      "outputs": [],
-      "stateMutability": "nonpayable",
-      "type": "function"
-    },
-    {
-      "inputs": [
-        {
           "internalType": "bytes32",
           "name": "role",
           "type": "bytes32"
@@ -1012,5 +974,5 @@
       "type": "function"
     }
   ],
-  "numDeployments": 1
+  "numDeployments": 2
 }

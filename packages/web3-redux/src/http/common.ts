@@ -1,1 +1,1 @@
-export const name = 'HTTPCache';
+export const HTTPCacheName = "HTTPCache";

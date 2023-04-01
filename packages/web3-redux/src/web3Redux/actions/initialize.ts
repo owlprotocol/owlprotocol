@@ -1,21 +1,12 @@
-import { createAction } from "@owlprotocol/crud-redux";
-import { v4 as uuidv4 } from 'uuid';
-import { name } from '../common.js';
+import { createAction2 } from "@owlprotocol/crud-redux";
+import { Web3ReduxName } from "../common.js";
 
-export const INITIALIZE = `${name}/INITIALIZE`
+export const INITIALIZE = `${Web3ReduxName}/INITIALIZE`;
 /**
  * Create contract call
  * @category Actions
  */
-export const initialize = createAction(INITIALIZE, (uuid?: string, ts?: number) => {
-    return {
-        payload: undefined,
-        meta: {
-            uuid: uuid ?? uuidv4(),
-            ts: ts ?? Date.now()
-        }
-    }
-});
+export const initialize = createAction2(INITIALIZE, () => undefined);
 /** @internal */
 export type InitializeAction = ReturnType<typeof initialize>;
 /** @internal */

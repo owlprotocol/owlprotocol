@@ -1,19 +1,13 @@
-import { v4 as uuidv4 } from 'uuid';
-import { createAction } from '@owlprotocol/crud-redux';
+import { createAction2 } from "@owlprotocol/crud-redux";
 
-import { name } from '../common.js';
-import { ContractId } from '../model/interface.js';
+import { ContractName } from "../common.js";
+import { ContractId } from "../model/interface.js";
 
 /** @internal */
-export const GET_BALANCE = `${name}/GET_BALANCE`;
+export const GET_BALANCE = `${ContractName}/GET_BALANCE`;
 /** @category Actions */
-export const getBalanceAction = createAction(GET_BALANCE, (payload: ContractId, uuid?: string) => {
-    return {
-        payload: { networkId: payload.networkId, address: payload.address.toLowerCase() },
-        meta: {
-            uuid: uuid ?? uuidv4(),
-        },
-    };
+export const getBalanceAction = createAction2(GET_BALANCE, (payload: ContractId) => {
+    return payload;
 });
 /** @internal */
 export type GetBalanceAction = ReturnType<typeof getBalanceAction>;

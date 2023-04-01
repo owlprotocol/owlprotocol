@@ -1,7 +1,7 @@
 /* eslint-disable */
 import { Button } from "@chakra-ui/react";
-import { Contract } from "@owlprotocol/web3-redux";
-import { useCallback, useEffect, useState } from "react";
+import {  ContractHelpers, ERC721 } from "@owlprotocol/web3-redux";
+import { useCallback } from "react";
 import { useDispatch } from "react-redux";
 import { WalletConnect } from "../WalletConnect";
 
@@ -23,26 +23,22 @@ export const ERC721ApproveButton = ({
     approvalType,
 }: ERC721ApproveButtonProps) => {
     const dispatch = useDispatch();
-    const [ownerOf] = Contract.hooks.useERC721OwnerOf(networkId, address, [
-        tokenId,
-    ]);
-    const [approved] = Contract.hooks.useERC721GetApproved(networkId, address, [
-        tokenId,
-    ]);
-    const [operator] = Contract.hooks.useERC721IsApprovedForAll(
-        networkId,
-        address,
-        [ownerOf, approveAddress]
-    );
+    const [token] = ERC721.hooks.useERC721({networkId, address, tokenId})
+    const ownerOf = token?.owner;
+    const approved = token?.approved;
+    const [operator] = ContractHelpers.IERC721.useIsApprovedForAll(
+        ownerOf && approveAddress ?
+        { networkId, to: address, args: [ownerOf, approveAddress] } : undefined
+    )
+
     console.debug({ ownerOf, approved, approveAddress, operator });
 
     const approve = useCallback(() => {
-        if (networkId && address && tokenId) {
-            if (approvalType === "setApprovalForAll" && ownerOf) {
-                const action = Contract.actions.send({
+        if (networkId && address && tokenId && approveAddress && ownerOf) {
+            if (approvalType === "setApprovalForAll") {
+                const action = ContractHelpers.IERC721.setApprovalForAll({
                     networkId,
-                    address,
-                    method: "setApprovalForAll",
+                    to: address,
                     args: [approveAddress, true],
                     from: ownerOf,
                 });
@@ -51,10 +47,9 @@ export const ERC721ApproveButton = ({
                 approvalType === "approve" ||
                 approvalType === undefined
             ) {
-                const action = Contract.actions.send({
+                const action = ContractHelpers.IERC721.approve({
                     networkId,
-                    address,
-                    method: "approve",
+                    to: address,
                     args: [tokenId, approveAddress],
                     from: ownerOf,
                 });

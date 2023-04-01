@@ -14,18 +14,9 @@ export interface NFTGenerativeTraitEnum extends NFTGenerativeTraitBase {
         | 'uint64'
         | 'uint96'
         | 'uint128'
-        | 'uint196'
-        | 'uint256'
-        | 'int8'
-        | 'int16'
-        | 'int24'
-        | 'int32'
-        | 'int48'
-        | 'int64'
-        | 'int96'
-        | 'int128'
-        | 'int196'
-        | 'int256';
+        | 'uint160'
+        | 'uint192'
+        | 'uint256';
     /** This is what the data encodes. Usually, will refer to items in options array */
     readonly type: 'enum';
     /** Generative attribute value options */

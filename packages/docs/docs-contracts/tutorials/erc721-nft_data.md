@@ -1,50 +1,30 @@
 ---
 sidebar_position: 2
-sidebar_label: 'DNFT Data Encoding'
-slug: '/tutorial-nftdata'
+sidebar_label: 'NFT Data Encoding'
+slug: '/tutorials/nft-data'
 ---
 
 import { SimpleGrid } from '@chakra-ui/react'
 
 # NFT Data Encoding - ERC721Dna
 
-:::info
-In this tutorial we'll create a simple Loyalty Program's NFT with a basic badge.
+In this tutorial we will create an NFT for a **loyalty program** with a basic badge. See final code on [GitHub](https://github.com/owlprotocol/starter-cli/tree/main/projects/example-loyalty).
 
 ![loyalty-silver](/img/loyalty-silver.jpg)
-:::
 
 ## Tutorial
 
-The **ERC721Dna** smart contract is used to encode useful data on-chain for an NFT.
+The **ERC721Dna** smart contract is used to encode useful data on-chain for an NFT. It has a `dna` field that is a binary encoding of the NFT's data.
 
 > Contract: [ERC721DnaBase.sol](https://github.com/owlprotocol/owlprotocol/blob/main/packages/contracts/contracts/assets/ERC721/ERC721DnaBase.sol)
 
-By itself, it doesn't do much except primarily managing the `dna` field and overriding `tokenURI` to also return the DNA.
+This smart contract overrides `tokenURI(tokenId)` to include the `dna` along with the `baseURI` as such: `<baseURI>/<dna>`.
 
-```javascript
-/***** Dna *****/
-    /**
-     * @dev returns uri for token metadata. If no baseURI, returns Dna as string
-     * @param tokenId tokenId metadata to fetch
-     * @return uri at which metadata is housed
-     */
-    function tokenURI(uint256 tokenId) public view virtual override returns (string memory) {
-        string memory baseURI = _baseURI();
-        bytes memory dnaRaw = getDna(tokenId);
-        string memory dnaString = dnaRaw.encode();
-        return bytes(baseURI).length > 0 ? string(abi.encodePacked(baseURI, dnaString)) : dnaString;
-    }
-```
-
-However, when combined with the **NFT-SDK** and a Schema JSON, we're able to provide much more information
-about an NFT, its intent, and usage than before.
+You have to use the **NFT-SDK** and a [JSON Schema](https://json-schema.org/) to make sense of that DNA because your data schema will be off-chain.
 
 ---
 
-## Step 1: Defining the Data Schema
-
-First we want to define the NFT data and how we want that represented.
+## Step 1: Define the data schema
 
 <SimpleGrid className="features-grid" columns={{sm: 2, md: 4}} spacing={8}>
     <Box>
@@ -77,47 +57,56 @@ First we want to define the NFT data and how we want that represented.
     </Box>
 </SimpleGrid>
 
-This includes all the **traits/attributes** you expect to need for the lifetime of the NFT.
+We will first define the NFT data and its representation. This includes all the **traits and attributes** you expect to need for the lifetime of the NFT.
 
-> You can also make your DNFT upgradeable (which is the default on our platform),
-> to have full control to make required changes in the future.
-
-In this example, we're building a generic loyalty program, so the traits/attributes we'll have are:
+For our loyalty program, we will use these traits:
 
 - Member ID
 - Status Tier
 - Points
-- Country
-- **Sub Group** - `uint16`
-- Last Transferred
+- Sub Group
 
-We'll also have 2 image layers:
+We will also have two image layers:
 
 1. Background
 2. Tier Badge
 
 :::tip
-You should upload the image layers to IPFS, but you can host them on S3, or any other way you wish as long as it's publicly accessible.
+We recommend you to upload the image layers to IPFS for decentralization, or GitHub for simplicity (see [Stack Overflow](https://stackoverflow.com/a/23602286))
 :::
 
-In this example we declare the **Sub Group** attribute to be a `uint16`. This allows us to have up to 64,000+ different
-sub groups in the future.
-
-Also note that the **Last Transferred** comes immediately after **Sub Group**, so if we didn't declare it as a uint16,
-then after 256 different enum options, it would start to overflow and overwrite the last transferred time.
 
 ---
 
-## Step 2: Implementing the Traits and Collection
+## Step 2: Setup the project folder
+
+You will need to clone our [starter-cli](https://github.com/owlprotocol/starter-cli) repository, install the dependencies and create a folder for your project, say `my-example-loyalty`.
+
+```bash
+git@github.com:owlprotocol/starter-cli.git
+cd starter-cli
+
+# Note: npm is sufficent, but we recommend using pnpm
+pnpm install
+
+mkdir projects/my-example-loyalty
+cd projects/my-example-loyalty
+```
+
+This is recommended so that you can have a working `package.json`, and `tsconfig`.
+
+---
+
+## Step 3: Implement the traits and collection
 
 To implement our schema we need to declare our traits and the collection class.
 
-We will create 2 files, one has all the traits/attributes:
+We will create two files: one with all the traits and one that defines the collection class (see [NFTGenerativeCollectionClass](https://github.com/owlprotocol/owlprotocol/blob/main/packages/nft-sdk/src/classes/NFTGenerativeCollection/NFTGenerativeCollectionClass.ts) code).
 
 ### `traits.ts`
 
-```js
-import { NFTGenerativeTraitImage, NFTGenerativeTraitEnum, NFTGenerativeTraitNumber } from '@owlprotocol/nft-sdk';
+```javascript
+import {NFTGenerativeTraitImage, NFTGenerativeTraitEnum, NFTGenerativeTraitNumber} from '@owlprotocol/nft-sdk';
 
 export const attrMemberIdNumber: NFTGenerativeTraitNumber = {
     name: 'Member ID',
@@ -125,13 +114,14 @@ export const attrMemberIdNumber: NFTGenerativeTraitNumber = {
     description: `Owner's membership ID`,
     min: 1000000,
     max: 99999999999,
-}
+    abi: 'uint48',
+};
 
 export const attrTierEnum: NFTGenerativeTraitEnum = {
     name: 'Status Tier',
     type: 'enum',
-    description: 'Status tier in the loyalty program, can be one of: General, Blue, Silver, Gold, Platinum, Diamond',
-    options: ['Bronze', 'Silver', 'Gold', 'Platinum', 'Diamond'],
+    description: 'Status tier in the loyalty program, can be one of: Bronze, Silver or Gold',
+    options: ['Bronze', 'Silver', 'Gold'],
 };
 
 export const attrTierBgImage: NFTGenerativeTraitImage = {
@@ -141,253 +131,311 @@ export const attrTierBgImage: NFTGenerativeTraitImage = {
     options: [
         {
             value: 'Basic',
-            image_url: 'ipfs://QmTeQUXNbaXZctrhfztbWsvfrz1vBNvaqHui6LVbDp14YV/bg-blue.png',
+            image_url: 'https://leovigna.mypinata.cloud/ipfs/QmTeQUXNbaXZctrhfztbWsvfrz1vBNvaqHui6LVbDp14YV/bg-blue.png',
         },
         {
             value: 'Facets',
-            image_url: 'ipfs://QmTeQUXNbaXZctrhfztbWsvfrz1vBNvaqHui6LVbDp14YV/bg-silver.png',
+            image_url: 'https://leovigna.mypinata.cloud/ipfs/QmTeQUXNbaXZctrhfztbWsvfrz1vBNvaqHui6LVbDp14YV/bg-silver.png',
         },
-        ...
+        {
+            value: 'Dark',
+            image_url: 'https://leovigna.mypinata.cloud/ipfs/QmTeQUXNbaXZctrhfztbWsvfrz1vBNvaqHui6LVbDp14YV/bg-dark.png',
+        },
+    ],
+};
+
+export const attrTierIconImage: NFTGenerativeTraitImage = {
+    name: 'Tier Badge',
+    type: 'image',
+    image_type: 'png',
+    options: [
+        {
+            value: 'Bronze',
+            image_url: 'https://leovigna.mypinata.cloud/ipfs/QmTeQUXNbaXZctrhfztbWsvfrz1vBNvaqHui6LVbDp14YV/tier-bronze.png',
+        },
+        {
+            value: 'Silver',
+            image_url: 'https://leovigna.mypinata.cloud/ipfs/QmTeQUXNbaXZctrhfztbWsvfrz1vBNvaqHui6LVbDp14YV/tier-silver.png',
+        },
+        {
+            value: 'Gold',
+            image_url: 'https://leovigna.mypinata.cloud/ipfs/QmTeQUXNbaXZctrhfztbWsvfrz1vBNvaqHui6LVbDp14YV/tier-gold.png',
+        },
+    ],
+};
+
+export const attrPointsNumber: NFTGenerativeTraitNumber = {
+    name: 'Points',
+    type: 'number',
+    description: 'Points collected from participation',
+    min: 0,
+    max: 16777215,
+    abi: 'uint24',
+};
+
+export const attrSubGroupEnum: NFTGenerativeTraitEnum = {
+    name: 'Sub Group',
+    type: 'enum',
+    description: 'The special subgroup the user is part of, if any',
+    options: ['None', 'Yacht Club', 'Car Club', 'Diving Club'],
+    abi: 'uint16', // overrides the 'uint8' default
+};
 ```
 
-:::info Note
-The `image_url` is up to you to declare, ensure it is publicly accessible.
-
-> If you are using IPFS, the `ipfs://` is replaced by the `ENV` variable `IPFS_GATEWAY` in the fallback API.
-
-However if you're using our client-side `nft-sdk`, you can easily integrate an **ipfs-client**.
-:::
-
-[https://github.com/owlprotocol/owlprotocol/tree/main/packages/cli/projects](https://github.com/owlprotocol/owlprotocol/tree/main/packages/cli/projects)
-
+See `traits.ts` on [GitHub](https://github.com/owlprotocol/owlprotocol/blob/main/packages/cli/projects/example-loyalty/traits.ts)
 
 
 ### `collections.ts`
-And the other brings it all together in the [NFTGenerativeCollectionClass](https://github.com/owlprotocol/owlprotocol/blob/main/packages/nft-sdk/src/classes/NFTGenerativeCollection/NFTGenerativeCollectionClass.ts) collection class.
 
-```js
+```javascript
 import {
-    ...
+    attrMemberIdNumber,
+    attrTierEnum,
+    attrTierBgImage,
+    attrTierIconImage,
+    attrPointsNumber,
+    attrSubGroupEnum,
 } from './traits.js';
 
 import {
-    ...
+    NFTGenerativeCollection,
+    NFTGenerativeCollectionClass,
+    NFTGenerativeTraitNumberClass,
+    NFTGenerativeTraitEnumClass,
+    NFTGenerativeTraitImageClass,
 } from '@owlprotocol/nft-sdk';
 
 const collExampleLoyaltyDef: NFTGenerativeCollection = {
     name: 'Tutorial Example - Loyalty Program',
-    description: 'Example from https://docs.owlprotocol.xyz/contracts/tutorial-nftdata',
-    external_url: 'https://docs.owlprotocol.xyz/contracts/tutorial-nftdata',
+    description: 'Example from https://docs.owlprotocol.xyz/contracts/tutorials/nft-data',
+    external_url: 'https://docs.owlprotocol.xyz/contracts/tutorials/nft-data',
     seller_fee_basis_points: 0,
     fee_recipient: '0xc2A3cB7d4BF24e456051E3a710057ac61f5dB133',
     generatedImageType: 'png',
     traits: {
-        attrMemberIdNumber,
-        attrTierEnum,
-        attrTierBgImage,
-        attrTierIconImage,
-        attrPointsNumber,
-        attrCountryEnum,
-        attrSubGroupEnum,
-        attrLastTransferTimestampNumber
-    }
+        'Member ID': attrMemberIdNumber,
+        'Status Tier': attrTierEnum,
+        Background: attrTierBgImage,
+        'Tier Badge': attrTierIconImage,
+        Points: attrPointsNumber,
+        'Sub Group': attrSubGroupEnum,
+    },
 };
 
-export const collExampleLoyalty = NFTGenerativeCollectionClass.fromData(collExampleLoyaltyDef) as NFTGenerativeCollectionClass<
-    {
-        'Member ID': NFTGenerativeTraitNumberClass,
-        'Status Tier': NFTGenerativeTraitEnumClass,
-        ...
-    }
->;
+export const collExampleLoyalty = NFTGenerativeCollectionClass.fromData(
+    collExampleLoyaltyDef,
+) as NFTGenerativeCollectionClass<{
+    'Member ID': NFTGenerativeTraitNumberClass;
+    'Status Tier': NFTGenerativeTraitEnumClass;
+    Background: NFTGenerativeTraitImageClass;
+    'Tier Badge': NFTGenerativeTraitImageClass;
+    Points: NFTGenerativeTraitNumberClass;
+    'Sub Group': NFTGenerativeTraitEnumClass;
+}>;
 
 export default collExampleLoyaltyDef;
 ```
-[https://github.com/owlprotocol/owlprotocol/tree/main/packages/cli/projects](https://github.com/owlprotocol/owlprotocol/tree/main/packages/cli/projects)
+
+See `collections.ts` on [GitHub](https://github.com/owlprotocol/owlprotocol/blob/main/packages/cli/projects/example-loyalty/collections.ts)
 
 
-:::caution Don't Forget the Default Export
-The CLI expects that the base/parent collection is exported as the default:
+:::tip Trait order matters
+The order you declare traits in is important because it is also the encoding order in the NFT's data.
 
-e.g. `export default collExampleLoyaltyDef;`
+For **image traits**, this is also the order in which they are rendered.
 :::
 
-:::tip Attribute Order Matters
-The order in which we declare our traits/attributes is important because this is the order in which
-the NFT data is encoded on-chain.
+:::tip Avoid overflows
 
-## **For images traits, this is also the order in which they are rendered.**
-
-> By default, we use 8-bits for a trait, unless its options are over 256, in which case we can increase that to any **Solidity ABI data type**.
-> For example: `uint16, uint32` up to `uint256`
-
-But it may also be the case that you may want to reserve extra space in anticipation that more traits may be added later.
-This is necessary because once NFTs are minted, the data is encoded at specific offsets, and changing that is expensive
-later.
+We use the `uint8` type default for a trait. This means that a trait can have `2^8 = 256` attributes by default. If a trait has more than 256 attributes, you must use a larger type to avoid overflows (see [Solidity docs](https://docs.soliditylang.org/en/v0.8.17/types.html#integers) for more types information). For example, `uint16` gives you up to `2^16 = 65536` attributes.
 :::
 
 ---
 
-## Step 3: Generate the Schema JSON using the [CLI Tool](/contracts/getting-started/cli)
+## Step 4: Generate the JSON Schema using the [CLI Tool](/contracts/getting-started/cli)
 
-We then use the CLI Tool to generate the Schema JSON.
+We will now use the Owl Protocol command-line interface (CLI) to generate the JSON Schema.
 
-1. First make sure you have a `.env.development` file, for this step it's fine to just copy the included `.env.example` file.
-
-```
-cp .env.example .env.development
-```
-
-2. Then build the CLI package, to generate the JS files we execute.
+1. Install the CLI package in the [owlprotocol repository](https://github.com/owlprotocol/owlprotocol/tree/main/packages/cli)
 
 ```
+pnpm install -g @owlproject/nft-sdk-cli
+```
+
+2. Compile the `collections.ts` file
+
+In the `starter-cli` folder, you can run:
+```bash
 pnpm run build
 ```
 
-3. Now call the `generateSchemaJSON` command on the CLI Tool. This will create the file that the **nft-sdk** needs to translate the on-chain data.
+:::info
+Under the hood, this command runs:
+```bash
+tsc --project tsconfig.projects.json
+```
+:::
+
+This is needed as the CLI take a JavaScript file.
+
+3. Now invoke `generateJsonSchema` in the CLI. This will create the file that the **nft-sdk** needs to translate the on-chain data.
 
 ```
-| => node dist/index.cjs generateSchemaJSON collections.js --projectFolder=projects/example-loyalty
+owl-cli generateJsonSchema collections.js --projectFolder=projects/my-example-loyalty
 ```
 
-Which should output:
+This should output:
 
 ```
-getProjectSubfolder ~/owlprotocol/packages/cli/projects/example-loyalty/output
-Creating JSON(s) for collections.js to folder: ~/owlprotocol/packages/cli/projects/example-loyalty/output
-projects/example-loyalty collections.js
+getProjectSubfolder ~/starter-cli/projects/my-example-loyalty/output
+Creating JSON(s) for collections.js to folder: ~/starter-cli/projects/my-example-loyalty/output
+projects/my-example-loyalty collections.js
 Done
 ```
 
 > Ignore any warnings for `duplicate definition`.
 
-Now you should see a new folder in `projects/example-loyalty` called `output`, and within that 1 JSON file:
-- `collection-parent.json`
+Now you should see a new folder in `projects/my-example-loyalty` called `output` with one JSON file: `collection-parent.json`
 
 ---
 
-## Step 4: Upload the Schema JSON to IPFS.
+## Step 5: Upload the JSON Schema to IPFS.
 
-We use Pinata for this tutorial, but you can upload it to any IPFS provider including your own.
+We use [Pinata](https://www.pinata.cloud/) for this tutorial, but you can upload the schema to any IPFS provider including your own.
 
-For our example you can see we have it uploaded at:
+For this tutorial you can see the uploaded schema there:
 [https://leovigna.mypinata.cloud/ipfs/QmXrpPT5KveNCcMHXdZiknnGiLbNveoccpD7FmagxgtQbj](https://leovigna.mypinata.cloud/ipfs/QmXrpPT5KveNCcMHXdZiknnGiLbNveoccpD7FmagxgtQbj)
 
-
 :::info
-Keep the IPFS hash handy, in our example it's `QmXrpPT5KveNCcMHXdZiknnGiLbNveoccpD7FmagxgtQbj`
+Keep the IPFS hash handy. In this example, it is `QmXrpPT5KveNCcMHXdZiknnGiLbNveoccpD7FmagxgtQbj`.
 :::
 
 ---
 
-## Step 5: Create a file called `owlproject.json` in the project folder.
+## Step 6: Declare collection information in the metadata file
 
-This is a metadata/manifest file that declares some required info:
+Create a file called `owlproject.json` in the project folder. This will contain metadata about the collection.
 
+### `owlproject.json`
 ```json
 {
   "rootContract": {
     "tokenSymbol": "ExampleLoyaltyNFT",
     "tokenIdStart": 1,
     "cfg": {
-      "ipfsEndpoint": "https://leovigna.mypinata.cloud",
-      "ipfsPath": "ipfs",
-      "apiEndpoint": "https://metadata.owlprotocol.xyz",
-      "apiPath": "metadata/getMetadata",
-      "schemaJsonIpfs": "QmXrpPT5KveNCcMHXdZiknnGiLbNveoccpD7FmagxgtQbj"
+      "jsonSchemaEndpoint": "https://leovigna.mypinata.cloud/ipfs",
+      "sdkApiEndpoint": "https://metadata.owlprotocol.xyz/metadata/getMetadata",
+      "jsonSchemaIpfs": "QmXrpPT5KveNCcMHXdZiknnGiLbNveoccpD7FmagxgtQbj"
     }
   }
 }
 ```
 
-> You can define your own `ipfsEndpoint` and `ipfsPath`, but keep the `apiEndpoint/Path` as-is.
+:::caution
+You should not rely on our API and IPFS endpoints as they are centralized.
+
+Ideally, `sdkApiEndpoint` should point to your own web app. For this tutorial, leave it as is.
+:::
 
 ---
 
-## Step 6: Deploy and Mint the NFT
+## Step 7: Deploy and Mint the NFT
 
-1. We need to start a local Ganache blockchain, or you can use any other chain you specify in the `.env.development` or appropriate `ENV` file.
+:::tip
+For initial testing, prefer a local blockchain over a testnet. A local blockchain like Ganache is simpler and faster.
+:::
 
-2. If you are using a different chain, you must define the network config in `packages/cli/config/default.json`.
+1. Make sure you have a `.env.development` file. It should contain two values: `NETWORK`, and `HD_WALLET_MNEMONIC`.
 
-3. Double check to ensure that the `accounts` in the config match the first two corresponding to the `HD_WALLET_MNEMONIC` ENV Var, and `NETWORK` is correct.
+### `.env.development`
+```bash
+NETWORK=ganache
+HD_WALLET_MNEMONIC=test test test test test test test test test test test junk
+```
+
+2. Start a local Ganache blockchain (see [Ganache quickstart](https://trufflesuite.com/docs/ganache/quickstart/). Use the `--wallet.mnemonic` flag to force the same mnemonic as in your `.env.development` file:
+```bash
+ganache --wallet.mnemonic "test test test test test test test test test test test junk"
+```
 
 :::caution
-The default `.env.example` - `HD_WALLET_MNEMONIC` **MUST** be updated to whatever mnemonic that Ganache gives you:
-```
-HD Wallet
-==================
-Mnemonic:      [YOUR WORDS HERE]
-Base HD Path:  m/44'/60'/0'/0/{account_index}
-```
+Do not use this mnemonic for production!
 :::
+
+3. Double check to ensure that the `accounts` in the CLI network config (`networks.json`) match the first two accounts shown by `ganache`, and that `NETWORK` is set to `ganache`.
 
 :::tip Using a Private Key
 We also support using a single **private key**.
 
-To use a private key, DO NOT set `HD_WALLET_MNEMONIC` and instead declare the `ENV` variable `PRIVATE_KEY_0`.
+To use a private key, **do not set** `HD_WALLET_MNEMONIC` and instead declare the environment variable `PRIVATE_KEY_0` in `.env.development`.
 :::
 
 ### Deploy Common
 
-If you are deploying to a new chain, or freshly launched local ganache, the common beacon proxies and implementations need to be deployed first.
+If you are deploying to a new chain, or a fresh ganache blockchain, the common [beacon proxies](https://docs.owlprotocol.xyz/contracts/advanced/contract-deployment#beacon-proxy) and implementations need to be deployed first.
 
-We enable this by passing `--deployCommon=true` into the deployment command. Don't worry if you forget to remove this, due to the deterministic deployer
-subsequent deployments will simply skip it if it exists, since they always deploy to the same address.
+We enable this by passing `--deployCommon=true` into the deployment command. Don't worry if you forget to remove this flag later. Our deployer always deploys the beacons to the same addresses. Therefore, the deployer will skip deploying beacons if they already exist.
 
+<!-- TODO: make this make sense
 :::info
-Owl Protocol uses advanced smart contract beacons including:
-- **Deterministic Deployment** - giving us the same addresses for registries and implementations across multiple blockchains.
-- **Beacon Proxies** - minimal additional overhead on initial deployment, but all subsequent NFT contracts are just proxies and lower gas.
-- **Upgradeable Proxies** - revokable upgradability allows new projects to upgrade to new Dynamic NFT features as we roll them out, or revoke it to suit their needs.
+Owl Protocol uses advanced smart contract beacons that feature:
+- **Deterministic Deployment** - provides the same addresses for registries and implementations across multiple blockchains.
+- **Beacon Proxies** - have minimal overhead on initial deployment, but all subsequent NFT contracts are just proxies and use less gas.
+- **Upgradeable Proxies** - revokable upgradability allows new projects to upgrade to new Dynamic NFT features as we roll them out, or remove features.
 
 Docs are coming soon that explain this in depth, for now you can follow the deployment strategies here: [deployCommon.ts](https://github.com/owlprotocol/owlprotocol/blob/tutorial-example-omo/packages/cli/src/commands/deployCommon.ts)
 :::
+-->
 
-### Deploy Contracts and Mint NFTs
+### Deploy contracts and mint NFTs
 
-If everything is set up properly, you can now run:
+If everything is set up properly, you can now run in the CLI folder:
 
 ```
-node dist/index.cjs deployTopDown --projectFolder=projects/example-loyalty --deployCommon=true --debug=true
+owl-cli deployTopDown --projectFolder=projects/my-example-loyalty --deployCommon=true --debug=true
 ```
 
-Requirements:
-- Schema JSON uploaded to IPFS, and IPFS hashes specified in `owlproject.json` file.
-- Network configured properly in `.env.[NODE_ENV]` file and `cli/config/default.json`.
-- NFT item JSONs generated in `output/items`
+:::note
+This will deploy and mint all NFT JSONs in the project's `/output/items` folder.
+:::
 
-**This will deploy and mint all NFT JSONs in that folder.**
+At this point make sure you have the following:
+- A JSON Schema uploaded to IPFS, and the corresponding IPFS hash in the `owlproject.json` file.
+- The network configured properly in `.env.development` file and `networks.json`.
+- JSONs files of the NFTs you will mint in `output/items`.
 
-If it works you should see something similar to:
+
+If the command succeeds you should see an output similar to:
 ```
 Deploying NFT: 1
 
 
-Minted ~/owl_protocol/workspace/packages-public/packages/cli/projects/example-loyalty/output/items/collection-item-1.json
-Mint: root at 0xa2B01e08CeD3b06051B59966B540BFe0B90b364c - tokenId: 1 & dna: 0x0000000f68bf01040101e2d01100016410eeb4
+Minted ~/starter-cli/projects/my-example-loyalty/output/items/collection-item-1.json
+Mint: root at 0xfa737b19Dc58b3604fbBBEBD2ACE599a00449D2f - tokenId: 1 & dna: 0x0000000f68bf01020101e2d00001
 Done
 ```
 
 ---
 
-## Step 9: View and Check the NFTs
+## Step 8: View and Check the NFTs
 
 You can use the `viewTopDown` command on the CLI to quickly view the NFT:
 
-```
-node dist/index.cjs viewTopDown --root=0xa2B01e08CeD3b06051B59966B540BFe0B90b364c --tokenId=1
+```bash
+owl-cli viewTopDown --root=0xfa737b19Dc58b3604fbBBEBD2ACE599a00449D2f --tokenId=1
 ```
 
-This show something similar to:
-```json
-View ERC721TopDownDna 0xa2B01e08CeD3b06051B59966B540BFe0B90b364c on ganache
-Fetching Metadata Schema JSON from: https://leovigna.mypinata.cloud/ipfs/QmXrpPT5KveNCcMHXdZiknnGiLbNveoccpD7FmagxgtQbj
+The output should be similar to this:
+```
+View ERC721TopDownDna 0xfa737b19Dc58b3604fbBBEBD2ACE599a00449D2f on ganache
+Fetching Metadata JSON Schema from: https://leovigna.mypinata.cloud/ipfs/QmXrpPT5KveNCcMHXdZiknnGiLbNveoccpD7FmagxgtQbj
 NFT tokenId: 1 - owned by 0xa1eF58670368eCCB27EdC6609dea0fEFC5884f09
+```
+
+And the following object:
+```javascript
 {
-  'Last Transferred': 1678831284,
   'Sub Group': 'Yacht Club',
-  Country: 'Belgium',
   Points: 123600,
   'Tier Badge': {
     value: 'Silver',
@@ -404,12 +452,12 @@ NFT tokenId: 1 - owned by 0xa1eF58670368eCCB27EdC6609dea0fEFC5884f09
 
 ---
 
-## Step 10: View the NFT Image
+## Step 9: View the NFT image
 
 You can view the NFT image by passing in `--debug=true`:
 
 ```
-node dist/index.cjs viewTopDown --root=0xa2B01e08CeD3b06051B59966B540BFe0B90b364c --tokenId=1 --debug=true
+owl-cli viewTopDown --root=0xfa737b19Dc58b3604fbBBEBD2ACE599a00449D2f --tokenId=1 --debug=true
 ```
 
 Which should show at the bottom:
@@ -420,35 +468,35 @@ This link will show the NFT Standard Metadata JSON:
 
 [https://metadata.owlprotocol.xyz/metadata/getMetadata/QmXrpPT5KveNCcMHXdZiknnGiLbNveoccpD7FmagxgtQbj/AAAA...](https://metadata.owlprotocol.xyz/metadata/getMetadata/QmXrpPT5KveNCcMHXdZiknnGiLbNveoccpD7FmagxgtQbj/AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAATAAAAD2i_AQQBAeLQEQABZBDutAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==)
 
-`{"description":"Example from https://docs.owlprotocol.xyz/contracts/tutorial-nftdata","external_url":"https://docs.owlprotocol.xyz/contracts/tutorial-nftdata","image":"https://metadata.owlprotocol.xyz/metadata/getImage/QmXrpPT5KveNCcMHXdZiknnGiLbNveoccpD7FmagxgtQbj/AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAATAAAAD2i_AQQBAeLQEQABZBDutAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==","name":"Tutorial Example - Loyalty Program","attributes":[{"trait_type":"Last Transferred","value":1678831284},{"trait_type":"Sub Group","value":"Yacht Club"},{"trait_type":"Country","value":"Belgium"},{"trait_type":"Points","value":123600},{"trait_type":"Tier Badge","value":"Silver"},{"trait_type":"Background","value":"Tunnels"},{"trait_type":"Status Tier","value":"Silver"},{"trait_type":"Member ID","value":1009855}]}`
+```json
+{"description":"Example from https://docs.owlprotocol.xyz/contracts/tutorials/nft-data","external_url":"https://docs.owlprotocol.xyz/contracts/tutorials/nft-data","image":"https://metadata.owlprotocol.xyz/metadata/getImage/QmXrpPT5KveNCcMHXdZiknnGiLbNveoccpD7FmagxgtQbj/AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAATAAAAD2i_AQQBAeLQEQABZBDutAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==","name":"Tutorial Example - Loyalty Program","attributes":["value":1678831284},{"trait_type":"Sub Group","value":"Yacht Club"},{"trait_type":"Points","value":123600},{"trait_type":"Tier Badge","value":"Silver"},{"trait_type":"Background","value":"Tunnels"},{"trait_type":"Status Tier","value":"Silver"},{"trait_type":"Member ID","value":1009855}]}
+```
 
-:::info Note the `image` field here:
-
-Which will show the actual image:
+:::info
+Note the `image` field here will show you the actual image:
 
 ![ExampleLoyaltyImg](/img/loyalty-silver.jpg)
 :::
 
 ---
 
-## Step 11: Changing the NFT Data
+## Step 10: Change the NFT data
 
-We change the NFT's data by using the CLI's **updateDnaNFT** command.
+We can change the NFT's data by using the CLI's `updateDnaNFT` command.
 
-### Changing One Trait at a Time
+### Changing a trait
 
-There are two ways to use this command, the simplest is to change a single trait or attribute.
+There are two ways to use this command, the simplest is to change a single attribute:
 
-`node dist/index.cjs updateDnaNFT --root=0xa2B01e08CeD3b06051B59966B540BFe0B90b364c --tokenId=1 --trait='Points' --attr=170555`
+```bash
+owl-cli updateDnaNFT --root=0xfa737b19Dc58b3604fbBBEBD2ACE599a00449D2f --tokenId=1 --trait='Points' --attr=170555
+```
 
-This will result in:
+This will give you:
 
-New:
-```json
+```javascript
 {
-  'Last Transferred': 1678831284,
   'Sub Group': 'Yacht Club',
-  Country: 'Belgium',
   Points: 170555,
   'Tier Badge': {
     value: 'Silver',
@@ -463,40 +511,42 @@ New:
 }
 ```
 
-Where you can notice that the **Points** has been updated to **170555**.
+Where you can notice that `Points` has been updated to **170555**.
 
 :::tip
-You can also pass in a JSON file with multiple traits to update:
-
-`
-node dist/index.cjs updateDnaNFT --root=0xa2B01e08CeD3b06051B59966B540BFe0B90b364c --tokenId=1 --json=projects/example-loyalty/exampleUpdateDnaNFT.json
-`
-
-Such as:
-
+You can also pass in a JSON file to update multiple traits as such:
 ```
 {
-  "Status Tier": "Gold",
-  "Tier Badge": "Gold",
-  "Points": 563600
+"Status Tier": "Gold",
+"Tier Badge": "Gold",
+"Points": 563600
 }
 ```
+
+```bash
+owl-cli updateDnaNFT --root=0xfa737b19Dc58b3604fbBBEBD2ACE599a00449D2f --tokenId=1 --json=projects/my-example-loyalty/exampleUpdateDnaNFT.json
+```
+
 :::
 
-Now when we view the NFT, we can see:
+Now if we view the NFT:
 
 ```
-node dist/index.cjs viewTopDown --root=0xa2B01e08CeD3b06051B59966B540BFe0B90b364c --tokenId=1 --debug=true
+owl-cli viewTopDown --root=0xfa737b19Dc58b3604fbBBEBD2ACE599a00449D2f --tokenId=1 --debug=true
 ```
 
-Returns an `image` field with:
+The command returns an `image` field with:
 
-`https://metadata.owlprotocol.xyz/metadata/getImage/QmXrpPT5KveNCcMHXdZiknnGiLbNveoccpD7FmagxgtQbj/AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAATAAAAD2i_AgQCCJmQEQABZBDutAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==`
+```
+https://metadata.owlprotocol.xyz/metadata/getImage/QmXrpPT5KveNCcMHXdZiknnGiLbNveoccpD7FmagxgtQbj/AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAATAAAAD2i_AgQCCJmQEQABZBDutAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==
+```
 
-Which at the moment, you can verify shows:
+As you can see the image is updated:
 
 ![Loyalty](https://metadata.owlprotocol.xyz/metadata/getImage/QmXrpPT5KveNCcMHXdZiknnGiLbNveoccpD7FmagxgtQbj/AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAATAAAAD2i_AgQCCJmQEQABZBDutAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==)
 
-:::info
-### Have questions? Join us in Discord: [https://discord.com/invite/7sANzfGUfe](https://discord.com/invite/7sANzfGUfe)
-:::
+## More Info
+
+For a more advanced loyalty program example, see this the `example-loyalty-advanced` project on [GitHub](https://github.com/owlprotocol/owlprotocol/tree/main/packages/cli/projects/example-loyalty-advanced).
+
+Have questions? Join us in Discord: [https://discord.com/invite/7sANzfGUfe](https://discord.com/invite/7sANzfGUfe)

@@ -1,1 +1,1 @@
-export * from './AssetRouter/index.js'
+export * from "./AssetRouter/index.js";

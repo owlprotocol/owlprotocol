@@ -1,2 +1,2 @@
 /** @internal */
-export const REDUX_ROOT = 'web3Redux';
+export const REDUX_ROOT = "web3Redux";

@@ -1,5 +1,5 @@
 import { Options as MergeImagesOptions } from 'merge-images';
-import { mapValues, map, omit, omitBy, pickBy, isObject, isUndefined } from 'lodash-es';
+import { mapValues, omit, omitBy, isObject, isUndefined } from 'lodash-es';
 import type { NFTGenerativeItemInterface } from './NFTGenerativeItemInterface.js';
 import type {
     AttributeValue,
@@ -148,10 +148,9 @@ export class NFTGenerativeItemClass<
         const imageBuff = await this.getImageWithChildren(mergeOptions, width, height);
         const attributesRaw = this.attributesFormatted();
 
-        const attributes = new Array<{name: string, value: string | number}>();
+        const attributes = new Array<{ name: string; value: string | number }>();
 
         mapValues(attributesRaw, (attr, traitName: string) => {
-
             let attribute: any;
 
             if (isObject(attr)) {
@@ -164,8 +163,8 @@ export class NFTGenerativeItemClass<
             } else {
                 attribute = {
                     name: this.collection.traits[traitName].name,
-                    value: attr
-                }
+                    value: attr,
+                };
             }
 
             attributes.push(attribute);

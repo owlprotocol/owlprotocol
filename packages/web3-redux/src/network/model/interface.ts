@@ -1,7 +1,6 @@
-import Web3 from 'web3';
-import type { Contract as Web3Contract } from 'web3-eth-contract';
-import { Axios } from 'axios';
-import { T_Encoded_Base } from '@owlprotocol/crud-redux';
+import Web3 from "web3";
+import type { Contract as Web3Contract } from "web3-eth-contract";
+import { Axios } from "axios";
 
 /** @internal */
 export interface NetworkId {
@@ -15,7 +14,7 @@ export interface NetworkId {
  * Other objects are indexed on its networkId, and use it to fetch it to make requests using its web3.js connection.
  *
  */
-export interface Network extends NetworkId, T_Encoded_Base {
+export interface Network extends NetworkId {
     /** Human readable name for the network */
     readonly name?: string;
     /** Average blockTime in seconds */
@@ -57,6 +56,8 @@ export interface Network extends NetworkId, T_Encoded_Base {
     readonly syncBlocks?: boolean;
     /** Sync asset transfer events */
     readonly syncAssets?: boolean;
+    /** Updated At */
+    readonly updatedAt?: number;
 }
 
 export interface NetworkWithObjects extends Network {
@@ -73,6 +74,4 @@ export interface NetworkWithObjects extends Network {
     readonly web3WithGSN?: Web3;
 }
 
-export const NetworkIndex = 'networkId';
-
-export default Network;
+export const NetworkIndex = "networkId";

@@ -1,30 +1,36 @@
-import { name } from './common.js';
+import { createCRUDModel } from "@owlprotocol/crud-redux";
+import { ConfigName } from "./common.js";
 import {
     ConfigId,
     Config,
-    hydrate,
     ConfigWithObjects,
     encode,
     toPrimaryKey,
     validateId,
     validate,
-} from './model/index.js';
-import { createCRUDModel } from '@owlprotocol/crud-redux';
-import getDB, { Web3ReduxDexie } from '../db.js';
-import { getOrm } from '../orm.js';
+    validateWithRedux,
+} from "./model/index.js";
+import { getDB, Web3ReduxDexie } from "../db.js";
+import { getOrm } from "../orm.js";
 
 export const ConfigCRUD = createCRUDModel<
-    typeof name,
+    typeof ConfigName,
     ConfigId,
     Config,
-    ConfigWithObjects,
+    Web3ReduxDexie,
     ConfigId,
-    Web3ReduxDexie
->(name, getDB, {
-    hydrate,
-    encode,
-    validateId,
-    toPrimaryKey,
-    validate,
-}, getOrm());
-export default ConfigCRUD;
+    ConfigId,
+    Config,
+    ConfigWithObjects
+>({
+    name: ConfigName,
+    getDB,
+    validators: {
+        encode,
+        validateId,
+        toPrimaryKey,
+        validate,
+        validateWithRedux,
+    },
+    orm: getOrm(),
+});

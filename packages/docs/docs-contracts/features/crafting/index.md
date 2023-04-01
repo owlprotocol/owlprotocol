@@ -72,15 +72,17 @@ for how this egg is generated/created.
     resembling the parents/inputs.
 
 :::info
-To learn more about how `dna` is encoded on-chain for the NFT, read about [on-chain data](/contracts/concepts/onchain_data) and
+To learn more about how `dna` is encoded on-chain for the NFT, see [on-chain data](/contracts/concepts/onchain_data) and
 our advanced [IERC721Dna Contract Description](/contracts/contract-guides/IERC721Dna).
 :::
 
 ### Upgrading/Crafting NFTs to Change the On-Chain **DNA**
 
+<!-- TODO: @ClarenceL verbose 
 *As mentioned regarding Dynamic NFTs, we generally discourage allowing arbitrary changing of an NFT's on-chain dna*, rather
-in **Example (2)** we have an **"Upgrade"** mechanic wherein the `dna` is changed through a pre-defined action by consuming
+in **Example (2)** we have an **"Upgrade"** mechanic where the `dna` is changed through a pre-defined action by consuming
 an NFT or ERC1155 multi-token.
+-->
 
 Our smart contracts are quite flexible, and also accept **ERC20** tokens! So rather than consuming an NFT to upgrade/change
 the on-chain `dna` of an NFT, you can literally pay to upgrade.

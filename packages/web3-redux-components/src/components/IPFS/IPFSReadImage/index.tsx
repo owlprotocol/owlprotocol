@@ -12,7 +12,8 @@ export interface Props {
 
 export const IPFSReadImage = ({ cid, mimeType = 'image/png', alt = 'Loading...' }: Props) => {
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    const { data } = IPFSCache.hooks.useCat(cid);
+    const [result] = IPFSCache.hooks.useAtPath(cid);
+    const data = result[0].data
     const dataUrl = useMemo(() => {
         if (data) {
             const data64 = Base64.fromUint8Array(data);

@@ -4,7 +4,7 @@
  *
  * Aliased for ethers implementation
  */
-import { utils } from 'ethers';
+import { utils } from "ethers";
 
 export function computeAddress(salt: string, bytecodeHash: string, deployer: string): string {
     return utils.getCreate2Address(deployer, salt, bytecodeHash);

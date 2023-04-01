@@ -1,8 +1,8 @@
-import { BroadcastChannel } from 'broadcast-channel';
+import { BroadcastChannel } from "broadcast-channel";
 
 //const q = new PQueue.default()
 
-export const channel: BroadcastChannel = new BroadcastChannel('crud-redux', { type: 'simulate' })
+export const channel: BroadcastChannel = new BroadcastChannel("crud-redux", { type: "simulate" });
 
 /*
 async function main() {

@@ -2,12 +2,12 @@
  * @module Http
  */
 
-import * as Actions from './actions/index.js';
-import { HTTPCacheCRUD as CRUDModel } from './crud.js';
-import { HTTPCacheSaga as rootSaga } from './sagas/index.js';
-import * as Hooks from './hooks/index.js';
+import * as Actions from "./actions/index.js";
+import { HTTPCacheCRUD as CRUDModel } from "./crud.js";
+import { HTTPCacheSaga as rootSaga } from "./sagas/index.js";
+import * as Hooks from "./hooks/index.js";
 
-const HTTPCache = {
+export const HTTPCache = {
     name: CRUDModel.name,
     actionTypes: CRUDModel.actionTypes,
     actions: {
@@ -27,8 +27,6 @@ const HTTPCache = {
     reducer: CRUDModel.reducer,
     validate: CRUDModel.validate,
     validateId: CRUDModel.validateId,
-    hydrate: CRUDModel.hydrate,
+    validateWithRedux: CRUDModel.validateWithRedux,
     encode: CRUDModel.encode,
 };
-
-export default HTTPCache;

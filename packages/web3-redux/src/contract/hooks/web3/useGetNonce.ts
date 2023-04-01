@@ -1,12 +1,13 @@
-import { useEffect, useMemo, useCallback } from 'react';
-import { useDispatch } from 'react-redux';
-import { ReduxError } from '@owlprotocol/crud-redux';
+import { useEffect, useMemo, useCallback } from "react";
+import { useDispatch } from "react-redux";
+import { ReduxError, getReduxErrorCRUD } from "@owlprotocol/crud-redux";
 
-import NetworkCRUD from '../../../network/crud.js';
-import SyncCRUD from '../../../sync/crud.js';
-import { GenericSync } from '../../../sync/model/index.js';
-import { inferInterfaceAction as getNonceAction2, getNonceSynced } from '../../actions/index.js';
-import ContractCRUD from '../../crud.js';
+import { NetworkCRUD } from "../../../network/crud.js";
+import { SyncCRUD } from "../../../sync/crud.js";
+import { GenericSync } from "../../../sync/model/index.js";
+import { getNonceAction as getNonceAction2, getNonceSynced } from "../../actions/index.js";
+import { ContractCRUD } from "../../crud.js";
+import { getDB } from "../../../db.js";
 
 /**
  * Get address nonce
@@ -16,29 +17,36 @@ import ContractCRUD from '../../crud.js';
 export function useGetNonce(
     networkId: string | undefined,
     address: string | undefined,
-    sync = 'ifnull' as 'ifnull' | GenericSync | false,
+    sync = "ifnull" as "ifnull" | GenericSync | false,
 ) {
     const dispatch = useDispatch();
 
-    const contract = ContractCRUD.hooks.useSelectByIdSingle({ networkId, address });
+    const contract = ContractCRUD.hooks.useSelectByIdSingle({
+        networkId,
+        address,
+    });
     const nonce = contract?.nonce;
 
     const network = NetworkCRUD.hooks.useSelectByIdSingle(networkId);
     const web3Exists = !!(network?.web3 ?? network?.web3Sender);
     const nonceExists = !!contract?.nonce;
-    const executeSync = (sync === 'ifnull' && !nonceExists) || !!sync; //refresh
+    const executeSync = (sync === "ifnull" && !nonceExists) || !!sync; //refresh
 
     //Action
     const { getNonceAction, syncAction } =
         useMemo(() => {
             if (networkId && address) {
-                if (!!sync && sync != 'ifnull') {
+                if (!!sync && sync != "ifnull") {
                     return getNonceSynced({ networkId, address, sync });
                 } else {
-                    const getNonceAction = getNonceAction2({ networkId, address });
+                    const getNonceAction = getNonceAction2({
+                        networkId,
+                        address,
+                    });
                     return { getNonceAction, syncAction: undefined };
                 }
             }
+            // eslint-disable-next-line react-hooks/exhaustive-deps
         }, [networkId, address, JSON.stringify(sync)]) ?? {};
     //Callback
     const dispatchGetNonce = useCallback(() => {
@@ -56,13 +64,14 @@ export function useGetNonce(
         return () => {
             if (syncId) dispatch(SyncCRUD.actions.delete({ id: syncId }));
         };
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [dispatch, syncId]);
 
     //Error
-    const [reduxError] = ReduxError.hooks.useGet(getNonceAction?.meta.uuid);
+    const [reduxError] = getReduxErrorCRUD(getDB).hooks.useGet(getNonceAction?.meta.uuid);
     const error = useMemo(() => {
-        if (!networkId) return new Error('networkId undefined');
-        else if (!address) return new Error('address undefined');
+        if (!networkId) return new Error("networkId undefined");
+        else if (!address) return new Error("address undefined");
         else if (!!reduxError) {
             const err = new Error(reduxError.errorMessage);
             err.stack = reduxError.stack;
@@ -78,5 +87,3 @@ export function useGetNonce(
 
     return [nonce, returnOptions] as [typeof nonce, typeof returnOptions];
 }
-
-export default useGetNonce;

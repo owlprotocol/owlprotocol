@@ -1,36 +1,32 @@
 import yargs from 'yargs';
 import lodash from 'lodash';
-import { Argv } from '../utils/pathHandlers.js';
-import { HD_WALLET_MNEMONIC, NETWORK, PRIVATE_KEY_0 } from '../utils/environment.js';
 import { ethers, utils } from 'ethers';
-
-const { mapValues } = lodash;
+import fetchRetryWrapper from 'fetch-retry';
 
 import { Utils, Deploy, Artifacts } from '@owlprotocol/contracts';
-import config from 'config';
 import { NFTGenerativeCollectionClass } from '@owlprotocol/nft-sdk';
 
-const jsonRpcEndpoint: string = config.get(`network.${NETWORK}.config.url`);
-const provider = new ethers.providers.JsonRpcProvider(jsonRpcEndpoint);
+import { Argv } from '../utils/pathHandlers.js';
+import { getNetworkCfg } from '../utils/networkCfg.js';
+
+const { mapValues } = lodash;
+const fetchRetry = fetchRetryWrapper(fetch);
+
 let debug = false;
 
 export const command = 'detachTopDown';
 
-export const describe = `Deploy the collection to the configured chain
-
-collectionJS - Relative path to the collection's JS file
-itemsFolder - (Optional) The path to the folder with the item DNA JSONs, defaults to folder "items" in the same directory as the collectionJS
-
-e.g. node dist/index.cjs detachTopDown --root=0xC627f2756822dFEc6fB81615340FA133129bE19d -c 0x6b42e97a042AECdd27c8798F9cd5b8C860C423FC --tokenId=1
-
-
-
+export const describe = `Detach a child NFT from a parent NFT at the given token id.
 `;
+
+export const example = '$0 detachTopDown -r <rootContractAddr> -c <childContractAddr> --tokenId=<id>';
+export const exampleDescription =
+    'detache the child NFT of <childContractAddr> from the <rootContractAddr> NFT with tokenId <id>';
 
 export const builder = (yargs: ReturnType<yargs.Argv>) => {
     return yargs
         .option('debug', {
-            describe: 'Outputs debug statements',
+            describe: 'Output debug statements',
             type: 'boolean',
         })
         .option('rootContractAddr', {
@@ -51,22 +47,12 @@ export const builder = (yargs: ReturnType<yargs.Argv>) => {
 };
 
 export const handler = async (argv: Argv) => {
-    console.log(`Detaching from ERC721TopDownDna on ${NETWORK}`);
-
-    // argvCheck(argv);
     // TODO: consider LOG_LEVEL
     debug = !!argv.debug || false;
 
-    const signers = new Array<ethers.Wallet>();
-    if (HD_WALLET_MNEMONIC) {
-        signers[0] = ethers.Wallet.fromMnemonic(HD_WALLET_MNEMONIC);
-    } else if (PRIVATE_KEY_0) {
-        signers[0] = new ethers.Wallet(PRIVATE_KEY_0);
-    } else {
-        throw new Error('ENV variable HD_WALLET_MNEMONIC or PRIVATE_KEY_0 must be provided');
-    }
-    signers[0] = signers[0].connect(provider);
-    const network: Deploy.RunTimeEnvironment['network'] = config.get(`network.${NETWORK}`);
+    const { network, signers, provider } = getNetworkCfg();
+
+    console.log(`Detaching from ERC721TopDownDna on ${network.name}`);
 
     const rootContractAddr = argv.rootContractAddr as string;
     const childContractAddr = argv.childContractAddr as string;
@@ -79,8 +65,14 @@ export const handler = async (argv: Argv) => {
     const fullDna = await rootContract.getDna(tokenId);
     const contractURI = await rootContract.contractURI();
 
-    console.log(`Fetching Metadata Schema JSON from: ${contractURI}`);
-    const collMetadataRes = await fetch(contractURI);
+    let collMetadataRes;
+    try {
+        debug && console.debug(`Fetching JSON Schema from ${contractURI}`);
+        collMetadataRes = await fetchRetry(contractURI, { retryDelay: 200 });
+    } catch (err) {
+        console.error(`Fetch Collection JSON Schema failed`);
+        throw err;
+    }
 
     if (!collMetadataRes.ok) {
         console.error(`Error fetching ${contractURI}`);

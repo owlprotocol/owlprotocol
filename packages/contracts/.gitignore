@@ -12,6 +12,10 @@ factory
 
 traceOutputDir
 
+# local hardhat
+src/deployments/hardhat
+src/deployments/index.ts
+
 # forge
 forge-cache/
 out/

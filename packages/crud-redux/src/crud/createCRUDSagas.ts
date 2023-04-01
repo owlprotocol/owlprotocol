@@ -1,17 +1,20 @@
-import { put as putDispatch, select as selectSaga, call, all as allSaga, takeEvery, spawn, take, actionChannel, fork } from 'typed-redux-saga';
-import { compact, isEqual } from 'lodash-es';
-import type { BroadcastChannel } from 'broadcast-channel';
-import { multicastChannel } from 'redux-saga'
+/* eslint-disable @typescript-eslint/no-empty-function */
+import {
+    put as putDispatch,
+    call,
+    all as allSaga,
+    takeEvery,
+    spawn,
+    take,
+    //actionChannel,
+    //fork,
+} from "typed-redux-saga";
 
-import { wrapSagaWithErrorHandler } from '../error/sagas/wrapSagaWithErrorHandler.js';
-import { T_Encoded_Base } from './model.js';
-import { createCRUDActions } from './createCRUDActions.js';
-import { createCRUDDB } from './createCRUDDB.js';
-import { createCRUDSelectors } from './createCRUDSelectors.js';
-import { createCRUDValidators } from './createCRUDValidators.js';
-import { buffers, EventChannel, eventChannel } from 'redux-saga';
-import { IndexableType } from 'dexie';
-import { actionChannelPut, channelBuffer, channelMap, channelMapPut } from '../sagas/channel.js';
+import { buffers, EventChannel, eventChannel } from "redux-saga";
+import { IndexableType, Table } from "dexie";
+import { createCRUDActions } from "./createCRUDActions.js";
+import { wrapSagaWithErrorHandler } from "../error/sagas/wrapSagaWithErrorHandler.js";
+//import { channelTakeEveryPut, channelBuffer, channelMap } from "../sagas/channel.js";
 
 /**
  *
@@ -25,36 +28,37 @@ import { actionChannelPut, channelBuffer, channelMap, channelMapPut } from '../s
 export function createCRUDSagas<
     U extends string,
     T_ID extends Record<string, any> = Record<string, any>,
-    T_Encoded extends (T_ID & T_Encoded_Base) = T_ID & T_Encoded_Base,
-    T extends T_Encoded = T_Encoded,
-    T_Idx = T_ID,
+    T_Encoded extends T_ID = T_ID,
+    T_Partial = T_Encoded,
+    T_Redux = T_Encoded,
 >(
-    crudValidators: ReturnType<typeof createCRUDValidators<T_ID, T_Encoded, T>>,
-    crudActions: ReturnType<typeof createCRUDActions<U, T_ID, T_Encoded, T, T_Idx>>,
-    crudSelectors: ReturnType<typeof createCRUDSelectors<U, T_ID, T_Encoded, T>>,
-    crudDB: ReturnType<typeof createCRUDDB<U, T_ID, T_Encoded, T, T_Idx>>,
-    channel?: BroadcastChannel
+    crudActions: ReturnType<typeof createCRUDActions<U, T_ID, T_Encoded, T_Partial, T_Redux>>,
+    crudDB: {
+        table: () => Table<T_Encoded, IndexableType>;
+        add: (items: T_Encoded) => Promise<any>;
+        put: (items: T_Encoded) => Promise<any>;
+        update: (items: T_Encoded) => Promise<any>;
+        upsert: (items: T_Encoded) => Promise<any>;
+        delete: (items: T_ID) => Promise<any>;
+        bulkAdd: (items: T_Encoded[]) => Promise<any>;
+        bulkPut: (items: T_Encoded[]) => Promise<any>;
+        bulkUpdate: (items: T_Encoded[]) => Promise<any>;
+        bulkUpsert: (items: T_Encoded[]) => Promise<any>;
+        bulkDelete: (items: T_ID[]) => Promise<any>;
+    },
 ) {
-
-    const { encode, toPrimaryKey } = crudValidators;
-    const { actions, actionTypes } = crudActions
-    const {
-        selectByIdSingle
-    } = crudSelectors
+    const { actions, actionTypes } = crudActions;
     const {
         table,
-        get,
-        bulkGet,
-        all,
         add,
-        bulkAdd,
         put,
-        bulkPut,
         update,
-        bulkUpdate,
         upsert,
-        bulkUpsert,
         delete: deleteDB,
+        bulkAdd,
+        bulkPut,
+        bulkUpdate,
+        bulkUpsert,
         bulkDelete,
     } = crudDB;
 
@@ -68,48 +72,50 @@ export function createCRUDSagas<
     type UpsertBatchedAction = ReturnType<typeof actions.upsertBatched>;
     type DeleteAction = ReturnType<typeof actions.delete>;
     type DeleteBatchedAction = ReturnType<typeof actions.deleteBatched>;
-    type HydrateAction = ReturnType<typeof actions.hydrate>;
-    type HydrateBatchedAction = ReturnType<typeof actions.hydrateBatched>;
-    type HydrateAllAction = ReturnType<typeof actions.hydrateAll>;
 
     enum DexieHookType {
-        creating = 'creating',
-        updating = 'updating',
-        deleting = 'deleting'
+        creating = "creating",
+        updating = "updating",
+        deleting = "deleting",
     }
 
     interface DexieHookChannelMessage {
-        type: DexieHookType
+        type: DexieHookType;
         primKey: IndexableType;
-        obj: T_Encoded,
-        mods?: Partial<T_Encoded>
+        obj: T_Encoded;
+        mods?: Partial<T_Encoded>;
         //updatedObj?: T_Encoded
     }
 
-
     function dexieHookChannel(t: ReturnType<typeof table>): EventChannel<DexieHookChannelMessage> {
         return eventChannel((emitter) => {
-            t.hook('creating', function (primKey, obj, trans) {
-                trans.on('complete', function () { emitter({ type: DexieHookType.creating, primKey, obj }) });
+            t.hook("creating", function (primKey, obj, trans) {
+                trans.on("complete", function () {
+                    emitter({ type: DexieHookType.creating, primKey, obj });
+                });
                 //this.onsuccess = (primKey) => emitter({ type: DexieHookType.creating, primKey, obj })
-            })
-            t.hook('updating', function (mods, primKey, obj, trans) {
-                const modKeys = Object.keys(mods)
-                if (!(modKeys.length <= 1 && modKeys[0] === 'updatedAt')) {
-                    trans.on('complete', function () { emitter({ type: DexieHookType.updating, primKey, obj, mods: mods as Partial<T_Encoded> }) });
+            });
+            t.hook("updating", function (mods, primKey, obj, trans) {
+                const modKeys = Object.keys(mods);
+                if (!(modKeys.length <= 1 && modKeys[0] === "updatedAt")) {
+                    trans.on("complete", function () {
+                        emitter({ type: DexieHookType.updating, primKey, obj, mods: mods as Partial<T_Encoded> });
+                    });
                 }
                 //this.onsuccess = (updatedObj) => emitter({ type: DexieHookType.updating, primKey, obj, mods: mods as Partial<T_Encoded>, updatedObj })
-            })
-            t.hook('deleting', function (primKey, obj, trans) {
-                trans.on('complete', function () { emitter({ type: DexieHookType.deleting, primKey, obj }) });
+            });
+            t.hook("deleting", function (primKey, obj, trans) {
+                trans.on("complete", function () {
+                    emitter({ type: DexieHookType.deleting, primKey, obj });
+                });
                 //this.onsuccess = () => emitter({ type: DexieHookType.deleting, primKey, obj })
-            })
+            });
 
             // The subscriber must return an unsubscribe function
             return () => {
-                t.hook('creating').unsubscribe(() => { });
-                t.hook('updating').unsubscribe(() => { });
-                t.hook('deleting').unsubscribe(() => { });
+                t.hook("creating").unsubscribe(() => {});
+                t.hook("updating").unsubscribe(() => {});
+                t.hook("deleting").unsubscribe(() => {});
             };
             //TODO: Buffered channel?
         }, buffers.expanding(10));
@@ -117,71 +123,95 @@ export function createCRUDSagas<
 
     const watchChangesSaga = function* () {
         //https://dexie.org/docs/Table/Table.hook('creating')
-        const t = table()
-        const channel = dexieHookChannel(t)
+        const t = table();
+        const channel = dexieHookChannel(t);
         while (true) {
-            const message = yield* take(channel)
+            const message = yield* take(channel);
             if (message.type === DexieHookType.creating) {
-                yield* putDispatch(actions.dbCreating({
-                    primKey: message.primKey,
-                    obj: message.obj
-                }))
+                yield* putDispatch(
+                    actions.dbCreating({
+                        primKey: message.primKey,
+                        obj: message.obj,
+                    }),
+                );
             } else if (message.type === DexieHookType.updating) {
-                yield* putDispatch(actions.dbUpdating({
-                    primKey: message.primKey,
-                    obj: message.obj,
-                    mods: message.mods!,
-                    //updatedObj: message.updatedObj!
-                }))
+                yield* putDispatch(
+                    actions.dbUpdating({
+                        primKey: message.primKey,
+                        obj: message.obj,
+                        mods: message.mods!,
+                        //updatedObj: message.updatedObj!
+                    }),
+                );
             } else if (message.type === DexieHookType.deleting) {
-                yield* putDispatch(actions.dbDeleting({
-                    primKey: message.primKey,
-                    obj: message.obj
-                }))
+                yield* putDispatch(
+                    actions.dbDeleting({
+                        primKey: message.primKey,
+                        obj: message.obj,
+                    }),
+                );
             }
         }
-    }
+    };
     /** Dexie Sagas */
+    /*
     const watchCreateSaga = function* () {
         const chan = yield* actionChannel<CreateAction>(actionTypes.CREATE);
-        const chanBuff = yield* call(channelBuffer<CreateAction>, chan, 1000, 100)
-        const chanBatched = yield* call(channelMap<CreateAction[], CreateBatchedAction>, chanBuff, (e: CreateAction[]) => {
-            return actions.createBatched(e.map((a) => a.payload))
-        })
-        yield* fork(actionChannelPut, chanBatched)
-    }
+        const chanBuff = yield* call(channelBuffer<CreateAction>, chan, 1000, 100);
+        const chanBatched = yield* call(
+            channelMap<CreateAction[], CreateBatchedAction>,
+            chanBuff,
+            (e: CreateAction[]) => {
+                return actions.createBatched(e.map((a) => a.payload as unknown as T_Partial));
+            },
+        );
+        yield* fork(channelTakeEveryPut, chanBatched);
+    };
     const watchPutSaga = function* () {
         const chan = yield* actionChannel<PutAction>(actionTypes.PUT);
-        const chanBuff = yield* call(channelBuffer<PutAction>, chan, 1000, 100)
+        const chanBuff = yield* call(channelBuffer<PutAction>, chan, 1000, 100);
         const chanBatched = yield* call(channelMap<PutAction[], PutBatchedAction>, chanBuff, (e: PutAction[]) => {
-            return actions.putBatched(e.map((a) => a.payload))
-        })
-        yield* fork(actionChannelPut, chanBatched)
-    }
+            return actions.putBatched(e.map((a) => a.payload as unknown as T_Partial));
+        });
+        yield* fork(channelTakeEveryPut, chanBatched);
+    };
     const watchUpdateSaga = function* () {
         const chan = yield* actionChannel<UpdateAction>(actionTypes.UPDATE);
-        const chanBuff = yield* call(channelBuffer<UpdateAction>, chan, 1000, 100)
-        const chanBatched = yield* call(channelMap<UpdateAction[], UpdateBatchedAction>, chanBuff, (e: UpdateAction[]) => {
-            return actions.updateBatched(e.map((a) => a.payload))
-        })
-        yield* fork(actionChannelPut, chanBatched)
-    }
+        const chanBuff = yield* call(channelBuffer<UpdateAction>, chan, 1000, 100);
+        const chanBatched = yield* call(
+            channelMap<UpdateAction[], UpdateBatchedAction>,
+            chanBuff,
+            (e: UpdateAction[]) => {
+                return actions.updateBatched(e.map((a) => a.payload as unknown as T_Partial));
+            },
+        );
+        yield* fork(channelTakeEveryPut, chanBatched);
+    };
     const watchUpsertSaga = function* () {
         const chan = yield* actionChannel<UpsertAction>(actionTypes.UPSERT);
-        const chanBuff = yield* call(channelBuffer<UpsertAction>, chan, 1000, 100)
-        const chanBatched = yield* call(channelMap<UpsertAction[], UpsertBatchedAction>, chanBuff, (e: UpsertAction[]) => {
-            return actions.upsertBatched(e.map((a) => a.payload))
-        })
-        yield* fork(actionChannelPut, chanBatched)
-    }
+        const chanBuff = yield* call(channelBuffer<UpsertAction>, chan, 1000, 100);
+        const chanBatched = yield* call(
+            channelMap<UpsertAction[], UpsertBatchedAction>,
+            chanBuff,
+            (e: UpsertAction[]) => {
+                return actions.upsertBatched(e.map((a) => a.payload as unknown as T_Partial));
+            },
+        );
+        yield* fork(channelTakeEveryPut, chanBatched);
+    };
     const watchDeleteSaga = function* () {
-        const chan = yield* actionChannel<DeleteAction>(actionTypes.UPSERT);
-        const chanBuff = yield* call(channelBuffer<DeleteAction>, chan, 1000, 100)
-        const chanBatched = yield* call(channelMap<DeleteAction[], DeleteBatchedAction>, chanBuff, (e: DeleteAction[]) => {
-            return actions.deleteBatched(e.map((a) => a.payload))
-        })
-        yield* fork(actionChannelPut, chanBatched)
-    }
+        const chan = yield* actionChannel<DeleteAction>(actionTypes.DELETE);
+        const chanBuff = yield* call(channelBuffer<DeleteAction>, chan, 1, 100);
+        const chanBatched = yield* call(
+            channelMap<DeleteAction[], DeleteBatchedAction>,
+            chanBuff,
+            (e: DeleteAction[]) => {
+                return actions.deleteBatched(e.map((a) => a.payload));
+            },
+        );
+        yield* fork(channelTakeEveryPut, chanBatched);
+    };
+    */
 
     /*
     const createMulticast = function* () {
@@ -191,6 +221,21 @@ export function createCRUDSagas<
         return createMulticastChannel
     }
     */
+    const createSaga = function* (action: CreateAction) {
+        yield* call(add, action.payload);
+    };
+    const putSaga = function* (action: PutAction) {
+        yield* call(put, action.payload);
+    };
+    const updateSaga = function* (action: UpdateAction) {
+        yield* call(update, action.payload);
+    };
+    const upsertSaga = function* (action: UpsertAction) {
+        yield* call(upsert, action.payload);
+    };
+    const deleteSaga = function* (action: DeleteAction) {
+        yield* call(deleteDB, action.payload);
+    };
     const createBatchedSaga = function* (action: CreateBatchedAction) {
         yield* call(bulkAdd, action.payload);
     };
@@ -206,42 +251,22 @@ export function createCRUDSagas<
     const deleteBatchedSaga = function* (action: DeleteBatchedAction) {
         yield* call(bulkDelete, action.payload);
     };
-    const hydrateSaga = function* (action: HydrateAction) {
-        const { payload } = action;
-        const { id, defaultItem } = payload;
-
-        const itemDB = yield* call(get, id);
-        if (itemDB) {
-            const itemRedux = yield* selectSaga(selectByIdSingle, itemDB);
-            if (!itemRedux) {
-                //Update redux by dispatching an update
-                yield* putDispatch(actions.upsert(itemDB as T, action.meta.uuid));
-            } else if (!isEqual(encode(itemRedux), itemDB)) {
-                //Update redux by dispatching an update
-                yield* putDispatch(actions.upsert(itemDB as T, action.meta.uuid));
-            }
-        } else if (defaultItem) {
-            yield* putDispatch(actions.upsert(defaultItem as T));
-        }
-    };
-    const hydrateBatchedSaga = function* (action: HydrateBatchedAction) {
-        const items = yield* call(bulkGet, action.payload);
-        if (items) yield* putDispatch(actions.upsertBatched(compact(items) as T[], action.meta.uuid)); //Update redux by dispatching an update
-    };
-    const hydrateAllSaga = function* (action: HydrateAllAction) {
-        const items = yield* call(all);
-        if (items) yield* putDispatch(actions.updateBatched(compact(items) as T[], action.meta.uuid)); //Update redux by dispatching an update
-    };
 
     const crudRootSaga = function* () {
         yield* allSaga([
             spawn(watchChangesSaga),
+            /*
             spawn(watchCreateSaga),
             spawn(watchPutSaga),
             spawn(watchUpdateSaga),
             spawn(watchUpsertSaga),
             spawn(watchDeleteSaga),
-            //takeEvery(actionTypes.CREATE, wrapSagaWithErrorHandler(createSaga, actionTypes.CREATE)),
+            */
+            takeEvery(actionTypes.CREATE, wrapSagaWithErrorHandler(createSaga, actionTypes.CREATE)),
+            takeEvery(actionTypes.PUT, wrapSagaWithErrorHandler(putSaga, actionTypes.PUT)),
+            takeEvery(actionTypes.UPDATE, wrapSagaWithErrorHandler(updateSaga, actionTypes.UPDATE)),
+            takeEvery(actionTypes.UPSERT, wrapSagaWithErrorHandler(upsertSaga, actionTypes.UPSERT)),
+            takeEvery(actionTypes.DELETE, wrapSagaWithErrorHandler(deleteSaga, actionTypes.DELETE)),
             takeEvery(
                 actionTypes.CREATE_BATCHED,
                 wrapSagaWithErrorHandler(createBatchedSaga, actionTypes.CREATE_BATCHED),
@@ -259,12 +284,6 @@ export function createCRUDSagas<
                 actionTypes.DELETE_BATCHED,
                 wrapSagaWithErrorHandler(deleteBatchedSaga, actionTypes.DELETE_BATCHED),
             ),
-            takeEvery(actionTypes.HYDRATE, wrapSagaWithErrorHandler(hydrateSaga, actionTypes.HYDRATE)),
-            takeEvery(
-                actionTypes.HYDRATE_BATCHED,
-                wrapSagaWithErrorHandler(hydrateBatchedSaga, actionTypes.HYDRATE_BATCHED),
-            ),
-            takeEvery(actionTypes.HYDRATE_ALL, wrapSagaWithErrorHandler(hydrateAllSaga, actionTypes.HYDRATE_ALL)),
         ]);
     };
 
@@ -274,11 +293,8 @@ export function createCRUDSagas<
         updateBatched: updateBatchedSaga,
         upsertBatched: upsertBatchedSaga,
         deleteBatched: deleteBatchedSaga,
-        hydrate: hydrateSaga,
-        hydrateBatched: hydrateBatchedSaga,
-        hydrateAll: hydrateAllSaga,
         crudRootSaga,
     };
 
-    return sagas
+    return sagas;
 }

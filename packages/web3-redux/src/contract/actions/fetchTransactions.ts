@@ -1,14 +1,13 @@
-import { v4 as uuidv4 } from 'uuid';
-import { createAction2 } from '@owlprotocol/crud-redux';
+import { createAction2 } from "@owlprotocol/crud-redux";
 
-import { name } from '../common.js';
+import { ContractName } from "../common.js";
 
 export interface FetchTransactionOptions {
     startblock?: number;
     endblock?: number;
     page?: number;
     offset?: number;
-    sort?: 'asc' | 'desc';
+    sort?: "asc" | "desc";
 }
 
 export interface FetchTransactionsPayload extends FetchTransactionOptions {
@@ -17,14 +16,11 @@ export interface FetchTransactionsPayload extends FetchTransactionOptions {
 }
 
 /** @internal */
-export const FETCH_TRANSACTIONS = `${name}/FETCH_TRANSACTIONS`;
+export const FETCH_TRANSACTIONS = `${ContractName}/FETCH_TRANSACTIONS`;
 /** @category Actions */
-export const fetchTransactions = createAction2(
-    FETCH_TRANSACTIONS,
-    (payload: FetchTransactionsPayload) => {
-        return { ...payload, address: payload.address.toLowerCase() };
-    },
-);
+export const fetchTransactions = createAction2(FETCH_TRANSACTIONS, (payload: FetchTransactionsPayload) => {
+    return { ...payload, address: payload.address.toLowerCase() };
+});
 /** @internal */
 export type FetchTransactionsAction = ReturnType<typeof fetchTransactions>;
 /** @internal */

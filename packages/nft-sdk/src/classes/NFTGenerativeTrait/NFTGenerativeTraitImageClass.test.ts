@@ -1,6 +1,4 @@
 import { assert } from 'chai';
-import { Buffer } from 'buffer';
-
 import { NFTGenerativeTraitImageClass } from './NFTGenerativeTraitImageClass.js';
 import { NFTGenerativeTraitImage } from '../../types/index.js';
 

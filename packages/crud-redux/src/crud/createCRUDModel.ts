@@ -1,16 +1,15 @@
-import { IndexableType } from 'dexie';
-import Dexie from 'dexie';
-import type { BroadcastChannel } from 'broadcast-channel';
+import { IndexableTypeArrayReadonly } from "dexie";
+import Dexie from "dexie";
+import type { BroadcastChannel } from "broadcast-channel";
 
-import { createCRUDActions } from './createCRUDActions.js';
-import { T_Encoded_Base } from './model.js';
-import { createCRUDValidators } from './createCRUDValidators.js';
-import { createCRUDReducer } from './createCRUDReducer.js';
-import { createCRUDSelectors } from './createCRUDSelectors.js';
-import { createCRUDDB } from './createCRUDDB.js';
-import { createCRUDSagas } from './createCRUDSagas.js';
-import { createCRUDHooks } from './createCRUDHooks.js';
+import { createCRUDActions } from "./createCRUDActions.js";
 
+import { createCRUDValidators } from "./createCRUDValidators.js";
+import { createCRUDReducer } from "./createCRUDReducer.js";
+import { createCRUDSelectors } from "./createCRUDSelectors.js";
+import { createCRUDDB } from "./createCRUDDB.js";
+import { createCRUDSagas } from "./createCRUDSagas.js";
+import { createCRUDHooks } from "./createCRUDHooks.js";
 
 /**
  * Combie createCRUD* functions to create a full model
@@ -23,6 +22,32 @@ import { createCRUDHooks } from './createCRUDHooks.js';
  * - Sagas (Dexie)
  * - Hooks (Redux + React + Actiosn)
  */
+
+export interface CRUDModel<
+    U extends string,
+    T_ID extends Record<string, any> = Record<string, any>,
+    T_Encoded extends T_ID = T_ID,
+    DexieCustom extends Dexie = Dexie,
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    T_Idx = T_ID,
+    T_Partial = T_Encoded,
+    T_Redux = T_Encoded,
+> {
+    name: U;
+    getDB: () => DexieCustom;
+    validators: {
+        validateId: (id: T_ID) => T_ID;
+        validate?: (item: T_Partial) => T_Encoded;
+        preWriteBulkDB?: (item: T_Encoded[]) => Promise<T_Encoded[]>;
+        postWriteBulkDB?: (item: T_Encoded[]) => Promise<any>;
+        validateWithRedux?: (item: T_Encoded | T_Redux, sess: any) => T_Redux;
+        encode?: (item: T_Redux) => T_Encoded;
+        toPrimaryKey: (id: T_ID) => IndexableTypeArrayReadonly;
+    };
+    orm?: any;
+    channel?: BroadcastChannel;
+    tables?: string[];
+}
 /**
  *
  * Creates common CRUD actions for a Redux/Dexie model including relevant action creators & sagas.
@@ -39,38 +64,44 @@ import { createCRUDHooks } from './createCRUDHooks.js';
 export function createCRUDModel<
     U extends string,
     T_ID extends Record<string, any> = Record<string, any>,
-    T_Encoded extends (T_ID & T_Encoded_Base) = T_ID & T_Encoded_Base,
-    T extends T_Encoded = T_Encoded,
+    T_Encoded extends T_ID = T_ID,
+    DexieCustom extends Dexie = Dexie,
     T_Idx = T_ID,
-    DB extends Dexie = Dexie,
->(
-    name: U,
-    getDB: () => DB,
-    validators?: {
-        validateId?: (id: T_ID) => T_ID;
-        validate?: (item: T) => T;
-        hydrate?: (item: T, sess?: any) => T;
-        encode?: (item: T) => T_Encoded;
-        toPrimaryKey?: (id: T_ID) => IndexableType;
-    },
-    orm?: any,
-    channel?: BroadcastChannel
-) {
-
+    T_IdxAnyOf = T_Idx,
+    T_Partial = T_Encoded,
+    T_Redux = T_Encoded,
+>({
+    name,
+    getDB,
+    validators,
+    orm,
+    //channel,
+    tables,
+}: CRUDModel<U, T_ID, T_Encoded, DexieCustom, T_Idx, T_Partial, T_Redux>) {
     //Model Validators
-    const crudValidators = createCRUDValidators<T_ID, T_Encoded, T>(validators)
+    const crudValidators = createCRUDValidators<T_ID, T_Encoded, T_Partial, T_Redux>(validators);
     //Redux Actions
-    const crudActions = createCRUDActions<U, T_ID, T_Encoded, T, T_Idx>(name, crudValidators)
+    const crudActions = createCRUDActions<U, T_ID, T_Encoded, T_Partial, T_Redux>(name, crudValidators);
     //Redux ORM Reducer
-    const crudReducer = createCRUDReducer<U, T_ID, T_Encoded, T, T_Idx>(name, crudValidators, crudActions)
+    const crudReducer = createCRUDReducer<U, T_ID, T_Encoded, T_Partial, T_Redux>(name, crudValidators, crudActions);
     //Redux ORM Selectors
-    const crudSelectors = createCRUDSelectors<U, T_ID, T_Encoded, T>(name, crudValidators, orm)
+    const crudSelectors = createCRUDSelectors<U, T_ID, T_Encoded, T_Redux>(name, crudValidators, orm);
     //Dexie Getters
-    const crudDB = createCRUDDB<U, T_ID, T_Encoded, T, T_Idx, DB>(name, getDB, crudValidators)
+    const crudDB = createCRUDDB<U, T_ID, T_Encoded, DexieCustom, T_Idx, T_IdxAnyOf>(
+        name,
+        getDB,
+        crudValidators,
+        tables ?? [],
+    );
     //Dexie Sagas
-    const crudSagas = createCRUDSagas<U, T_ID, T_Encoded, T, T_Idx>(crudValidators, crudActions, crudSelectors, crudDB, channel)
+    const crudSagas = createCRUDSagas<U, T_ID, T_Encoded, T_Partial, T_Redux>(crudActions, crudDB);
     //Dexie Hooks
-    const crudHooks = createCRUDHooks<U, T_ID, T_Encoded, T, T_Idx>(crudValidators, crudActions, crudSelectors, crudDB)
+    const crudHooks = createCRUDHooks<U, T_ID, T_Encoded, DexieCustom, T_Idx, T_IdxAnyOf, T_Partial, T_Redux>(
+        crudValidators,
+        crudActions,
+        crudSelectors,
+        crudDB,
+    );
 
     const model = {
         name,
@@ -80,8 +111,8 @@ export function createCRUDModel<
         selectors: crudSelectors,
         db: crudDB,
         sagas: crudSagas,
-        hooks: crudHooks
-    }
+        hooks: crudHooks,
+    };
 
     return model;
 }

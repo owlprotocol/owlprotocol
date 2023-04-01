@@ -1,4 +1,4 @@
-import { assert } from 'chai';
+import { assert } from "chai";
 
 export function assertDeepEqual(a: any, b: any, ignore: string[], message?: string) {
     if (Array.isArray(a) && Array.isArray(b)) {
@@ -27,5 +27,3 @@ export function assertDeepEqual(a: any, b: any, ignore: string[], message?: stri
         assert.deepEqual(a1, b1, message);
     }
 }
-
-export default assertDeepEqual;

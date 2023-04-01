@@ -1,3 +1,1 @@
-export type SyncType = 'Block' | 'Event' | 'Transaction';
-
-export default SyncType;
+export type SyncType = "Block" | "Event" | "Transaction";

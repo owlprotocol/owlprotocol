@@ -1,11 +1,11 @@
-import { BaseSync } from './BaseSync.js';
+import { BaseSync } from "./BaseSync.js";
 
 /**
  * Sync middleware to handle [Transaction](./Transaction.Transaction-1) CREATE/UPDATE actions.
  */
 //TODO: Implement Set based matching
 export interface TransactionSync extends BaseSync {
-    type: 'Transaction';
+    type: "Transaction";
     matchFrom?: string; //| string[];
     matchTo?: string; // | string[];
 }
@@ -13,12 +13,12 @@ export interface TransactionSync extends BaseSync {
 export function createSyncForAddress(
     id: string,
     networkId: string,
-    actions: TransactionSync['actions'],
+    actions: TransactionSync["actions"],
     address?: string, // | string[],
 ): TransactionSync {
     return {
         id,
-        type: 'Transaction',
+        type: "Transaction",
         networkId,
         actions,
         matchFrom: address,

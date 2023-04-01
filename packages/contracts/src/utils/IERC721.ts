@@ -1,14 +1,17 @@
-import { IERC721 } from "../artifacts.js";
-import { utils } from 'ethers';
+import { utils } from "ethers";
+import { IERC721Interface } from "../ethers/interfaces.js";
 
-export const Transfer = IERC721.abi.find((a: any) => a.name === 'Transfer');
-export const TransferFragment = utils.EventFragment.from(Transfer)
-export const TransferTopic = TransferFragment.format(utils.FormatTypes.sighash)
+export const TransferFragment = IERC721Interface.events["Transfer(address,address,uint256)"];
+export const Transfer = JSON.parse(TransferFragment.format(utils.FormatTypes.json));
+export const TransferSigHash = TransferFragment.format(utils.FormatTypes.sighash);
+export const TransferTopic = IERC721Interface.getEventTopic("Transfer");
 
-export const Approval = IERC721.abi.find((a: any) => a.name === 'Approval');
-export const ApprovalFragment = utils.EventFragment.from(Approval)
-export const ApprovalTopic = ApprovalFragment.format(utils.FormatTypes.sighash)
+export const ApprovalFragment = IERC721Interface.events["Approval(address,address,uint256)"];
+export const Approval = JSON.parse(ApprovalFragment.format(utils.FormatTypes.json));
+export const ApprovalSigHash = ApprovalFragment.format(utils.FormatTypes.sighash);
+export const ApprovalTopic = IERC721Interface.getEventTopic("Approval");
 
-export const ApprovalForAll = IERC721.abi.find((a: any) => a.name === 'ApprovalForAll');
-export const ApprovalForAllFragment = utils.EventFragment.from(ApprovalForAll)
-export const ApprovalForAllTopic = ApprovalForAllFragment.format(utils.FormatTypes.sighash)
+export const ApprovalForAllFragment = IERC721Interface.events["ApprovalForAll(address,address,bool)"];
+export const ApprovalForAll = JSON.parse(ApprovalForAllFragment.format(utils.FormatTypes.json));
+export const ApprovalForAllSigHash = ApprovalForAllFragment.format(utils.FormatTypes.sighash);
+export const ApprovalForAllTopic = IERC721Interface.getEventTopic("ApprovalForAll");

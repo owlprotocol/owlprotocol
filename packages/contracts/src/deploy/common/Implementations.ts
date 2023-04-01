@@ -1,13 +1,13 @@
-import { mapValues, zipObject } from '../../lodash.js';
-import { logDeployment, RunTimeEnvironment } from '../utils.js';
-import { getFactories } from '../../ethers/factories.js';
-import { getDeterministicFactories } from '../../ethers/deterministicFactories.js';
+import { mapValues, zipObject } from "../../lodash.js";
+import { logDeployment, RunTimeEnvironment } from "../utils.js";
+import { getFactories } from "../../ethers/factories.js";
+import { getDeterministicFactories } from "../../ethers/deterministicFactories.js";
 
 /**
  * Deployment is always the same regardless of contract.
  * We get the bytecode & name for a deterministic deployment from the Proxy Factory.
  */
-const deployImplementations = async ({ provider, signers, network }: RunTimeEnvironment) => {
+export const ImplementationsDeploy = async ({ provider, signers, network }: RunTimeEnvironment) => {
     const signer = signers[0];
     let nonce = await provider.getTransactionCount(await signer.getAddress());
 
@@ -38,22 +38,20 @@ const deployImplementations = async ({ provider, signers, network }: RunTimeEnvi
     });
 
     const results = zipObject(Object.keys(promises), await Promise.all(Object.values(promises))) as {
-        [K in keyof typeof promises]: Awaited<typeof promises[K]>;
+        [K in keyof typeof promises]: Awaited<(typeof promises)[K]>;
     };
 
     mapValues(results, ({ address, error, deployed }, name) => {
         if (error) {
-            logDeployment(network.name, name, address, 'implementation', 'failed');
+            logDeployment(network.name, name, address, "implementation", "failed");
             console.error(error);
         } else {
-            logDeployment(network.name, name, address, 'implementation', deployed ? 'deployed' : 'exists');
+            logDeployment(network.name, name, address, "implementation", deployed ? "deployed" : "exists");
         }
     });
 
     return results;
 };
 
-deployImplementations.tags = ['Implementations'];
-deployImplementations.dependencies = ['ProxyFactory'];
-export { deployImplementations };
-export default deployImplementations;
+ImplementationsDeploy.tags = ["Implementations"];
+ImplementationsDeploy.dependencies = ["ProxyFactory"];

@@ -10,15 +10,9 @@ export interface Props {
 
 export const IPFSReadJSON = ({ cid }: Props) => {
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    const { data } = IPFSCache.hooks.useCat(cid);
+    const [result]= IPFSCache.hooks.useAtPath(cid);
 
-    const dataTxt = useMemo(() => {
-        if (!!data) {
-            return Buffer.from(data).toString('utf-8');
-        }
-    }, [data]);
-
-    return <>{dataTxt}</>;
+    return <>{result[0].dataJSON}</>;
 };
 
 export default IPFSReadJSON;

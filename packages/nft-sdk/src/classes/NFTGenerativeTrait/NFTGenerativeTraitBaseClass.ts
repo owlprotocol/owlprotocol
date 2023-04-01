@@ -24,11 +24,11 @@ export abstract class NFTGenerativeTraitBaseClass implements NFTGenerativeTraitB
 
     bitSize() {
         const size = parseInt((this.abi ?? 'uint8').replace('uint', '').replace('int', ''));
-        return size as 8 | 16 | 24 | 32 | 48 | 64 | 96 | 128 | 196 | 256;
+        return size as 8 | 16 | 24 | 32 | 48 | 64 | 96 | 128 | 160 | 192 | 256;
     }
 
     byteSize() {
-        return (this.bitSize() / 8) as 1 | 2 | 3 | 4 | 6 | 8 | 12 | 16 | 24 | 32;
+        return (this.bitSize() / 8) as 1 | 2 | 3 | 4 | 6 | 8 | 12 | 16 | 20 | 24 | 32;
     }
 
     getJsonFormat(): JSONEncodable {

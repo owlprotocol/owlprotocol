@@ -84,7 +84,7 @@ export const AddressDisplayPresenter = ({
             h={"60px"}
             alignItems={"center"}
             justify={"space-between"}
-            bg={bg || themes.color6}
+            bg={bg || themes.color5}
             borderRadius={borderRadius}
             {...containerStyles}
         >

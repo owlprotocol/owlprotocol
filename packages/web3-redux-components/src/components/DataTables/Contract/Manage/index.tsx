@@ -3,8 +3,8 @@ import composeHooks from "react-hooks-compose";
 import { ContractsManagerTablePresenter } from "./presenter";
 
 export const useContractsManagerTableHook = () => {
-    const [contracts] = Contract.hooks.useERC721Contracts();
-    return { contracts };
+    // const [contracts] = Contract.hooks.useERC721Contracts();
+    // return { contracts };
 };
 
 export const ContractsManagerTableWhere = ({
@@ -14,7 +14,7 @@ export const ContractsManagerTableWhere = ({
     networkId?: string;
     tags?: string[];
 }) => {
-    const [contracts] = Contract.hooks.useWhere({ networkId, tags });
+    const [contracts] = Contract.hooks.useWhere({ networkId: `${networkId}` });
     const data = (contracts ?? []).map(({ networkId, address }) => {
         return { networkId, address };
     });

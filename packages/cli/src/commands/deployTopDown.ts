@@ -1,105 +1,78 @@
 import yargs from 'yargs';
 import path from 'path';
-import config from 'config';
 import fs from 'fs';
 import _ from 'lodash';
+import fetchRetryWrapper from 'fetch-retry';
 import check from 'check-types';
-import { constants, ethers, Signer, utils } from 'ethers';
-import { NFTGenerativeItemInterface, NFTGenerativeCollectionClass, NFTGenerativeItemClass } from '@owlprotocol/nft-sdk';
+import { ethers, Signer } from 'ethers';
+
+import { NFTGenerativeItemInterface, NFTGenerativeCollectionClass } from '@owlprotocol/nft-sdk';
 import { Deploy, Ethers, Utils, Artifacts } from '@owlprotocol/contracts';
-import { Argv, getProjectFolder, getProjectSubfolder } from '../utils/pathHandlers.js';
-import { HD_WALLET_MNEMONIC, NETWORK, PRIVATE_KEY_0 } from '../utils/environment.js';
-import {
-    OwlProject,
-    InitArgs,
-    ContractConfig,
-    DeployNFTResult,
-    FactoriesResult,
-    MintNFTResult,
-} from '../classes/owlProject.js';
-
-const { map, mapValues, omit } = _;
-
-import { deployCommon } from './deployCommon.js';
-import { deployERC721TopDownDna } from '../deploy/ERC721TopDownDna.js';
-import { ERC721TopDownDnaMintable__factory } from '@owlprotocol/contracts/lib/types/typechain/ethers';
 import { awaitAllObj } from '@owlprotocol/utils';
 import {
     BeaconProxy,
     BeaconProxy__factory,
     ERC721TopDownDnaMintable as ERC721TopDownDnaMintableContract,
 } from '@owlprotocol/contracts/src/typechain/ethers';
-import { ERC721TopDownDnaMintableInterface } from '@owlprotocol/contracts/src/typechain/ethers/ERC721TopDownDnaMintable';
+import { ERC721TopDownDnaMintableInterface } from '@owlprotocol/contracts/src/typechain/ethers/contracts/assets/ERC721/ERC721TopDownDnaMintable';
 
-const jsonRpcEndpoint: string = config.get(`network.${NETWORK}.config.url`);
-const provider = new ethers.providers.JsonRpcProvider(jsonRpcEndpoint);
+import { getNetworkCfg } from '../utils/networkCfg.js';
+import { Argv, getProjectFolder, getProjectSubfolder } from '../utils/pathHandlers.js';
+import { OwlProject, InitArgs, ContractConfig, DeployNFTResult } from '../classes/owlProject.js';
+import { deployERC721TopDownDna } from '../deploy/ERC721TopDownDna.js';
+import { deployCommon } from './deployCommon.js';
+
+const { map, mapValues, omit, endsWith } = _;
+const fetchRetry = fetchRetryWrapper(fetch);
+
 let debug = false;
 
 export const command = 'deployTopDown';
 
-export const describe = `Deploy the collection defined by the metadataIPFS to the configured chain
-
-For now this always expects the nftItems in the folder "./output/items/" relative to the projectFolder
-
-e.g. node dist/index.cjs deployTopDown --projectFolder=projects/example-omo --deployCommon=true --debug=true
-
-
-
+export const describe = `Deploy the collection defined by the metadataIPFS to the configured chain.
+Expects the nftItems in the folder "./output/items/" relative to the projectFolder
 `;
+
+export const example = '$0 deployTopDown --projectFolder=projects/example-omo --deployCommon --debug';
+export const exampleDescription =
+    'deploy the collection at the given project folder and base common contracts, print debug statements';
 
 export const builder = (yargs: ReturnType<yargs.Argv>) => {
     return yargs
         .option('debug', {
-            describe: 'Outputs debug statements',
+            describe: 'Output debug statements',
             type: 'boolean',
         })
         .option('deployCommon', {
-            describe: `Deploy the base common contracts - deployer, proxy, beacons, and implementations
-
+            describe: `Deploy the base common contracts - deployer, proxy, beacons, and implementations.
             Required for the first deployment on a new chain, especially on a local ephemeral chain.
             `,
             type: 'boolean',
         })
         .option('projectFolder', {
             alias: 'project',
-            describe: `Root folder for the project.
-
-            This is usually relative to the compiled src, by default we use a folder called "projects".
-            e.g. "projects/acme"
-            `,
+            describe: 'Root folder for the project as a relative path.',
             type: 'string',
         })
         .demandOption(['projectFolder']);
 };
 
 export const handler = async (argv: Argv) => {
-    console.log(`Deploying ERC721TopDownDna to ${NETWORK}`);
-
     argvCheck(argv);
     debug = !!argv.debug || false;
 
+    const { network, signers, provider } = getNetworkCfg();
+
+    console.log(`Deploying ERC721TopDownDna to ${network.name}`);
+
     const itemsFolder = getProjectSubfolder(argv, 'output/items');
-
     const owlProjectPath = path.resolve(getProjectFolder(argv), 'owlproject.json');
-
     const owlProject = await getOwlProject(owlProjectPath);
 
     console.log(`Creating JSON(s) from folder: ${itemsFolder} with IPFS metadata defined at ${owlProjectPath}`);
 
     const collMetadata = NFTGenerativeCollectionClass.fromData(owlProject.metadata);
-
     const nftItemResults = await getNftItems(collMetadata, itemsFolder);
-
-    const signers = new Array<ethers.Wallet>();
-    if (HD_WALLET_MNEMONIC) {
-        signers[0] = ethers.Wallet.fromMnemonic(HD_WALLET_MNEMONIC);
-    } else if (PRIVATE_KEY_0) {
-        signers[0] = new ethers.Wallet(PRIVATE_KEY_0);
-    } else {
-        throw new Error('ENV variable HD_WALLET_MNEMONIC or PRIVATE_KEY_0 must be provided');
-    }
-    signers[0] = signers[0].connect(provider);
-    const network: Deploy.RunTimeEnvironment['network'] = config.get(`network.${NETWORK}`);
 
     if (argv.deployCommon) {
         await deployCommon({ provider, signers, network });
@@ -113,9 +86,9 @@ export const handler = async (argv: Argv) => {
 
     debug && console.debug('owlProjectRoot:', owlProject.rootContract.initArgs?.contractInit);
 
-    const contracts = await deployContracts(owlProject, factories);
+    const contracts = await deployContracts(owlProject, factories, provider, network);
 
-    await setApprovalsForChildren(signers[0], contracts);
+    await setApprovalsForChildren(signers[0], contracts, provider);
 
     // TODO: this is synchronous for now, nonce handling can be improved
     // const mintPromises = map(nftItemResults, async (nft, i) => {
@@ -135,7 +108,7 @@ export const handler = async (argv: Argv) => {
         );
 
         nft.nftJson.deployments = {};
-        nft.nftJson.deployments[NETWORK] = {
+        nft.nftJson.deployments[network.name] = {
             root: {
                 contractAddress: mints.root.contractAddress,
                 tokenId: mints.root.tokenId,
@@ -214,13 +187,36 @@ const getOwlProject = async (owlProjectFilepath: string): Promise<OwlProject> =>
 
     const rootCfg = owlProject.rootContract.cfg;
 
-    const schemaJsonUrl = new URL(path.join(rootCfg.ipfsPath, rootCfg.schemaJsonIpfs!), rootCfg.ipfsEndpoint);
+    if (!rootCfg.jsonSchemaEndpoint) {
+        throw new Error('config.jsonSchemaEndpoint is not defined');
+    }
 
-    // TODO: add fetch-retry handling from nft-sdk-api
-    const collMetadataRes = await fetch(schemaJsonUrl);
+    if (!rootCfg.sdkApiEndpoint) {
+        throw new Error('config.sdkApiEndpoint is not defined');
+    }
+
+    if (!endsWith(rootCfg.jsonSchemaEndpoint, '/')) {
+        rootCfg.jsonSchemaEndpoint += '/';
+    }
+
+    if (!endsWith(rootCfg.sdkApiEndpoint, '/')) {
+        rootCfg.sdkApiEndpoint += '/';
+    }
+
+    const jsonSchemaUrl = new URL(rootCfg.jsonSchemaIpfs!, rootCfg.jsonSchemaEndpoint);
+
+    let collMetadataRes;
+
+    try {
+        debug && console.debug(`Fetching JSON Schema from ${jsonSchemaUrl}`);
+        collMetadataRes = await fetchRetry(jsonSchemaUrl.toString(), { retryDelay: 200 });
+    } catch (err) {
+        console.error(`Fetch Collection JSON Schema failed`);
+        throw err;
+    }
 
     if (!collMetadataRes.ok) {
-        console.error(`Error fetching ${schemaJsonUrl}`);
+        console.error(`Error fetching ${jsonSchemaUrl}`);
         process.exit();
     }
 
@@ -252,8 +248,8 @@ const initializeFactories = async (signer: Signer): Promise<any> => {
 
     const ERC721TopDownDnaMintableInitEncoder = Utils.ERC1167Factory.getInitDataEncoder<
         ERC721TopDownDnaMintableContract,
-        'proxyInitialize'
-    >(factories.ERC721TopDownDnaMintable.interface as ERC721TopDownDnaMintableInterface, 'proxyInitialize');
+        'initialize'
+    >(factories.ERC721TopDownDnaMintable.interface as ERC721TopDownDnaMintableInterface, 'initialize');
 
     const beaconAddress = UpgradeableBeaconFactory.getAddress(signerAddress, implementationAddress);
     const BeaconProxyFactory = Utils.ERC1167Factory.deterministicFactory<
@@ -293,11 +289,11 @@ const initializeArgs = (owlProject: OwlProject, factories: any) => {
     mapValues(owlProject.children, (c, k) => {
         const metadata = owlProject.metadata;
 
-        const schemaJsonUrl = new URL(path.join(rootCfg.ipfsPath, c.cfg.schemaJsonIpfs!), rootCfg.ipfsEndpoint);
-        const baseUri = new URL(path.join(rootCfg.apiPath!, c.cfg.schemaJsonIpfs!), rootCfg.apiEndpoint);
+        const jsonSchemaUrl = new URL(c.cfg.jsonSchemaIpfs!, rootCfg.jsonSchemaEndpoint);
+        const baseUri = new URL(c.cfg.jsonSchemaIpfs!, rootCfg.sdkApiEndpoint);
         const contractInit = {
             admin: factories.msgSender,
-            contractUri: schemaJsonUrl.toString(),
+            contractUri: jsonSchemaUrl.toString(),
             name: metadata.children[k].name,
             symbol: owlProject.rootContract.tokenSymbol + k,
             initBaseURI: `${baseUri}/`,
@@ -318,11 +314,11 @@ const initializeArgs = (owlProject: OwlProject, factories: any) => {
         };
     });
 
-    const schemaJsonUrl = new URL(path.join(rootCfg.ipfsPath, rootCfg.schemaJsonIpfs!), rootCfg.ipfsEndpoint);
-    const baseUri = new URL(path.join(rootCfg.apiPath!, rootCfg.schemaJsonIpfs!), rootCfg.apiEndpoint);
+    const jsonSchemaUrl = new URL(rootCfg.jsonSchemaIpfs!, rootCfg.jsonSchemaEndpoint);
+    const baseUri = new URL(rootCfg.jsonSchemaIpfs!, rootCfg.sdkApiEndpoint);
     const parentInit = {
         admin: factories.msgSender,
-        contractUri: schemaJsonUrl.toString(),
+        contractUri: jsonSchemaUrl.toString(),
         name: owlProject.metadata.name,
         symbol: owlProject.rootContract.tokenSymbol,
         initBaseURI: `${baseUri}/`,
@@ -345,7 +341,12 @@ const initializeArgs = (owlProject: OwlProject, factories: any) => {
     };
 };
 
-const deployContracts = async (owlProject: OwlProject, factories: any) => {
+const deployContracts = async (
+    owlProject: OwlProject,
+    factories: any,
+    provider: ethers.providers.JsonRpcProvider,
+    network: any,
+) => {
     const { awaitAllObj } = await import('@owlprotocol/utils');
 
     let nonce = await provider.getTransactionCount(factories.msgSender);
@@ -393,10 +394,10 @@ const deployContracts = async (owlProject: OwlProject, factories: any) => {
     mapValues(contracts, async (p: DeployNFTResult, k): Promise<DeployNFTResult> => {
         const r = await p;
         if (r.error) {
-            Deploy.logDeployment(NETWORK, k, r.address, 'beacon-proxy', 'failed');
+            Deploy.logDeployment(network.name, k, r.address, 'beacon-proxy', 'failed');
             console.error(r.error);
         } else {
-            Deploy.logDeployment(NETWORK, k, r.address, 'beacon-proxy', r.deployed ? 'deployed' : 'exists');
+            Deploy.logDeployment(network.name, k, r.address, 'beacon-proxy', r.deployed ? 'deployed' : 'exists');
         }
         return r;
     });
@@ -410,8 +411,13 @@ const deployContracts = async (owlProject: OwlProject, factories: any) => {
  * Note: initial value of provider.getTransactionCount(signerAddress); We use that and then increment.
  * @param signer
  * @param contracts
+ * @param provider
  */
-const setApprovalsForChildren = async (signer: ethers.Wallet, contracts: Record<string, any>) => {
+const setApprovalsForChildren = async (
+    signer: ethers.Wallet,
+    contracts: Record<string, any>,
+    provider: ethers.providers.JsonRpcProvider,
+) => {
     const signerAddress = await signer.getAddress();
     let nonce = await provider.getTransactionCount(signerAddress);
     const rootContractAddr = contracts.root.address;

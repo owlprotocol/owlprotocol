@@ -3,11 +3,9 @@
     "tokenSymbol": "ExampleLoyaltyNFT",
     "tokenIdStart": 1,
     "cfg": {
-      "ipfsEndpoint": "https://leovigna.mypinata.cloud",
-      "ipfsPath": "ipfs",
-      "apiEndpoint": "https://metadata.owlprotocol.xyz",
-      "apiPath": "metadata/getMetadata",
-      "schemaJsonIpfs": "QmXrpPT5KveNCcMHXdZiknnGiLbNveoccpD7FmagxgtQbj"
+      "schemaJsonIpfs": "QmUdYAv8YtXW9i5MeVWR1Uzuc7rW57mRpkzAzsy7Db7v6L",
+      "schemaJsonEndpoint": "https://leovigna.mypinata.cloud/ipfs",
+      "sdkApiEndpoint": "https://metadata.owlprotocol.xyz/metadata/getMetadata"
     }
   }
 }

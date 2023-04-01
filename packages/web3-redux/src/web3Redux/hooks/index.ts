@@ -1,1 +1,1 @@
-export * from './useInitialize.js'
+export * from "./useInitialize.js";

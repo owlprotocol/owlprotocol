@@ -38,7 +38,7 @@ sidebar_label: 'IERC721Dna'
 [IAssetRouterInput.md]: ./IAssetRouterInput.md
 [IAssetRouterOutput.md]: ./IAssetRouterOutput.md
 
-[@owlprotocol/nft-sdk]: ../../../../../nft-sdk/
+[@owlprotocol/nft-sdk]: https://github.com/owlprotocol/owlprotocol/tree/main/packages/nft-sdk
 
 [IAsset.sol]: ../reference/plugins/AssetRouter/IAsset
 [IAssetRouterInput.sol]: ../reference/plugins/AssetRouter/IAssetRouterInput

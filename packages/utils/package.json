@@ -1,67 +1,67 @@
 {
-    "name": "@owlprotocol/utils",
-    "version": "1.0.0",
-    "private": false,
-    "repository": {
-        "type": "git",
-        "url": "https://github.com/owlprotocol/starter-typescript.git"
-    },
-    "homepage": "https://owlprotocol.github.io/starter-typescript",
-    "copyright": "Copyright 2021 Leo Vigna",
-    "author": {
-        "name": "Leo Vigna",
-        "email": "leo.vigna@gmail.com",
-        "url": "https://github.com/owlprotocol"
-    },
-    "license": "MIT",
-    "type": "module",
-    "main": "./lib/cjs/index.cjs",
-    "module": "./lib/esm/index.mjs",
-    "types": "./lib/types/index.d.ts",
-    "exports": {
-        ".": {
-            "types": "./lib/types/index.d.ts",
-            "require": "./lib/cjs/index.js",
-            "import": "./lib/esm/index.js"
-        }
-    },
-    "files": [
-        "dist/*",
-        "lib/*",
-        "src/*",
-        "LICENSE",
-        "README.md"
-    ],
-    "engines": {
-        "node": "^16.0.0"
-    },
-    "scripts": {
-        "build": "npm-run-all -p tsc esbuild",
-        "build:watch": "npm-run-all -p tsc:watch esbuild:watch",
-        "esbuild": "node esbuild.config.mjs",
-        "esbuild:watch": "ESBUILD_WATCH=true node esbuild.config.mjs",
-        "tsc": "tsc",
-        "tsc:watch": "tsc -w",
-        "clean": "rimraf lib dist",
-        "publish": "pnpm publish --no-git-checks --access public",
-        "madge": "madge src/index.ts -c"
-    },
-    "devDependencies": {
-        "@owlprotocol/esbuild-config": "workspace:*",
-        "@owlprotocol/eslint-config": "workspace:*",
-        "@types/chai": "^4.3.0",
-        "@types/mocha": "^9.1.0",
-        "@types/node": "^16.11.26",
-        "chai": "^4.3.6",
-        "cross-env": "^7.0.3",
-        "dotenv": "^10.0.0",
-        "madge": "^5.0.1",
-        "mocha": "^9.2.2",
-        "npm-run-all": "^4.1.5",
-        "rimraf": "^3.0.2",
-        "typescript": "4.9.5"
-    },
-    "dependencies": {
-        "lodash-es": "^4.17.21"
+  "name": "@owlprotocol/utils",
+  "version": "2.0.0",
+  "private": false,
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/owlprotocol/owlprotocol.git"
+  },
+  "homepage": "https://github.com/owlprotocol/owlprotocol",
+  "copyright": "Copyright 2021 Leo Vigna",
+  "author": {
+    "name": "Leo Vigna",
+    "email": "leo.vigna@gmail.com",
+    "url": "https://github.com/owlprotocol"
+  },
+  "license": "MIT",
+  "type": "module",
+  "main": "./lib/cjs/index.cjs",
+  "module": "./lib/esm/index.mjs",
+  "types": "./lib/types/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./lib/types/index.d.ts",
+      "require": "./lib/cjs/index.js",
+      "import": "./lib/esm/index.js"
     }
+  },
+  "files": [
+    "dist/*",
+    "lib/*",
+    "src/*",
+    "LICENSE",
+    "README.md"
+  ],
+  "engines": {
+    "node": "^16.0.0"
+  },
+  "scripts": {
+    "build": "npm-run-all -p tsc esbuild",
+    "build:watch": "npm-run-all -p tsc:watch esbuild:watch",
+    "esbuild": "node esbuild.config.mjs",
+    "esbuild:watch": "ESBUILD_WATCH=true node esbuild.config.mjs",
+    "tsc": "tsc",
+    "tsc:watch": "tsc -w",
+    "clean": "rimraf lib dist",
+    "publish": "pnpm publish --no-git-checks --access public",
+    "madge": "madge src/index.ts -c"
+  },
+  "devDependencies": {
+    "@owlprotocol/esbuild-config": "workspace:*",
+    "@owlprotocol/eslint-config": "workspace:*",
+    "@types/chai": "^4.3.0",
+    "@types/mocha": "^9.1.0",
+    "@types/node": "^16.11.26",
+    "chai": "^4.3.6",
+    "cross-env": "^7.0.3",
+    "dotenv": "^10.0.0",
+    "madge": "^5.0.1",
+    "mocha": "^9.2.2",
+    "npm-run-all": "^4.1.5",
+    "rimraf": "^3.0.2",
+    "typescript": "4.9.5"
+  },
+  "dependencies": {
+    "lodash-es": "^4.17.21"
+  }
 }

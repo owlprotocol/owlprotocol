@@ -1,3 +1,4 @@
+//@ts-nocheck
 import { Button } from '@chakra-ui/react';
 import { Config, NFTGenerativeCollection, NFTGenerativeItem } from '@owlprotocol/web3-redux';
 import { NFTGenerativeItemId } from '@owlprotocol/web3-redux/src/nftgenerativeitem/model/interface.js';

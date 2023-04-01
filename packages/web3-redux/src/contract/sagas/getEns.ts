@@ -1,16 +1,15 @@
-import { select, put, call } from 'typed-redux-saga';
-import ENS from 'ethereum-ens';
-import { GetEnsAction } from '../actions/index.js';
-import { ContractCRUD } from '../crud.js';
-import { fetchSaga as fetchNetworkSaga } from '../../network/sagas/fetch.js'
-import { NetworkCRUD } from '../../network/crud.js';
+import { select, put, call } from "typed-redux-saga";
+import ENS from "ethereum-ens";
+import { GetEnsAction } from "../actions/index.js";
+import { ContractCRUD } from "../crud.js";
+import { NetworkCRUD } from "../../network/crud.js";
 
 /** @category Sagas */
 export function* getEns(action: GetEnsAction) {
     const { payload } = action;
     const { networkId, address } = payload;
 
-    const { network } = yield* call(fetchNetworkSaga, NetworkCRUD.actions.fetch({ networkId }, action.meta.uuid));
+    const network = yield* select(NetworkCRUD.selectors.selectByIdSingle, networkId);
     if (!network) throw new Error(`Network ${networkId} undefined`);
 
     const web3 = network.web3;

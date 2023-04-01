@@ -1,4 +1,4 @@
-import { Contract } from "@owlprotocol/web3-redux";
+import { ERC721 } from "@owlprotocol/web3-redux";
 import composeHooks from "react-hooks-compose";
 import ItemCardPresenter from "../ItemCardPresenter/index.js";
 
@@ -14,9 +14,8 @@ export const useERC721ItemCard = ({
     address,
     tokenId,
 }: useERC721ItemCardProps) => {
-    const { metadata } = Contract.hooks.useERC721(networkId, address, tokenId, {
-        metadata: true,
-    });
+    const [token] = ERC721.hooks.useERC721({networkId, address, tokenId});
+    const metadata = token?.metadata
 
     return {
         itemName: metadata?.name,

@@ -1,16 +1,16 @@
-import axios from 'axios';
-import { Network, NetworkId, NetworkWithObjects } from './interface.js';
-import { defaultNetworks } from '../defaults.js';
-import { fromRpc } from '../../utils/web3/index.js';
-import { isUndefined, omit, omitBy } from 'lodash-es';
+import axios from "axios";
+import { isUndefined, omit, omitBy } from "lodash-es";
+import { Network, NetworkId, NetworkWithObjects } from "./interface.js";
+import { defaultNetworks } from "../defaults.js";
+import { fromRpc } from "../../utils/web3/index.js";
 
 /** @internal */
 export function validateId({ networkId }: NetworkId) {
     return { networkId };
 }
 
-export function toPrimaryKey({ networkId }: NetworkId): string {
-    return networkId;
+export function toPrimaryKey({ networkId }: NetworkId): [string] {
+    return [networkId];
 }
 
 /**
@@ -52,7 +52,7 @@ export function validate(network: Network): Network {
  * Hydrate network with objects.
  * @param network
  */
-export function hydrate(network: NetworkWithObjects, sess: any): NetworkWithObjects {
+export function validateWithRedux(network: NetworkWithObjects, sess: any): NetworkWithObjects {
     const { networkId, web3Rpc, explorerApiUrl, explorerApiKey } = network;
     const networkORM: NetworkWithObjects | undefined = sess.Network.withId(networkId);
 
@@ -114,7 +114,11 @@ export function hydrate(network: NetworkWithObjects, sess: any): NetworkWithObje
  * @param network
  */
 export function encode(network: NetworkWithObjects): Network {
-    return omit(network, ['web3', 'web3Sender', 'explorerApiClient']);
+    return omit(network, ["web3", "web3Sender", "explorerApiClient"]);
 }
 
-export default validate;
+export async function preWriteBulkDB(items: Network[]): Promise<Network[]> {
+    return items.map((item) => {
+        return { ...item, updatedAt: Date.now() };
+    });
+}

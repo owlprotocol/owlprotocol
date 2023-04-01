@@ -1,6 +1,6 @@
 import Web3 from 'web3';
 import { invert } from 'lodash-es';
-import { Contract } from '@owlprotocol/web3-redux';
+import { ERC20, ERC20Balance } from '@owlprotocol/web3-redux';
 
 const { fromWei, toBN, unitMap } = Web3.utils;
 
@@ -11,7 +11,11 @@ export interface TokenDropDownOptionProps {
     accountAddress: string;
 }
 export const ERC20DropDownOption = ({ networkId, tokenAddress, accountAddress }: TokenDropDownOptionProps) => {
-    const { symbol, balanceOf, decimals } = Contract.hooks.useERC20(networkId, tokenAddress, accountAddress);
+    const [token] = ERC20.hooks.useERC20({networkId, address: tokenAddress})
+    const { symbol, decimals } = token ?? {}
+    const [tokenBalance] = ERC20Balance.hooks.useERC20Balance({ networkId, address: tokenAddress, account: accountAddress})
+    const balanceOf = tokenBalance?.balance
+
     const decimalsBN = toBN('10').pow(toBN(decimals ?? '18'));
     const unit = reverseUnitMap[decimalsBN.toString()];
     const balanceOfEth = fromWei(balanceOf ?? '0', unit as any);

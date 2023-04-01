@@ -1,13 +1,13 @@
-import type { IPFS } from 'ipfs-core-types';
-import { create } from 'ipfs-http-client';
-import { encode as encodeJSON, decode as decodeJSON, code as codeJSON } from '@ipld/dag-json';
-import { encode as encodeCBOR, decode as decodeCBOR, code as codeCBOR } from '@ipld/dag-cbor';
-import { CID } from 'multiformats';
-import { sha256 } from 'multiformats/hashes/sha2';
+import type { IPFS } from "ipfs-core-types";
+import { create } from "ipfs-http-client";
+import { encode as encodeJSON, decode as decodeJSON, code as codeJSON } from "@ipld/dag-json";
+import { encode as encodeCBOR, decode as decodeCBOR, code as codeCBOR } from "@ipld/dag-cbor";
+import { CID } from "multiformats";
+import { sha256 } from "multiformats/hashes/sha2";
 
 interface PutOptions {
     version?: 0 | 1;
-    format?: 'dag-cbor' | 'dag-json'; //dag-json only used in testing, not in production
+    format?: "dag-cbor" | "dag-json"; //dag-json only used in testing, not in production
     pin?: boolean;
 }
 
@@ -17,9 +17,10 @@ export class IPFSSingleton {
     static _totalNetworkGet = 0;
     static readonly local: { [key: string]: any } = {};
 
-    private constructor() { }
+    // eslint-disable-next-line @typescript-eslint/no-empty-function
+    private constructor() {}
     public static setIPFS(ipfs: IPFS | string) {
-        if (typeof ipfs === 'string') {
+        if (typeof ipfs === "string") {
             //@ts-expect-error
             this.ipfs = create({ url: ipfs });
         } else {
@@ -38,9 +39,9 @@ export class IPFSSingleton {
         if (!options || options.version == 0) {
             //dag-pb
             cid = CID.create(0, 112, digest);
-        } else if (options.format == 'dag-json') {
+        } else if (options.format == "dag-json") {
             cid = CID.create(1, codeJSON, digest);
-        } else if (options.format == 'dag-cbor') {
+        } else if (options.format == "dag-cbor") {
             cid = CID.create(1, codeCBOR, digest);
         }
 
@@ -57,12 +58,20 @@ export class IPFSSingleton {
      */
     public static async putJSON(rec: Record<string, any>, options?: PutOptions) {
         const data = encodeJSON(rec);
-        return IPFSSingleton.put(data, { ...options, version: 1, format: 'dag-json' });
+        return IPFSSingleton.put(data, {
+            ...options,
+            version: 1,
+            format: "dag-json",
+        });
     }
 
     public static async putCBOR(rec: Record<string, any>, options?: PutOptions) {
         const data = encodeCBOR(rec);
-        return IPFSSingleton.put(data, { ...options, version: 1, format: 'dag-cbor' });
+        return IPFSSingleton.put(data, {
+            ...options,
+            version: 1,
+            format: "dag-cbor",
+        });
     }
 
     //GET
@@ -87,5 +96,3 @@ export class IPFSSingleton {
         return decodeCBOR(data);
     }
 }
-
-export default IPFSSingleton;

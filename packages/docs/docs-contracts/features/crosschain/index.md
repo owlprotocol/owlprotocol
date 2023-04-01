@@ -4,8 +4,8 @@ sidebar_position: 5
 
 # Cross-Chain Mechanics
 
-Owl Protocol leverages its sister company [Vulcan Link](https://vulcan.link)'s extensive expertise in [Chainlink's Cross-Chain Interoperability
-Protocol (CCIP)](https://chain.link/cross-chain) technology to allow developers and creators to create engaging cross-chain mechanics.
+Owl Protocol leverages the extensive experstise of its sister company [Vulcan Link](https://vulcan.link) in [Chainlink's Cross-Chain Interoperability
+Protocol (CCIP)](https://chain.link/cross-chain) technology. This technology allows developers and creators to create engaging cross-chain mechanics.
 
 > *Cross-chain mechanics can attract users from different blockchains, bridging the gap that separates previously isolated NFT communities.*
 

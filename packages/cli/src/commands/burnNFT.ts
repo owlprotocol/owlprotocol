@@ -1,36 +1,26 @@
 import yargs from 'yargs';
-import _ from 'lodash';
-
-import { Argv } from '../utils/pathHandlers.js';
-import { HD_WALLET_MNEMONIC, NETWORK, PRIVATE_KEY_0 } from '../utils/environment.js';
-
 import { ethers } from 'ethers';
 
-const { mapValues } = _;
+import { Artifacts } from '@owlprotocol/contracts';
 
-import { Artifacts, Deploy } from '@owlprotocol/contracts';
-import config from 'config';
+import { Argv } from '../utils/pathHandlers.js';
+import { getNetworkCfg } from '../utils/networkCfg.js';
 
-const jsonRpcEndpoint: string = config.get(`network.${NETWORK}.config.url`);
-const provider = new ethers.providers.JsonRpcProvider(jsonRpcEndpoint);
 let debug = false;
-
-import { NFTGenerativeCollectionClass, NFTGenerativeItemClass } from '@owlprotocol/nft-sdk';
 
 export const command = 'burnNFT';
 
-export const describe = `Burns the NFT and all children (if any)
-
-e.g. node dist/index.cjs burnNFT --contract=0x74Dbc83C18fE41B8db1d8A31A9B5E665d974D55b --tokenId=3
-
-
-
+export const describe = `Burn the NFT and all children (if any).
 `;
+
+export const example = '$0 burnNFT --contract=<contract> --tokenId=<id>';
+export const exampleDescription =
+    'burn the NFT at the given contract and tokenId, including all of the NFTs the NFT owns';
 
 export const builder = (yargs: ReturnType<yargs.Argv>) => {
     return yargs
         .option('debug', {
-            describe: 'Outputs debug statements',
+            describe: 'Output debug statements',
             type: 'boolean',
         })
         .option('contractAddr', {
@@ -47,19 +37,11 @@ export const builder = (yargs: ReturnType<yargs.Argv>) => {
 };
 
 export const handler = async (argv: Argv) => {
-    console.log(`Burn ERC721TopDownDnaMintable ${argv.contractAddr} with tokenId: ${argv.tokenId} on ${NETWORK}`);
-
     debug = !!argv.debug || false;
 
-    const signers = new Array<ethers.Wallet>();
-    if (HD_WALLET_MNEMONIC) {
-        signers[0] = ethers.Wallet.fromMnemonic(HD_WALLET_MNEMONIC);
-    } else if (PRIVATE_KEY_0) {
-        signers[0] = new ethers.Wallet(PRIVATE_KEY_0);
-    } else {
-        throw new Error('ENV variable HD_WALLET_MNEMONIC or PRIVATE_KEY_0 must be provided');
-    }
-    signers[0] = signers[0].connect(provider);
+    const { network, signers } = getNetworkCfg();
+
+    console.log(`Burn ERC721TopDownDnaMintable ${argv.contractAddr} with tokenId: ${argv.tokenId} on ${network.name}`);
 
     const contractAddr = argv.contractAddr as string;
     const tokenId = argv.tokenId as number;

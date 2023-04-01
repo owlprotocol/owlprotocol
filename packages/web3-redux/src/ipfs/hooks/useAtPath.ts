@@ -1,16 +1,8 @@
-import { useLiveQuery } from 'dexie-react-hooks';
-import getDB from '../../db.js';
+import { IPFSCacheCRUD } from "../crud.js";
 
 /**
  * Recursively searches for CID at file at <BASE_CID>/path/to/file
  */
-export function useAtPath(path: string | undefined) {
-    const db = getDB();
-
-    return useLiveQuery(() => {
-        if (!path) return undefined;
-        return db.IPFSCache.where('paths').equals(path).first();
-    }, [path]);
+export function useAtPath(paths: string[] | string | undefined) {
+    return IPFSCacheCRUD.hooks.useAnyOf("paths", paths);
 }
-
-export default useAtPath;

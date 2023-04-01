@@ -1,12 +1,12 @@
-import { attr, Model as ORMModel } from 'redux-orm';
-import { name } from '../common.js';
+import { attr, Model as ORMModel } from "redux-orm";
+import { NetworkName } from "../common.js";
 
-export default class Model extends ORMModel {
+export class NetworkORMModel extends ORMModel {
     static options = {
-        idAttribute: 'networkId',
+        idAttribute: "networkId",
     };
 
-    static modelName = name;
+    static modelName = NetworkName;
 
     static fields = {
         networkId: attr(),

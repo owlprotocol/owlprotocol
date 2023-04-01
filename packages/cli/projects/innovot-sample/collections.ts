@@ -103,7 +103,7 @@ This collection features detachable clothing and accessories by connecting your 
 
 Follow the journey at: https://tell.ie/threadhausCo/D5RQ6SBsgpAp
     `,
-    external_url: 'https://docs.owlprotocol.xyz/contracts/tutorial-topdowndna',
+    external_url: 'https://docs.owlprotocol.xyz/contracts/tutorials/nft-image-layers',
     seller_fee_basis_points: 10000,
     fee_recipient: '0xc2A3cB7d4BF24e456051E3a710057ac61f5dB133',
     generatedImageType: 'png',

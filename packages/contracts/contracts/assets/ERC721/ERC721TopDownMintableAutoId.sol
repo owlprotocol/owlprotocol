@@ -1,8 +1,8 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.9;
 
-import {ERC721MintableAutoIdBase} from './ERC721MintableAutoIdBase.sol';
-import {ERC721TopDownBase} from './ERC721TopDownBase.sol';
+import {ERC721MintableAutoIdBase} from "./ERC721MintableAutoIdBase.sol";
+import {ERC721TopDownBase} from "./ERC721TopDownBase.sol";
 
 /**
  * @dev Nested Top Down ERC721. Parents can own child tokens among fixed set of child contracts.
@@ -51,36 +51,6 @@ contract ERC721TopDownMintableAutoId is ERC721MintableAutoIdBase, ERC721TopDownB
     }
 
     /**
-     * @dev Same as initialize but designed for usage with proxies.
-     *      Protected with `onlyInitializing` modifier.
-     */
-    function proxyInitialize(
-        address _admin,
-        string calldata _initContractURI,
-        address _gsnForwarder,
-        string calldata _name,
-        string calldata _symbol,
-        string calldata _initBaseURI,
-        address _feeReceiver,
-        uint96 _feeNumerator,
-        address[] calldata _childContracts721,
-        address[] calldata _childContracts1155
-    ) external onlyInitializing {
-        __ERC721TopDownMintableAutoId_init(
-            _admin,
-            _initContractURI,
-            _gsnForwarder,
-            _name,
-            _symbol,
-            _initBaseURI,
-            _feeReceiver,
-            _feeNumerator,
-            _childContracts721,
-            _childContracts1155
-        );
-    }
-
-    /**
      * @dev Initialize ERC721TopDownMintableAutoId + dependencies
      */
     function __ERC721TopDownMintableAutoId_init(
@@ -111,13 +81,9 @@ contract ERC721TopDownMintableAutoId is ERC721MintableAutoIdBase, ERC721TopDownB
     /**
      * inheritdoc ERC721TopDown
      */
-    function supportsInterface(bytes4 interfaceId)
-        public
-        view
-        virtual
-        override(ERC721MintableAutoIdBase, ERC721TopDownBase)
-        returns (bool)
-    {
+    function supportsInterface(
+        bytes4 interfaceId
+    ) public view virtual override(ERC721MintableAutoIdBase, ERC721TopDownBase) returns (bool) {
         return super.supportsInterface(interfaceId);
     }
 }

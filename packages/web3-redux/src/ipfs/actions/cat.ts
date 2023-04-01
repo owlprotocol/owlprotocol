@@ -1,28 +1,23 @@
-import type { IPFS } from 'ipfs-core-types';
-import { v4 as uuidv4 } from 'uuid';
-import { createAction } from '@owlprotocol/crud-redux';
+import type { IPFS } from "ipfs-core-types";
+import { createAction2 } from "@owlprotocol/crud-redux";
 
-import { name } from '../common.js';
+import { IPFSCacheName } from "../common.js";
 
 export interface CatPayload {
-    path: Parameters<IPFS['cat']>[0];
-    options?: Parameters<IPFS['cat']>[1];
+    path: Parameters<IPFS["cat"]>[0];
+    options?: Parameters<IPFS["cat"]>[1];
 }
 
 /** @internal */
-export const CAT = `${name}/CAT`;
+export const CAT = `${IPFSCacheName}/CAT`;
 /** @category Actions */
-export const catAction = createAction(CAT, (payload: CatPayload, uuid?: string) => {
+export const catAction = createAction2(CAT, (payload: CatPayload) => {
     return {
-        payload,
-        meta: {
-            uuid: uuid ?? uuidv4(),
-        },
+        ...payload,
+        path: typeof payload.path === "string" ? payload.path.replace("ipfs://", "") : payload.path,
     };
 });
 /** @internal */
 export type CatAction = ReturnType<typeof catAction>;
 /** @internal */
 export const isCatAction = catAction.match;
-
-export default catAction;

@@ -1,1 +1,1 @@
-export { crashReporter } from './crashReporter.js';
+export { crashReporter } from "./crashReporter.js";

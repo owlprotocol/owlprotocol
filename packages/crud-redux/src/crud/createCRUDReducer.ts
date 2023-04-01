@@ -1,7 +1,6 @@
-import type { Action } from '@reduxjs/toolkit';
-import { T_Encoded_Base } from './model.js';
-import { createCRUDValidators } from './createCRUDValidators.js';
-import { createCRUDActions } from './createCRUDActions.js';
+import type { Action } from "@reduxjs/toolkit";
+
+import { createCRUDActions } from "./createCRUDActions.js";
 
 /**
  *
@@ -15,27 +14,28 @@ import { createCRUDActions } from './createCRUDActions.js';
 export function createCRUDReducer<
     U extends string,
     T_ID extends Record<string, any> = Record<string, any>,
-    T_Encoded extends (T_ID & T_Encoded_Base) = T_ID & T_Encoded_Base,
-    T extends T_Encoded = T_Encoded,
-    T_Idx = T_ID,
+    T_Encoded extends T_ID = T_ID,
+    T_Partial = T_Encoded,
+    T_Redux = T_Encoded,
 >(
     name: U,
-    crudValidators: ReturnType<typeof createCRUDValidators<T_ID, T_Encoded, T>>,
-    crudActions: ReturnType<typeof createCRUDActions<U, T_ID, T_Encoded, T, T_Idx>>
+    validators: {
+        validateWithRedux: (item: T_Encoded | T_Redux, sess: any) => T_Redux;
+    },
+    crudActions: ReturnType<typeof createCRUDActions<U, T_ID, T_Encoded, T_Partial, T_Redux>>,
 ) {
-
-    const { hydrate } = crudValidators
-    const { actions } = crudActions
+    const { validateWithRedux } = validators;
+    const { actions } = crudActions;
 
     /** Redux ORM Reducer */
     const reducer = (sess: any, action: Action) => {
         const Model = sess[name];
         if (actions.reduxUpsert.match(action)) {
-            Model.upsert(hydrate(action.payload, sess), sess);
+            Model.upsert(validateWithRedux(action.payload, sess), sess);
         } else if (actions.reduxUpsertBatched.match(action)) {
             action.payload.forEach((p) => {
-                Model.upsert(hydrate(p, sess), sess);
-            })
+                Model.upsert(validateWithRedux(p, sess), sess);
+            });
         } else if (actions.reduxDelete.match(action)) {
             Model.withId(action.payload)?.delete();
         }

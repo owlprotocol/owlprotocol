@@ -24,7 +24,7 @@ import {
     Td,
 } from "@chakra-ui/react";
 import { useMemo } from "react";
-import TableWrapper from "../../../../theme/TableStyleOverrides";
+import { TableWrapper } from "@owlprotocol/owl-theme";
 import NetworkIcon from "../../../NetworkIcon";
 import { interfaceIdNames } from "@owlprotocol/contracts";
 import Filter from "./tableUtils/Filter";

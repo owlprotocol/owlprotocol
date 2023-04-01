@@ -1,25 +1,29 @@
-import { assert } from 'chai';
+import { assert } from "chai";
 
 import "@nomiclabs/hardhat-ethers";
-import hre, { ethers } from 'hardhat';
-import { SignerWithAddress } from '@nomiclabs/hardhat-ethers/signers';
+import hre, { ethers } from "hardhat";
+import { SignerWithAddress } from "@nomiclabs/hardhat-ethers/signers";
 import {
     ERC1167Factory,
     ERC721MintableAutoId as ERC721MintableAutoIdContract,
     ERC721MintableAutoId__factory,
-} from '../../ethers/types';
-import { proxy1167Factory } from '../../utils/ERC1167Factory/getContractFactory';
-import deployProxyNick from '../../deploy-hre/common/DeterministicDeployer.js';
-import deployProxyFactory from '../../deploy-hre/common/ProxyFactory.js';
-import deployImplementations from '../../deploy-hre/common/Implementations.js';
-import { Factories, getFactories } from '../../ethers/factories';
-import { getProxy1167InitializeFactories } from '../../ethers/proxy1167Factories';
-import { DEFAULT_SALT } from '../../utils/ERC1167Factory/getSalt';
-import { getDeterministicFactories, InitializeFactories, NoInitFactories } from '../../ethers/deterministicFactories';
-import { cloneDeterministicAddress } from '../../utils/ERC1167Factory/getAddress';
-import { ERC721MintableAutoId } from '../../utils/index';
+} from "../../ethers/types.js";
+import { proxy1167Factory } from "../../utils/ERC1167Factory/getContractFactory.js";
+import deployProxyNick from "../../deploy-hre/common/DeterministicDeployer.js";
+import ProxyFactoryDeploy from "../../deploy-hre/common/ProxyFactory.js";
+import ImplementationsDeploy from "../../deploy-hre/common/Implementations.js";
+import { Factories, getFactories } from "../../ethers/factories.js";
+import { getProxy1167InitializeFactories } from "../../ethers/proxy1167Factories.js";
+import { DEFAULT_SALT } from "../../utils/ERC1167Factory/getSalt.js";
+import {
+    getDeterministicFactories,
+    InitializeFactories,
+    NoInitFactories,
+} from "../../ethers/deterministicFactories.js";
+import { cloneDeterministicAddress } from "../../utils/ERC1167Factory/getAddress.js";
+import { ERC721MintableAutoId } from "../../utils/index.js";
 
-describe('ERC1167Factory.sol', function () {
+describe("ERC1167Factory.sol", function () {
     const salt = DEFAULT_SALT;
     let signers: SignerWithAddress[];
     let factories: Factories;
@@ -32,7 +36,7 @@ describe('ERC1167Factory.sol', function () {
 
     before(async () => {
         await deployProxyNick(hre as any);
-        await deployImplementations(hre as any);
+        await ImplementationsDeploy(hre as any);
 
         signers = await ethers.getSigners();
         const signer = signers[0];
@@ -42,22 +46,22 @@ describe('ERC1167Factory.sol', function () {
         deterministicFactories = getDeterministicFactories(factories);
         proxyFactories = getProxy1167InitializeFactories(deterministicFactories, signerAddress);
 
-        cloneFactory = await deployProxyFactory(hre as any);
+        cloneFactory = await ProxyFactoryDeploy(hre as any);
 
         token = {
             admin: signers[0].address,
-            name: 'test',
-            symbol: 'TEST',
-            initBaseURI: ''
+            name: "test",
+            symbol: "TEST",
+            initBaseURI: "",
         };
     });
 
-    it('cloneDeterministicAddress - Typescript', async () => {
+    it("cloneDeterministicAddress - Typescript", async () => {
         const initializerArgs = ERC721MintableAutoId.flattenInitArgsERC721MintableAutoId(token);
         const implementationAddress = proxyFactories.ERC721MintableAutoId.getAddress(...initializerArgs);
 
         const initData = ERC721MintableAutoId.ERC721MintableAutoIdInterface.encodeFunctionData(
-            'initialize',
+            "initialize",
             initializerArgs,
         );
 
@@ -67,53 +71,53 @@ describe('ERC1167Factory.sol', function () {
             initData,
             signers[0].address,
         );
-        const expected = cloneDeterministicAddress<ERC721MintableAutoIdContract, 'initialize'>({
+        const expected = cloneDeterministicAddress<ERC721MintableAutoIdContract, "initialize">({
             implementationAddress,
             contractInterface: ERC721MintableAutoId.ERC721MintableAutoIdInterface,
             salt,
             cloneFactoryAddress: cloneFactory.address,
             msgSender: signers[0].address,
             initOptions: {
-                initSignature: 'initialize',
+                initSignature: "initialize",
                 initArgs: initializerArgs,
             },
         });
 
-        assert.equal(result, expected, 'Typescript != Solidity');
+        assert.equal(result, expected, "Typescript != Solidity");
     });
 
-    it('proxyFactory', async () => {
+    it("proxyFactory", async () => {
         const initializerArgs = ERC721MintableAutoId.flattenInitArgsERC721MintableAutoId(token);
         const implementationAddress = proxyFactories.ERC721MintableAutoId.getAddress(...initializerArgs);
         const contractFactory = factories.ERC721MintableAutoId;
 
         //Create Proxy Factory & Test with local
-        const factory = proxy1167Factory<ERC721MintableAutoId__factory, ERC721MintableAutoIdContract, 'initialize'>({
+        const factory = proxy1167Factory<ERC721MintableAutoId__factory, ERC721MintableAutoIdContract, "initialize">({
             implementationAddress,
-            initSignature: 'initialize',
+            initSignature: "initialize",
             contractFactory,
             cloneFactory,
         });
 
         const contract = await factory.deploy(...initializerArgs);
 
-        const expected = cloneDeterministicAddress<ERC721MintableAutoIdContract, 'initialize'>({
+        const expected = cloneDeterministicAddress<ERC721MintableAutoIdContract, "initialize">({
             implementationAddress,
             salt,
             cloneFactoryAddress: cloneFactory.address,
             msgSender: signers[0].address,
             contractInterface: ERC721MintableAutoId.ERC721MintableAutoIdInterface,
             initOptions: {
-                initSignature: 'initialize',
+                initSignature: "initialize",
                 initArgs: initializerArgs,
             },
         });
 
-        assert.equal(contract.address, expected, 'Deployed Proxy != Typescript');
+        assert.equal(contract.address, expected, "Deployed Proxy != Typescript");
 
         //Use hard-coded proxy factory, no receipt but initializes with deploeyd code
         const factory2 = proxyFactories.ERC721MintableAutoId;
         const contract2 = await factory2.deploy(...initializerArgs);
-        assert.equal(contract2.address, expected, 'Cached Proxy != Typescript');
+        assert.equal(contract2.address, expected, "Cached Proxy != Typescript");
     });
 });

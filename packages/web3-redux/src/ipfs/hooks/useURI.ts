@@ -1,24 +1,20 @@
-import useIpfs from './useIpfs.js';
-import useHttpGet from '../../http/hooks/useHttpGet.js';
+import { useIpfs } from "./useIpfs.js";
+import { useHttpGet } from "../../http/hooks/useHttpGet.js";
 
 /**
  * Get content for URI depending on protocol
  * @category Hooks
  * */
-export const useURI = (uriPath: string | undefined) => {
-    const uri = uriPath ? new URL(uriPath) : undefined;
-    //Check Protocol
-    //If IPFS
-    const isIpfsURI = uri?.protocol === 'ipfs:';
-    const ipfsUri = isIpfsURI ? uriPath?.replace('ipfs://', '') : undefined;
-    const { data: ipfsContent, contentId } = useIpfs(ipfsUri);
+export const useURI = (uriPath: string[] | string | undefined) => {
+    const uriPathArr = uriPath ? (Array.isArray(uriPath) ? uriPath : [uriPath]) : [];
+    const uri = uriPathArr.map((u) => new URL(u));
 
-    //console.debug({ uri, tokenURI, protocol: uri?.protocol })
-    //If HTTP(S)
-    const isHttpURI = uri?.protocol === 'http:' || uri?.protocol === 'https:';
-    const httpURI = isHttpURI ? uriPath : undefined;
-    const [httpContent] = useHttpGet(httpURI);
+    const uriIPFS = uri.filter((u) => u.protocol === "ipfs:").map((u) => u.toString().replace("ipfs://", ""));
+    const uriHTTP = uri
+        .filter((u) => u.protocol === "http:" || u.protocol === "https:")
+        .map((u) => u.toString().replace("ipfs://", ""));
 
-    const content = ipfsContent ?? httpContent;
-    return [content, { contentId }];
+    const [contentIPFS] = useIpfs(uriIPFS);
+    const [contentHTTP] = useHttpGet(uriHTTP);
+    return [[...contentIPFS, ...contentHTTP]];
 };

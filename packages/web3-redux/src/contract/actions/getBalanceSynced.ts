@@ -1,9 +1,9 @@
-import { getBalanceAction as getBalanceAction2 } from './getBalance.js';
+import { getBalanceAction as getBalanceAction2 } from "./getBalance.js";
 
-import { GenericSync, createSyncForActions } from '../../sync/model/index.js';
-import { ContractId } from '../model/interface.js';
-import ContractCRUD from '../crud.js';
-import SyncCRUD from '../../sync/crud.js';
+import { GenericSync, createSyncForActions } from "../../sync/model/index.js";
+import { ContractId } from "../model/interface.js";
+import { ContractCRUD } from "../crud.js";
+import { SyncCRUD } from "../../sync/crud.js";
 
 /** @internal */
 export interface GetBalanceSyncedActionInput extends ContractId {
@@ -17,7 +17,7 @@ export const getBalanceSynced = (payload: GetBalanceSyncedActionInput) => {
     const { networkId } = payload;
     const address = payload.address.toLowerCase();
     const getBalanceAction = getBalanceAction2({ networkId, address });
-    const sync = createSyncForActions('', networkId, [getBalanceAction], payload.sync, address);
+    const sync = createSyncForActions("", networkId, [getBalanceAction], payload.sync, address);
     if (sync) sync.id = `${sync.type}-${ContractCRUD.validateId({ networkId, address })}-getBalance`;
     const syncAction = sync ? SyncCRUD.actions.upsert(sync) : undefined;
     return { getBalanceAction, syncAction };

@@ -1,13 +1,12 @@
-import type { HardhatRuntimeEnvironment } from 'hardhat/types';
-import ProxyFactory from '../../deploy/common/ProxyFactory.js';
-import { PRIVATE_KEY_0 } from '../../environment.js';
+import type { HardhatRuntimeEnvironment } from "hardhat/types";
+import { ProxyFactoryDeploy } from "../../deploy/common/ProxyFactory.js";
+import { PRIVATE_KEY_0 } from "../../environment.js";
 
 const deploy = async ({ ethers, network, deployments }: HardhatRuntimeEnvironment) => {
-    const wallet = new ethers.Wallet(PRIVATE_KEY_0, ethers.provider)
-    const { abi, bytecode, deployedBytecode, devdoc, solcInputHash, metadata, storageLayout } =
-        await deployments.getExtendedArtifact('ERC1167Factory');
+    const wallet = new ethers.Wallet(PRIVATE_KEY_0, ethers.provider);
+    const { abi } = await deployments.getExtendedArtifact("ERC1167Factory");
 
-    const cloneFactory = await ProxyFactory({
+    const cloneFactory = await ProxyFactoryDeploy({
         provider: ethers.provider,
         //Manual transaction signing requires private key
         signers: [wallet],
@@ -16,9 +15,9 @@ const deploy = async ({ ethers, network, deployments }: HardhatRuntimeEnvironmen
 
     //TODO: Add back additional artifact info for verification?
     const { save, getOrNull } = deployments;
-    const submission = await getOrNull(ProxyFactory.tags[0])
-    if (!submission?.numDeployments) {
-        await save(ProxyFactory.tags[0], {
+    const submission = await getOrNull(ProxyFactoryDeploy.tags[0]);
+    if (submission?.address != cloneFactory.address) {
+        await save(ProxyFactoryDeploy.tags[0], {
             address: cloneFactory.address,
             //args: [],
             abi,
@@ -36,6 +35,7 @@ const deploy = async ({ ethers, network, deployments }: HardhatRuntimeEnvironmen
     return cloneFactory;
 };
 
-deploy.tags = ProxyFactory.tags;
-deploy.dependencies = ProxyFactory.dependencies;
+deploy.tags = ProxyFactoryDeploy.tags;
+deploy.dependencies = ProxyFactoryDeploy.dependencies;
+// eslint-disable-next-line import/no-default-export
 export default deploy;

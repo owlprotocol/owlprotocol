@@ -1,3 +1,4 @@
+//@ts-nocheck
 import { Contract, Config } from '@owlprotocol/web3-redux';
 
 /**

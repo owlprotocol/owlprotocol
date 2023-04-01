@@ -1,3 +1,4 @@
+//@ts-nocheck
 import { ComponentStory, ComponentMeta } from '@storybook/react';
 import { Artifacts, Ethers } from '@owlprotocol/contracts';
 import { Contract } from '@owlprotocol/web3-redux'

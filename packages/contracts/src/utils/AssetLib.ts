@@ -27,7 +27,17 @@ export interface AssetBasketInput {
     erc1155Burned?: AssetERC1155[];
 }
 
-export function validateAssetBasketInput({ burnAddress, erc20Unaffected, erc20Burned, erc721Unaffected, erc721Burned, erc721NTime, erc721NTimeMax, erc1155Unaffected, erc1155Burned }: AssetBasketInput) {
+export function validateAssetBasketInput({
+    burnAddress,
+    erc20Unaffected,
+    erc20Burned,
+    erc721Unaffected,
+    erc721Burned,
+    erc721NTime,
+    erc721NTimeMax,
+    erc1155Unaffected,
+    erc1155Burned,
+}: AssetBasketInput) {
     //TODO: Validate erc721NTime.length == erc721NTimeMax.length
     return {
         burnAddress,
@@ -38,8 +48,8 @@ export function validateAssetBasketInput({ burnAddress, erc20Unaffected, erc20Bu
         erc721NTime: erc721NTime ?? [],
         erc721NTimeMax: erc721NTimeMax ?? [],
         erc1155Unaffected: erc1155Unaffected ?? [],
-        erc1155Burned: erc1155Burned ?? []
-    }
+        erc1155Burned: erc1155Burned ?? [],
+    };
 }
 
 export interface AssetBasketOutput {
@@ -49,11 +59,16 @@ export interface AssetBasketOutput {
     erc1155Mint?: AssetERC1155[];
 }
 
-export function validateAssetBasketOutput({ outputableAmount, erc20Mint, erc721MintAutoId, erc1155Mint }: AssetBasketOutput) {
+export function validateAssetBasketOutput({
+    outputableAmount,
+    erc20Mint,
+    erc721MintAutoId,
+    erc1155Mint,
+}: AssetBasketOutput) {
     return {
         outputableAmount,
         erc20Mint: erc20Mint ?? [],
         erc721MintAutoId: erc721MintAutoId ?? [],
-        erc1155Mint: erc1155Mint ?? []
-    }
+        erc1155Mint: erc1155Mint ?? [],
+    };
 }

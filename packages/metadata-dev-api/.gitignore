@@ -56,3 +56,4 @@ logs
 .datastore_fs
 .datastore_level
 .datastore_s3
+data/

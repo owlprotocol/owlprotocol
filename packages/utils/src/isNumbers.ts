@@ -1,3 +1,3 @@
-export function isNumbers(array: number[] | any[]): array is number[] {
-    return array.length > 0 && typeof array[0] === 'number';
+export function isNumbers(array: any): array is number[] {
+    return Array.isArray(array) && typeof array[0] === 'number';
 }

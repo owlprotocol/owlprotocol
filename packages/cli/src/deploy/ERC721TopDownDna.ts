@@ -18,7 +18,7 @@ const { map, mapValues, zip, values, omit, pick, zipObject } = _;
  * @param network
  * @param nftItem
  * @param owlProject - from the owlproject.json
- * @param collMetadata - Schema JSON from IPFS
+ * @param collMetadata - JSON Schema from IPFS
  * @param contracts
  * @param factories - pre-initialized factories, this function cannot be called without these ready
  * @param nonce

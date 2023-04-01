@@ -1,14 +1,16 @@
-import { put, call, all } from 'typed-redux-saga';
-import { compact, flatten, isMatch, reduce } from 'lodash-es';
-import { actionDecode, EventSync } from '../model/index.js';
-import { SyncCRUD } from '../crud.js';
-import type { ContractEventCRUD } from '../../contractevent/crud.js';
+import { put, call, all } from "typed-redux-saga";
+import { compact, flatten, isMatch, reduce } from "lodash-es";
+import { actionDecode, EventSync } from "../model/index.js";
+import { SyncCRUD } from "../crud.js";
+import type { EthLogCRUD } from "../../ethmodels/ethlog/crud.js";
 
 //Handle on event update
-export function* eventSync({ payload }: ReturnType<typeof ContractEventCRUD.actions.create>) {
+export function* eventSync({ payload }: ReturnType<typeof EthLogCRUD.actions.create>) {
     if (!payload.returnValues) return;
 
-    const syncs = (yield* call(SyncCRUD.db.where, { type: 'Event' })) as EventSync[];
+    const syncs = (yield* call(SyncCRUD.db.where, {
+        type: "Event",
+    })) as EventSync[];
 
     const actions = compact(
         syncs
@@ -16,7 +18,7 @@ export function* eventSync({ payload }: ReturnType<typeof ContractEventCRUD.acti
                 (s) =>
                     s.networkId === payload.networkId &&
                     s.matchAddress === payload.address &&
-                    s.matchName === payload.name,
+                    s.matchName === payload.eventFormatFull,
             )
             .map((s) => {
                 //Event matches name

@@ -40,5 +40,3 @@ export function combinationAll(arr: any[]) {
 
     return result;
 }
-
-export default combination;

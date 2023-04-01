@@ -587,8 +587,6 @@ export class NFTGenerativeCollectionClass<
     attributesToAttributesFormatted(attributes: { [K in keyof Traits]: AttributeValue }): {
         [K in keyof Traits]: AttributeFormatted;
     } {
-        // console.debug(attributes);
-
         const topsort = new TopologicalSort<string, string>(new Map());
         Object.values(this.traits).forEach((t) => {
             topsort.addNode(t.name, t.name);
@@ -599,17 +597,12 @@ export class NFTGenerativeCollectionClass<
                 topsort.addEdge(d, t.name);
             });
         });
-        const sorted = [...topsort.sort().keys()];
-        // console.debug(sorted);
+        const sorted = [...topsort.sort().keys()].reverse();
 
-        //console.debug(traits.map((t) => t.name));
         const attributesFormatted: Record<string, any> = {};
-
-        // console.debug(this.traits);
 
         sorted.forEach((name) => {
             const t = this.traits[name];
-            //console.debug({ attributes, attributesFormatted, name: t.name });
             attributesFormatted[t.name] = t.format(attributes[t.name], attributesFormatted);
         });
 

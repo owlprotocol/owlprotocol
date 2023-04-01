@@ -1,5 +1,5 @@
-import { Axios } from 'axios';
-import type { IPFS } from 'ipfs-core-types';
+import { Axios } from "axios";
+import type { IPFS } from "ipfs-core-types";
 
 export interface ConfigId {
     /* Id in store. Default is 0. */
@@ -38,6 +38,4 @@ export interface ConfigWithObjects extends Config {
     readonly httpClient?: Axios;
 }
 
-export const ConfigIndex = 'id';
-
-export default Config;
+export const ConfigIndex = "id";

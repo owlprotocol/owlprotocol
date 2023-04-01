@@ -1,4 +1,4 @@
-Contracts for implementation of Beacon-Proxy infrastructure for upgradeable contract deployment. See [a relative link](../../../../OWLArchitecture.drawio)
+Contracts for implementation of Beacon-Proxy infrastructure for upgradeable contract deployment. See [a relative link](../OWLArchitecture.drawio)
 
 ### 3 Deployment Strategies
 * Static Regular: Regular deployment that triggers initializer

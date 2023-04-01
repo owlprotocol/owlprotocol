@@ -1,12 +1,14 @@
-import { put, call, all } from 'typed-redux-saga';
-import { Action } from 'redux';
-import { actionDecode, BlockSync } from '../model/index.js';
-import { SyncCRUD } from '../crud.js';
-import type { BlockCRUD } from '../../block/crud.js';
+import { put, call, all } from "typed-redux-saga";
+import { Action } from "redux";
+import { actionDecode, BlockSync } from "../model/index.js";
+import { SyncCRUD } from "../crud.js";
+import type { BlockCRUD } from "../../ethmodels/ethblock/crud.js";
 
 //Handle on block update
 export function* blockSync({ payload }: ReturnType<typeof BlockCRUD.actions.create | typeof BlockCRUD.actions.update>) {
-    const syncs = (yield* call(SyncCRUD.db.where, { type: 'Block' })) as BlockSync[];
+    const syncs = (yield* call(SyncCRUD.db.where, {
+        type: "Block",
+    })) as BlockSync[];
 
     const actions: Action[] = []; //triggered actions
 

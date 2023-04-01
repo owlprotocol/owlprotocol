@@ -1,8 +1,7 @@
-import { IndexableType, IndexableTypeArrayReadonly } from 'dexie';
-import { omitBy, isUndefined, mapValues } from 'lodash-es';
+import { IndexableType, IndexableTypeArrayReadonly, IndexableTypePart } from "dexie";
+import { omitBy, isUndefined } from "lodash-es";
 
-import { toReduxOrmId } from '../utils/index.js';
-import { T_Encoded_Base } from './model.js';
+import { toReduxOrmId } from "../utils/index.js";
 
 /**
  *
@@ -18,50 +17,47 @@ import { T_Encoded_Base } from './model.js';
  */
 export function createCRUDValidators<
     T_ID extends Record<string, any> = Record<string, any>,
-    T_Encoded extends (T_ID & T_Encoded_Base) = T_ID & T_Encoded_Base,
-    T extends T_Encoded = T_Encoded,
->(
-    validators?: {
-        validateId?: (id: T_ID) => T_ID;
-        validate?: (item: T) => T;
-        hydrate?: (item: T, sess: any) => T;
-        encode?: (item: T) => T_Encoded;
-        toPrimaryKey?: (id: T_ID) => IndexableType;
-    },
-) {
+    T_Encoded extends T_ID = T_ID,
+    T_Partial = T_Encoded,
+    T_Redux = T_Encoded,
+>(validators?: {
+    validateId?: (id: T_ID) => T_ID;
+    validate?: (item: T_Partial) => T_Encoded;
+    preWriteBulkDB?: (item: T_Encoded[]) => Promise<T_Encoded[]>;
+    postWriteBulkDB?: (item: T_Encoded[]) => Promise<any>;
+    validateWithRedux?: (item: T_Encoded | T_Redux, sess: any) => T_Redux;
+    encode?: (item: T_Redux) => T_Encoded;
+    toPrimaryKey?: (id: T_ID) => IndexableTypeArrayReadonly;
+}) {
     const validateId = validators?.validateId ?? ((id: T_ID) => omitBy(id, isUndefined) as T_ID);
-    const validate = validators?.validate ?? ((item: T) => omitBy(item, isUndefined) as T);
-    const hydrate = validators?.hydrate ?? ((item: T, _: any) => omitBy(item, isUndefined) as T);
-    const encode = validators?.encode ?? ((item: T) => omitBy(item, isUndefined) as T_Encoded);
-    const toPrimaryKeyInternal =
-        validators?.toPrimaryKey ??
-        ((id: T_ID) => {
-            const values = Object.values(id) as IndexableTypeArrayReadonly;
-            if (values.length == 1) return values[0];
-            return values;
-        });
-    const toPrimaryKey = ((id: T_ID) => {
-        return toPrimaryKeyInternal(validateId(id))
-    });
+    const validate = validators?.validate ?? ((item: T_Partial) => omitBy(item as any, isUndefined) as T_Encoded);
+    const preWriteBulkDB = validators?.preWriteBulkDB ?? ((items: T_Encoded[]) => Promise.resolve(items));
+    const postWriteBulkDB = validators?.postWriteBulkDB ?? (() => Promise.resolve());
+    const validateWithRedux =
+        validators?.validateWithRedux ?? ((item: T_Encoded | T_Redux) => omitBy(item as any, isUndefined) as T_Redux);
+    const encode = validators?.encode ?? ((item: T_Redux) => omitBy(item as any, isUndefined) as T_Encoded);
+
+    const toPrimaryKeyInternal = function (id: T_ID): IndexableType {
+        const toPrimaryKey = validators?.toPrimaryKey ?? Object.values;
+        const values = toPrimaryKey(id) as IndexableTypeArrayReadonly;
+        if (Array.isArray(values) && values.length == 1) return values[0] as IndexableTypePart;
+        return values as IndexableTypeArrayReadonly;
+    };
+    const toPrimaryKey = (id: T_ID) => {
+        return toPrimaryKeyInternal(validateId(id));
+    };
 
     const toPrimaryKeyString = (id: T_ID | string): string =>
-        typeof id === 'string' ? id : toReduxOrmId(toPrimaryKey(id));
-
-    //TODO: Deep-compare
-    const diff = (prevValue: T_Encoded | undefined, newValue: T_Encoded | undefined): Partial<T_Encoded> => {
-        if (!prevValue) return newValue ?? {}
-        if (!newValue) return {}
-
-        return omitBy(newValue, (v, k) => prevValue[k] === v) as Partial<T_Encoded>
-    }
+        typeof id === "string" ? id : toReduxOrmId(toPrimaryKey(id));
 
     return {
         validateId,
         validate,
-        hydrate,
+        preWriteBulkDB,
+        postWriteBulkDB,
+        validateWithRedux,
         encode,
         toPrimaryKey,
         toPrimaryKeyString,
-        diff
-    }
+    };
 }

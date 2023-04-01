@@ -3,36 +3,34 @@
     "tokenSymbol": "InnoVot",
     "tokenIdStart": 3,
     "cfg": {
-      "ipfsEndpoint": "https://leovigna.mypinata.cloud",
-      "ipfsPath": "ipfs",
-      "apiEndpoint": "https://metadata.owlprotocol.xyz",
-      "apiPath": "metadata/getMetadata",
-      "schemaJsonIpfs": "Qmc3BeMHKHNwX6tPxBBQ2SEE6uLJuC16AEuhujDrstbTNG"
+      "jsonSchemaIpfs": "Qmc3BeMHKHNwX6tPxBBQ2SEE6uLJuC16AEuhujDrstbTNG",
+      "jsonSchemaEndpoint": "https://leovigna.mypinata.cloud/ipfs",
+      "sdkApiEndpoint": "https://metadata.owlprotocol.xyz/metadata/getMetadata"
     }
   },
   "children": {
     "Outfit": {
       "tokenIdStart": 3,
       "cfg": {
-        "schemaJsonIpfs": "QmYcSapx8LhuhrvNyAYyPWSCmkpN8mNVP1jLmwXitA4Vwg"
+        "jsonSchemaIpfs": "QmYcSapx8LhuhrvNyAYyPWSCmkpN8mNVP1jLmwXitA4Vwg"
       }
     },
     "Glasses": {
       "tokenIdStart": 3,
       "cfg": {
-        "schemaJsonIpfs": "QmQKbYbMzk1uLjZBQ2BNcw35WUGYoZrM5ALRCEJAWSoSvN"
+        "jsonSchemaIpfs": "QmQKbYbMzk1uLjZBQ2BNcw35WUGYoZrM5ALRCEJAWSoSvN"
       }
     },
     "Hat": {
       "tokenIdStart": 3,
       "cfg": {
-        "schemaJsonIpfs": "QmQFawTA7T8MQZETkUSrofVg7ZUbw9DFkXfuicuKrCDJxR"
+        "jsonSchemaIpfs": "QmQFawTA7T8MQZETkUSrofVg7ZUbw9DFkXfuicuKrCDJxR"
       }
     },
     "Facial Hair": {
       "tokenIdStart": 3,
       "cfg": {
-        "schemaJsonIpfs": "QmPfuiWXug5KuncBcr9HvuP5JcTvFQ623dZtv6QF3D2i3a"
+        "jsonSchemaIpfs": "QmPfuiWXug5KuncBcr9HvuP5JcTvFQ623dZtv6QF3D2i3a"
       }
     }
   }

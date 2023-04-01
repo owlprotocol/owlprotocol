@@ -39,9 +39,9 @@ HD_WALLET_MNEMONIC="second supreme disorder tunnel pizza candy lamp elbow specia
 
 *For example / reference only:*
 
-#### GenerateSchemaJSON
+#### GenerateJsonSchema
 
-`node dist/index.cjs generateSchemaJSON collections.js --project=projects/example-omo`
+`node dist/index.cjs generateJsonSchema collections.js --project=projects/example-omo`
 
 #### GenerateRandomNFT
 

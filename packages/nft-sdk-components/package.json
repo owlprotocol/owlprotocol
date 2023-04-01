@@ -22,7 +22,7 @@
   "scripts": {
     "build": "vite build",
     "build:watch": "vite build --watch",
-    "storybook": "start-storybook -p 6007",
+    "storybook": "start-storybook -p 6008 --no-open",
     "build-storybook": "cross-env NODE_OPTIONS='--max-old-space-size=4096' build-storybook",
     "lint": "eslint .",
     "lint:fix": "eslint . --fix",
@@ -34,6 +34,7 @@
     "@emotion/styled": "^11",
     "@owlprotocol/nft-sdk": "workspace:*",
     "@owlprotocol/template-data": "workspace:*",
+    "@owlprotocol/owl-theme": "workspace:*",
     "framer-motion": "^6.0.0",
     "lodash-es": "4.17.21",
     "react": "^17.0.2",

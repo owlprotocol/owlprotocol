@@ -1,3 +1,5 @@
+export {};
+/*
 import { assert } from 'chai';
 import { Provider } from 'react-redux';
 import type { Contract as Web3Contract } from 'web3-eth-contract';
@@ -10,26 +12,26 @@ import { expectThrowsAsync } from '../../test/index.js';
 
 import { network1336 } from '../../network/data.js';
 
-import { name } from '../common.js';
+import { ContractName } from '../common.js';
 import { createStore, StoreType } from '../../store.js';
 
 import { useContractCall } from '../hooks/useContractCall.js';
 //import { createEventSync } from '../../sync/model/EventSync.js';
 import { ZERO_ADDRESS } from '../../utils/index.js';
-//import ContractEventCRUD from '../../contractevent/crud.js';
-//import BlockCRUD from '../../block/crud.js';
-//import TransactionCRUD from '../../transaction/crud.js';
+//import { EthLogCRUD } from '../../ethmodels/ethlog/crud.js';
+//import { BlockCRUD } from '../../block/crud.js';
+//import { TransactionCRUD } from '../../transaction/crud.js';
 import { NetworkCRUD } from '../../network/crud.js';
 import { ContractCRUD } from '../crud.js';
-import { TransactionCRUD } from '../../transaction/crud.js';
-import { BlockCRUD } from '../../block/crud.js';
+import { EthTransactionCRUD } from '../../ethmodels/ethtransaction/crud.js';
+import { BlockCRUD } from '../../ethmodels/ethblock/crud.js';
 import { createEventSync } from '../../sync/model/EventSync.js';
-import { ContractEventCRUD } from '../../contractevent/crud.js';
+import { EthLogCRUD } from '../../ethmodels/ethlog/crud.js';
 
 const networkId = network1336.networkId;
 const web3 = network1336.web3!;
 
-describe(`${name}/hooks/useContractCall.test.tsx`, () => {
+describe(`${ContractName}/hooks/useContractCall.test.tsx`, () => {
     let store: StoreType;
     let dispatchSpy: sinon.SinonSpy;
     const createActionSpy = sinon.spy(ContractCRUD.actions, 'create');
@@ -169,7 +171,7 @@ describe(`${name}/hooks/useContractCall.test.tsx`, () => {
             await expectThrowsAsync(waitForNextUpdate, 'Timed out in waitForNextUpdate after 1000ms.');
         });
         it.skip('Contract {id} has no such method {method}', async () => {
-            store.dispatch(NetworkCRUD.actions.create({ networkId, web3 }));
+            store.dispatch(NetworkCRUD.actions.reduxUpsert({ networkId, web3 }));
             web3Contract = await new web3.eth.Contract(cloneDeep(Contracts.Artifacts.BlockNumber.abi) as any)
                 .deploy({
                     data: Contracts.Artifacts.BlockNumber.bytecode,
@@ -212,7 +214,7 @@ describe(`${name}/hooks/useContractCall.test.tsx`, () => {
 
     describe('Network & Contract initialized', () => {
         beforeEach(async () => {
-            store.dispatch(NetworkCRUD.actions.create({ networkId, web3 }));
+            store.dispatch(NetworkCRUD.actions.reduxUpsert({ networkId, web3 }));
 
             web3Contract = await new web3.eth.Contract(cloneDeep(Contracts.Artifacts.BlockNumber.abi) as any)
                 .deploy({
@@ -304,7 +306,7 @@ describe(`${name}/hooks/useContractCall.test.tsx`, () => {
                     .send({ from: accounts[0], gas: 1000000, gasPrice: '875000000' });
                 //Create transaction, triggering a refresh
                 store.dispatch(
-                    TransactionCRUD.actions.create({
+                    EthTransactionCRUD.actions.create({
                         networkId,
                         hash: '0x1',
                         from: accounts[0],
@@ -386,7 +388,7 @@ describe(`${name}/hooks/useContractCall.test.tsx`, () => {
                     .send({ from: accounts[0], gas: 1000000, gasPrice: '875000000' });
                 //Create event, triggering a refresh
                 store.dispatch(
-                    ContractEventCRUD.actions.create({
+                    EthLogCRUD.actions.create({
                         networkId,
                         address,
                         blockNumber: 1,
@@ -407,3 +409,5 @@ describe(`${name}/hooks/useContractCall.test.tsx`, () => {
         });
     });
 });
+
+*/

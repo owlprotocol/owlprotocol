@@ -1,23 +1,21 @@
-import { Contract } from '../model/index.js';
-import { ContractCRUD } from '../crud.js';
+import { flatten } from "lodash-es";
+import { ContractCRUD } from "../crud.js";
+import { Contract, ContractId, ContractIndexInput, ContractIndexInputAnyOf } from "../model/interface.js";
 
-/**
- * Creates a contract/EOA if it doesn't exist.
- * @category Hooks
- *
- */
-export function useContract(
-    networkId: string | undefined,
-    address: string | undefined,
-    defaultContract?: Partial<Contract>,
-    maxCacheAge: number = Number.MAX_SAFE_INTEGER
-) {
-    return ContractCRUD.hooks.useFetch({ networkId, address }, defaultContract, maxCacheAge, true)
+export function useContract(id: Partial<ContractId> | undefined): [Contract | undefined, { isLoading: boolean }] {
+    const [result, loading] = ContractCRUD.hooks.useGet(id);
+    return [result, loading];
 }
 
-/** @category Hooks */
-export function contractHookFactory(createData: Contract) {
-    return (networkId: string | undefined, address: string | undefined) => {
-        return useContract(networkId, address, createData);
-    };
+export function useContractWhere(filter: ContractIndexInput | undefined): [Contract[], { isLoading: boolean }] {
+    const [results, loading] = ContractCRUD.hooks.useWhere(filter);
+    return [results, loading];
+}
+
+export function useContractWhereAnyOf(
+    filter: ContractIndexInputAnyOf | undefined,
+): [Contract[], { isLoading: boolean }] {
+    const [resultsNested, loading] = ContractCRUD.hooks.useWhereAnyOf(filter);
+    const results = flatten(resultsNested);
+    return [results, loading];
 }

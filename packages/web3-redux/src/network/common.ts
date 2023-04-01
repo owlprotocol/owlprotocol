@@ -1,1 +1,1 @@
-export const name = 'Network';
+export const NetworkName = "Network";

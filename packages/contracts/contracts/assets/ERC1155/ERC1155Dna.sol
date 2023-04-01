@@ -1,16 +1,16 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.9;
 
-import {IERC1155Upgradeable} from '@openzeppelin/contracts-upgradeable/token/ERC1155/IERC1155Upgradeable.sol';
-import {IERC165Upgradeable} from '@openzeppelin/contracts-upgradeable/utils/introspection/IERC165Upgradeable.sol';
+import {IERC1155Upgradeable} from "@openzeppelin/contracts-upgradeable/token/ERC1155/IERC1155Upgradeable.sol";
+import {IERC165Upgradeable} from "@openzeppelin/contracts-upgradeable/utils/introspection/IERC165Upgradeable.sol";
 
-import {CountersUpgradeable} from '@openzeppelin/contracts-upgradeable/utils/CountersUpgradeable.sol';
-import {AddressUpgradeable} from '@openzeppelin/contracts-upgradeable/utils/AddressUpgradeable.sol';
-import {Base64UrlUpgradeable} from '../../utils/Base64UrlUpgradeable.sol';
-import {EnumerableSetUpgradeable} from '@openzeppelin/contracts-upgradeable/utils/structs/EnumerableSetUpgradeable.sol';
+import {CountersUpgradeable} from "@openzeppelin/contracts-upgradeable/utils/CountersUpgradeable.sol";
+import {AddressUpgradeable} from "@openzeppelin/contracts-upgradeable/utils/AddressUpgradeable.sol";
+import {Base64UrlUpgradeable} from "../../utils/Base64UrlUpgradeable.sol";
+import {EnumerableSetUpgradeable} from "@openzeppelin/contracts-upgradeable/utils/structs/EnumerableSetUpgradeable.sol";
 
-import {ERC1155Mintable} from './ERC1155Mintable.sol';
-import {IERC1155Dna} from './IERC1155Dna.sol';
+import {ERC1155Mintable} from "./ERC1155Mintable.sol";
+import {IERC1155Dna} from "./IERC1155Dna.sol";
 
 /**
  * @dev ERC1155DNA
@@ -21,7 +21,7 @@ contract ERC1155Dna is ERC1155Mintable, IERC1155Dna {
     using CountersUpgradeable for CountersUpgradeable.Counter;
     using EnumerableSetUpgradeable for EnumerableSetUpgradeable.AddressSet;
 
-    bytes32 internal constant DNA_ROLE = keccak256('DNA_ROLE');
+    bytes32 internal constant DNA_ROLE = keccak256("DNA_ROLE");
 
     // tokenId => dna
     mapping(uint256 => bytes) internal inherentDna;
@@ -48,17 +48,6 @@ contract ERC1155Dna is ERC1155Mintable, IERC1155Dna {
         address _feeReceiver,
         uint96 _feeNumerator
     ) external override initializer {
-        __ERC1155Dna_init(_admin, _initContractURI, _gsnForwarder, _uri, _feeReceiver, _feeNumerator);
-    }
-
-    function proxyInitialize(
-        address _admin,
-        string calldata _initContractURI,
-        address _gsnForwarder,
-        string calldata _uri,
-        address _feeReceiver,
-        uint96 _feeNumerator
-    ) external override onlyInitializing {
         __ERC1155Dna_init(_admin, _initContractURI, _gsnForwarder, _uri, _feeReceiver, _feeNumerator);
     }
 

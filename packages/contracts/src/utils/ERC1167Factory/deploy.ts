@@ -1,24 +1,24 @@
 /**
  * Typescript implementation of ERC1167 library pure functions
  */
-import { Contract, constants, Overrides } from 'ethers';
-import type { ContractReceipt, BaseContract, Signer } from 'ethers';
-import { FormatTypes } from '@ethersproject/abi';
+import { Contract, constants, Overrides } from "ethers";
+import type { ContractReceipt, BaseContract, Signer } from "ethers";
+import { FormatTypes } from "@ethersproject/abi";
 
-import { ERC1167Factory } from '../../ethers/types.js';
 import {
     cloneDeterministicAddress,
     CloneDeterministicAddressArgs,
     deployDeterministicAddress,
     DeployDeterministicAddressArgs,
-} from './getAddress.js';
-import { getInitData } from './getInitData.js';
-import { DEFAULT_SALT } from './getSalt.js';
+} from "./getAddress.js";
+import { getInitData } from "./getInitData.js";
+import { DEFAULT_SALT } from "./getSalt.js";
+import { ERC1167Factory } from "../../ethers/types.js";
 
 export interface DeployDeterministicInput<
     ContractTyped extends BaseContract = BaseContract,
     InitSignature extends keyof ContractTyped | void = void,
-> extends Omit<DeployDeterministicAddressArgs<ContractTyped, InitSignature>, 'cloneFactoryAddress'> {
+> extends Omit<DeployDeterministicAddressArgs<ContractTyped, InitSignature>, "cloneFactoryAddress"> {
     cloneFactory: ERC1167Factory;
 }
 
@@ -43,7 +43,7 @@ export async function deployDeterministic<
     // Receipt data
     let receipt: ContractReceipt | undefined;
     // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-    if ((await signer.provider!.getCode(address)) == '0x') {
+    if ((await signer.provider!.getCode(address)) == "0x") {
         //@ts-expect-error
         const initData = getInitData<ContractTyped, InitSignature>(contractInterface, initOptions);
 
@@ -79,7 +79,7 @@ export async function deployDeterministic<
 export interface CloneDeterministicInput<
     ContractTyped extends BaseContract = BaseContract,
     InitSignature extends keyof ContractTyped | void = void,
-> extends Omit<CloneDeterministicAddressArgs<ContractTyped, InitSignature>, 'cloneFactoryAddress'> {
+> extends Omit<CloneDeterministicAddressArgs<ContractTyped, InitSignature>, "cloneFactoryAddress"> {
     cloneFactory: ERC1167Factory;
 }
 export async function cloneDeterministic<
@@ -103,7 +103,7 @@ export async function cloneDeterministic<
     // Receipt data
     let receipt;
     // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-    if ((await signer.provider!.getCode(address)) == '0x') {
+    if ((await signer.provider!.getCode(address)) == "0x") {
         //@ts-expect-error
         const initData = getInitData<ContractTyped, InitSignature>(contractInterface, initOptions);
 

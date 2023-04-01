@@ -3,29 +3,27 @@
  * @module Sync
  */
 
-import CRUDModel from './crud.js';
-import { rootSaga } from './sagas/index.js';
+import { SyncCRUD } from "./crud.js";
+import { syncSaga } from "./sagas/index.js";
 
 export const Sync = {
-    name: CRUDModel.name,
-    actionTypes: CRUDModel.actionTypes,
+    name: SyncCRUD.name,
+    actionTypes: SyncCRUD.actionTypes,
     actions: {
-        ...CRUDModel.actions,
+        ...SyncCRUD.actions,
     },
     sagas: {
-        ...CRUDModel.sagas,
-        rootSaga,
+        ...SyncCRUD.sagas,
+        rootSaga: syncSaga,
     },
     hooks: {
-        ...CRUDModel.hooks,
+        ...SyncCRUD.hooks,
     },
-    selectors: CRUDModel.selectors,
-    isAction: CRUDModel.isAction,
-    reducer: CRUDModel.reducer,
-    validate: CRUDModel.validate,
-    validateId: CRUDModel.validateId,
-    hydrate: CRUDModel.hydrate,
-    encode: CRUDModel.encode,
+    selectors: SyncCRUD.selectors,
+    isAction: SyncCRUD.isAction,
+    reducer: SyncCRUD.reducer,
+    validate: SyncCRUD.validate,
+    validateId: SyncCRUD.validateId,
+    validateWithRedux: SyncCRUD.validateWithRedux,
+    encode: SyncCRUD.encode,
 };
-
-export default Sync;

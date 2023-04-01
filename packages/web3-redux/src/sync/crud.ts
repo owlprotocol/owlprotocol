@@ -1,17 +1,21 @@
-import { BaseSyncId, Sync, SyncIndexInput, validate, validateId } from './model/index.js';
-import { name } from './common.js';
-import { createCRUDModel } from '@owlprotocol/crud-redux';
-import getDB, { Web3ReduxDexie } from '../db.js';
+import { createCRUDModel } from "@owlprotocol/crud-redux";
+import { BaseSyncId, Sync, SyncIndexInput, validate, validateId, toPrimaryKey } from "./model/index.js";
+import { SyncName } from "./common.js";
+import { getDB, Web3ReduxDexie } from "../db.js";
 
 export const SyncCRUD = createCRUDModel<
-    typeof name,
+    typeof SyncName,
     BaseSyncId,
     Sync,
-    Sync,
+    Web3ReduxDexie,
     SyncIndexInput,
-    Web3ReduxDexie
->(name, getDB, {
-    validateId,
-    validate
+    SyncIndexInput
+>({
+    name: SyncName,
+    getDB,
+    validators: {
+        validateId,
+        validate,
+        toPrimaryKey,
+    },
 });
-export default SyncCRUD;

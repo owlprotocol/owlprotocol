@@ -21,7 +21,8 @@ export interface NFTGenerativeTraitBase {
         | 'uint64'
         | 'uint96'
         | 'uint128'
-        | 'uint196'
+        | 'uint160'
+        | 'uint192'
         | 'uint256'
         | 'int8'
         | 'int16'
@@ -31,6 +32,7 @@ export interface NFTGenerativeTraitBase {
         | 'int64'
         | 'int96'
         | 'int128'
-        | 'int196'
+        | 'int160'
+        | 'int192'
         | 'int256';
 }

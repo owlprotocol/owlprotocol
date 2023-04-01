@@ -17,7 +17,9 @@ export interface AddressDropdownProps {
 
 export const AddressDropdown = ({
     address = [],
-    onChange = (address) => { console.debug(address) },
+    onChange = (address) => {
+        console.debug(address);
+    },
     placeholder = "Select address",
 }: AddressDropdownProps) => {
     const { themes } = useTheme();
@@ -41,11 +43,11 @@ export const AddressDropdown = ({
         <Box
             display={"flex"}
             alignItems={"center"}
-            bg={themes.color6}
+            bg={themes.color5}
             color={themes.color4}
             fontSize={"16px"}
             fontWeight={"bold"}
-            borderRadius={"8px"}
+            borderRadius={12}
             h={"52px"}
             p={"12px"}
         >

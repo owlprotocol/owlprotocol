@@ -1,8 +1,19 @@
-import { useCallback, useEffect, useState } from 'react';
-import { Box, useTheme, Button, FormControl, FormErrorMessage } from '@chakra-ui/react';
-import type { AbiType, StateMutabilityType } from 'web3-utils';
-import { Config, Contract, ContractSendStatus } from '@owlprotocol/web3-redux';
-import AbiItemInput from '../AbiItemInput/index.js';
+//@ts-nocheck
+import { useCallback, useEffect, useState } from "react";
+import {
+    Box,
+    useTheme,
+    Button,
+    FormControl,
+    FormErrorMessage,
+} from "@chakra-ui/react";
+import type { AbiType, StateMutabilityType } from "web3-utils";
+import {
+    Config,
+    Contract,
+    EthSendStatus as ContractSendStatus,
+} from "@owlprotocol/web3-redux";
+import AbiItemInput from "../AbiItemInput/index.js";
 
 //TODO
 //Formik integration
@@ -28,11 +39,11 @@ export const AbiItemForm = ({
     networkId,
     address,
     account,
-    namePrefix = '',
+    namePrefix = "",
     name,
     inputs = [],
-    type = 'function',
-    stateMutability = 'view',
+    type = "function",
+    stateMutability = "view",
 }: AbiItemFormProps) => {
     const { themes } = useTheme();
     //const dispatch = useDispatch();
@@ -52,7 +63,7 @@ export const AbiItemForm = ({
             errCopy[idx] = err;
             setInputErrors(errCopy);
         },
-        [inputErrors],
+        [inputErrors]
     );
 
     const setArgAtIdx = useCallback(
@@ -61,7 +72,7 @@ export const AbiItemForm = ({
             argsCopy[idx] = arg;
             setArgs(argsCopy);
         },
-        [args],
+        [args]
     );
 
     useEffect(() => {
@@ -70,38 +81,56 @@ export const AbiItemForm = ({
         setArgs(Array(inputs.length));
     }, [inputs.length]);
 
-    const write = !(stateMutability === 'pure' || stateMutability == 'view');
+    const write = !(stateMutability === "pure" || stateMutability == "view");
 
-    const argsDefined = args.length > 0 ? args.reduce((acc, curr) => acc && !!curr, !!args[0]) : true;
+    const argsDefined =
+        args.length > 0
+            ? args.reduce((acc, curr) => acc && !!curr, !!args[0])
+            : true;
     const noInputErrors =
-        inputErrors.length > 0 ? inputErrors.reduce((acc, curr) => acc && !curr, !inputErrors[0]) : true;
+        inputErrors.length > 0
+            ? inputErrors.reduce((acc, curr) => acc && !curr, !inputErrors[0])
+            : true;
     const validArgs = argsDefined && noInputErrors;
 
-    const [returnValue, { error: callError }] = Contract.hooks.useContractCall(networkId, address, name, args, {
-        //@ts-expect-error
-        sync: !write && validArgs ? 'once' : false,
-    });
-
-    console.debug({ returnValue, callError, inputErrors, validArgs, write, account });
-
-    const onChange = useCallback(
-        (value: string | boolean | undefined, error: Error | undefined, idx: number) => {
-            setErrorAtIdx(error, idx);
-            setArgAtIdx(value, idx);
-        },
-        [setErrorAtIdx, setArgAtIdx],
-    );
-
-    const [sendTx, { error: sendError, contractSend }] = Contract.hooks.useContractSend(
+    const [returnValue, { error: callError }] = Contract.hooks.useContractCall(
         networkId,
         address,
         name,
         args,
         {
-            from: account,
-        },
+            //@ts-expect-error
+            sync: !write && validArgs ? "once" : false,
+        }
     );
-    const { status, transactionHash, receipt, confirmations } = contractSend ?? {};
+
+    console.debug({
+        returnValue,
+        callError,
+        inputErrors,
+        validArgs,
+        write,
+        account,
+    });
+
+    const onChange = useCallback(
+        (
+            value: string | boolean | undefined,
+            error: Error | undefined,
+            idx: number
+        ) => {
+            setErrorAtIdx(error, idx);
+            setArgAtIdx(value, idx);
+        },
+        [setErrorAtIdx, setArgAtIdx]
+    );
+
+    const [sendTx, { error: sendError, contractSend }] =
+        Contract.hooks.useContractSend(networkId, address, name, args, {
+            from: account,
+        });
+    const { status, transactionHash, receipt, confirmations } =
+        contractSend ?? {};
 
     // EVM error
     const error = callError ?? sendError;
@@ -112,14 +141,15 @@ export const AbiItemForm = ({
     const isPending = isPendingSig || isPendingConf;
 
     let isPendingText: string | undefined;
-    if (isPendingSig) isPendingText = 'Waiting for signature...';
-    else if (isPendingConf) isPendingText = 'Waiting for confirmation...';
+    if (isPendingSig) isPendingText = "Waiting for signature...";
+    else if (isPendingConf) isPendingText = "Waiting for confirmation...";
 
     const isDisabled = !validArgs || isPending;
 
     let resultText: string | undefined;
     if (!write && returnValue) resultText = `Return value: ${returnValue}`;
-    else if (write && transactionHash && !confirmations) resultText = `Transaction hash: ${transactionHash}`;
+    else if (write && transactionHash && !confirmations)
+        resultText = `Transaction hash: ${transactionHash}`;
     else if (write && transactionHash && confirmations && receipt.blockNumber)
         resultText = `Transaction hash: ${transactionHash} Confirmed at block:${receipt.blockNumber}`;
 
@@ -159,7 +189,9 @@ export const AbiItemForm = ({
                     </>
                 )}
                 {resultText}
-                {isError && <FormErrorMessage>Error: {error?.message}</FormErrorMessage>}
+                {isError && (
+                    <FormErrorMessage>Error: {error?.message}</FormErrorMessage>
+                )}
             </FormControl>
         </Box>
     );

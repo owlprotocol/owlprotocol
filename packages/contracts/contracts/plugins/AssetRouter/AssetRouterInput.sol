@@ -1,16 +1,16 @@
 //SPDX-License-Identifier: MIT
 pragma solidity ^0.8.0;
 
-import {IERC721ReceiverUpgradeable} from '@openzeppelin/contracts-upgradeable/token/ERC721/IERC721ReceiverUpgradeable.sol';
-import {IERC1155ReceiverUpgradeable} from '@openzeppelin/contracts-upgradeable/token/ERC1155/IERC1155ReceiverUpgradeable.sol';
+import {IERC721ReceiverUpgradeable} from "@openzeppelin/contracts-upgradeable/token/ERC721/IERC721ReceiverUpgradeable.sol";
+import {IERC1155ReceiverUpgradeable} from "@openzeppelin/contracts-upgradeable/token/ERC1155/IERC1155ReceiverUpgradeable.sol";
 
-import {AddressUpgradeable} from '@openzeppelin/contracts-upgradeable/utils/AddressUpgradeable.sol';
+import {AddressUpgradeable} from "@openzeppelin/contracts-upgradeable/utils/AddressUpgradeable.sol";
 
-import {OwlBase} from '../../common/OwlBase.sol';
+import {OwlBase} from "../../common/OwlBase.sol";
 
-import {AssetBasketInput, AssetInputLib} from './AssetInputLib.sol';
-import {IAssetRouterInput} from './IAssetRouterInput.sol';
-import {IAssetRouterOutput} from './IAssetRouterOutput.sol';
+import {AssetBasketInput, AssetInputLib} from "./AssetInputLib.sol";
+import {IAssetRouterInput} from "./IAssetRouterInput.sol";
+import {IAssetRouterOutput} from "./IAssetRouterOutput.sol";
 
 /**
  * @dev Abstract contract with types and utilities that will be used by many (if
@@ -42,18 +42,6 @@ contract AssetRouterInput is OwlBase, IAssetRouterInput, IERC721ReceiverUpgradea
         address _gsnForwarder,
         AssetBasketInput[] calldata _inputBaskets
     ) external initializer {
-        __AssetRouterInput_init(_admin, _initContractURI, _gsnForwarder, _inputBaskets);
-    }
-
-    /**
-     * @dev See initialize. Uses onlyInitializing modifier, enabling running while initializing.
-     */
-    function proxyInitialize(
-        address _admin,
-        string memory _initContractURI,
-        address _gsnForwarder,
-        AssetBasketInput[] calldata _inputBaskets
-    ) external onlyInitializing {
         __AssetRouterInput_init(_admin, _initContractURI, _gsnForwarder, _inputBaskets);
     }
 
@@ -158,11 +146,11 @@ contract AssetRouterInput is OwlBase, IAssetRouterInput, IERC721ReceiverUpgradea
     ) external override returns (bytes4) {
         //User deposit
         (
-        uint256 basketId,
-        uint256[][] memory erc721TokenIdsUnaffected,
-        uint256[][] memory erc721TokenIdsNTime,
-        address target,
-        uint256 outputBasketId
+            uint256 basketId,
+            uint256[][] memory erc721TokenIdsUnaffected,
+            uint256[][] memory erc721TokenIdsNTime,
+            address target,
+            uint256 outputBasketId
         ) = abi.decode(data, (uint256, uint256[][], uint256[][], address, uint256));
 
         //Burn tokenId hard code
@@ -201,13 +189,13 @@ contract AssetRouterInput is OwlBase, IAssetRouterInput, IERC721ReceiverUpgradea
     ) external returns (bytes4) {
         //User deposit
         (
-        uint256 basketId,
-        uint256 amount,
-        uint256[][] memory erc721TokenIdsUnaffected,
-        uint256[][] memory erc721TokenIdsNTime,
-        uint256[][] memory erc721TokenIdsBurned,
-        address target,
-        uint256 outputBasketId
+            uint256 basketId,
+            uint256 amount,
+            uint256[][] memory erc721TokenIdsUnaffected,
+            uint256[][] memory erc721TokenIdsNTime,
+            uint256[][] memory erc721TokenIdsBurned,
+            address target,
+            uint256 outputBasketId
         ) = abi.decode(data, (uint256, uint256, uint256[][], uint256[][], uint256[][], address, uint256));
 
         AssetBasketInput memory basket = inputBaskets[basketId];

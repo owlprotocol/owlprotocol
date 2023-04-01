@@ -1,21 +1,20 @@
 import { useTheme, Box, HStack, Image, Skeleton } from '@chakra-ui/react';
-import { Contract } from '@owlprotocol/web3-redux';
-import { memo } from 'react';
+import { ERC1155 } from '@owlprotocol/web3-redux';
 import { Token } from '../../../interfaces/Token.js';
 import NetworkIcon from '../../NetworkIcon/index.js';
 
 export interface ERC1155InstanceProps {
-    networkId: string | undefined;
-    address: string | undefined;
-    tokenId: string | undefined;
+    networkId: string;
+    address: string;
+    tokenId: string;
     isSelected?: boolean;
     onClick?: ({ networkId, address, tokenId }: Partial<Token>) => any;
 }
 
-const ERC1155Instance = memo(({ networkId, address, tokenId, isSelected, onClick }: ERC1155InstanceProps) => {
-    const { metadata } = Contract.hooks.useERC1155(networkId, address, undefined, tokenId, {
-        metadata: true,
-    });
+const ERC1155Instance = ({ networkId, address, tokenId, isSelected, onClick }: ERC1155InstanceProps) => {
+    const [token] = ERC1155.hooks.useERC1155({ networkId, address, id: tokenId });
+    const metadata = token?.metadata
+
     const name = metadata?.name;
     const imageSrc = metadata?.image;
     const onClickDefined = onClick ?? console.log;
@@ -88,7 +87,7 @@ const ERC1155Instance = memo(({ networkId, address, tokenId, isSelected, onClick
             </HStack>
         </Box>
     );
-});
+};
 
 ERC1155Instance.displayName = 'ERC1155Instance';
 export { ERC1155Instance };

@@ -1,7 +1,6 @@
-import { Config } from './config/model/interface.js';
-import { ContractWithObjects } from './contract/model/interface.js';
-import { ContractEventSubscribeWithObjects } from './contracteventsubscribe/model/interface.js';
-import { Network } from './network/model/index.js';
+import { Config } from "./config/model/interface.js";
+import { EthLogSubscribeWithObjects } from "./ethmodels/ethlogsubscribe/model/interface.js";
+import { Network } from "./network/model/index.js";
 
 export interface StateRoot {
     web3Redux: State;
@@ -12,26 +11,16 @@ export interface StateRoot {
  */
 export interface State {
     /** Redux ORM */
-    ['@@_______REDUX_ORM_STATE_FLAG']: boolean;
+    ["@@_______REDUX_ORM_STATE_FLAG"]: boolean;
     /** Singleton global config */
     Config: {
         items: [0];
         itemsById: { [0]: Config };
     };
-    /** Contracts indexed by id */
-    Contract: {
-        items: string[];
-        itemsById: { [id: string]: ContractWithObjects };
-        indexes: {
-            networkId: {
-                [networkId: string]: string[];
-            };
-        };
-    };
     /** Contracts event subscriptions indexed by id */
-    ContractEventSubscribe: {
+    EthLogSubscribe: {
         items: string[];
-        itemsById: { [id: string]: ContractEventSubscribeWithObjects };
+        itemsById: { [id: string]: EthLogSubscribeWithObjects };
     };
     /** Networks indexed by id */
     Network: {
@@ -39,5 +28,3 @@ export interface State {
         itemsById: { [networkId: string]: Network };
     };
 }
-
-export default State;

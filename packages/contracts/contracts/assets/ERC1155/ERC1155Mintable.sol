@@ -1,13 +1,13 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.4;
 
-import {AddressUpgradeable} from '@openzeppelin/contracts-upgradeable/utils/AddressUpgradeable.sol';
+import {AddressUpgradeable} from "@openzeppelin/contracts-upgradeable/utils/AddressUpgradeable.sol";
 
-import {ERC1155Base} from './ERC1155Base.sol';
-import {IERC1155Mintable} from './IERC1155Mintable.sol';
+import {ERC1155Base} from "./ERC1155Base.sol";
+import {IERC1155Mintable} from "./IERC1155Mintable.sol";
 
 contract ERC1155Mintable is ERC1155Base, IERC1155Mintable {
-    bytes32 private constant MINTER_ROLE = keccak256('MINTER_ROLE');
+    bytes32 private constant MINTER_ROLE = keccak256("MINTER_ROLE");
 
     //https://docs.openzeppelin.com/contracts/4.x/upgradeable#storage_gaps
     uint256[50] private __gap;
@@ -31,17 +31,6 @@ contract ERC1155Mintable is ERC1155Base, IERC1155Mintable {
         address _feeReceiver,
         uint96 _feeNumerator
     ) external virtual initializer {
-        __ERC1155Mintable_init(_admin, _initContractURI, _gsnForwarder, _uri, _feeReceiver, _feeNumerator);
-    }
-
-    function proxyInitialize(
-        address _admin,
-        string calldata _initContractURI,
-        address _gsnForwarder,
-        string calldata _uri,
-        address _feeReceiver,
-        uint96 _feeNumerator
-    ) external virtual onlyInitializing {
         __ERC1155Mintable_init(_admin, _initContractURI, _gsnForwarder, _uri, _feeReceiver, _feeNumerator);
     }
 
@@ -75,12 +64,7 @@ contract ERC1155Mintable is ERC1155Base, IERC1155Mintable {
     /**
      * @inheritdoc IERC1155Mintable
      */
-    function mint(
-        address to,
-        uint256 id,
-        uint256 amount,
-        bytes memory data
-    ) external onlyRole(MINTER_ROLE) {
+    function mint(address to, uint256 id, uint256 amount, bytes memory data) external onlyRole(MINTER_ROLE) {
         _mint(to, id, amount, data);
     }
 

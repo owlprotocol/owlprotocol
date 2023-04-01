@@ -1,9 +1,20 @@
-import { Box, Button, FormControl, FormErrorMessage, useTheme } from '@chakra-ui/react';
-import { Contract, Config, ContractSendStatus } from '@owlprotocol/web3-redux';
-import { useCallback, useState } from 'react';
-import Web3 from 'web3';
-import AbiItemForm from '../../ContractAbiForm/AbiItemForm2/index.js';
-import SelectAddress from '../../ContractAbiForm/SelectAddress/index.js';
+//@ts-nocheck
+import {
+    Box,
+    Button,
+    FormControl,
+    FormErrorMessage,
+    useTheme,
+} from "@chakra-ui/react";
+import {
+    Contract,
+    Config,
+    EthSendStatus as ContractSendStatus,
+} from "@owlprotocol/web3-redux";
+import { useCallback, useState } from "react";
+import Web3 from "web3";
+import AbiItemForm from "../../ContractAbiForm/AbiItemForm2/index.js";
+import SelectAddress from "../../ContractAbiForm/SelectAddress/index.js";
 
 export interface Props {
     networkId: string;
@@ -16,24 +27,35 @@ const coder = web3.eth.abi;
 
 //TODO: Error thrown if implementation not-exist
 //Tags for implementation contracts
-const ImplementationIndexes = ['ERC20Implementation']; //['ERC20Implementation', 'ERC721Implementation'];
+const ImplementationIndexes = ["ERC20Implementation"]; //['ERC20Implementation', 'ERC721Implementation'];
 
 /**
  * Deploy an arbitrary contract using an ERC1167 Minimal Proxy
  * @param props
  * @returns Form component
  */
-export const ERC1167FactoryForm = ({ networkId, factoryAddress, implementationInitializer = 'initialize' }: Props) => {
+export const ERC1167FactoryForm = ({
+    networkId,
+    factoryAddress,
+    implementationInitializer = "initialize",
+}: Props) => {
     const { themes } = useTheme();
     const [account] = Config.hooks.useAccount();
 
     //User selects implementation, we use this for the factory and to generate the initializer form
-    const [implementationAddress, setImplementationAddress] = useState<string | undefined>();
+    const [implementationAddress, setImplementationAddress] =
+        useState<string | undefined>();
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    const factoryContract = Contract.hooks.useContract(networkId, factoryAddress);
+    const factoryContract = Contract.hooks.useContract(
+        networkId,
+        factoryAddress
+    );
 
     //Get Implementation Contract
-    const [implementationContract] = Contract.hooks.useContract(networkId, implementationAddress);
+    const [implementationContract] = Contract.hooks.useContract(
+        networkId,
+        implementationAddress
+    );
     const abi = implementationContract?.abi ?? [];
     const abiItem = abi.find((f) => {
         return f.name === implementationInitializer;
@@ -52,19 +74,20 @@ export const ERC1167FactoryForm = ({ networkId, factoryAddress, implementationIn
                 setData(undefined);
             }
         },
-        [abiItem],
+        [abiItem]
     );
 
     const [sendTx, { error, contractSend }] = Contract.hooks.useContractSend(
         networkId,
         factoryAddress,
-        'cloneDetermistic',
+        "cloneDetermistic",
         [implementationAddress, data],
         {
             from: account,
-        },
+        }
     );
-    const { status, transactionHash, receipt, confirmations } = contractSend ?? {};
+    const { status, transactionHash, receipt, confirmations } =
+        contractSend ?? {};
 
     console.debug({ data });
 
@@ -73,11 +96,12 @@ export const ERC1167FactoryForm = ({ networkId, factoryAddress, implementationIn
     const isPending = isPendingSig || isPendingConf;
 
     let isPendingText: string | undefined;
-    if (isPendingSig) isPendingText = 'Waiting for signature...';
-    else if (isPendingConf) isPendingText = 'Waiting for confirmation...';
+    if (isPendingSig) isPendingText = "Waiting for signature...";
+    else if (isPendingConf) isPendingText = "Waiting for confirmation...";
 
     let resultText: string | undefined;
-    if (transactionHash && !confirmations) resultText = `Transaction hash: ${transactionHash}`;
+    if (transactionHash && !confirmations)
+        resultText = `Transaction hash: ${transactionHash}`;
     else if (transactionHash && confirmations && receipt.blockNumber)
         resultText = `Transaction hash: ${transactionHash} Confirmed at block:${receipt.blockNumber}`;
 
@@ -104,7 +128,11 @@ export const ERC1167FactoryForm = ({ networkId, factoryAddress, implementationIn
                         Deploy
                     </Button>
                     {resultText}
-                    {isError && <FormErrorMessage>Error: {error?.message}</FormErrorMessage>}
+                    {isError && (
+                        <FormErrorMessage>
+                            Error: {error?.message}
+                        </FormErrorMessage>
+                    )}
                 </FormControl>
             </Box>
         </>

@@ -22,7 +22,7 @@ import {
 import { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import { omit } from "lodash-es";
-import TableWrapper from "../../../theme/TableStyleOverrides";
+import { TableWrapper } from "@owlprotocol/owl-theme";
 
 interface NetworkCell extends NetworkData {
     edit?: boolean;

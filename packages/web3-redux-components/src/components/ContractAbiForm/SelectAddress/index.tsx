@@ -1,10 +1,10 @@
-import { useTheme, FormControl, FormErrorMessage } from '@chakra-ui/react';
-import { Select, CreatableSelect } from 'chakra-react-select';
-import { Contract } from '@owlprotocol/web3-redux';
-import { useForm, useController } from 'react-hook-form';
-import { intersection } from 'lodash-es';
-import Web3 from 'web3';
-import { useCallback, useState } from 'react';
+import { useTheme, FormControl, FormErrorMessage } from "@chakra-ui/react";
+import { Select, CreatableSelect } from "chakra-react-select";
+import { Contract } from "@owlprotocol/web3-redux";
+import { useForm, useController } from "react-hook-form";
+import { compact, flatten, intersection, uniq } from "lodash-es";
+import Web3 from "web3";
+import { useCallback, useState } from "react";
 
 const web3 = new Web3();
 const coder = web3.eth.abi;
@@ -13,34 +13,38 @@ const coder = web3.eth.abi;
 //https://codesandbox.io/s/chakra-react-select-react-hook-form-usecontroller-single-select-typescript-v3-3hvkm
 //https://github.com/csandman/chakra-react-select/tree/v3#react-hook-form
 export interface Props {
-    networkId: string | undefined;
+    networkId: string;
     indexFilter?: string[] | undefined;
     showOtherAddresses?: boolean;
     creatable?: boolean;
-    onChangeHandler?: (value: string | undefined, error: Error | undefined) => void;
+    onChangeHandler?: (
+        value: string | undefined,
+        error: Error | undefined
+    ) => void;
 }
 export const SelectAddress = ({
     networkId,
     indexFilter,
     showOtherAddresses = false,
     creatable = false,
-    onChangeHandler = (value) => console.log(`SelectAddress.onChange(${value})`),
+    onChangeHandler = (value) =>
+        console.log(`SelectAddress.onChange(${value})`),
 }: Props) => {
     const { themes } = useTheme();
 
     const [error, setError] = useState<Error | undefined>();
     const [, setValue] = useState<string | undefined>();
 
-    const tags = Contract.hooks.useGetTags(networkId);
-    const contracts = Contract.hooks.useForNetworkId(networkId);
+    const [contracts] = Contract.hooks.useWhere({ networkId });
+    const tags = uniq(compact(flatten(contracts.map((c) => c.tags))));
 
     //Options map tags to list of contracts with them
     const options = tags.map((t) => {
         return {
             label: t,
             options: contracts
-                .filter((c) => c.networkId === networkId)
-                .map((c) => {
+                .filter((c: any) => c.networkId === networkId)
+                .map((c: any) => {
                     return { label: c.address, value: c.address };
                 }),
         };
@@ -48,26 +52,29 @@ export const SelectAddress = ({
 
     if (showOtherAddresses) {
         const contractsUnLabelled = contracts
-            .filter((c) => {
+            .filter((c: any) => {
                 if (!c.tags) return true;
                 //Not in filter
                 const intersect = intersection(c.tags, indexFilter);
                 return intersect.length == 0;
             })
-            .map((c) => {
+            .map((c: any) => {
                 return { label: c.address, value: c.address };
             });
-        options.push({ label: 'Other', options: contractsUnLabelled });
+        options.push({ label: "Other", options: contractsUnLabelled });
     }
 
     const { control } = useForm<{ address: string | undefined }>({});
     const {
         field: { ref },
-    } = useController<{ address: string | undefined }>({ name: 'address', control });
+    } = useController<{ address: string | undefined }>({
+        name: "address",
+        control,
+    });
 
     const onChangeValidate = useCallback(
         (_value: string) => {
-            if (typeof _value == 'boolean') {
+            if (typeof _value == "boolean") {
                 setError(undefined);
                 setValue(_value);
                 onChangeHandler(_value, undefined);
@@ -90,7 +97,7 @@ export const SelectAddress = ({
 
             //Validate
             try {
-                coder.encodeParameter('address', _value);
+                coder.encodeParameter("address", _value);
                 //Format is valid
                 setError(undefined);
                 setValue(_value);
@@ -102,7 +109,7 @@ export const SelectAddress = ({
                 return;
             }
         },
-        [onChangeHandler],
+        [onChangeHandler]
     );
 
     return (
@@ -123,8 +130,8 @@ export const SelectAddress = ({
                                 color: themes.color8,
                                 border: 0,
                                 borderColor: themes.color6,
-                                borderRadius: '8px',
-                                p: '6px 4px',
+                                borderRadius: "8px",
+                                p: "6px 4px",
                             }),
                             downChevron: (provided: any) => ({
                                 ...provided,
@@ -144,7 +151,7 @@ export const SelectAddress = ({
                             }),
                             indicatorSeparator: (provided: any) => ({
                                 ...provided,
-                                display: 'none',
+                                display: "none",
                             }),
                         }}
                     />
@@ -158,12 +165,12 @@ export const SelectAddress = ({
                         chakraStyles={{
                             container: (provided: any) => ({
                                 ...provided,
-                                bg: themes.color6,
+                                bg: themes.color5,
                                 color: themes.color8,
                                 border: 0,
-                                borderColor: themes.color6,
-                                borderRadius: '8px',
-                                p: '6px 4px',
+                                borderColor: "transparent",
+                                borderRadius: 12,
+                                p: "6px 4px",
                             }),
                             downChevron: (provided: any) => ({
                                 ...provided,
@@ -179,11 +186,11 @@ export const SelectAddress = ({
                             }),
                             dropdownIndicator: (provided: any) => ({
                                 ...provided,
-                                bg: themes.color6,
+                                bg: themes.color5,
                             }),
                             indicatorSeparator: (provided: any) => ({
                                 ...provided,
-                                display: 'none',
+                                display: "none",
                             }),
                         }}
                     />

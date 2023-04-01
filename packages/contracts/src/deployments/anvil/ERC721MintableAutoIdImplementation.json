@@ -1,5 +1,5 @@
 {
-  "address": "0xCb3f792B841a5AA08c5f0E676418De18bd0d306e",
+  "address": "0xFdAE27cFA44FeCe72872513420cb643dC9dee798",
   "abi": [
     {
       "inputs": [],
@@ -79,6 +79,25 @@
       "anonymous": false,
       "inputs": [
         {
+          "indexed": false,
+          "internalType": "uint256",
+          "name": "_fromTokenId",
+          "type": "uint256"
+        },
+        {
+          "indexed": false,
+          "internalType": "uint256",
+          "name": "_toTokenId",
+          "type": "uint256"
+        }
+      ],
+      "name": "BatchMetadataUpdate",
+      "type": "event"
+    },
+    {
+      "anonymous": false,
+      "inputs": [
+        {
           "indexed": true,
           "internalType": "address",
           "name": "beacon",
@@ -99,6 +118,19 @@
         }
       ],
       "name": "Initialized",
+      "type": "event"
+    },
+    {
+      "anonymous": false,
+      "inputs": [
+        {
+          "indexed": false,
+          "internalType": "uint256",
+          "name": "_tokenId",
+          "type": "uint256"
+        }
+      ],
+      "name": "MetadataUpdate",
       "type": "event"
     },
     {
@@ -578,54 +610,6 @@
     {
       "inputs": [
         {
-          "internalType": "address",
-          "name": "_admin",
-          "type": "address"
-        },
-        {
-          "internalType": "string",
-          "name": "_initContractURI",
-          "type": "string"
-        },
-        {
-          "internalType": "address",
-          "name": "_gsnForwarder",
-          "type": "address"
-        },
-        {
-          "internalType": "string",
-          "name": "_name",
-          "type": "string"
-        },
-        {
-          "internalType": "string",
-          "name": "_symbol",
-          "type": "string"
-        },
-        {
-          "internalType": "string",
-          "name": "_initBaseURI",
-          "type": "string"
-        },
-        {
-          "internalType": "address",
-          "name": "_feeReceiver",
-          "type": "address"
-        },
-        {
-          "internalType": "uint96",
-          "name": "_feeNumerator",
-          "type": "uint96"
-        }
-      ],
-      "name": "proxyInitialize",
-      "outputs": [],
-      "stateMutability": "nonpayable",
-      "type": "function"
-    },
-    {
-      "inputs": [
-        {
           "internalType": "bytes32",
           "name": "role",
           "type": "bytes32"
@@ -975,5 +959,5 @@
       "type": "function"
     }
   ],
-  "numDeployments": 1
+  "numDeployments": 2
 }

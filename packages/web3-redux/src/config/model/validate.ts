@@ -1,15 +1,15 @@
-import axios, { Axios } from 'axios';
-import type { IPFS } from 'ipfs-core-types';
-import { create as createIPFS } from 'ipfs-http-client';
-import { Config, ConfigId, ConfigWithObjects } from './interface.js';
-import { omit, omitBy, isUndefined } from 'lodash-es';
+import axios, { Axios } from "axios";
+import type { IPFS } from "ipfs-core-types";
+import { create as createIPFS } from "ipfs-http-client";
+import { omit, omitBy, isUndefined } from "lodash-es";
+import { Config, ConfigId, ConfigWithObjects } from "./interface.js";
 
 export function validateId({ id }: ConfigId) {
     return { id };
 }
 
-export function toPrimaryKey({ id }: ConfigId): string {
-    return id;
+export function toPrimaryKey({ id }: ConfigId): [string] {
+    return [id];
 }
 
 /**
@@ -27,7 +27,7 @@ export function validate({ id, networkId, account, ipfsUrl, _4byteUrl, corsProxy
  * Hydrate config with objects.
  * @param config
  */
-export function hydrate(config: Config, sess: any): ConfigWithObjects {
+export function validateWithRedux(config: Config, sess: any): ConfigWithObjects {
     const { id, ipfsUrl, _4byteUrl } = config;
     const configORM: ConfigWithObjects | undefined = sess.Config.withId(id);
 
@@ -68,7 +68,5 @@ export function hydrate(config: Config, sess: any): ConfigWithObjects {
  * @param config
  */
 export function encode(config: ConfigWithObjects): Config {
-    return omit(config, ['ipfsClient', '_4byteClient', 'httpClient']);
+    return omit(config, ["ipfsClient", "_4byteClient", "httpClient"]);
 }
-
-export default validate;

@@ -1,1 +1,1 @@
-export const name = 'ReduxError';
+export const ReduxErrorName = "ReduxError";

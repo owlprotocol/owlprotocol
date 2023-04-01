@@ -1,15 +1,14 @@
-import { put, call } from 'typed-redux-saga';
-import { GetBalanceAction } from '../actions/getBalance.js';
-import { ContractCRUD } from '../crud.js';
-import { fetchSaga as fetchNetworkSaga } from '../../network/sagas/fetch.js'
-import { NetworkCRUD } from '../../network/crud.js';
+import { put, call, select } from "typed-redux-saga";
+import { GetBalanceAction } from "../actions/getBalance.js";
+import { ContractCRUD } from "../crud.js";
+import { NetworkCRUD } from "../../network/crud.js";
 
 /** @category Sagas */
 export function* getBalance(action: GetBalanceAction) {
     const { payload } = action;
     const { networkId, address } = payload;
 
-    const { network } = yield* call(fetchNetworkSaga, NetworkCRUD.actions.fetch({ networkId }, action.meta.uuid));
+    const network = yield* select(NetworkCRUD.selectors.selectByIdSingle, networkId);
     if (!network) throw new Error(`Network ${networkId} undefined`);
 
     const web3 = network.web3;

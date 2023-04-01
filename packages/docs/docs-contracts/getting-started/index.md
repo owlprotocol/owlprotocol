@@ -1,59 +1,69 @@
----
-
-sidebar_position: 1
----
-
-# Setup
-
-## Installation
+# Getting started
 
 ### Requirements
+* Node.js v16 or v18
+* PNPM (NPM is fine too - if you are using NPM, replace `pnpm` with `npm` in the below commands)
+* Owl Protocol CLI
 
-- **pnpm** - `npm install -g pnpm`
-- **turbo** - See: [https://turbo.build](https://turbo.build/) for more info and to sign up.
-
-### Setup
-
-```
-git clone --recursive git@github.com:owlprotocol/owlprotocol.git
-npx turbo login
-npx turbo link
-pnpm i
+### Install
+* Install the CLI if you haven't already:
+```bash
+pnpm install -g @owlprotocol/nft-sdk-cli
 ```
 
-Supply your own `.env` file in `packages/contracts` or: `cp .env.example .env`
+### Clone the Starter Template Repo
 
-*This is required for the next build command:*
+Our starter template is at: [https://github.com/owlprotocol/starter-cli](https://github.com/owlprotocol/starter-cli)
 
+```bash
+git clone https://github.com/owlprotocol/starter-cli
+cd starter-cli
 ```
+
+* Install node modules:
+```bash
+pnpm install
+```
+
+### Environment variables
+* `NETWORK`: the network settings to use in the `networks.json` file.
+    * Note: you can add more network settings in that file.
+* `HD_WALLET_MNEMONIC`: the mnemonic to use for blockchain interactions with the CLI.
+* `PRIVATE_KEY_0`: instead of `HD_WALLET_MNEMONIC`, you can directly specify a private key.
+
+Note: by default, the `owl-cli` looks at `.env.development` for environment variables if it exists.
+
+### Project setup
+Create a folder under `projects`, say `my-project`:
+
+```bash
+mkdir projects/my-project
+```
+
+Create your `traits.ts` and `collections.ts` files in that folder.
+
+## Compiling projects
+Run the `build` script to compile TypeScript files in the `projects` foldfer into JavaScript files.
+
+```bash
 pnpm run build
 ```
 
-If successful, it should show *(otherwise consult the `Dockerfile` for environment issues)*:
+### Run Ganache or configure the network you want to use
 
+Running Ganache locally is easy:
+```bash
+pnpm i -g ganache
+ganache --wallet.mnemonic '<MY MNEMONIC>'
 ```
- Tasks:    12 successful, 12 total
-Cached:    3 cached, 12 total
-  Time:    2m32.857s
+
+This must match the `HD_WALLET_MNEMONIC` in the `.env.development` file.
+
+## Generating a collection JSON Schema
+```bash
+owl-cli generateJsonSchema collections.js --projectFolder=projects/<my-project>
 ```
----
 
-## CLI Tool
+## [Continue with our tutorials](contracts/tutorials)
 
-We include a handy CLI Tool for common use cases and interactions.
-
-[CLICK HERE for the CLI Tool Docs](/contracts/getting-started/cli)
-
----
-
-## Tutorials
-
-We have a set of tutorials for the common use cases, this is also a good way to get started and experiment with the basic
-use cases.
-
-- [**DNA Encoding - ERC721TopDownDna**](/contracts/tutorial-topdowndna) - create a Dynamic NFT with detachable child NFTs and proper onchain data encoding.
-
-:::info
-We are still in **Alpha**, If you experience any issues please email us at [contact@owlprotocol.xyz](mailto:contact@owlprotocol.xyz).
-:::
 

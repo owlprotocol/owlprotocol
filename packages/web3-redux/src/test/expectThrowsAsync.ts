@@ -1,4 +1,4 @@
-import { expect } from 'chai';
+import { expect } from "chai";
 
 export async function expectThrowsAsync(method: () => Promise<unknown>, errorMessage: string) {
     let error: Error | undefined;
@@ -12,5 +12,3 @@ export async function expectThrowsAsync(method: () => Promise<unknown>, errorMes
         expect(error?.message).to.equal(errorMessage);
     }
 }
-
-export default expectThrowsAsync;

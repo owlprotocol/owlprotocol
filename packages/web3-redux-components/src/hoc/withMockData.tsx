@@ -10,7 +10,7 @@ const defaultConfig = { corsProxy };
 export const withMockData = (WrappedComponent: any) => {
     const Component = (props: any) => {
         //Config
-        Config.hooks.useConfig(defaultConfig);
+        //Config.hooks.useConfig(defaultConfig);
         //Networks
         /*
         useEffect(() => {

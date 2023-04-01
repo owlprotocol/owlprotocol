@@ -1,1 +1,1 @@
-export const name = 'Contract';
+export const ContractName = "Contract";

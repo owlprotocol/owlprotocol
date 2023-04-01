@@ -24,8 +24,14 @@ hh deploy --tags Implementations --network polygon
 hh
 ```
 
+## Testing
+
+Temporarily not imported, though some tests do work directly (with some commonjs/module replacement):
+
+`TEST_FILE=lib/cjs/test/assets/ERC721/ERC721Dna-readOnChain.test.js pnpm run test-grep`
+
 ## Architecture
 
 We use a somewhat complicated system of interlaced proxies in order to optimize for low-gas deployments and easily-upgradeable contracts. This comes at the cost of a small uptick in gas used per transaction.
 
-See [OWLArchitecture](../../OWLArchitecture.svg) for more info on what's going on under the hood.
+See [OWLArchitecture](OWLArchitecture.svg) for more info on what's going on under the hood.

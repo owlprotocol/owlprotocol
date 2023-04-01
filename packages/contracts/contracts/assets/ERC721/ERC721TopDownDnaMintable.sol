@@ -1,19 +1,19 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.9;
 
-import {IERC721Upgradeable} from '@openzeppelin/contracts-upgradeable/token/ERC721/IERC721Upgradeable.sol';
-import {IERC165Upgradeable} from '@openzeppelin/contracts-upgradeable/utils/introspection/IERC165Upgradeable.sol';
+import {IERC721Upgradeable} from "@openzeppelin/contracts-upgradeable/token/ERC721/IERC721Upgradeable.sol";
+import {IERC165Upgradeable} from "@openzeppelin/contracts-upgradeable/utils/introspection/IERC165Upgradeable.sol";
 
-import {AddressUpgradeable} from '@openzeppelin/contracts-upgradeable/utils/AddressUpgradeable.sol';
-import {Base64UrlUpgradeable} from '../../utils/Base64UrlUpgradeable.sol';
-import {EnumerableSetUpgradeable} from '@openzeppelin/contracts-upgradeable/utils/structs/EnumerableSetUpgradeable.sol';
+import {AddressUpgradeable} from "@openzeppelin/contracts-upgradeable/utils/AddressUpgradeable.sol";
+import {Base64UrlUpgradeable} from "../../utils/Base64UrlUpgradeable.sol";
+import {EnumerableSetUpgradeable} from "@openzeppelin/contracts-upgradeable/utils/structs/EnumerableSetUpgradeable.sol";
 
-import {ERC721Upgradeable} from '@openzeppelin/contracts-upgradeable/token/ERC721/ERC721Upgradeable.sol';
+import {ERC721Upgradeable} from "@openzeppelin/contracts-upgradeable/token/ERC721/ERC721Upgradeable.sol";
 
-import {ERC721TopDownBase} from './ERC721TopDownBase.sol';
-import {ERC721DnaBaseMintable} from './ERC721DnaBaseMintable.sol';
-import {Unauthorized, AddressNotChild} from './ERC721TopDownLib.sol';
-import {ERC721TopDownDnaLib} from './ERC721TopDownDnaLib.sol';
+import {ERC721TopDownBase} from "./ERC721TopDownBase.sol";
+import {ERC721DnaBaseMintable} from "./ERC721DnaBaseMintable.sol";
+import {Unauthorized, AddressNotChild} from "./ERC721TopDownLib.sol";
+import {ERC721TopDownDnaLib} from "./ERC721TopDownDnaLib.sol";
 
 /**
  * @dev ERC721TopDownDNA
@@ -51,36 +51,6 @@ contract ERC721TopDownDnaMintable is ERC721DnaBaseMintable, ERC721TopDownBase {
         address[] calldata _childContracts721,
         address[] calldata _childContracts1155
     ) external initializer {
-        __ERC721TopDownDna_init(
-            _admin,
-            _initContractURI,
-            _gsnForwarder,
-            _name,
-            _symbol,
-            _initBaseURI,
-            _feeReceiver,
-            _feeNumerator,
-            _childContracts721,
-            _childContracts1155
-        );
-    }
-
-    /**
-     * @dev Same as initialize but designed for usage with proxies.
-     *      Protected with `onlyInitializing` modifier.
-     */
-    function proxyInitialize(
-        address _admin,
-        string calldata _initContractURI,
-        address _gsnForwarder,
-        string calldata _name,
-        string calldata _symbol,
-        string calldata _initBaseURI,
-        address _feeReceiver,
-        uint96 _feeNumerator,
-        address[] calldata _childContracts721,
-        address[] calldata _childContracts1155
-    ) external onlyInitializing {
         __ERC721TopDownDna_init(
             _admin,
             _initContractURI,
@@ -145,7 +115,9 @@ contract ERC721TopDownDnaMintable is ERC721DnaBaseMintable, ERC721TopDownBase {
      * @param tokenId tokenId metadata to fetch
      * @return uri at which metadata is housed
      */
-    function tokenURI(uint256 tokenId) public view override(ERC721Upgradeable, ERC721DnaBaseMintable) returns (string memory) {
+    function tokenURI(
+        uint256 tokenId
+    ) public view override(ERC721Upgradeable, ERC721DnaBaseMintable) returns (string memory) {
         string memory baseURI = _baseURI();
         bytes memory dnaRaw = getDna(tokenId);
         string memory dnaString = dnaRaw.encode();
@@ -155,13 +127,9 @@ contract ERC721TopDownDnaMintable is ERC721DnaBaseMintable, ERC721TopDownBase {
     /**
      * inheritdoc ERC721TopDown
      */
-    function supportsInterface(bytes4 interfaceId)
-        public
-        view
-        virtual
-        override(ERC721DnaBaseMintable, ERC721TopDownBase)
-        returns (bool)
-    {
+    function supportsInterface(
+        bytes4 interfaceId
+    ) public view virtual override(ERC721DnaBaseMintable, ERC721TopDownBase) returns (bool) {
         return super.supportsInterface(interfaceId);
     }
 }

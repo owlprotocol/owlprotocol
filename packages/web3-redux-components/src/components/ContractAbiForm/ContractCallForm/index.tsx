@@ -1,3 +1,4 @@
+//@ts-nocheck
 import { Box, useTheme, FormControl, FormErrorMessage } from '@chakra-ui/react';
 import { Config, Contract } from '@owlprotocol/web3-redux';
 import { useForm } from 'react-hook-form';

@@ -1,5 +1,5 @@
 {
-  "address": "0x1DaBf5f8faF117AA797b3B632Bb85f0799739CA7",
+  "address": "0xe4d8de9B71756Aa0bBf815A929af70618bc4564E",
   "abi": [
     {
       "inputs": [
@@ -7,15 +7,16 @@
           "internalType": "address",
           "name": "to",
           "type": "address"
-        },
-        {
-          "internalType": "uint256",
-          "name": "tokenId",
-          "type": "uint256"
         }
       ],
       "name": "mint",
-      "outputs": [],
+      "outputs": [
+        {
+          "internalType": "uint256",
+          "name": "",
+          "type": "uint256"
+        }
+      ],
       "stateMutability": "nonpayable",
       "type": "function"
     },
@@ -25,18 +26,19 @@
           "internalType": "address",
           "name": "to",
           "type": "address"
-        },
-        {
-          "internalType": "uint256",
-          "name": "tokenId",
-          "type": "uint256"
         }
       ],
       "name": "safeMint",
-      "outputs": [],
+      "outputs": [
+        {
+          "internalType": "uint256",
+          "name": "",
+          "type": "uint256"
+        }
+      ],
       "stateMutability": "nonpayable",
       "type": "function"
     }
   ],
-  "numDeployments": 1
+  "numDeployments": 2
 }

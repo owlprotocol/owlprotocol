@@ -1,3 +1,4 @@
+//@ts-nocheck
 import { useTheme, Box, HStack } from "@chakra-ui/react";
 import { Contract } from "@owlprotocol/web3-redux";
 

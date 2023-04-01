@@ -1,21 +1,24 @@
-import type { HardhatRuntimeEnvironment } from 'hardhat/types';
-import { mapValues, zipObject } from '../../lodash.js';
-import Implementations from '../../deploy/common/Implementations.js';
+import type { HardhatRuntimeEnvironment } from "hardhat/types";
+import { mapValues, zipObject } from "../../lodash.js";
+import { ImplementationsDeploy } from "../../deploy/common/Implementations.js";
 
 const deploy = async ({ ethers, network, deployments }: HardhatRuntimeEnvironment) => {
     const { save, getOrNull } = deployments;
 
-    const results = await Implementations({ provider: ethers.provider, signers: await ethers.getSigners(), network });
+    const results = await ImplementationsDeploy({
+        provider: ethers.provider,
+        signers: await ethers.getSigners(),
+        network,
+    });
 
     const promises = mapValues(results, async ({ address, contract }, k) => {
         if (address && contract?.interface) {
-            const { abi, bytecode, deployedBytecode, devdoc, solcInputHash, metadata, storageLayout } =
-                await deployments.getExtendedArtifact(k);
+            const { abi } = await deployments.getExtendedArtifact(k);
 
-            const submission = await getOrNull(k + 'Implementation')
-            if (!submission?.numDeployments) {
+            const submission = await getOrNull(k + "Implementation");
+            if (submission?.address != address) {
                 //Bloat
-                return save(k + 'Implementation', {
+                return save(k + "Implementation", {
                     address,
                     //args: [],
                     abi,
@@ -36,6 +39,7 @@ const deploy = async ({ ethers, network, deployments }: HardhatRuntimeEnvironmen
     return results2;
 };
 
-deploy.tags = Implementations.tags;
-deploy.dependencies = Implementations.dependencies;
+deploy.tags = ImplementationsDeploy.tags;
+deploy.dependencies = ImplementationsDeploy.dependencies;
+// eslint-disable-next-line import/no-default-export
 export default deploy;

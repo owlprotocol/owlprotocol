@@ -1,5 +1,5 @@
-import ConfigCRUD from '../../config/crud.js';
-import { Config } from '../model/interface.js';
+import { ConfigCRUD } from "../../config/crud.js";
+import { Config } from "../model/interface.js";
 
 /** @internal */
 export interface SetActionInput {

@@ -12,11 +12,9 @@ Many other NFT projects may add additional methods to their NFT token contract, 
 because they are non-standard, requiring developers to customize integrations for each NFT collection.
 
 :::tip Jump to the Tutorial
-## Learn from example through our [Dynamic NFT Data Tutorial](/contracts/tutorial-nftdata)!
+## Learn by example with our [NFT Data Encoding Tutorial](/contracts/tutorials/nft-data)!
 
 Explore step by step, how to encode arbitrary data for your NFT, for any use case.
-
-[CLICK HERE](/contracts/tutorial-nftdata)
 :::
 
 ### Our approach starts with exposing the dynamic features (DNA) through the standard `tokenURI` method.
@@ -39,7 +37,7 @@ function tokenURI(uint256 tokenId) public view override returns (string memory) 
 ```
 [ERC721TopDownDna.sol](https://github.com/owlprotocol/owlprotocol/blob/main/packages/contracts/contracts/assets/ERC721/ERC721TopDownDna.sol)
 
-> As you can see we store this `dna` per `tokenId`: **`getDna( tokenId )`**
+> As you can see we store this `dna` per `tokenId`: `getDna( tokenId )`
 
 :::info Detailed Docs
 **Visit our Contract Guide for in the detailed docs:** [IERC721Dna](/contracts/contract-guides/IERC721Dna)
@@ -53,7 +51,7 @@ function tokenURI(uint256 tokenId) public view override returns (string memory) 
 
 ### Deciphering / Translating the NFT On-Chain Data (DNA)
 
-By itself the **`dna`** is useless, it can be thought of as similar to [`msgPack`](https://msgpack.org/index.html) or
+By itself the **DNA** is useless, it can be thought of as similar to [`msgPack`](https://msgpack.org/index.html) or
 `protoBuf` which requires a **schema** to decode the data.
 
 Since the schema can get quite large, this is stored on **IPFS** in JSON format, and only the IPFS hash is
@@ -78,9 +76,9 @@ NFT rendering/image either as a link or a base64 encoded image.
 
 ---
 
-### The IPFS Hosted Schema JSON
+### The IPFS-Hosted JSON Schema
 
-The **Collection Schema JSON** defines how the traits of an NFT are encoded into bytes, for example a typical Schema JSON
+The **Collection JSON Schema** defines how the traits of an NFT are encoded into bytes, for example a typical JSON Schema
 may look like this:
 
 ```json
@@ -146,12 +144,12 @@ Therefore, if we had a "Level 5" sword, with a ruby enchantment the **`dna`** wo
 > We encode from *left-to-right*, which is most intuitive to work with.
 
 :::info Result
-This gives us a final bit representation for the data of: **`00000000000001010000000000000001`**.
+This gives us a final bit representation for the data of: `00000000000001010000000000000001`.
 
 Which is translated to `base64`.
 :::
 
-So for example, if the IPFS hash for the **Collection Schema JSON** is `QmePBmfWYbZ6rtt93E9L5AnpAdeuVu7pbkjHAxDSQe5bjw`,
+So for example, if the IPFS hash for the **Collection JSON Schema** is `QmePBmfWYbZ6rtt93E9L5AnpAdeuVu7pbkjHAxDSQe5bjw`,
 then `tokenURI` would return:
 
 > `https://api.owlprotocol.xyz`/metadata/
@@ -171,9 +169,8 @@ Which is the descriptive JSON that looks somewhat like:
 }
 ```
 
-Notice that the image here is shown as a `base64`, but this also supports a link to an IPFS hosted image, or just any API.
+Notice that the image here is shown as a `base64`, but this also supports a link to an IPFS-hosted image, or just any API.
 
-### Read on about the [NFT Rendering](/contracts/concepts/rendering) process in the next page.
-### Or try it out with our tutorial: [click here](/contracts/tutorial-nftdata).
+Read on about [NFT Rendering](/contracts/concepts/rendering) in the next page, or try rendering NFTs yourself with our [tutorial](/contracts/tutorials/nft-data).
 
 

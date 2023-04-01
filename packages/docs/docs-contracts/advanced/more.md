@@ -44,7 +44,7 @@ The most basic requirement for Dynamic NFTs is a standardized way to *encode dat
 
 1. **Gas-Efficient**
 
-   We use a compressed binary format *on-chain* similar to [MsgPack](https://msgpack.org), with a schema JSON file hosted
+   We use a compressed binary format *on-chain* similar to [MsgPack](https://msgpack.org), with a JSON Schema file hosted
    *off-chain* in an immutable datastore, such as [IPFS](https://ipfs.tech).
 
 2. **Flexible**

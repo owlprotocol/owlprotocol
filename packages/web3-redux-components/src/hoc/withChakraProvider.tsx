@@ -1,6 +1,6 @@
-import { ChakraProvider } from '@chakra-ui/react';
-import getDisplayName from './getDisplayName.js';
-import theme from '../theme/index.js';
+import { ChakraProvider } from "@chakra-ui/react";
+import getDisplayName from "./getDisplayName.js";
+import { theme } from "@owlprotocol/owl-theme";
 
 export const withChakraProvider = (WrappedComponent: any) => {
     const component = (props: any) => {
@@ -10,7 +10,9 @@ export const withChakraProvider = (WrappedComponent: any) => {
             </ChakraProvider>
         );
     };
-    component.displayName = `withChakraProvider(${getDisplayName(WrappedComponent)})`;
+    component.displayName = `withChakraProvider(${getDisplayName(
+        WrappedComponent
+    )})`;
     return component;
 };
 

@@ -1,14 +1,31 @@
-import { name } from './common.js';
-import { ReduxErrorId, ReduxErrorModel } from './model/index.js';
-import { createCRUDModel } from '../crud/createCRUDModel.js';
-import { CrudDexie, getDB } from '../db.js';
-import { channel } from '../channel.js';
+import Dexie from "dexie";
+import { ReduxErrorName } from "./common.js";
+import {
+    ReduxErrorId,
+    ReduxError,
+    ReduxErrorIndexInput,
+    ReduxErrorIndexInputAnyOf,
+    toPrimaryKey,
+    validateId,
+    validate,
+} from "./model/index.js";
+import { createCRUDModel } from "../crud/createCRUDModel.js";
 
-export const ReduxErrorCRUD = createCRUDModel<
-    typeof name,
-    ReduxErrorId,
-    ReduxErrorModel,
-    ReduxErrorModel,
-    ReduxErrorId,
-    CrudDexie
->(name, getDB, undefined, undefined, channel);
+export function getReduxErrorCRUD<DexieCustom extends Dexie = Dexie>(getDB: () => DexieCustom) {
+    return createCRUDModel<
+        typeof ReduxErrorName,
+        ReduxErrorId,
+        ReduxError,
+        DexieCustom,
+        ReduxErrorIndexInput,
+        ReduxErrorIndexInputAnyOf
+    >({
+        name: ReduxErrorName,
+        getDB,
+        validators: {
+            validateId,
+            validate,
+            toPrimaryKey,
+        },
+    });
+}

@@ -1,16 +1,16 @@
 /**
  * Typescript implementation of ERC1167 library pure functions
  */
-import { utils } from 'ethers';
-import type { BytesLike, BaseContract } from 'ethers';
+import { utils } from "ethers";
+import type { BytesLike, BaseContract } from "ethers";
 
-import * as Create2 from '../Create2.js';
-import * as Clones from '../Clones.js';
-import { ERC1167Factory as ERC1167FactoryArtifact } from '../../artifacts.js';
+import { getInitData, GetInitDataArgs } from "./getInitData.js";
+import { getSalt, DEFAULT_SALT } from "./getSalt.js";
+import * as Create2 from "../Create2.js";
+import * as Clones from "../Clones.js";
+import { ERC1167Factory as ERC1167FactoryArtifact } from "../../artifacts.js";
 
-import { getInitData, GetInitDataArgs } from './getInitData.js';
-import { getSalt, DEFAULT_SALT } from './getSalt.js';
-import { proxyAddress } from '../DeployerDeterministic.js';
+import { proxyAddress } from "../DeployerDeterministic.js";
 
 const ERC1167FactoryBytecodeHash = utils.keccak256(ERC1167FactoryArtifact.bytecode);
 export const ERC1167FactoryAddress = Create2.computeAddress(DEFAULT_SALT, ERC1167FactoryBytecodeHash, proxyAddress);
@@ -22,7 +22,7 @@ export interface GetAddressArgs<
     cloneFactoryAddress?: string;
     salt?: string;
     msgSender?: string;
-    contractInterface: ContractTyped['interface'];
+    contractInterface: ContractTyped["interface"];
     initOptions?: InitSignature extends keyof ContractTyped ? GetInitDataArgs<ContractTyped, InitSignature> : undefined;
 }
 

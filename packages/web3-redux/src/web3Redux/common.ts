@@ -1,1 +1,1 @@
-export const name = 'Web3Redux';
+export const Web3ReduxName = "Web3Redux";

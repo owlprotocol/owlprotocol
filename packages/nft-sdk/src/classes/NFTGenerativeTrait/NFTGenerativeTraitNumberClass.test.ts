@@ -1,7 +1,7 @@
-import { assert, expect } from 'chai';
+import { assert } from 'chai';
 import { NFTGenerativeTraitNumberClass } from './NFTGenerativeTraitNumberClass.js';
 import { NFTGenerativeTraitNumber } from '../../types/index.js';
-import { validateNFTGenerativeTrait, InvalidNFTGenerativeTrait } from '../../validation/index.js';
+import { validateNFTGenerativeTrait } from '../../validation/index.js';
 
 describe('NFTGenerativeTraitNumberClass', () => {
     const attributeDef: NFTGenerativeTraitNumber = {

@@ -1,19 +1,19 @@
-import { registryAddress, deploymentTx, deploymentSignerAddress, deploymentCostLimit } from '../../utils/ERC1820.js';
-import { logDeployment, RunTimeEnvironment } from '../utils.js';
+import { registryAddress, deploymentTx, deploymentSignerAddress, deploymentCostLimit } from "../../utils/ERC1820.js";
+import { logDeployment, RunTimeEnvironment } from "../utils.js";
 
-const name = 'ERC1820Registry';
+const name = "ERC1820Registry";
 
 /**
  * Deployment is always the same regardless of contract.
  * We get the bytecode & name for a deterministic deployment from the Proxy Factory.
  */
-const deployERC1820 = async ({ provider, signers, network }: RunTimeEnvironment) => {
+export const ERC1820Deploy = async ({ provider, signers, network }: RunTimeEnvironment) => {
     const signer = signers[0];
     const nonce = await provider.getTransactionCount(await signer.getAddress());
 
     //Check if contract address exists
-    if ((await provider.getCode(registryAddress)) != '0x') {
-        logDeployment(network.name, name, registryAddress, 'implementation', 'exists');
+    if ((await provider.getCode(registryAddress)) != "0x") {
+        logDeployment(network.name, name, registryAddress, "implementation", "exists");
         return { tx: deploymentTx, address: registryAddress };
     }
 
@@ -32,13 +32,11 @@ const deployERC1820 = async ({ provider, signers, network }: RunTimeEnvironment)
 
     //Deploy contract
     await provider.sendTransaction(deploymentTx);
-    if ((await provider.getCode(registryAddress)) == '0x') throw new Error(`${name} deployment failed`);
-    logDeployment(network.name, name, registryAddress, 'implementation', 'deployed');
+    if ((await provider.getCode(registryAddress)) == "0x") throw new Error(`${name} deployment failed`);
+    logDeployment(network.name, name, registryAddress, "implementation", "deployed");
 
     return { tx: deploymentTx, address: registryAddress };
 };
 
-deployERC1820.tags = ['ERC1820'];
-deployERC1820.dependencies = [] as string[];
-export { deployERC1820 };
-export default deployERC1820;
+ERC1820Deploy.tags = ["ERC1820"];
+ERC1820Deploy.dependencies = [] as string[];

@@ -1,19 +1,18 @@
-import { JSDOM } from 'jsdom';
+import { JSDOM } from "jsdom";
 // db.ts
-import Dexie from 'dexie';
+import Dexie from "dexie";
 //@ts-ignore
-import setGlobalVars from 'indexeddbshim';
-import { getDB as getCrudReduxDB } from '@owlprotocol/crud-redux'
-import { getDB } from '../db.js';
+import setGlobalVars from "indexeddbshim";
+import { getDB } from "../db.js";
 
 const beforeAll = async () => {
-    const { window } = new JSDOM('', { url: 'http://localhost:8080' });
+    const { window } = new JSDOM("", { url: "http://localhost:8080" });
     //@ts-ignore
     //global.window = global; // We'll allow ourselves to use `window.indexedDB` or `indexedDB` as a global
-    setGlobalVars(window, { checkOrigin: false, memoryDatabase: '' }); // See signature below
+    setGlobalVars(window, { checkOrigin: false, memoryDatabase: "" }); // See signature below
     const { indexedDB, IDBKeyRange } = window;
-    global.indexedDB = indexedDB
-    global.IDBKeyRange = IDBKeyRange
+    global.indexedDB = indexedDB;
+    global.IDBKeyRange = IDBKeyRange;
     //@ts-expect-error
     global.window = window;
     global.document = window.document;
@@ -24,19 +23,17 @@ const beforeAll = async () => {
 };
 
 const beforeEach = async () => {
-    const dbCrudRedux = getCrudReduxDB()
     const db = getDB();
-    await Promise.all([db.clear(), dbCrudRedux.clear()]);
+    await Promise.all([db.clear()]);
 };
 
 const afterAll = async () => {
-    console.debug('Tests finished.');
+    console.debug("Tests finished.");
 };
 
 const afterEach = async () => {
-    const dbCrudRedux = getCrudReduxDB()
     const db = getDB();
-    await Promise.all([db.clear(), dbCrudRedux.clear()]);
+    await Promise.all([db.clear()]);
 };
 
 export const mochaHooks = {

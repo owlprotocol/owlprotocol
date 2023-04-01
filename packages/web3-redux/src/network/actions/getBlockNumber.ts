@@ -1,8 +1,8 @@
-import { createAction2 } from '@owlprotocol/crud-redux';
-import { name } from '../common.js';
+import { createAction2 } from "@owlprotocol/crud-redux";
+import { NetworkName } from "../common.js";
 
 /** @internal */
-export const GET_BLOCK_NUMBER = `${name}/GET_BLOCK_NUMBER`;
+export const GET_BLOCK_NUMBER = `${NetworkName}/GET_BLOCK_NUMBER`;
 /** @internal */
 export interface GetBlockNumberActionInput {
     readonly networkId: string;
@@ -14,7 +14,7 @@ export const getBlockNumberAction = createAction2(GET_BLOCK_NUMBER, (payload: Ge
     const { networkId, maxCacheAge } = payload;
     return {
         networkId,
-        maxCacheAge: maxCacheAge
+        maxCacheAge: maxCacheAge,
     };
 });
 

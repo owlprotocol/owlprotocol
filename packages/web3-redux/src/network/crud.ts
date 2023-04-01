@@ -1,30 +1,38 @@
-import { name } from './common.js';
+import { createCRUDModel } from "@owlprotocol/crud-redux";
+import { NetworkName } from "./common.js";
 import {
     NetworkId,
     Network,
     validate,
-    hydrate,
+    validateWithRedux,
     encode,
     NetworkWithObjects,
     validateId,
     toPrimaryKey,
-} from './model/index.js';
-import { createCRUDModel } from '@owlprotocol/crud-redux';
-import getDB, { Web3ReduxDexie } from '../db.js';
-import { getOrm } from '../orm.js';
+    preWriteBulkDB,
+} from "./model/index.js";
+import { getDB, Web3ReduxDexie } from "../db.js";
+import { getOrm } from "../orm.js";
 
 export const NetworkCRUD = createCRUDModel<
-    typeof name,
+    typeof NetworkName,
     NetworkId,
     Network,
-    NetworkWithObjects,
+    Web3ReduxDexie,
     NetworkId,
-    Web3ReduxDexie
->(name, getDB, {
-    validateId,
-    toPrimaryKey,
-    validate,
-    hydrate,
-    encode,
-}, getOrm());
-export default NetworkCRUD;
+    NetworkId,
+    Network,
+    NetworkWithObjects
+>({
+    name: NetworkName,
+    getDB,
+    validators: {
+        validateId,
+        toPrimaryKey,
+        validate,
+        validateWithRedux,
+        encode,
+        preWriteBulkDB,
+    },
+    orm: getOrm(),
+});

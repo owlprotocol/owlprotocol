@@ -1,4 +1,4 @@
-import useConfig from './useConfig.js';
+import { useConfig } from "./useConfig.js";
 
 /**
  * @category Hooks
@@ -10,5 +10,3 @@ export function useNetworkId() {
     const networkId = config?.networkId;
     return [networkId, setNetworkId] as [typeof networkId, typeof setNetworkId];
 }
-
-export default useNetworkId;

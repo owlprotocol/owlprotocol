@@ -1,13 +1,14 @@
-import { SignerWithAddress } from '@nomiclabs/hardhat-ethers/signers';
-import hre, { ethers } from 'hardhat';
-import { ERC721Mintable } from '../../../ethers/types.js';
-import deployProxyNick from '../../../deploy-hre/common/DeterministicDeployer.js';
-import deployProxyFactory from '../../../deploy-hre/common/ProxyFactory.js';
-import deployERC1820 from '../../../deploy-hre/common/ERC1820.js';
-import { ERC721MintableInitializeArgs, flattenInitArgsERC721Mintable } from '../../../utils/ERC721Mintable.js';
-import { expect, assert } from 'chai';
-import { Factories, getFactories } from '../../../ethers/factories.js';
-import { getDeterministicInitializeFactories, InitializeFactories } from '../../../ethers/deterministicFactories.js';
+import { SignerWithAddress } from "@nomiclabs/hardhat-ethers/signers";
+import hre, { ethers } from "hardhat";
+import { expect, assert } from "chai";
+import { zip } from "lodash";
+import { ERC721Mintable } from "../../../ethers/types.js";
+import deployProxyNick from "../../../deploy-hre/common/DeterministicDeployer.js";
+import ProxyFactoryDeploy from "../../../deploy-hre/common/ProxyFactory.js";
+import ERC1820Deploy from "../../../deploy-hre/common/ERC1820.js";
+import { ERC721MintableInitializeArgs, flattenInitArgsERC721Mintable } from "../../../utils/ERC721Mintable.js";
+import { Factories, getFactories } from "../../../ethers/factories.js";
+import { getDeterministicInitializeFactories, InitializeFactories } from "../../../ethers/deterministicFactories.js";
 import {
     IAccessControlInterfaceId,
     IBaseURIInterfaceId,
@@ -15,19 +16,17 @@ import {
     IERC165InterfaceId,
     IERC2981InterfaceId,
     IERC2981SetterInterfaceId,
-    IERC721Interface,
     IERC721InterfaceId,
     IERC721MetadataInterfaceId,
     IERC721MintableInterfaceId,
     interfaceIdNames,
     IRouterReceiverInterfaceId,
-} from '../../../ethers/interfaces.js';
-import { registry as registryContract } from '../../../utils/ERC1820.js';
-import { sleep } from '../../utils/sleep.js';
-import { zip } from 'lodash';
-import { ERC1167FactoryAddress } from '../../../utils/ERC1167Factory/index.js';
+} from "../../../ethers/interfaces.js";
+import { registry as registryContract } from "../../../utils/ERC1820.js";
+import { sleep } from "../../utils/sleep.js";
+import { ERC1167FactoryAddress } from "../../../utils/ERC1167Factory/index.js";
 
-describe('ERC721Mintable', function () {
+describe("ERC721Mintable", function () {
     let signers: SignerWithAddress[];
     let factories: Factories;
     let deterministicFactories: InitializeFactories;
@@ -39,8 +38,8 @@ describe('ERC721Mintable', function () {
 
     before(async () => {
         await deployProxyNick(hre as any);
-        await deployProxyFactory(hre as any);
-        await deployERC1820(hre as any);
+        await ProxyFactoryDeploy(hre as any);
+        await ERC1820Deploy(hre as any);
 
         await sleep(1000);
 
@@ -63,7 +62,6 @@ describe('ERC721Mintable', function () {
             symbol: `TK${tokenName}`,
             initBaseURI: `token.${tokenName}.com/token`,
             feeReceiver: signers[0].address,
-
         };
         const initializerArgs = flattenInitArgsERC721Mintable(token);
         ERC721Mintable = await ERC721MintableFactory.deploy(...initializerArgs);
@@ -71,28 +69,28 @@ describe('ERC721Mintable', function () {
         tokenName++;
     });
 
-    it('name', async () => {
+    it("name", async () => {
         const result = await ERC721Mintable.name();
         expect(result).to.be.eq(token.name);
     });
 
-    it('symbol', async () => {
+    it("symbol", async () => {
         const result = await ERC721Mintable.symbol();
         expect(result).to.be.eq(token.symbol);
     });
 
-    it('baseURI', async () => {
+    it("baseURI", async () => {
         const result = await ERC721Mintable.baseURI();
         expect(result).to.be.eq(token.initBaseURI);
     });
 
-    it('balanceOf', async () => {
+    it("balanceOf", async () => {
         await ERC721Mintable.mint(signers[0].address, 1);
         const result = await ERC721Mintable.balanceOf(signers[0].address);
-        expect(result).to.be.eq(1);
+        expect(parseInt(result.toString())).to.be.eq(1);
     });
 
-    it('InterfaceImplementerSet', async () => {
+    it("InterfaceImplementerSet", async () => {
         const registry = registryContract.connect(signers[0]);
         const filter = registry.filters.InterfaceImplementerSet(ERC721Mintable.address);
         const events = await registry.queryFilter(filter);
@@ -117,7 +115,7 @@ describe('ERC721Mintable', function () {
         }
     });
 
-    it('supportsInterface', async () => {
+    it("supportsInterface", async () => {
         const interfaceIds = [
             IERC165InterfaceId,
             IAccessControlInterfaceId,
@@ -136,7 +134,7 @@ describe('ERC721Mintable', function () {
         }
     });
 
-    it('implementsERC165Interface', async () => {
+    it("implementsERC165Interface", async () => {
         const registry = registryContract.connect(signers[0]);
         const interfaceIds = [
             IERC165InterfaceId,

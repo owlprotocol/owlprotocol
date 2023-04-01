@@ -2,6 +2,10 @@
 
 cache/
 
+# security
+scrub.sh
+.git-filter-repo-replace_text
+
 # dependencies
 node_modules
 .pnp

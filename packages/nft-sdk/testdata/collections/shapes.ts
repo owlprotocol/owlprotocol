@@ -1,5 +1,3 @@
-import { Buffer } from 'buffer';
-
 import { traitStrokeWidth } from './number.js';
 import { traitColormap } from './colormap.js';
 import { traitBgColor, traitFillColor, traitStrokeColor } from './color.js';

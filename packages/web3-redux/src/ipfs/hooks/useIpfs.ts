@@ -1,27 +1,26 @@
-import { useEffect, useMemo } from 'react';
-import { useDispatch } from 'react-redux';
-import useAtPath from './useAtPath.js';
-import { catAction } from '../actions/index.js';
+/* eslint-disable */
+import { useEffect } from "react";
+import { useDispatch } from "react-redux";
+import { useAtPath } from "./useAtPath.js";
+import { catAction } from "../actions/index.js";
 
 /**
  * Reads IPFS content from store and makes a call to cat content.
  * @category Hooks
  * */
-export const useIpfs = (path: string | undefined) => {
+export const useIpfs = (paths: string[] | string | undefined) => {
     const dispatch = useDispatch();
 
-    const content = useAtPath(path);
-
-    const dataExists = content?.data || false;
-    const action = useMemo(() => {
-        if (path && !dataExists) return catAction({ path });
-    }, [path, dataExists]);
+    //TODO: Only fetches existing, dispatch for non-existing
+    const [items, options] = useAtPath(paths);
 
     useEffect(() => {
-        if (action) dispatch(action);
-    }, [dispatch, action]);
+        const cids = items.filter((c) => c.data === undefined).map((c) => c.contentId);
+        //TODO: Bulk
+        cids.forEach((c) => {
+            dispatch(catAction({ path: c }));
+        });
+    }, [dispatch, JSON.stringify(paths), items]);
 
-    return { contentId: content?.contentId, data: content?.data };
+    return [items, options] as [typeof items, typeof options];
 };
-
-export default useIpfs;

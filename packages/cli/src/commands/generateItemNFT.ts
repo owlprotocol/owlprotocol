@@ -1,28 +1,21 @@
 import yargs from 'yargs';
 import path from 'path';
 import check from 'check-types';
-import lodash from 'lodash';
 import fs from 'fs';
-import { NFTGenerativeItemClass } from '@owlprotocol/nft-sdk';
-import { Argv, getProjectSubfolder, importCollectionClass } from '../utils/pathHandlers.js';
 
-const { map } = lodash;
+import { Argv, getProjectSubfolder, importCollectionClass } from '../utils/pathHandlers.js';
 
 let debug = false;
 
-export const command = 'generateItemNFT <nftItemJS>';
+export const command = 'generateItemNFT <itemJS>';
 
-export const describe = `Devtool - Generates the NFT Item's JS
-
-For now this always outputs to the folder "./output/items/" relative to the projectFolder
-
-nftItemJS - path to the NFT item file, relative from the projectFolder
-
-e.g. node dist/index.cjs generateItemNFT items/collection-item-1.js --project=projects/example-omo
-
-
-
+export const describe = `Generate the NFT item's JSON Schema.
+Outputs to the folder "./output/items/" relative to the "projectFolder".
+<itemJS> - path to the NFT item file, relative to the "projectFolder"
 `;
+
+export const example = '$0 generateItemNFT <itemJS> --projectFolder=<projectDir>';
+export const exampleDescription = 'generate the JSON Schema of the NFT item at "<projectDir>/<itemJS>"';
 
 export const builder = (yargs: ReturnType<yargs.Argv>) => {
     return yargs
@@ -36,27 +29,27 @@ export const builder = (yargs: ReturnType<yargs.Argv>) => {
             type: 'string',
         })
         .option('debug', {
-            describe: 'Outputs debug statements',
+            describe: 'Output debug statements',
             type: 'boolean',
         })
         .demandOption(['projectFolder']);
 };
 
-// TODO: this should have an option to import from Schema JSON
-export const handler = async (argv: Argv & { nftItemJS?: string }) => {
+// TODO: this should have an option to import from JSON Schema
+export const handler = async (argv: Argv & { itemJS?: string }) => {
     argvCheck(argv);
 
     debug = !!argv.debug || false;
 
     let projectFolder = argv.projectFolder!;
-    const nftItemJS = argv.nftItemJS!;
+    const itemJS = argv.itemJS!;
 
-    const nftItemFilename = path.parse(nftItemJS).name;
+    const nftItemFilename = path.parse(itemJS).name;
 
     let outputFolder = getProjectSubfolder(argv, 'output/items');
 
     // TODO: rename `importCollectionClass`
-    const nftItemExport = await importCollectionClass(projectFolder, nftItemJS);
+    const nftItemExport = await importCollectionClass(projectFolder, itemJS);
     const nftItem = nftItemExport.default;
 
     debug && console.debug(nftItem);
@@ -70,7 +63,7 @@ export const handler = async (argv: Argv & { nftItemJS?: string }) => {
 };
 
 const argvCheck = (argv: Argv) => {
-    if (!check.string(argv.nftItemJS) || (!check.undefined(argv.projectFolder) && !check.string(argv.projectFolder))) {
+    if (!check.string(argv.itemJS) || (!check.undefined(argv.projectFolder) && !check.string(argv.projectFolder))) {
         console.error(`ERROR: Options "collectionJS" and "outputPath" must both be strings.`);
         process.exit();
     }

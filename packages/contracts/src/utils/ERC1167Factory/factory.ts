@@ -1,15 +1,15 @@
 /**
  * Typescript implementation of ERC1167 library pure functions
  */
-import { ContractFactory, Overrides } from 'ethers';
-import type { BaseContract } from 'ethers';
+import { ContractFactory, Overrides } from "ethers";
+import type { BaseContract } from "ethers";
 
 export type ContractParameters<
     ContractTyped extends BaseContract = BaseContract,
     InitSignature extends keyof ContractTyped | void = void,
 > = InitSignature extends keyof ContractTyped
     ? //@ts-expect-error
-    Parameters<ContractTyped[InitSignature]>
+      Parameters<ContractTyped[InitSignature]>
     : [];
 
 export type FunctionWithOverrides<T extends (...args: any[]) => any> =
@@ -21,7 +21,7 @@ export type ContractParametersWithOverrides<
     InitSignature extends keyof ContractTyped | void = void,
 > = InitSignature extends keyof ContractTyped
     ? //@ts-expect-error
-    FunctionWithOverrides<ContractTyped[InitSignature]>
+      FunctionWithOverrides<ContractTyped[InitSignature]>
     : [] | [Overrides];
 
 export interface CustomFactory<

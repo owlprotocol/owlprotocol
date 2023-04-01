@@ -1,8 +1,8 @@
 /// <reference types="@reduxjs/toolkit" />
 
-declare module 'redux-orm';
-declare module 'ethereum-ens';
-declare module 'mocha-jsdom';
+declare module "redux-orm";
+declare module "ethereum-ens";
+declare module "mocha-jsdom";
 /*
 declare module 'typed-redux-saga' {
     export * from 'typed-typed-redux-saga';

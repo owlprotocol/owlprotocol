@@ -1,35 +1,30 @@
 import yargs from 'yargs';
 import lodash from 'lodash';
-import { Argv } from '../utils/pathHandlers.js';
-import { HD_WALLET_MNEMONIC, NETWORK, PRIVATE_KEY_0 } from '../utils/environment.js';
-
 import { ethers } from 'ethers';
 
 import { Artifacts } from '@owlprotocol/contracts';
-import config from 'config';
+import { NFTGenerativeCollectionClass, NFTGenerativeItemInterface } from '@owlprotocol/nft-sdk';
+
+import { Argv } from '../utils/pathHandlers.js';
+import { getNetworkCfg } from '../utils/networkCfg.js';
 
 const { mapValues } = lodash;
 
-const jsonRpcEndpoint: string = config.get(`network.${NETWORK}.config.url`);
-const provider = new ethers.providers.JsonRpcProvider(jsonRpcEndpoint);
 let debug = false;
-
-import { NFTGenerativeCollectionClass, NFTGenerativeItemInterface } from '@owlprotocol/nft-sdk';
 
 export const command = 'viewTopDown';
 
-export const describe = `Introspect and view the NFT TopDownDna contract
-
-e.g. node dist/index.cjs viewTopDown --root=0xbE705Ab239b7CE7c078E84965A518834Cb7CFE4b --tokenId=1
-
-
-
+export const describe = `View an NFT's DNA and attributes, and that of its children.
 `;
+
+export const example = '$0 viewTopDown -r <rootContractAddr> --tokenId=<id>';
+export const exampleDescription =
+    'view the DNA and attributes of the NFT at <rootContractAddr> with token id <id>, and that of its children';
 
 export const builder = (yargs: ReturnType<yargs.Argv>) => {
     return yargs
         .option('debug', {
-            describe: 'Outputs debug statements',
+            describe: 'Output debug statements',
             type: 'boolean',
         })
         .option('rootContractAddr', {
@@ -46,19 +41,11 @@ export const builder = (yargs: ReturnType<yargs.Argv>) => {
 };
 
 export const handler = async (argv: Argv) => {
-    console.log(`View ERC721TopDownDna ${argv.rootContractAddr} on ${NETWORK}`);
-
     debug = !!argv.debug || false;
 
-    const signers = new Array<ethers.Wallet>();
-    if (HD_WALLET_MNEMONIC) {
-        signers[0] = ethers.Wallet.fromMnemonic(HD_WALLET_MNEMONIC);
-    } else if (PRIVATE_KEY_0) {
-        signers[0] = new ethers.Wallet(PRIVATE_KEY_0);
-    } else {
-        throw new Error('ENV variable HD_WALLET_MNEMONIC or PRIVATE_KEY_0 must be provided');
-    }
-    signers[0] = signers[0].connect(provider);
+    const { network, signers, provider } = getNetworkCfg();
+
+    console.log(`View ERC721TopDownDna ${argv.rootContractAddr} on ${network.name}`);
 
     const rootContractAddr = argv.rootContractAddr as string;
     const tokenId = argv.tokenId as number;
@@ -66,7 +53,7 @@ export const handler = async (argv: Argv) => {
     const rootContract = new ethers.Contract(rootContractAddr, Artifacts.ERC721TopDownDnaMintable.abi, signers[0]);
     const contractURI = await rootContract.contractURI();
 
-    console.log(`Fetching Metadata Schema JSON from: ${contractURI}`);
+    console.log(`Fetching Metadata JSON Schema from: ${contractURI}`);
     const collMetadataRes = await fetch(contractURI);
 
     if (!collMetadataRes.ok) {

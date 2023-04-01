@@ -9,8 +9,8 @@ import {
 
 const collHatsChildDef: NFTGenerativeCollection = {
     name: 'Tutorial Example - NFT Hats Sub-Collection',
-    description: 'Example from https://docs.owlprotocol.xyz/contracts/tutorial-topdowndna',
-    external_url: 'https://docs.owlprotocol.xyz/contracts/tutorial-topdowndna',
+    description: 'Example from https://docs.owlprotocol.xyz/contracts/tutorials/nft-image-layers',
+    external_url: 'https://docs.owlprotocol.xyz/contracts/tutorials/nft-image-layers',
     seller_fee_basis_points: 5000,
     fee_recipient: '0xc2A3cB7d4BF24e456051E3a710057ac61f5dB133',
     generatedImageType: 'png',
@@ -21,8 +21,8 @@ const collHatsChildDef: NFTGenerativeCollection = {
 
 const collNestedDef: NFTGenerativeCollection = {
     name: 'Thread Haus - Innovot NFT Collection',
-    description: 'Example from https://docs.owlprotocol.xyz/contracts/tutorial-topdowndna',
-    external_url: 'https://docs.owlprotocol.xyz/contracts/tutorial-topdowndna',
+    description: 'Example from https://docs.owlprotocol.xyz/contracts/tutorials/nft-image-layers',
+    external_url: 'https://docs.owlprotocol.xyz/contracts/tutorials/nft-image-layers',
     seller_fee_basis_points: 10000,
     fee_recipient: '0xc2A3cB7d4BF24e456051E3a710057ac61f5dB133',
     generatedImageType: 'png',

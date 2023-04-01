@@ -1,16 +1,16 @@
 //SPDX-License-Identifier: MIT
 pragma solidity ^0.8.0;
 
-import {IERC721ReceiverUpgradeable} from '@openzeppelin/contracts-upgradeable/token/ERC721/IERC721ReceiverUpgradeable.sol';
-import {IERC1155ReceiverUpgradeable} from '@openzeppelin/contracts-upgradeable/token/ERC1155/IERC1155ReceiverUpgradeable.sol';
+import {IERC721ReceiverUpgradeable} from "@openzeppelin/contracts-upgradeable/token/ERC721/IERC721ReceiverUpgradeable.sol";
+import {IERC1155ReceiverUpgradeable} from "@openzeppelin/contracts-upgradeable/token/ERC1155/IERC1155ReceiverUpgradeable.sol";
 
-import {AddressUpgradeable} from '@openzeppelin/contracts-upgradeable/utils/AddressUpgradeable.sol';
+import {AddressUpgradeable} from "@openzeppelin/contracts-upgradeable/utils/AddressUpgradeable.sol";
 
-import {OwlBase} from '../../common/OwlBase.sol';
+import {OwlBase} from "../../common/OwlBase.sol";
 
-import {AssetBasketInput, AssetInputLib} from './AssetInputLib.sol';
-import {AssetBasketOutput, AssetOutputLib} from './AssetOutputLib.sol';
-import {IAssetRouterCraft} from './IAssetRouterCraft.sol';
+import {AssetBasketInput, AssetInputLib} from "./AssetInputLib.sol";
+import {AssetBasketOutput, AssetOutputLib} from "./AssetOutputLib.sol";
+import {IAssetRouterCraft} from "./IAssetRouterCraft.sol";
 
 /**
  * @dev Abstract contract with types and utilities that will be used by many (if
@@ -19,8 +19,8 @@ import {IAssetRouterCraft} from './IAssetRouterCraft.sol';
  *
  */
 contract AssetRouterCraft is OwlBase, IAssetRouterCraft, IERC721ReceiverUpgradeable {
-     bytes32 internal constant DEPOSIT_ROLE = keccak256('DEPOSIT_ROLE');
-     bytes32 internal constant WITHDRAW_ROLE = keccak256('WITHDRAW_ROLE');
+    bytes32 internal constant DEPOSIT_ROLE = keccak256("DEPOSIT_ROLE");
+    bytes32 internal constant WITHDRAW_ROLE = keccak256("WITHDRAW_ROLE");
 
     // mapping from contract address to tokenId to nUsed
     mapping(uint256 => mapping(address => mapping(uint256 => uint256))) erc721NTime;
@@ -51,19 +51,6 @@ contract AssetRouterCraft is OwlBase, IAssetRouterCraft, IERC721ReceiverUpgradea
     }
 
     /**
-     * @dev See initialize. Uses onlyInitializing modifier, enabling running while initializing.
-     */
-    function proxyInitialize(
-        address _admin,
-        string memory _initContractURI,
-        address _gsnForwarder,
-        AssetBasketInput[] calldata _inputBaskets,
-        AssetBasketOutput[] calldata _outputBaskets
-    ) external onlyInitializing {
-        __AssetRouterCraft_init(_admin, _initContractURI, _gsnForwarder, _inputBaskets, _outputBaskets);
-    }
-
-    /**
      * @dev performs validations that `_inputs` and `_outputs` are valid and
      * creates the configuration
      */
@@ -88,7 +75,7 @@ contract AssetRouterCraft is OwlBase, IAssetRouterCraft, IERC721ReceiverUpgradea
         address _withdrawRole
     ) internal {
         _grantRole(DEPOSIT_ROLE, _depositRole);
-        _grantRole(WITHDRAW_ROLE,_withdrawRole);
+        _grantRole(WITHDRAW_ROLE, _withdrawRole);
 
         //Registry
         if (AddressUpgradeable.isContract(ERC1820_REGISTRY)) {
@@ -180,10 +167,10 @@ contract AssetRouterCraft is OwlBase, IAssetRouterCraft, IERC721ReceiverUpgradea
     ) external override returns (bytes4) {
         //User deposit
         (
-        uint256 basketId,
-        uint256[][] memory erc721TokenIdsUnaffected,
-        uint256[][] memory erc721TokenIdsNTime,
-        uint256 outputBasketId
+            uint256 basketId,
+            uint256[][] memory erc721TokenIdsUnaffected,
+            uint256[][] memory erc721TokenIdsNTime,
+            uint256 outputBasketId
         ) = abi.decode(data, (uint256, uint256[][], uint256[][], uint256));
 
         //Burn tokenId hard code
@@ -226,12 +213,12 @@ contract AssetRouterCraft is OwlBase, IAssetRouterCraft, IERC721ReceiverUpgradea
     ) external returns (bytes4) {
         //User deposit
         (
-        uint256 basketId,
-        uint256 amount,
-        uint256[][] memory erc721TokenIdsUnaffected,
-        uint256[][] memory erc721TokenIdsNTime,
-        uint256[][] memory erc721TokenIdsBurned,
-        uint256 outputBasketId
+            uint256 basketId,
+            uint256 amount,
+            uint256[][] memory erc721TokenIdsUnaffected,
+            uint256[][] memory erc721TokenIdsNTime,
+            uint256[][] memory erc721TokenIdsBurned,
+            uint256 outputBasketId
         ) = abi.decode(data, (uint256, uint256, uint256[][], uint256[][], uint256[][], uint256));
 
         AssetBasketInput memory basket = inputBaskets[basketId];
@@ -246,7 +233,7 @@ contract AssetRouterCraft is OwlBase, IAssetRouterCraft, IERC721ReceiverUpgradea
             erc721NTime[basketId]
         );
 
-         //Output call
+        //Output call
         AssetOutputLib.output(outputBaskets[outputBasketId], amount, from);
 
         emit RouteBasket(from, address(this), basketId, amount);
@@ -259,14 +246,8 @@ contract AssetRouterCraft is OwlBase, IAssetRouterCraft, IERC721ReceiverUpgradea
     /**
      * inheritdoc IAssetRouterOutput
      */
-    function deposit(
-        uint256 amount,
-        uint256 basketIdx
-    ) external onlyRole(DEPOSIT_ROLE) {
-        AssetOutputLib.deposit(
-            outputBaskets[basketIdx],
-            amount
-        );
+    function deposit(uint256 amount, uint256 basketIdx) external onlyRole(DEPOSIT_ROLE) {
+        AssetOutputLib.deposit(outputBaskets[basketIdx], amount);
         emit UpdateBasket(basketIdx, int256(amount));
     }
 

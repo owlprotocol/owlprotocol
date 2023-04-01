@@ -7,7 +7,7 @@ import { Config } from "@owlprotocol/web3-redux";
 const locale = "en_US";
 const API_KEY = "";
 
-export function useMagicConnect() {
+export function useMagicConnect(): any {
     const networks = [
         {
             rpcUrl: "https://rpc.ankr.com/eth",

@@ -1,6 +1,6 @@
 import React from 'react';
 import { ChakraProvider } from '@chakra-ui/react';
-import { theme } from '../src/theme/index.js';
+import { theme } from '@owlprotocol/owl-theme';
 
 export const decorators = [
     (Story) => {
@@ -8,6 +8,6 @@ export const decorators = [
             <ChakraProvider theme={theme}>
                 <Story />
             </ChakraProvider>
-        )
-    }
+        );
+    },
 ];

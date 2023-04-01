@@ -10,4 +10,8 @@ export interface HTTPCache extends HTTPCacheId {
     readonly corsProxied?: boolean;
 }
 
-export const HTTPCacheIndex = 'id';
+export type HTTPCacheIndexInput = HTTPCacheId;
+
+export type HTTPCacheIndexInputAnyOf = { id: string[] | string };
+
+export const HTTPCacheIndex = "id";

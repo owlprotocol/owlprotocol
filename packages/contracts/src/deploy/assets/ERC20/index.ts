@@ -1,1 +1,1 @@
-export * from './ERC20Mintable.js'
+export * from "./ERC20Mintable.js";

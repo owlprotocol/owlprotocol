@@ -24,40 +24,40 @@ sidebar_position: 3
 [hardhat-shorthand]: https://github.com/NomicFoundation/hardhat/tree/main/packages/hardhat-shorthand
 [@typechain/hardhat]: https://www.npmjs.com/package/@typechain/hardhat
 
-[OwlBase]: ../../owlprotocol-contracts/contracts/common/OwlBase.sol
-[ContractURI]: ../../owlprotocol-contracts/contracts/common/ContractURI.sol
-[RouterReceiver]: ../../owlprotocol-contracts/contracts/common/RouterReceiver.sol
-[ERC2981Setter]: ../../owlprotocol-contracts/contracts/assets/common/ERC2981Setter.sol
+[OwlBase]: https://github.com/owlprotocol/owlprotocol/tree/main/packages/contracts/contracts/common/OwlBase.sol
+[ContractURI]: https://github.com/owlprotocol/owlprotocol/tree/main/packages/contracts/contracts/common/ContractURI.sol
+[RouterReceiver]: https://github.com/owlprotocol/owlprotocol/tree/main/packages/contracts/contracts/common/RouterReceiver.sol
+[ERC2981Setter]: https://github.com/owlprotocol/owlprotocol/tree/main/packages/contracts/contracts/assets/common/ERC2981Setter.sol
 [AccessControl]: https://docs.openzeppelin.com/contracts/4.x/api/access#AccessControl
-[src/artifacts/]: ../../owlprotocol-contracts/src/artifacts/
-[src/artifacts.ts]: ../../owlprotocol-contracts/src/artifacts/artifacts.ts
-[src/artifacts-js.ts]: ../../owlprotocol-contracts/src/artifacts/artifacts-js.ts
+[src/artifacts/]: https://github.com/owlprotocol/owlprotocol/tree/main/packages/contracts/src/artifacts/
+[src/artifacts.ts]: https://github.com/owlprotocol/owlprotocol/tree/main/packages/contracts/src/artifacts/artifacts.ts
+[src/artifacts-js.ts]: https://github.com/owlprotocol/owlprotocol/tree/main/packages/contracts/src/artifacts/artifacts-js.ts
 
-[contracts/]: ../../owlprotocol-contracts/contracts/
-[contracts/common/]: ../../owlprotocol-contracts/contracts/common
-[contracts/proxy/]: ../../owlprotocol-contracts/contracts/proxy
-[contracts/assets/]: ../../owlprotocol-contracts/contracts/assets
-[contracts/plugins/]: ../../owlprotocol-contracts/contracts/plugins
+[contracts/]: https://github.com/owlprotocol/owlprotocol/tree/main/packages/contracts/contracts/
+[contracts/common/]: https://github.com/owlprotocol/owlprotocol/tree/main/packages/contracts/contracts/common
+[contracts/proxy/]: https://github.com/owlprotocol/owlprotocol/tree/main/packages/contracts/contracts/proxy
+[contracts/assets/]: https://github.com/owlprotocol/owlprotocol/tree/main/packages/contracts/contracts/assets
+[contracts/plugins/]: https://github.com/owlprotocol/owlprotocol/tree/main/packages/contracts/contracts/plugins
 
-[src/ethers/]: ../../owlprotocol-contracts/src/ethers/
-[src/web3/]: ../../owlprotocol-contracts/src/web3/
-[src/utils/]: ../../owlprotocol-contracts/src/utils/
-[src/utils/IERC721.ts]: ../../owlprotocol-contracts/src/utils/IERC721.ts
-[src/utils/ERC721Mintable.ts]: ../../owlprotocol-contracts/src/utils/ERC721Mintable.ts
-[test/]: ../../owlprotocol-contracts/test/
-[test/hardhat/assets/ERC721/ERC721Mintable.test.ts]: ../../owlprotocol-contracts/test/hardhat/assets/ERC721/ERC721Mintable.test.ts
+[src/ethers/]: https://github.com/owlprotocol/owlprotocol/tree/main/packages/contracts/src/ethers/
+[src/web3/]: https://github.com/owlprotocol/owlprotocol/tree/main/packages/contracts/src/web3/
+[src/utils/]: https://github.com/owlprotocol/owlprotocol/tree/main/packages/contracts/src/utils/
+[src/utils/IERC721.ts]: https://github.com/owlprotocol/owlprotocol/tree/main/packages/contracts/src/utils/IERC721.ts
+[src/utils/ERC721Mintable.ts]: https://github.com/owlprotocol/owlprotocol/tree/main/packages/contracts/src/utils/ERC721Mintable.ts
+[test/]: https://github.com/owlprotocol/owlprotocol/tree/main/packages/contracts/test/
+[test/hardhat/assets/ERC721/ERC721Mintable.test.ts]: https://github.com/owlprotocol/owlprotocol/tree/main/packages/contracts/test/hardhat/assets/ERC721/ERC721Mintable.test.ts
 
-[src/deploy/]: ../../owlprotocol-contracts/src/deploy/
-[src/deploy/common/Implementations.ts]: ../../owlprotocol-contracts/src/deploy/common/Implementations.ts
-[src/deploy/common/UpgradeableBeacon.ts]: ../../owlprotocol-contracts/src/deploy/common/UpgradeableBeacon.ts
+[src/deploy/]: https://github.com/owlprotocol/owlprotocol/tree/main/packages/contracts/src/deploy/
+[src/deploy/common/Implementations.ts]: https://github.com/owlprotocol/owlprotocol/tree/main/packages/contracts/src/deploy/common/Implementations.ts
+[src/deploy/common/UpgradeableBeacon.ts]: https://github.com/owlprotocol/owlprotocol/tree/main/packages/contracts/src/deploy/common/UpgradeableBeacon.ts
 
-[deploy/]: ../../owlprotocol-contracts/deploy/
-[esbuild.config.mjs]: ../../owlprotocol-contracts/esbuild.config.mjs
+[deploy/]: https://github.com/owlprotocol/owlprotocol/tree/main/packages/contracts/deploy/
+[esbuild.config.mjs]: https://github.com/owlprotocol/owlprotocol/tree/main/packages/contracts/esbuild.config.mjs
 
-[factories.ts]: ../../owlprotocol-contracts/src/ethers/factories.ts
-[deterministicFactories.ts]: ../../owlprotocol-contracts/src/ethers/deterministicFactories.ts
-[proxy1167Factories.ts]: ../../owlprotocol-contracts/src/ethers/proxy1167Factories.ts
-[beaconProxyFactories.ts]: ../../owlprotocol-contracts/src/ethers/beaconProxyFactories.ts
+[factories.ts]: https://github.com/owlprotocol/owlprotocol/tree/main/packages/contracts/src/ethers/factories.ts
+[deterministicFactories.ts]: https://github.com/owlprotocol/owlprotocol/tree/main/packages/contracts/src/ethers/deterministicFactories.ts
+[proxy1167Factories.ts]: https://github.com/owlprotocol/owlprotocol/tree/main/packages/contracts/src/ethers/proxy1167Factories.ts
+[beaconProxyFactories.ts]: https://github.com/owlprotocol/owlprotocol/tree/main/packages/contracts/src/ethers/beaconProxyFactories.ts
 
 Owl Protocol contracts are designed to be re-usable as much as possible and avoid code duplication where possible to reduce attack surface. As such, all of our contract share a similar structure and also come with pre-configured utilities to enable easier integration in projects.
 
@@ -123,7 +123,7 @@ The duplicate artifacts files may be a bit confusing. The reason they are requir
 
 
 ## [Typechain] types
-[Typechain] can be used to generate Typescript types for the smart contracts. We do **NOT** use the [@typechain/hardhat] plugin as it only supports generating types for 1 framework.
+[Typechain] can be used to generate Typescript types for the smart contracts. We do **NOT** use the [@typechain/hardhat] plugin as it only supports generating types for one framework.
 
 Generated [Typechain] types for [ether.js] and [web3.js] using:
 ```bash

@@ -1,8 +1,8 @@
-import { map } from 'lodash-es';
-import { keccak256, AbiItem } from '../utils/web3-utils/index.js';
+import { map } from "lodash-es";
+import { keccak256, AbiItem } from "../utils/web3-utils/index.js";
 
 export function getInterfaceIdentifierForAbi(abi: AbiItem[]): string {
-    if (abi.length === 0) return '';
+    if (abi.length === 0) return "";
 
     const functionIdentifiers: string[] = abi.map((item) => getFunctionIdentifier(item));
     const identifier: string = getInterfaceIdentifier(functionIdentifiers);
@@ -12,12 +12,12 @@ export function getInterfaceIdentifierForAbi(abi: AbiItem[]): string {
 
 export function getFunctionIdentifier(item: AbiItem): string {
     const { name, inputs } = item;
-    let finalStr = name + '(';
+    let finalStr = name + "(";
 
-    if (!inputs || inputs.length === 0) return get4ByteIdentifier((finalStr += ')'));
+    if (!inputs || inputs.length === 0) return get4ByteIdentifier((finalStr += ")"));
 
-    finalStr += map(inputs, 'type').join(',');
-    finalStr += ')';
+    finalStr += map(inputs, "type").join(",");
+    finalStr += ")";
 
     return get4ByteIdentifier(finalStr);
 }
@@ -35,18 +35,16 @@ export function get4ByteIdentifier(input: string): string {
 }
 
 export function hexTo4ByteBinary(hex: string) {
-    return parseInt(hex, 16).toString(2).padStart(32, '0');
+    return parseInt(hex, 16).toString(2).padStart(32, "0");
 }
 
 export function binaryTo4ByteHex(binary: string) {
-    return parseInt(binary, 2).toString(16).padStart(8, '0');
+    return parseInt(binary, 2).toString(16).padStart(8, "0");
 }
 
 //assumes input is in binary
 export function xor(bin1: string, bin2: string): string {
-    let finalBin = '';
-    bin1.split('').forEach((char, i) => (char !== bin2.charAt(i) ? (finalBin += '1') : (finalBin += '0')));
+    let finalBin = "";
+    bin1.split("").forEach((char, i) => (char !== bin2.charAt(i) ? (finalBin += "1") : (finalBin += "0")));
     return finalBin;
 }
-
-export default getInterfaceIdentifierForAbi;

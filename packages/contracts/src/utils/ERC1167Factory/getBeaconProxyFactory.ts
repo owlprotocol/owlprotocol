@@ -1,21 +1,21 @@
 /**
  * Typescript implementation of ERC1167 library pure functions
  */
-import { ContractFactory, Overrides } from 'ethers';
-import type { BaseContract } from 'ethers';
+import { ContractFactory, Overrides } from "ethers";
+import type { BaseContract } from "ethers";
 
-import { BeaconProxy, BeaconProxy__factory } from '../../ethers/types.js';
-import { getInitDataEncoder } from './getInitData.js';
+import { getInitDataEncoder } from "./getInitData.js";
 
-import { BeaconProxy as BeaconProxyArtifact } from '../../artifacts.js';
-import { deterministicFactory, DeterministicFactoryArgs } from './getContractFactory.js';
-import { ContractParameters, ContractParametersWithOverrides, CustomFactory } from './factory.js';
+import { deterministicFactory, DeterministicFactoryArgs } from "./getContractFactory.js";
+import { ContractParameters, ContractParametersWithOverrides, CustomFactory } from "./factory.js";
+import { BeaconProxy as BeaconProxyArtifact } from "../../artifacts.js";
+import { BeaconProxy, BeaconProxy__factory } from "../../ethers/types.js";
 
 /***** Beacon Proxy *****/
 interface BeaconProxyFactoryArgs<
     Factory extends ContractFactory = ContractFactory,
     //@ts-expect-error
-    ContractTyped extends BaseContract = ReturnType<Factory['attach']>,
+    ContractTyped extends BaseContract = ReturnType<Factory["attach"]>,
     InitSignature extends keyof ContractTyped | void = void,
 > extends DeterministicFactoryArgs<Factory, ContractTyped, InitSignature> {
     beaconAddress: string;
@@ -23,7 +23,7 @@ interface BeaconProxyFactoryArgs<
 export function beaconProxyFactory<
     Factory extends ContractFactory = ContractFactory,
     //@ts-expect-error
-    ContractTyped extends BaseContract = ReturnType<Factory['attach']>,
+    ContractTyped extends BaseContract = ReturnType<Factory["attach"]>,
     InitSignature extends keyof ContractTyped | void = void,
 >(args: BeaconProxyFactoryArgs<Factory, ContractTyped, InitSignature>) {
     const { salt, initSignature, contractFactory, msgSender, beaconAddress } = args;
@@ -38,10 +38,10 @@ export function beaconProxyFactory<
     ) as BeaconProxy__factory;
     BeaconProxyFactory.connect(contractFactory.signer);
 
-    const BeaconProxyDeterministicFactory = deterministicFactory<BeaconProxy__factory, BeaconProxy, 'initialize'>({
+    const BeaconProxyDeterministicFactory = deterministicFactory<BeaconProxy__factory, BeaconProxy, "initialize">({
         contractFactory: BeaconProxyFactory,
         cloneFactory,
-        initSignature: 'initialize',
+        initSignature: "initialize",
         msgSender,
         salt,
     });
@@ -78,7 +78,7 @@ export function beaconProxyFactory<
 
     const exists = async (...args: ContractParameters<ContractTyped, InitSignature>) => {
         const address = getAddress(...args);
-        if ((await cloneFactory.provider.getCode(address)) != '0x') return true;
+        if ((await cloneFactory.provider.getCode(address)) != "0x") return true;
         return false;
     };
 
@@ -86,7 +86,7 @@ export function beaconProxyFactory<
     const factory = contractFactory.connect(contractFactory.signer) as CustomFactory<ContractTyped, InitSignature>;
     factory.deploy = deploy;
     factory.getDeployTransaction = () => {
-        throw new Error('Beacon Proxy Factory getDeployTransaction() Unimplemented!');
+        throw new Error("Beacon Proxy Factory getDeployTransaction() Unimplemented!");
     };
     factory.getInitData = getInitData2;
     factory.getAddress = getAddress;

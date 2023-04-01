@@ -1,21 +1,21 @@
-import { assert } from 'chai';
-import axios from 'axios';
-import * as moxios from 'moxios';
+import { assert } from "chai";
+import axios from "axios";
+import * as moxios from "moxios";
 
-import * as Contracts from '@owlprotocol/contracts';
+import * as Contracts from "@owlprotocol/contracts";
 
-import { sleep } from '../../utils/index.js';
-import { networkId, WETH as WETH_ADDRESS } from '../../test/data.js';
-import { createStore, StoreType } from '../../store.js';
+import { sleep } from "@owlprotocol/utils";
+import { networkId, WETH as WETH_ADDRESS } from "../../test/data.js";
+import { createStore, StoreType } from "../../store.js";
 
-import { fetchAbi as fetchAbiAction } from '../actions/index.js';
-import NetworkCRUD from '../../network/crud.js';
-import ContractCRUD from '../crud.js';
+import { fetchAbi as fetchAbiAction } from "../actions/index.js";
+import { NetworkCRUD } from "../../network/crud.js";
+import { ContractCRUD } from "../crud.js";
 
-describe('contract/sagas/fetchAbi.test.ts', () => {
+describe("contract/sagas/fetchAbi.test.ts", () => {
     let store: StoreType;
     const address = WETH_ADDRESS; //WETH contract
-    const client = axios.create({ baseURL: 'https://api.etherscan.io/api' });
+    const client = axios.create({ baseURL: "https://api.etherscan.io/api" });
 
     before(async () => {
         //Moxios install
@@ -29,15 +29,15 @@ describe('contract/sagas/fetchAbi.test.ts', () => {
     beforeEach(async () => {
         store = createStore();
         store.dispatch(
-            NetworkCRUD.actions.create({
+            NetworkCRUD.actions.reduxUpsert({
                 networkId,
                 explorerApiClient: client,
             }),
         );
     });
 
-    describe('fetchAbi', () => {
-        it('()', async () => {
+    describe("fetchAbi", () => {
+        it("()", async () => {
             store.dispatch(
                 fetchAbiAction({
                     networkId,
@@ -47,14 +47,27 @@ describe('contract/sagas/fetchAbi.test.ts', () => {
 
             await moxios.wait(() => {
                 const request = moxios.requests.mostRecent();
-                assert.deepEqual(request.config.params, { module: 'contract', action: 'getabi', address });
-                request.respondWith({ status: 200, response: { result: JSON.stringify(Contracts.Artifacts.IERC20.abi) } });
+                assert.deepEqual(request.config.params, {
+                    module: "contract",
+                    action: "getabi",
+                    address,
+                });
+                request.respondWith({
+                    status: 200,
+                    response: {
+                        result: JSON.stringify(Contracts.Artifacts.IERC20.abi),
+                    },
+                });
             });
 
             await sleep(100);
             //Selector
             const contract = ContractCRUD.selectors.selectByIdSingle(store.getState(), { networkId, address });
-            assert.deepEqual(contract?.abi, Contracts.Artifacts.IERC20.abi as any, 'contract.abi != Contracts.Artifacts.IERC20.abi');
+            assert.deepEqual(
+                contract?.abi,
+                Contracts.Artifacts.IERC20.abi as any,
+                "contract.abi != Contracts.Artifacts.IERC20.abi",
+            );
         });
     });
 });

@@ -1,10 +1,10 @@
-import { BaseSync } from './BaseSync.js';
+import { BaseSync } from "./BaseSync.js";
 
 /**
- * Sync middleware to handle [ContractEvent](./ContractEvent.ContractEvent-1) CREATE/UPDATE actions.
+ * Sync middleware to handle [EthLog](./ethmodels/ethlog.EthLog-1) CREATE/UPDATE actions.
  */
 export interface EventSync extends BaseSync {
-    type: 'Event';
+    type: "Event";
     matchAddress: string;
     matchName: string;
     matchReturnValues?: { [k: string]: any } | { [k: string]: any }[];
@@ -13,14 +13,14 @@ export interface EventSync extends BaseSync {
 export function createEventSync(
     id: string,
     networkId: string,
-    actions: EventSync['actions'],
+    actions: EventSync["actions"],
     matchAddress: string,
     matchName: string,
-    matchReturnValues?: EventSync['matchReturnValues'],
+    matchReturnValues?: EventSync["matchReturnValues"],
 ): EventSync {
     return {
         id,
-        type: 'Event',
+        type: "Event",
         networkId,
         actions,
         matchAddress,

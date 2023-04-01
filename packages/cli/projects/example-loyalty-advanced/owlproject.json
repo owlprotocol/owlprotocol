@@ -1,0 +1,11 @@
+{
+  "rootContract": {
+    "tokenSymbol": "ExampleLoyaltyNFT",
+    "tokenIdStart": 1,
+    "cfg": {
+      "schemaJsonIpfs": "QmXrpPT5KveNCcMHXdZiknnGiLbNveoccpD7FmagxgtQbj",
+      "schemaJsonEndpoint": "https://leovigna.mypinata.cloud/ipfs",
+      "apiEndpoint": "https://metadata.owlprotocol.xyz/metadata/getMetadata"
+    }
+  }
+}

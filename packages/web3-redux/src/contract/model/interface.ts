@@ -1,9 +1,8 @@
-import type { Contract as Web3Contract } from 'web3-eth-contract';
-import { coder } from '../../utils/web3-eth-abi/index.js';
-import { filter, isUndefined, keyBy, omit, omitBy, uniq } from 'lodash-es';
-import { AbiItem } from '../../utils/web3-utils/index.js';
-import { NetworkWithObjects } from '../../network/model/interface.js';
-import { toReduxOrmId, T_Encoded_Base } from '@owlprotocol/crud-redux';
+import type { Contract as Web3Contract } from "web3-eth-contract";
+import { isUndefined, omitBy } from "lodash-es";
+
+import type { AbiItem } from "../../utils/web3-utils/index.js";
+import { abiDeterministic } from "../../utils/abiDeterministic.js";
 
 /**
  * Contract Id object.
@@ -18,18 +17,22 @@ export interface ContractId {
 }
 
 /** @internal */
-export type BaseWeb3Contract = Omit<Web3Contract, 'once' | 'clone' | '_address' | '_jsonInterface'>;
+export type BaseWeb3Contract = Omit<Web3Contract, "once" | "clone" | "_address" | "_jsonInterface">;
+
+export interface ContractMetadata {
+    readonly name?: string;
+    readonly image?: string;
+    [k: string]: any;
+}
 
 /**
  * Contract object.
  * @typeParam T
  * [TypeChain](https://github.com/dethcrypto/TypeChain) web3.js contract. Enables getting type inference for calls and events. Defaults to standard Contracts.Web3.js contract interface.
  */
-export interface Contract extends ContractId, T_Encoded_Base {
+export interface Contract extends ContractId {
     /** Contract ABI */
     readonly abi?: AbiItem[];
-    /** ERC165 or ERC1820 interfaceIds */
-    readonly interfaceIds?: string[];
     /** Account balance in wei */
     readonly balance?: string;
     /** Account nonce aka number of transactions sent. */
@@ -42,21 +45,22 @@ export interface Contract extends ContractId, T_Encoded_Base {
     readonly label?: string;
     /** Custom tags set to index address */
     readonly tags?: string[];
-    /** Event abis indexed by signature */
-    readonly eventAbiBySignature?: { [k: string]: AbiItem };
-}
-
-export interface ContractWithObjects<T extends BaseWeb3Contract = BaseWeb3Contract> extends Contract {
-    /** [web3.eth.Contract](https://web3js.readthedocs.io/en/v1.5.2/web3-eth-contract.html) instance */
-    readonly web3Contract?: T;
-    /** [web3.eth.Contract](https://web3js.readthedocs.io/en/v1.5.2/web3-eth-contract.html) instance used for send transactions */
-    readonly web3SenderContract?: T;
-    /** contract instance that is connected to GSN */
-    readonly web3GSNSenderContract?: T;
+    /** Metadata */
+    readonly metadataURI?: string;
+    /** Metadata JSON */
+    readonly metadata?: ContractMetadata;
+    /** Interface was checked */
+    readonly interfaceCheckedAt?: number;
 }
 
 export type ContractIndexInput = ContractId | { networkId: string } | { label: string } | { tags: string[] };
-export const ContractIndex = '[networkId+address], networkId, label, *tags, *interfaceIds';
+export type ContractIndexInputAnyOf =
+    | { networkId: string[] | string; address: string }
+    | { networkId: string[] | string }
+    | { label: string[] | string }
+    | { tags: string[] };
+
+export const ContractIndex = "[networkId+address], networkId, label, metadataURI, *tags";
 
 /** @internal */
 export function validateId({ networkId, address }: ContractId): ContractId {
@@ -72,91 +76,12 @@ export function toPrimaryKey({ networkId, address }: ContractId): [string, strin
 
 /** @internal */
 export function validate(contract: Contract): Contract {
-    const abi = contract.abi ?? (contract as ContractWithObjects).web3Contract?.options.jsonInterface;
-    const { networkId, address } = validateId(contract);
-    const eventAbis = filter(abi, (x) => x.type === 'event');
-    const eventAbiBySignature = keyBy(eventAbis, (x) => coder.encodeEventSignature(x));
-    const interfaceIds = uniq(contract.interfaceIds ?? [])
+    const abi = contract.abi;
 
-    return omitBy(
-        {
-            ...contract,
-            address,
-            id: toReduxOrmId(toPrimaryKey({ networkId, address })),
-            abi,
-            eventAbiBySignature,
-            interfaceIds
-        },
-        isUndefined,
-    ) as unknown as Contract;
+    const item: Contract = {
+        ...contract,
+        address: contract.address.toLowerCase(),
+        abi: abi ? abiDeterministic(abi) : undefined,
+    };
+    return omitBy(item, isUndefined) as Contract;
 }
-
-/**
- * Hydrate contract with objects.
- * @param contract
- */
-export function hydrate(contract: Contract, sess: any): ContractWithObjects {
-    const { abi } = contract;
-    const { networkId, address } = validateId(contract);
-
-    const contractORM: ContractWithObjects | undefined = sess.Contract.withId(
-        toReduxOrmId(toPrimaryKey({ networkId, address })),
-    );
-
-    const network: NetworkWithObjects | undefined = sess.Network.withId(networkId);
-    const { web3, web3Sender, web3WithGSN } = network ?? {};
-
-    let web3Contract: BaseWeb3Contract | undefined;
-    if (contractORM?.web3Contract && abi === contractORM.abi) {
-        //Existing web3 contract
-        web3Contract = contractORM.web3Contract;
-    } else if (abi && web3) {
-        //New web3 contract
-        web3Contract = new web3.eth.Contract(abi, address);
-    }
-
-    let web3SenderContract: BaseWeb3Contract | undefined;
-    if (contractORM?.web3SenderContract && abi === contractORM.abi) {
-        //Existing web3 contract
-        web3SenderContract = contractORM.web3SenderContract;
-    } else if (abi && web3Sender) {
-        //New web3 contract
-        web3SenderContract = new web3Sender.eth.Contract(abi, address);
-    }
-
-    let web3GSNSenderContract: BaseWeb3Contract | undefined;
-    if (network?.relayHub && network.forwarder) {
-        if (contractORM?.web3GSNSenderContract && abi === contractORM.abi) {
-            //Existing web3 contract
-            web3GSNSenderContract = contractORM.web3GSNSenderContract;
-        } else if (abi && web3WithGSN) {
-            //New web3 contract
-            web3GSNSenderContract = new web3WithGSN.eth.Contract(abi, address);
-        }
-    }
-
-    return omitBy(
-        {
-            ...contract,
-            web3Contract,
-            web3SenderContract,
-            web3GSNSenderContract,
-        },
-        isUndefined,
-    ) as unknown as ContractWithObjects;
-}
-
-/**
- * Encode contract
- * @param contract
- */
-export function encode(contract: ContractWithObjects): Contract {
-    const abi = contract.abi ?? contract.web3Contract?.options.jsonInterface
-    const data = omit(contract, ['web3Contract', 'web3SenderContract', 'web3GSNSenderContract']);
-    return {
-        ...data,
-        abi
-    }
-}
-
-export default Contract;

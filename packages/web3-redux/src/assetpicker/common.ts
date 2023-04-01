@@ -1,1 +1,1 @@
-export const name = 'AssetPicker';
+export const AssetPickerName = "AssetPicker";

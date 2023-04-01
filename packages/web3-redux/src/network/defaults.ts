@@ -1,4 +1,5 @@
-import { Network } from './model/interface.js';
+/* eslint-disable */
+import { Network } from "./model/interface.js";
 import {
     ETHERSCAN_API_KEY,
     GANACHE_RPC,
@@ -53,60 +54,60 @@ import {
     ETC_MAINNET_EXPLORER_API,
     ETC_KOTTI_EXPLORER_API,
     ANVIL_RPC,
-} from '../environment.js';
+} from "../environment.js";
 
 const ETHER = {
-    name: 'Ether',
-    symbol: 'ETH',
+    name: "Ether",
+    symbol: "ETH",
     decimals: 18,
 };
 
 const MATIC = {
-    name: 'Matic',
-    symbol: 'MATIC',
+    name: "Matic",
+    symbol: "MATIC",
     decimals: 18,
 };
 
 const xDAI = {
-    name: 'xDAI',
-    symbol: 'xDAI',
+    name: "xDAI",
+    symbol: "xDAI",
     decimals: 18,
 };
 
 const AVAX = {
-    name: 'AVAX',
-    symbol: 'AVAX',
+    name: "AVAX",
+    symbol: "AVAX",
     decimals: 18,
 };
 
 const BNB = {
-    name: 'BNB',
-    symbol: 'BNB',
+    name: "BNB",
+    symbol: "BNB",
     decimals: 18,
 };
 
 const KOT = {
-    name: 'Kotti Ether',
-    symbol: 'KOT',
+    name: "Kotti Ether",
+    symbol: "KOT",
     decimals: 18,
 };
 
 const ETC = {
-    name: 'Ethereum Clasic Ether',
-    symbol: 'ETC',
+    name: "Ethereum Clasic Ether",
+    symbol: "ETC",
     decimals: 18,
 };
 
 export const defaultNetworks = () => {
     return {
-        '31337': {
-            networkId: '31337',
-            name: 'anvil',
+        "31337": {
+            networkId: "31337",
+            name: "anvil",
             currency: ETHER,
             web3Rpc: ANVIL_RPC(),
             syncContracts: true,
             //syncBlocks: true
-        }
+        },
         /*
         ,
         '1337': {
@@ -345,5 +346,3 @@ export const defaultNetworks = () => {
         */
     } as { [networkId: string]: Network | undefined };
 };
-
-export default defaultNetworks;

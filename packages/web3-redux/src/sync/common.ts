@@ -1,1 +1,1 @@
-export const name = 'Sync';
+export const SyncName = "Sync";

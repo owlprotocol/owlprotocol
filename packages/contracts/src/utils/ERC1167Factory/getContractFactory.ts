@@ -1,15 +1,15 @@
 /**
  * Typescript implementation of ERC1167 library pure functions
  */
-import { ContractFactory, Overrides } from 'ethers';
-import type { BaseContract, Signer } from 'ethers';
+import { ContractFactory, Overrides } from "ethers";
+import type { BaseContract, Signer } from "ethers";
 
-import { ERC1167Factory } from '../../ethers/types.js';
-import { getFactories } from '../../ethers/factories.js';
-import { cloneDeterministicAddress, deployDeterministicAddress, ERC1167FactoryAddress } from './getAddress.js';
-import { cloneDeterministic, deployDeterministic } from './deploy.js';
-import { getInitData } from './getInitData.js';
-import { ContractParameters, ContractParametersWithOverrides, CustomFactory } from './factory.js';
+import { cloneDeterministicAddress, deployDeterministicAddress, ERC1167FactoryAddress } from "./getAddress.js";
+import { cloneDeterministic, deployDeterministic } from "./deploy.js";
+import { getInitData } from "./getInitData.js";
+import { ContractParameters, ContractParametersWithOverrides, CustomFactory } from "./factory.js";
+import { getFactories } from "../../ethers/factories.js";
+import { ERC1167Factory } from "../../ethers/types.js";
 
 export const ERC1167FactoryImplementation = (ethers: Signer) => {
     const factory = getFactories(ethers).ERC1167Factory;
@@ -20,7 +20,7 @@ export const ERC1167FactoryImplementation = (ethers: Signer) => {
 export interface DeterministicFactoryArgs<
     Factory extends ContractFactory = ContractFactory,
     //@ts-expect-error
-    ContractTyped extends BaseContract = ReturnType<Factory['attach']>,
+    ContractTyped extends BaseContract = ReturnType<Factory["attach"]>,
     InitSignature extends keyof ContractTyped | void = void,
 > {
     contractFactory: Factory;
@@ -32,7 +32,7 @@ export interface DeterministicFactoryArgs<
 export function deterministicFactory<
     Factory extends ContractFactory = ContractFactory,
     //@ts-expect-error
-    ContractTyped extends BaseContract = ReturnType<Factory['attach']>,
+    ContractTyped extends BaseContract = ReturnType<Factory["attach"]>,
     InitSignature extends keyof ContractTyped | void = void,
 >(args: DeterministicFactoryArgs<Factory, ContractTyped, InitSignature>) {
     const { contractFactory, salt, initSignature, msgSender } = args;
@@ -89,7 +89,7 @@ export function deterministicFactory<
 
     const exists = async (...args: ContractParameters<ContractTyped, InitSignature>) => {
         const address = getAddress(...args);
-        if ((await cloneFactory.provider.getCode(address)) != '0x') return true;
+        if ((await cloneFactory.provider.getCode(address)) != "0x") return true;
         return false;
     };
 
@@ -97,7 +97,7 @@ export function deterministicFactory<
     const factory = contractFactory.connect(contractFactory.signer) as CustomFactory<ContractTyped, InitSignature>;
     factory.deploy = deploy;
     factory.getDeployTransaction = () => {
-        throw new Error('Deterministic Factory getDeployTransaction() Unimplemented!');
+        throw new Error("Deterministic Factory getDeployTransaction() Unimplemented!");
     };
     factory.getInitData = getInitData2;
     factory.getAddress = getAddress;
@@ -111,7 +111,7 @@ export function deterministicFactory<
 interface ProxyFactoryArgs<
     Factory extends ContractFactory = ContractFactory,
     //@ts-expect-error
-    ContractTyped extends BaseContract = ReturnType<Factory['attach']>,
+    ContractTyped extends BaseContract = ReturnType<Factory["attach"]>,
     InitSignature extends keyof ContractTyped | void = void,
 > extends DeterministicFactoryArgs<Factory, ContractTyped, InitSignature> {
     implementationAddress: string;
@@ -119,7 +119,7 @@ interface ProxyFactoryArgs<
 export function proxy1167Factory<
     Factory extends ContractFactory = ContractFactory,
     //@ts-expect-error
-    ContractTyped extends BaseContract = ReturnType<Factory['attach']>,
+    ContractTyped extends BaseContract = ReturnType<Factory["attach"]>,
     InitSignature extends keyof ContractTyped | void = void,
 >(args: ProxyFactoryArgs<Factory, ContractTyped, InitSignature>) {
     const { contractFactory, implementationAddress, salt, initSignature, msgSender } = args;
@@ -176,7 +176,7 @@ export function proxy1167Factory<
 
     const exists = async (...args: ContractParameters<ContractTyped, InitSignature>) => {
         const address = getAddress(...args);
-        if ((await cloneFactory.provider.getCode(address)) != '0x') return true;
+        if ((await cloneFactory.provider.getCode(address)) != "0x") return true;
         return false;
     };
 
@@ -184,7 +184,7 @@ export function proxy1167Factory<
     const factory = contractFactory.connect(contractFactory.signer) as CustomFactory<ContractTyped, InitSignature>;
     factory.deploy = deploy;
     factory.getDeployTransaction = () => {
-        throw new Error('EIP1167 Proxy Factory getDeployTransaction() Unimplemented!');
+        throw new Error("EIP1167 Proxy Factory getDeployTransaction() Unimplemented!");
     };
     factory.getInitData = getInitData2;
     factory.getAddress = getAddress;

@@ -1,11 +1,11 @@
-import { assert } from 'chai';
-import { name } from './common.js';
-import NetworkCRUD from './crud.js';
-import { createStore, StoreType } from '../store.js';
+import { assert } from "chai";
+import { NetworkName } from "./common.js";
+import { NetworkCRUD } from "./crud.js";
+import { createStore, StoreType } from "../store.js";
 
-import { networkId } from '../test/data.js';
+import { networkId } from "../test/data.js";
 
-describe(`${name}.integration`, () => {
+describe(`${NetworkName}.integration`, () => {
     const item = {
         networkId,
     };
@@ -17,8 +17,8 @@ describe(`${name}.integration`, () => {
         store = createStore();
     });
 
-    describe('selectors', () => {
-        it('selectByIdSingle', () => {
+    describe("selectors", () => {
+        it("selectByIdSingle", () => {
             store.dispatch(NetworkCRUD.actions.create(item));
             const selected = NetworkCRUD.selectors.selectByIdSingle(store.getState(), id);
             assert.deepEqual(selected, item);

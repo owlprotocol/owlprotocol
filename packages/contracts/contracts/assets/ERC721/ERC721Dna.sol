@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.9;
 
-import {ERC721DnaBase} from './ERC721DnaBase.sol';
+import {ERC721DnaBase} from "./ERC721DnaBase.sol";
 
 /**
  * @dev ERC721DNA
@@ -31,32 +31,6 @@ contract ERC721Dna is ERC721DnaBase {
         address _feeReceiver,
         uint96 _feeNumerator
     ) external initializer {
-        __ERC721Dna_init(
-            _admin,
-            _initContractURI,
-            _gsnForwarder,
-            _name,
-            _symbol,
-            _initBaseURI,
-            _feeReceiver,
-            _feeNumerator
-        );
-    }
-
-    /**
-     * @dev Same as initialize but designed for usage with proxies.
-     *      Protected with `onlyInitializing` modifier.
-     */
-    function proxyInitialize(
-        address _admin,
-        string calldata _initContractURI,
-        address _gsnForwarder,
-        string calldata _name,
-        string calldata _symbol,
-        string calldata _initBaseURI,
-        address _feeReceiver,
-        uint96 _feeNumerator
-    ) external onlyInitializing {
         __ERC721Dna_init(
             _admin,
             _initContractURI,

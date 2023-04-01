@@ -1,8 +1,8 @@
 import { ComponentStory, ComponentMeta } from '@storybook/react';
-import { Contract } from '@owlprotocol/web3-redux';
+import { ContractHelpers } from '@owlprotocol/web3-redux';
 
 const UseERC20Template: ComponentStory<any> = (args: any) => {
-    const [contracts] = Contract.hooks.useERC20Contracts()
+    const [contracts] = ContractHelpers.IERC20.useContracts()
 
     return <>useERC20Contracts {`count = ${contracts.length}`}<br /><br />
         {
@@ -15,7 +15,7 @@ const UseERC20Template: ComponentStory<any> = (args: any) => {
 export const UseERC20 = UseERC20Template.bind({});
 
 const UseERC721Template: ComponentStory<any> = (args: any) => {
-    const [contracts] = Contract.hooks.useERC721Contracts()
+    const [contracts] = ContractHelpers.IERC721.useContracts()
 
     return <>useERC721Contracts {`count = ${contracts.length}`}<br /><br />
         {
@@ -28,7 +28,7 @@ const UseERC721Template: ComponentStory<any> = (args: any) => {
 export const UseERC721 = UseERC721Template.bind({});
 
 const UseERC1155Template: ComponentStory<any> = (args: any) => {
-    const [contracts] = Contract.hooks.useERC1155Contracts()
+    const [contracts] = ContractHelpers.IERC1155.useContracts()
 
     return <>useERC1155Contracts {`count = ${contracts.length}`}<br /><br />
         {
@@ -41,7 +41,7 @@ const UseERC1155Template: ComponentStory<any> = (args: any) => {
 export const UseERC1155 = UseERC1155Template.bind({});
 
 const UseAssetRouterCraftTemplate: ComponentStory<any> = (args: any) => {
-    const [contracts] = Contract.hooks.useAssetRouterCraftContracts()
+    const [contracts] = ContractHelpers.IAssetRouterCraft.useContracts()
 
     return <>useAssetRouterCraftContracts {`count = ${contracts.length}`}<br /><br />
         {

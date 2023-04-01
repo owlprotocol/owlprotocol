@@ -1,31 +1,24 @@
-import { SignerWithAddress } from '@nomiclabs/hardhat-ethers/signers';
+import { SignerWithAddress } from "@nomiclabs/hardhat-ethers/signers";
 
-import hre, { ethers } from 'hardhat';
-import {
-    AssetRouterOutput,
-    ERC20Mintable,
-    ERC721Mintable,
-    ERC721MintableAutoId,
-    ERC1155Mintable,
-} from '../../../ethers/types';
-import deployProxyNick from '../../../deploy-hre/common/DeterministicDeployer.js';
-import deployProxyFactory from '../../../deploy-hre/common/ProxyFactory.js';
-import { ERC20MintableInitializeArgs, flattenInitArgsERC20Mintable } from '../../../utils/ERC20Mintable';
-import { ERC721MintableInitializeArgs, flattenInitArgsERC721Mintable } from '../../../utils/ERC721Mintable';
-import { ERC1155MintableInitializeArgs, flattenInitArgsERC1155Mintable } from '../../../utils/ERC1155Mintable';
-import { expect } from 'chai';
-import { factories, Factories, getFactories } from '../../../ethers/factories';
-import { getDeterministicInitializeFactories, InitializeFactories } from '../../../ethers/deterministicFactories';
-import { AssetRouterOutputInitializeArgs, flattenInitArgsAssetRouterOutput } from '../../../utils/AssetRouterOutput';
-import { MINTER_ROLE } from '../../../utils/IAccessControl';
+import hre, { ethers } from "hardhat";
+import { expect } from "chai";
+import { AssetRouterOutput, ERC20Mintable, ERC721MintableAutoId, ERC1155Mintable } from "../../../ethers/types.js";
+import deployProxyNick from "../../../deploy-hre/common/DeterministicDeployer.js";
+import ProxyFactoryDeploy from "../../../deploy-hre/common/ProxyFactory.js";
+import { ERC20MintableInitializeArgs, flattenInitArgsERC20Mintable } from "../../../utils/ERC20Mintable.js";
+import { ERC1155MintableInitializeArgs, flattenInitArgsERC1155Mintable } from "../../../utils/ERC1155Mintable.js";
+import { factories, Factories, getFactories } from "../../../ethers/factories.js";
+import { getDeterministicInitializeFactories, InitializeFactories } from "../../../ethers/deterministicFactories.js";
+import { AssetRouterOutputInitializeArgs, flattenInitArgsAssetRouterOutput } from "../../../utils/AssetRouterOutput.js";
+import { MINTER_ROLE } from "../../../utils/IAccessControl.js";
 import {
     ERC721MintableAutoIdInitializeArgs,
     flattenInitArgsERC721MintableAutoId,
-} from '../../../utils/ERC721MintableAutoId';
-import { ERC1167FactoryAddress } from '../../../utils/ERC1167Factory';
+} from "../../../utils/ERC721MintableAutoId.js";
+import { ERC1167FactoryAddress } from "../../../utils/ERC1167Factory/index.js";
 
-const cloneFactory = factories.ERC1167Factory.attach(ERC1167FactoryAddress)
-describe('AssetRouterOutput', function () {
+const cloneFactory = factories.ERC1167Factory.attach(ERC1167FactoryAddress);
+describe("AssetRouterOutput", function () {
     let signers: SignerWithAddress[];
     let factories: Factories;
     let deterministicInitFactories: InitializeFactories;
@@ -38,7 +31,7 @@ describe('AssetRouterOutput', function () {
 
     before(async () => {
         await deployProxyNick(hre as any);
-        await deployProxyFactory(hre as any);
+        await ProxyFactoryDeploy(hre as any);
 
         signers = await ethers.getSigners();
         const signer = signers[0];
@@ -50,7 +43,7 @@ describe('AssetRouterOutput', function () {
         AssetRouterOutputFactory = deterministicInitFactories.AssetRouterOutput;
     });
 
-    describe('empty', () => {
+    describe("empty", () => {
         beforeEach(async () => {
             assetRouterOutput = {
                 admin: signers[0].address,
@@ -60,7 +53,6 @@ describe('AssetRouterOutput', function () {
                         outputableAmount: 0,
 
                         erc20Mint: [],
-
 
                         erc721MintAutoId: [],
 
@@ -74,21 +66,21 @@ describe('AssetRouterOutput', function () {
             AssetRouterOutput = await AssetRouterOutputFactory.deploy(...assetRouterInitArgs);
         });
 
-        it('getBasket', async () => {
+        it("getBasket", async () => {
             await AssetRouterOutput.deposit(1, 0);
             const b = await AssetRouterOutput.getOutputBasket(0);
-            expect(b.outputableAmount.toString()).to.be.eq('1');
+            expect(b.outputableAmount.toString()).to.be.eq("1");
         });
 
-        it('success', async () => {
+        it("success", async () => {
             await AssetRouterOutput.deposit(1, 0);
             await AssetRouterOutput.output(signers[0].address, 1, 0);
             const b = await AssetRouterOutput.getOutputBasket(0);
-            expect(b.outputableAmount.toString()).to.be.eq('0');
+            expect(b.outputableAmount.toString()).to.be.eq("0");
         });
     });
 
-    describe('erc20', () => {
+    describe("erc20", () => {
         let tokenName = 0;
         let token: ERC20MintableInitializeArgs;
         let ERC20MintableFactory: typeof deterministicInitFactories.ERC20Mintable;
@@ -109,7 +101,7 @@ describe('AssetRouterOutput', function () {
             tokenName++;
         });
 
-        describe('erc20Mint', () => {
+        describe("erc20Mint", () => {
             beforeEach(async () => {
                 assetRouterOutput = {
                     admin: signers[0].address,
@@ -119,7 +111,6 @@ describe('AssetRouterOutput', function () {
                             outputableAmount: 0,
 
                             erc20Mint: [{ contractAddr: ERC20Mintable.address, amount: 1 }],
-
 
                             erc721MintAutoId: [],
 
@@ -133,19 +124,19 @@ describe('AssetRouterOutput', function () {
                 AssetRouterOutput = await AssetRouterOutputFactory.deploy(...assetRouterInitArgs);
             });
 
-            it('success', async () => {
+            it("success", async () => {
                 await ERC20Mintable.grantRole(MINTER_ROLE, AssetRouterOutput.address);
                 await AssetRouterOutput.deposit(1, 0);
-                expect((await AssetRouterOutput.getOutputBasket(0)).outputableAmount.toString()).to.be.eq('1');
+                expect((await AssetRouterOutput.getOutputBasket(0)).outputableAmount.toString()).to.be.eq("1");
 
                 await AssetRouterOutput.output(signers[0].address, 1, 0);
-                expect((await AssetRouterOutput.getOutputBasket(0)).outputableAmount.toString()).to.be.eq('0');
-                expect(await ERC20Mintable.balanceOf(signers[0].address)).to.be.eq('1');
+                expect((await AssetRouterOutput.getOutputBasket(0)).outputableAmount.toString()).to.be.eq("0");
+                expect(await ERC20Mintable.balanceOf(signers[0].address)).to.be.eq("1");
             });
         });
     });
 
-    describe('erc721AutoId', () => {
+    describe("erc721AutoId", () => {
         let tokenName = 0;
         let token: ERC721MintableAutoIdInitializeArgs;
         let ERC721MintableAutoIdFactory: typeof deterministicInitFactories.ERC721MintableAutoId;
@@ -162,14 +153,13 @@ describe('AssetRouterOutput', function () {
                 symbol: `TK${tokenName}`,
                 initBaseURI: `token.${tokenName}.com/token`,
                 feeReceiver: signers[0].address,
-
             };
             const tokenInitArgs = flattenInitArgsERC721MintableAutoId(token);
             ERC721MintableAutoId = await ERC721MintableAutoIdFactory.deploy(...tokenInitArgs);
             tokenName++;
         });
 
-        describe('erc721MintAutoId', () => {
+        describe("erc721MintAutoId", () => {
             beforeEach(async () => {
                 assetRouterOutput = {
                     admin: signers[0].address,
@@ -179,7 +169,6 @@ describe('AssetRouterOutput', function () {
                             outputableAmount: 0,
 
                             erc20Mint: [],
-
 
                             erc721MintAutoId: [{ contractAddr: ERC721MintableAutoId.address }],
 
@@ -193,19 +182,19 @@ describe('AssetRouterOutput', function () {
                 AssetRouterOutput = await AssetRouterOutputFactory.deploy(...assetRouterInitArgs);
             });
 
-            it('success', async () => {
+            it("success", async () => {
                 await ERC721MintableAutoId.grantRole(MINTER_ROLE, AssetRouterOutput.address);
                 await AssetRouterOutput.deposit(1, 0);
-                expect((await AssetRouterOutput.getOutputBasket(0)).outputableAmount.toString()).to.be.eq('1');
+                expect((await AssetRouterOutput.getOutputBasket(0)).outputableAmount.toString()).to.be.eq("1");
 
                 await AssetRouterOutput.output(signers[0].address, 1, 0);
-                expect((await AssetRouterOutput.getOutputBasket(0)).outputableAmount.toString()).to.be.eq('0');
-                expect(await ERC721MintableAutoId.balanceOf(signers[0].address)).to.be.eq('1');
+                expect((await AssetRouterOutput.getOutputBasket(0)).outputableAmount.toString()).to.be.eq("0");
+                expect(await ERC721MintableAutoId.balanceOf(signers[0].address)).to.be.eq("1");
             });
         });
     });
 
-    describe('erc1155', () => {
+    describe("erc1155", () => {
         let tokenName = 0;
         let token: ERC1155MintableInitializeArgs;
         let ERC1155MintableFactory: typeof deterministicInitFactories.ERC1155Mintable;
@@ -220,14 +209,13 @@ describe('AssetRouterOutput', function () {
                 gsnForwarder: ethers.constants.AddressZero,
                 uri: `token.${tokenName}.com/token`,
                 feeReceiver: signers[0].address,
-
             };
             const tokenInitArgs = flattenInitArgsERC1155Mintable(token);
             ERC1155Mintable = await ERC1155MintableFactory.deploy(...tokenInitArgs);
             tokenName++;
         });
 
-        describe('erc1155Mint', () => {
+        describe("erc1155Mint", () => {
             beforeEach(async () => {
                 assetRouterOutput = {
                     admin: signers[0].address,
@@ -248,14 +236,14 @@ describe('AssetRouterOutput', function () {
                 AssetRouterOutput = await AssetRouterOutputFactory.deploy(...assetRouterInitArgs);
             });
 
-            it('success', async () => {
+            it("success", async () => {
                 await ERC1155Mintable.grantRole(MINTER_ROLE, AssetRouterOutput.address);
                 await AssetRouterOutput.deposit(1, 0);
-                expect((await AssetRouterOutput.getOutputBasket(0)).outputableAmount.toString()).to.be.eq('1');
+                expect((await AssetRouterOutput.getOutputBasket(0)).outputableAmount.toString()).to.be.eq("1");
 
                 await AssetRouterOutput.output(signers[0].address, 1, 0);
-                expect((await AssetRouterOutput.getOutputBasket(0)).outputableAmount.toString()).to.be.eq('0');
-                expect(await ERC1155Mintable.balanceOf(signers[0].address, 1)).to.be.eq('1');
+                expect((await AssetRouterOutput.getOutputBasket(0)).outputableAmount.toString()).to.be.eq("0");
+                expect(await ERC1155Mintable.balanceOf(signers[0].address, 1)).to.be.eq("1");
             });
         });
     });

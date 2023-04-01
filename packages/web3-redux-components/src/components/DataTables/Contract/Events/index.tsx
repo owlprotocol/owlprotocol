@@ -1,21 +1,18 @@
 import { Badge, Table, Tbody, Td, Th, Thead, Tr } from '@chakra-ui/react';
-import { Contract } from '@owlprotocol/web3-redux';
+import { Contract, EthLog } from '@owlprotocol/web3-redux';
 
 export interface ContractEventsTableProps {
-    networkId: string | undefined;
+    networkId: string;
     address: string | undefined;
-    eventName: string | undefined;
+    eventFormatFull: string | undefined;
 }
 
 const THEAD_LABELS = ['name', 'blockNumber', 'logIndex', 'returnValues'];
-export const ContractEventsTable = ({ networkId, address, eventName }: ContractEventsTableProps) => {
-    const [events, options] = Contract.hooks.useEvents(networkId, address, eventName, undefined, {
-        past: true,
-        limit: 50,
-    });
-    const { error } = options;
+export const ContractEventsTable = ({ networkId, address, eventFormatFull }: ContractEventsTableProps) => {
+    const [events, options] = EthLog.hooks.useEthLogWhere({ networkId, address, eventFormatFull });
+    const { isLoading } = options;
 
-    if (error) return <>Error: {(error as Error).message}</>;
+    if (isLoading) return <>Loading</>
     else
         return (
             <Table variant="unstyled">
@@ -37,7 +34,7 @@ export const ContractEventsTable = ({ networkId, address, eventName }: ContractE
                             <Tr key={`${blockNumber}-${logIndex}`}>
                                 <Th>
                                     <Td p={0}>
-                                        <Badge textTransform={'capitalize'}>{eventName}</Badge>
+                                        <Badge textTransform={'capitalize'}>{eventFormatFull}</Badge>
                                     </Td>
                                 </Th>
                                 <Th>

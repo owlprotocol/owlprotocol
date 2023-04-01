@@ -1,4 +1,4 @@
-import { Contract } from '@owlprotocol/web3-redux';
+import { ERC1155 } from '@owlprotocol/web3-redux';
 import composeHooks from 'react-hooks-compose';
 import ItemCardPresenter from '../ItemCardPresenter/index.js';
 
@@ -10,9 +10,8 @@ export interface useERC1155ItemCardProps {
     assetPreviewSrc: string;
 }
 export const useERC1155ItemCard = ({ networkId, address, tokenId }: useERC1155ItemCardProps) => {
-    const { metadata } = Contract.hooks.useERC1155(networkId, address, undefined, tokenId, {
-        metadata: true,
-    });
+    const [token] = ERC1155.hooks.useERC1155({networkId, address, id: tokenId});
+    const metadata = token?.metadata
     return {
         itemName: metadata?.name,
         assetPreviewSrc: metadata?.image,

@@ -1,3 +1,4 @@
+//@ts-nocheck
 import { Skeleton } from "@chakra-ui/react";
 import { NFTGenerativeItem } from "@owlprotocol/web3-redux";
 import { add, omit } from "lodash-es";

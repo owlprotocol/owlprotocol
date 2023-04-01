@@ -1,7 +1,7 @@
 declare global {
     namespace NodeJS {
         interface ProcessEnv {
-            NODE_ENV: 'development' | 'production';
+            NODE_ENV: "development" | "production";
             GANACHE_RPC?: string;
             MAINNET_RPC?: string;
             ROPSTEN_RPC?: string;

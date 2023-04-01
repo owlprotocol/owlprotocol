@@ -53,7 +53,9 @@
   },
   "dependencies": {
     "casual": "^1.6.2",
-    "json-server": "^0.17.2"
+    "ipfs-core": "^0.16.1",
+    "json-server": "^0.17.2",
+    "node-fetch": "^3.3.1"
   },
   "devDependencies": {
     "@owlprotocol/contracts": "workspace:*",

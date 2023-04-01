@@ -1,18 +1,19 @@
-import { put, call, all } from 'typed-redux-saga';
-import { Action } from 'redux';
-import { actionDecode, TransactionSync } from '../model/index.js';
-import type { TransactionCRUD } from '../../transaction/crud.js';
-import { SyncCRUD } from '../crud.js';
+import { put, call, all } from "typed-redux-saga";
+import { Action } from "redux";
+import { actionDecode, TransactionSync } from "../model/index.js";
+import type { EthTransactionCRUD } from "../../ethmodels/ethtransaction/crud.js";
+import { SyncCRUD } from "../crud.js";
 
 //Handle on transaction update
-export function* transactionSync({ payload }: ReturnType<typeof TransactionCRUD.actions.create>) {
-
-    const syncs = (yield* call(SyncCRUD.db.where, { type: 'Transaction' })) as TransactionSync[];
+export function* transactionSync({ payload }: ReturnType<typeof EthTransactionCRUD.actions.create>) {
+    const syncs = (yield* call(SyncCRUD.db.where, {
+        type: "Transaction",
+    })) as TransactionSync[];
     const actions: Action[] = []; //triggered actions
-    console.debug({ syncs })
+    console.debug({ syncs });
 
     syncs.map((s) => {
-        console.debug({ s, payload })
+        console.debug({ s, payload });
         if (s.networkId === payload.networkId && (s.matchFrom === payload.from || s.matchTo === payload.to)) {
             actions.push(...s.actions.map(actionDecode));
         }

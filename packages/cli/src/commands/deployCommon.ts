@@ -1,37 +1,25 @@
 import yargs from 'yargs';
-import config from 'config';
-import { ethers } from 'ethers';
-import { HD_WALLET_MNEMONIC, PRIVATE_KEY_0, NETWORK } from '../utils/environment.js';
+
 import { Deploy } from '@owlprotocol/contracts';
 
-const jsonRpcEndpoint: string = config.get(`network.${NETWORK}.config.url`);
-const provider = new ethers.providers.JsonRpcProvider(jsonRpcEndpoint);
-
-export type DeployCommonResult = {
-    proxyFactory?: any;
-    deterministicDeployer?: any;
-    implementations?: any;
-    upgradeableBeacon?: any;
-};
+import { getNetworkCfg } from '../utils/networkCfg.js';
 
 export const command = 'deployCommon';
 
 export const describe = `Deploy the base smart contracts:
-
 - Deterministic Deployer
 - Proxy Factory
 - Implementations of all our smart contracts
 - UpgradeableBeacon
 
-e.g. node dist/index.cjs deployCommon
-
-
-
 `;
+
+export const example = '$0 deployCommon';
+export const exampleDescription = 'deploy the base smart contracts';
 
 export const builder = (yargs: ReturnType<yargs.Argv>) => {
     return yargs.option('debug', {
-        describe: 'Outputs debug statements',
+        describe: 'Output debug statements',
         type: 'boolean',
     });
 };
@@ -39,21 +27,9 @@ export const builder = (yargs: ReturnType<yargs.Argv>) => {
 export const handler = async (argv: yargs.ArgumentsCamelCase) => {
     const debug = argv.debug || false;
 
-    console.log(`Deploying Common Beacons and Implementations to ${NETWORK}`);
+    const { network, signers, provider } = getNetworkCfg();
 
-    const signers: Array<ethers.Wallet> = [];
-
-    let walletOne: ethers.Wallet;
-    if (HD_WALLET_MNEMONIC) {
-        walletOne = ethers.Wallet.fromMnemonic(HD_WALLET_MNEMONIC);
-    } else if (PRIVATE_KEY_0) {
-        walletOne = new ethers.Wallet(PRIVATE_KEY_0);
-    } else {
-        throw new Error('ENV variable HD_WALLET_MNEMONIC or PRIVATE_KEY_0 must be provided');
-    }
-    const network: Deploy.RunTimeEnvironment['network'] = config.get(`network.${NETWORK}`);
-
-    signers[0] = walletOne.connect(provider);
+    console.log(`Deploying Common Beacons and Implementations to ${network.name}`);
 
     const deployCommonResult = await deployCommon({ provider, signers, network });
     debug && console.debug(deployCommonResult);
@@ -61,21 +37,18 @@ export const handler = async (argv: yargs.ArgumentsCamelCase) => {
     console.log('Done');
 };
 
-export const deployCommon = async ({
-    provider,
-    signers,
-    network,
-}: Deploy.RunTimeEnvironment): Promise<DeployCommonResult> => {
-    let deployCommonResult: DeployCommonResult = {};
+export const deployCommon = async ({ provider, signers, network }: Deploy.RunTimeEnvironment): Promise<any> => {
+    const deployCommonResult: any = {};
 
-    deployCommonResult.deterministicDeployer = await Deploy.deployDeterministicDeployer({
+    deployCommonResult.deterministicDeployer = await Deploy.DeterministicDeployerDeploy({
         provider,
         signers,
         network,
     });
-    deployCommonResult.proxyFactory = await Deploy.deployProxyFactory({ provider, signers, network });
-    deployCommonResult.implementations = await Deploy.deployImplementations({ provider, signers, network });
-    deployCommonResult.upgradeableBeacon = await Deploy.deployUpgradeableBeacon({ provider, signers, network });
+    deployCommonResult.proxyFactory = await Deploy.ProxyFactoryDeploy({ provider, signers, network });
+    // this deploys everything in contracts/src/ethers/factories
+    deployCommonResult.implementations = await Deploy.ImplementationsDeploy({ provider, signers, network });
+    deployCommonResult.upgradeableBeacon = await Deploy.UpgradeableBeaconDeploy({ provider, signers, network });
 
     return deployCommonResult;
 };

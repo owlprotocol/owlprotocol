@@ -1,28 +1,28 @@
 //SPDX-License-Identifier: MIT
 pragma solidity ^0.8.0;
 
-import {IERC20Upgradeable} from '@openzeppelin/contracts-upgradeable/token/ERC20/IERC20Upgradeable.sol';
-import {IERC721Upgradeable} from '@openzeppelin/contracts-upgradeable/token/ERC721/IERC721Upgradeable.sol';
-import {IERC1155Upgradeable} from '@openzeppelin/contracts-upgradeable/token/ERC1155/IERC1155Upgradeable.sol';
+import {IERC20Upgradeable} from "@openzeppelin/contracts-upgradeable/token/ERC20/IERC20Upgradeable.sol";
+import {IERC721Upgradeable} from "@openzeppelin/contracts-upgradeable/token/ERC721/IERC721Upgradeable.sol";
+import {IERC1155Upgradeable} from "@openzeppelin/contracts-upgradeable/token/ERC1155/IERC1155Upgradeable.sol";
 
-import {ERC721HolderUpgradeable} from '@openzeppelin/contracts-upgradeable/token/ERC721/utils/ERC721HolderUpgradeable.sol';
-import {ERC1155HolderUpgradeable} from '@openzeppelin/contracts-upgradeable/token/ERC1155/utils/ERC1155HolderUpgradeable.sol';
-import {ERC1155ReceiverUpgradeable} from '@openzeppelin/contracts-upgradeable/token/ERC1155/utils/ERC1155ReceiverUpgradeable.sol';
+import {ERC721HolderUpgradeable} from "@openzeppelin/contracts-upgradeable/token/ERC721/utils/ERC721HolderUpgradeable.sol";
+import {ERC1155HolderUpgradeable} from "@openzeppelin/contracts-upgradeable/token/ERC1155/utils/ERC1155HolderUpgradeable.sol";
+import {ERC1155ReceiverUpgradeable} from "@openzeppelin/contracts-upgradeable/token/ERC1155/utils/ERC1155ReceiverUpgradeable.sol";
 
-import {AddressUpgradeable} from '@openzeppelin/contracts-upgradeable/utils/AddressUpgradeable.sol';
-import {SafeERC20Upgradeable} from '@openzeppelin/contracts-upgradeable/token/ERC20/utils/SafeERC20Upgradeable.sol';
+import {AddressUpgradeable} from "@openzeppelin/contracts-upgradeable/utils/AddressUpgradeable.sol";
+import {SafeERC20Upgradeable} from "@openzeppelin/contracts-upgradeable/token/ERC20/utils/SafeERC20Upgradeable.sol";
 
-import {OwlBase} from '../../common/OwlBase.sol';
+import {OwlBase} from "../../common/OwlBase.sol";
 
-import {AssetBasketOutput, AssetOutputLib} from './AssetOutputLib.sol';
-import {IAssetRouterInput} from './IAssetRouterInput.sol';
-import {IAssetRouterOutput} from './IAssetRouterOutput.sol';
+import {AssetBasketOutput, AssetOutputLib} from "./AssetOutputLib.sol";
+import {IAssetRouterInput} from "./IAssetRouterInput.sol";
+import {IAssetRouterOutput} from "./IAssetRouterOutput.sol";
 
-import {IERC165Upgradeable} from '@openzeppelin/contracts-upgradeable/utils/introspection/IERC165Upgradeable.sol';
-import {IERC1155ReceiverUpgradeable} from '@openzeppelin/contracts-upgradeable/interfaces/IERC1155ReceiverUpgradeable.sol';
-import {IAccessControlUpgradeable} from '@openzeppelin/contracts-upgradeable/access/IAccessControlUpgradeable.sol';
-import {IRouterReceiver} from '../../common/IRouterReceiver.sol';
-import {IContractURI} from '../../common/IContractURI.sol';
+import {IERC165Upgradeable} from "@openzeppelin/contracts-upgradeable/utils/introspection/IERC165Upgradeable.sol";
+import {IERC1155ReceiverUpgradeable} from "@openzeppelin/contracts-upgradeable/interfaces/IERC1155ReceiverUpgradeable.sol";
+import {IAccessControlUpgradeable} from "@openzeppelin/contracts-upgradeable/access/IAccessControlUpgradeable.sol";
+import {IRouterReceiver} from "../../common/IRouterReceiver.sol";
+import {IContractURI} from "../../common/IContractURI.sol";
 
 /**
  * @dev Abstract contract with types and utilities that will be used by many (if
@@ -31,9 +31,9 @@ import {IContractURI} from '../../common/IContractURI.sol';
  *
  */
 contract AssetRouterOutput is ERC721HolderUpgradeable, ERC1155HolderUpgradeable, OwlBase, IAssetRouterOutput {
-    bytes32 internal constant ASSET_ROUTER_INPUT = keccak256('ASSET_ROUTER_INPUT');
-    bytes32 internal constant DEPOSIT_ROLE = keccak256('DEPOSIT_ROLE');
-    bytes32 internal constant WITHDRAW_ROLE = keccak256('WITHDRAW_ROLE');
+    bytes32 internal constant ASSET_ROUTER_INPUT = keccak256("ASSET_ROUTER_INPUT");
+    bytes32 internal constant DEPOSIT_ROLE = keccak256("DEPOSIT_ROLE");
+    bytes32 internal constant WITHDRAW_ROLE = keccak256("WITHDRAW_ROLE");
 
     // Array of outputBaskets in this configurations
     AssetBasketOutput[] internal outputBaskets;
@@ -56,18 +56,6 @@ contract AssetRouterOutput is ERC721HolderUpgradeable, ERC1155HolderUpgradeable,
         AssetBasketOutput[] calldata _outputBaskets,
         address[] calldata _routers
     ) external initializer {
-        __AssetRouterOutput_init(_admin, _initContractURI, _outputBaskets, _routers);
-    }
-
-    /**
-     * @dev See initialize. Uses onlyInitializing modifier, enabling running while initializing.
-     */
-    function proxyInitialize(
-        address _admin,
-        string calldata _initContractURI,
-        AssetBasketOutput[] calldata _outputBaskets,
-        address[] calldata _routers
-    ) external onlyInitializing {
         __AssetRouterOutput_init(_admin, _initContractURI, _outputBaskets, _routers);
     }
 
@@ -139,11 +127,7 @@ contract AssetRouterOutput is ERC721HolderUpgradeable, ERC1155HolderUpgradeable,
     /**
      * inheritdoc IAssetRouterOutput
      */
-    function output(
-        address to,
-        uint256 amount,
-        uint256 basketIdx
-    ) external onlyRole(ASSET_ROUTER_INPUT) {
+    function output(address to, uint256 amount, uint256 basketIdx) external onlyRole(ASSET_ROUTER_INPUT) {
         AssetOutputLib.output(outputBaskets[basketIdx], amount, to);
         emit RouteBasket(msg.sender, to, basketIdx, amount);
         emit UpdateBasket(basketIdx, -int256(amount));
@@ -152,13 +136,9 @@ contract AssetRouterOutput is ERC721HolderUpgradeable, ERC1155HolderUpgradeable,
     /**
      * inheritdoc OwlBase
      */
-    function supportsInterface(bytes4 interfaceId)
-        public
-        view
-        virtual
-        override(OwlBase, ERC1155ReceiverUpgradeable)
-        returns (bool)
-    {
+    function supportsInterface(
+        bytes4 interfaceId
+    ) public view virtual override(OwlBase, ERC1155ReceiverUpgradeable) returns (bool) {
         return interfaceId == type(IAssetRouterOutput).interfaceId || super.supportsInterface(interfaceId);
     }
 }

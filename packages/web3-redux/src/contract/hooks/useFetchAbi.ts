@@ -1,8 +1,9 @@
-import { useEffect, useMemo } from 'react';
-import { useDispatch } from 'react-redux';
-import NetworkCRUD from '../../network/crud.js';
-import { fetchAbi } from '../actions/index.js';
-import ContractCRUD from '../crud.js';
+/* eslint-disable */
+import { useEffect, useMemo } from "react";
+import { useDispatch } from "react-redux";
+import { NetworkCRUD } from "../../network/crud.js";
+import { fetchAbi } from "../actions/index.js";
+import { ContractCRUD } from "../crud.js";
 
 /**
  * Fetch Contract ABI
@@ -12,7 +13,7 @@ import ContractCRUD from '../crud.js';
 export function useFetchAbi(
     networkId: string | undefined,
     address: string | undefined,
-    fetch = 'ifnull' as 'ifnull' | true | false,
+    fetch = "ifnull" as "ifnull" | true | false,
 ) {
     const dispatch = useDispatch();
 
@@ -29,7 +30,7 @@ export function useFetchAbi(
             address &&
             explorerApiExists &&
             contractExists &&
-            ((fetch === 'ifnull' && !abiExists) || fetch === true)
+            ((fetch === "ifnull" && !abiExists) || fetch === true)
         ) {
             return fetchAbi({ networkId, address });
         }
@@ -41,5 +42,3 @@ export function useFetchAbi(
 
     return contract?.abi;
 }
-
-export default useFetchAbi;

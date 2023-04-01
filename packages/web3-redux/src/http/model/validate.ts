@@ -1,5 +1,5 @@
-import { HTTPCacheId, HTTPCache } from './interface.js';
-import { isUndefined, omitBy } from 'lodash-es';
+import { isUndefined, omitBy } from "lodash-es";
+import { HTTPCacheId, HTTPCache } from "./interface.js";
 
 /** @internal */
 export function validateId({ id }: HTTPCacheId): HTTPCacheId {
@@ -7,8 +7,8 @@ export function validateId({ id }: HTTPCacheId): HTTPCacheId {
 }
 
 /** @internal */
-export function toPrimaryKey({ id }: HTTPCacheId): string {
-    return id;
+export function toPrimaryKey({ id }: HTTPCacheId): [string] {
+    return [id];
 }
 
 /** @internal */

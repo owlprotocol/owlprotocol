@@ -19,7 +19,7 @@ export const ContractsManagerTableRow = ({
     interfaceIds = [],
 }: ContractsManagerTableRowPropsProps) => {
     const { themes } = useTheme();
-    const [network] = Network.hooks.useNetwork(networkId);
+    const [network] = Network.hooks.useGet(networkId);
     const networkName = network?.name;
 
     return (

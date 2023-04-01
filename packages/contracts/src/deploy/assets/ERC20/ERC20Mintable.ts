@@ -1,36 +1,49 @@
-import { getContractURIs, logDeployment, RunTimeEnvironment } from '../../utils.js';
-import { mapValues } from '../../../lodash.js';
-import { getFactories } from '../../../ethers/factories.js';
-import { getDeterministicFactories, getDeterministicInitializeFactories } from '../../../ethers/deterministicFactories.js';
-import { ERC20MintableInitializeArgs, flattenInitArgsERC20Mintable } from '../../../utils/ERC20Mintable.js';
-import { constants, utils } from 'ethers';
-import { getBeaconProxyFactories } from '../../../ethers/beaconProxyFactories.js';
-import { ERC1167FactoryAddress } from '../../../utils/ERC1167Factory/index.js';
+import { utils } from "ethers";
+import { getContractURIs, logDeployment, RunTimeEnvironment } from "../../utils.js";
+import { mapValues } from "../../../lodash.js";
+import { getFactories } from "../../../ethers/factories.js";
+import {
+    getDeterministicFactories,
+    getDeterministicInitializeFactories,
+} from "../../../ethers/deterministicFactories.js";
+import { ERC20MintableInitializeArgs, flattenInitArgsERC20Mintable } from "../../../utils/ERC20Mintable.js";
+import { getBeaconProxyFactories } from "../../../ethers/beaconProxyFactories.js";
+import { ERC1167FactoryAddress } from "../../../utils/ERC1167Factory/index.js";
 
 interface Params extends RunTimeEnvironment {
-    tokens: number,
-    balanceTarget: number
+    tokens: number;
+    balanceTarget: number;
 }
 export const ERC20MintableDeploy = async ({ provider, signers, network, tokens, balanceTarget }: Params) => {
-    const { awaitAllObj } = await import('@owlprotocol/utils')
-    const balanceTargetWei = utils.parseUnits(`${balanceTarget}`)
+    const { awaitAllObj } = await import("@owlprotocol/utils");
+    const balanceTargetWei = utils.parseUnits(`${balanceTarget}`);
 
     const signer = signers[0];
     const signerAddress = await signer.getAddress();
     let nonce = await provider.getTransactionCount(signerAddress);
 
     const factories = getFactories(signer);
-    const cloneFactory = factories.ERC1167Factory.attach(ERC1167FactoryAddress)
+    const cloneFactory = factories.ERC1167Factory.attach(ERC1167FactoryAddress);
     const deterministicFactories = getDeterministicFactories(factories);
-    const deterministicInitializeFactories = getDeterministicInitializeFactories(factories, cloneFactory, signerAddress);
+    const deterministicInitializeFactories = getDeterministicInitializeFactories(
+        factories,
+        cloneFactory,
+        signerAddress,
+    );
     const beaconFactory = deterministicInitializeFactories.UpgradeableBeacon;
-    const beaconProxyFactories = getBeaconProxyFactories(deterministicFactories, cloneFactory, beaconFactory, signerAddress);
+    //ERROR HERE
+    const beaconProxyFactories = getBeaconProxyFactories(
+        deterministicFactories,
+        cloneFactory,
+        beaconFactory,
+        signerAddress,
+    );
     const ERC20MintableFactory = beaconProxyFactories.ERC20Mintable;
 
     const { chainId } = network.config;
 
     //Contracts
-    const deployments: { [key: string]: ERC20MintableInitializeArgs } = {}
+    const deployments: { [key: string]: ERC20MintableInitializeArgs } = {};
     for (let i = 0; i < tokens; i++) {
         const name = `ERC20Mintable-${i}`;
         deployments[name] = {
@@ -38,7 +51,7 @@ export const ERC20MintableDeploy = async ({ provider, signers, network, tokens, 
             name,
             symbol: `TOK${i}`,
             contractUri: getContractURIs({ chainId, name }).contractUri,
-        }
+        };
     }
 
     //Deploy
@@ -66,32 +79,32 @@ export const ERC20MintableDeploy = async ({ provider, signers, network, tokens, 
         }
     });
 
-    const results = await awaitAllObj(promises)
+    const results = await awaitAllObj(promises);
 
     //Mint to balanceTarget
     const promisesMint = mapValues(results, async (r) => {
         if (!r.error) {
-            const contract = r.contract!
-            const balance = await contract.balanceOf(signerAddress)
-            const deficit = balanceTargetWei.sub(balance)
-            if (deficit.gt(utils.parseUnits('0'))) {
-                const tx = await contract.mint(signerAddress, deficit, { nonce: nonce++ })
+            const contract = r.contract!;
+            const balance = await contract.balanceOf(signerAddress);
+            const deficit = balanceTargetWei.sub(balance);
+            if (deficit.gt(utils.parseUnits("0"))) {
+                const tx = await contract.mint(signerAddress, deficit, { nonce: nonce++ });
                 return tx.wait();
             }
         }
     });
-    await awaitAllObj(promisesMint)
+    await awaitAllObj(promisesMint);
 
     return mapValues(results, (r, k) => {
         if (r.error) {
-            logDeployment(network.name, k, r.address, 'beacon-proxy', 'failed');
+            logDeployment(network.name, k, r.address, "beacon-proxy", "failed");
             console.error(r.error);
         } else {
-            logDeployment(network.name, k, r.address, 'beacon-proxy', r.deployed ? 'deployed' : 'exists');
+            logDeployment(network.name, k, r.address, "beacon-proxy", r.deployed ? "deployed" : "exists");
         }
         return r;
     });
 };
 
-ERC20MintableDeploy.tags = ['ERC20Mintable'];
-ERC20MintableDeploy.dependencies = ['Implementations', 'ERC1820', 'UpgradeableBeacon'];
+ERC20MintableDeploy.tags = ["ERC20Mintable"];
+ERC20MintableDeploy.dependencies = ["Implementations", "ERC1820", "UpgradeableBeacon"];

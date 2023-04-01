@@ -1,6 +1,6 @@
-import { put, call } from 'typed-redux-saga';
-import { GetChainIdAction } from '../actions/index.js';
-import NetworkCRUD from '../crud.js';
+import { put, call } from "typed-redux-saga";
+import { GetChainIdAction } from "../actions/index.js";
+import { NetworkCRUD } from "../crud.js";
 
 export function* getChainId(action: GetChainIdAction) {
     const { payload } = action;

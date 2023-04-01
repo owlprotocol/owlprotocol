@@ -1,10 +1,10 @@
-import { BaseSync } from './BaseSync.js';
+import { BaseSync } from "./BaseSync.js";
 
 /**
  * Sync middleware to handle {@link BlockHeader} CREATE/UPDATE actions.
  */
 export interface BlockSync extends BaseSync {
-    type: 'Block';
+    type: "Block";
     matchBlockNumberModulo?: number;
 }
 
@@ -16,12 +16,12 @@ export interface BlockSync extends BaseSync {
 export function createBlockSyncEveryBlock(
     id: string,
     networkId: string,
-    actions: BlockSync['actions'],
-    matchBlockNumberModulo: number = 1,
+    actions: BlockSync["actions"],
+    matchBlockNumberModulo = 1,
 ): BlockSync {
     return {
         id,
-        type: 'Block',
+        type: "Block",
         networkId,
         actions,
         matchBlockNumberModulo,

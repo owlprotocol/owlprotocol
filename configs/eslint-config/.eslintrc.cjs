@@ -20,9 +20,7 @@ module.exports = {
         },
     },
     rules: {
-        semi: 0,
         'linebreak-style': ['error', 'unix'],
-        quotes: ['error', 'single'],
         'no-console': 'off',
         'no-unused-vars': 'off',
         'no-empty': 'warn',
@@ -87,10 +85,6 @@ module.exports = {
         'import/resolver': {},
         'import/extensions': ['.js', '.mjs', '.jsx', '.ts', '.tsx'],
     },
-    overrides: [
-        {
-            files: ['**/*.ts', '**/*.tsx', '**/*.stories.*'],
-        },
-    ],
+    overrides: [],
     ignorePatterns: ['**/lib', '**/dist', '**/public', '**/storybook-static', '**/cache'],
 };

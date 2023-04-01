@@ -227,7 +227,7 @@ const config = {
             },
             algolia: {
                 apiKey: process.env.ALGOLIA_API_KEY || "owl",
-                indexName: "owlprotocol",
+                indexName: "owlprotocolxyz",
                 appId: process.env.ALGOLIA_APP_ID || "owl", // Optional, if you run the DocSearch crawler on your own
                 algoliaOptions: {}, // Optional, if provided by Algolia
             },

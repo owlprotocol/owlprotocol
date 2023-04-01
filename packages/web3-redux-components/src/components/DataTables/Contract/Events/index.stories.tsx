@@ -3,7 +3,6 @@ import { Contract, Network } from "@owlprotocol/web3-redux";
 import { Artifacts } from "@owlprotocol/contracts";
 import type { AbiItem } from "web3-utils";
 import { useEffect } from "react";
-import type { ContractWithObjects } from "@owlprotocol/web3-redux/src/contract/model";
 import ContractEventsTable, { ContractEventsTableProps } from ".";
 
 const abi = Artifacts.BlockNumber.abi as AbiItem[];
@@ -26,29 +25,4 @@ Main.args = {
     networkId: "1337",
     address: "0xf5059a5d33d5853360d16c683c16e67980206f36",
     eventName,
-};
-
-Main.decorators = [
-    (Story) => {
-        // @ts-expect-error
-        const [accounts] = Network.hooks.useAccounts("1337", true);
-        const from = accounts.length > 0 ? accounts[0] : undefined;
-        const [contract] = Contract.hooks.useDeploy(
-            { networkId: "1337", abi, bytecode, from, label },
-            undefined,
-            true
-        );
-        const web3Contract = (contract as ContractWithObjects | undefined)
-            ?.web3Contract as any | undefined;
-
-        useEffect(() => {
-            if (web3Contract && from)
-                web3Contract.methods
-                    .setValue(Math.floor(Math.random() * 100))
-                    .send({ gas: 1000000, from });
-        }, [web3Contract, from]);
-        console.debug({ address: contract?.address });
-
-        return <Story />;
-    },
-];
+} as any;

@@ -1,12 +1,12 @@
-import { attr, Model as ORMModel } from 'redux-orm';
-import { name } from '../common.js';
+import { attr, Model as ORMModel } from "redux-orm";
+import { ConfigName } from "../common.js";
 
-export default class Model extends ORMModel {
+export class ConfigORMModel extends ORMModel {
     static options = {
-        idAttribute: 'id',
+        idAttribute: "id",
     };
 
-    static modelName = name;
+    static modelName = ConfigName;
 
     static fields = {
         id: attr(),

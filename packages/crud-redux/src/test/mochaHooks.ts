@@ -1,18 +1,17 @@
-import { JSDOM } from 'jsdom';
+import { JSDOM } from "jsdom";
 // db.ts
-import Dexie from 'dexie';
+import Dexie from "dexie";
 //@ts-ignore
-import setGlobalVars from 'indexeddbshim';
-import { getDB } from '../db.js';
-
+import setGlobalVars from "indexeddbshim";
+import { getDB } from "./db.js";
 
 //TODO: Stop using in-memory db
 const beforeAll = async () => {
-    const { window } = new JSDOM('', { url: 'http://localhost:8080' });
-    setGlobalVars(window, { checkOrigin: false, memoryDatabase: '' }); // See signature below
+    const { window } = new JSDOM("", { url: "http://localhost:8080" });
+    setGlobalVars(window, { checkOrigin: false, memoryDatabase: "" }); // See signature below
     const { indexedDB, IDBKeyRange } = window;
-    global.indexedDB = indexedDB
-    global.IDBKeyRange = IDBKeyRange
+    global.indexedDB = indexedDB;
+    global.IDBKeyRange = IDBKeyRange;
     //@ts-expect-error
     global.window = window;
     global.document = window.document;
@@ -28,7 +27,7 @@ const beforeEach = async () => {
 };
 
 const afterAll = async () => {
-    console.debug('Tests finished.');
+    console.debug("Tests finished.");
 };
 
 const afterEach = async () => {

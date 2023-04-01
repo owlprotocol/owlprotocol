@@ -13,5 +13,3 @@ export function isCID(hash: string) {
     }
     */
 }
-
-export default isCID;

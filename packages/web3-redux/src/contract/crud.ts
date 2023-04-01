@@ -1,36 +1,33 @@
-import { name } from './common.js';
+import { createCRUDModel } from "@owlprotocol/crud-redux";
+import { ContractName } from "./common.js";
 import {
     ContractId,
     Contract,
     validateId,
     validate,
-    ContractWithObjects,
-    hydrate,
-    encode,
     ContractIndexInput,
     toPrimaryKey,
-} from './model/index.js';
-import { createCRUDModel } from '@owlprotocol/crud-redux';
-import getDB, { Web3ReduxDexie } from '../db.js';
-import { getOrm } from '../orm.js';
+    ContractIndexInputAnyOf,
+} from "./model/index.js";
+import { postWriteBulkDB } from "./model/postWriteBulkDB.js";
+import { getDB, Web3ReduxDexie } from "../db.js";
+import { EthLogName } from "../ethmodels/ethlog/common.js";
 
 export const ContractCRUD = createCRUDModel<
-    typeof name,
+    typeof ContractName,
     ContractId,
     Contract,
-    ContractWithObjects,
+    Web3ReduxDexie,
     ContractIndexInput,
-    Web3ReduxDexie
->(
-    name,
+    ContractIndexInputAnyOf
+>({
+    name: ContractName,
     getDB,
-    {
+    validators: {
         validateId,
         validate,
         toPrimaryKey,
-        hydrate,
-        encode,
+        postWriteBulkDB,
     },
-    getOrm(),
-);
-export default ContractCRUD;
+    tables: [EthLogName],
+});

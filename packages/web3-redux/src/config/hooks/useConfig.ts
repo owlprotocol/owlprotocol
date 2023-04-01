@@ -1,17 +1,16 @@
-import { useCallback } from 'react';
-import { useDispatch } from 'react-redux';
-import { setAccount, setNetworkId } from '../actions/index.js';
-import ConfigCRUD from '../crud.js';
-import { Config } from '../model/index.js';
+import { useCallback } from "react";
+import { useDispatch } from "react-redux";
+import { setAccount, setNetworkId } from "../actions/index.js";
+import { ConfigCRUD } from "../crud.js";
 
 /**
  * @category Hooks
  * Returns the Config.withId(0).
- * Create/hydrate depending on db state.
+ * Create/validateWithRedux depending on db state.
  */
-export function useConfig(defaultConfig?: Partial<Config>) {
+export function useConfig() {
     const dispatch = useDispatch();
-    const [config, returnOptions] = ConfigCRUD.hooks.useHydrate({ id: '0' }, { ...defaultConfig, id: '0' });
+    const [config, returnOptions] = ConfigCRUD.hooks.useGet("0");
 
     const setAccountCallback = useCallback(
         (account: string) => {
@@ -35,5 +34,3 @@ export function useConfig(defaultConfig?: Partial<Config>) {
 
     return [config, returnOptions2] as [typeof config, typeof returnOptions2];
 }
-
-export default useConfig;

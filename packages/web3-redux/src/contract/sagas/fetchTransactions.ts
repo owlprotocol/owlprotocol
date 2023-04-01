@@ -1,10 +1,9 @@
-import { select, put, call } from 'typed-redux-saga';
-import { AxiosResponse } from 'axios';
-import { FetchTransactionsAction } from '../actions/index.js';
-import TransactionCRUD from '../../transaction/crud.js';
-import ContractCRUD from '../crud.js';
-import { fetchSaga as fetchNetworkSaga } from '../../network/sagas/fetch.js';
-import { NetworkCRUD } from '../../network/crud.js';
+import { select, put, call } from "typed-redux-saga";
+import { AxiosResponse } from "axios";
+import { FetchTransactionsAction } from "../actions/index.js";
+import { EthTransactionCRUD } from "../../ethmodels/ethtransaction/crud.js";
+import { ContractCRUD } from "../crud.js";
+import { NetworkCRUD } from "../../network/crud.js";
 
 interface EtherscanTx {
     blockNumber: string;
@@ -32,32 +31,35 @@ export function* fetchTransactions(action: FetchTransactionsAction) {
     const { payload } = action;
     const { networkId, address, startblock, endblock, page, offset, sort } = payload;
 
-    const { network } = yield* call(fetchNetworkSaga, NetworkCRUD.actions.fetch({ networkId }, action.meta.uuid));
+    const network = yield* select(NetworkCRUD.selectors.selectByIdSingle, networkId);
     if (!network) throw new Error(`Network ${networkId} undefined`);
 
     const apiClient = network?.explorerApiClient;
     if (!apiClient) throw new Error(`Network ${networkId} missing apiClient`);
 
-    const contract = yield* select(ContractCRUD.selectors.selectByIdSingle, { networkId, address });
+    const contract = yield* select(ContractCRUD.selectors.selectByIdSingle, {
+        networkId,
+        address,
+    });
     if (!contract) yield* put(ContractCRUD.actions.upsert({ networkId, address }));
 
     const options = {
         params: {
-            module: 'account',
-            action: 'txlist',
+            module: "account",
+            action: "txlist",
             address,
             startblock: startblock ?? 0,
             endblock: endblock ?? 99999999,
             page: page ?? 1,
             offset: offset ?? 10,
-            sort: sort ?? 'desc', //Default fetches latest tx
+            sort: sort ?? "desc", //Default fetches latest tx
         },
     };
 
-    const response = (yield* call(apiClient.get as any, '/', options)) as AxiosResponse;
+    const response = (yield* call(apiClient.get as any, "/", options)) as AxiosResponse;
     const transactions = response.data?.result as EtherscanTx[];
     if (transactions && transactions.length > 0) {
-        const action = TransactionCRUD.actions.createBatched(
+        const action = EthTransactionCRUD.actions.createBatched(
             transactions.map((t) => {
                 return {
                     ...t,
@@ -76,8 +78,6 @@ export function* fetchTransactions(action: FetchTransactionsAction) {
 
         yield* put(action);
     } else {
-        throw new Error('Etherscan fetchTransactions response.data.result undefined');
+        throw new Error("Etherscan fetchTransactions response.data.result undefined");
     }
 }
-
-export default fetchTransactions;

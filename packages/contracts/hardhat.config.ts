@@ -66,7 +66,7 @@ const config = {
             url: 'http://127.0.0.1:8545/',
         },
         rinkeby: {
-            url: process.env.RINKEBY_URL || 'https://rinkeby.infura.io/v3/feeABCDEFGHIJKLMNOPQRSTUVWXYZ123',
+            url: process.env.RINKEBY_URL || 'https://rinkeby.infura.io/v3/feexxx',
         },
         mainnet: {
             url: process.env.MAINNET_URL || 'https://eth-mainnet.public.blastapi.io',

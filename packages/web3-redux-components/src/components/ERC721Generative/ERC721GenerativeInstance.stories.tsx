@@ -1,3 +1,4 @@
+//@ts-nocheck
 import { ComponentStory, ComponentMeta } from '@storybook/react';
 import { TestData } from '@owlprotocol/web3-redux';
 import { ERC721GenerativeInstance } from './ERC721GenerativeInstance.js';

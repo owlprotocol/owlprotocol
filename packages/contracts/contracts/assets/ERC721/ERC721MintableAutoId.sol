@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.9;
 
-import {ERC721MintableAutoIdBase} from './ERC721MintableAutoIdBase.sol';
+import {ERC721MintableAutoIdBase} from "./ERC721MintableAutoIdBase.sol";
 
 /**
  * @dev This implements the standard OwlProtocol `ERC721` contract that is an
@@ -37,32 +37,6 @@ contract ERC721MintableAutoId is ERC721MintableAutoIdBase {
         address _feeReceiver,
         uint96 _feeNumerator
     ) external virtual initializer {
-        __ERC721MintableAutoId_init(
-            _admin,
-            _initContractURI,
-            _gsnForwarder,
-            _name,
-            _symbol,
-            _initBaseURI,
-            _feeReceiver,
-            _feeNumerator
-        );
-    }
-
-    /**
-     * @dev Initializes contract through beacon proxy (replaces constructor in
-     * proxy pattern)
-     */
-    function proxyInitialize(
-        address _admin,
-        string calldata _initContractURI,
-        address _gsnForwarder,
-        string calldata _name,
-        string calldata _symbol,
-        string calldata _initBaseURI,
-        address _feeReceiver,
-        uint96 _feeNumerator
-    ) external virtual onlyInitializing {
         __ERC721MintableAutoId_init(
             _admin,
             _initContractURI,

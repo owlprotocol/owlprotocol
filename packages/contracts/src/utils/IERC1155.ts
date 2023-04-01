@@ -1,14 +1,19 @@
-import { IERC1155 } from "../artifacts.js";
-import { utils } from 'ethers';
+import { utils } from "ethers";
+import { IERC1155Interface } from "../ethers/interfaces.js";
 
-export const TransferSingle = IERC1155.abi.find((a: any) => a.name === 'TransferSingle');
-export const TransferSingleFragment = utils.EventFragment.from(TransferSingle)
-export const TransferSingleTopic = TransferSingleFragment.format(utils.FormatTypes.sighash)
+export const TransferSingleFragment =
+    IERC1155Interface.events["TransferSingle(address,address,address,uint256,uint256)"];
+export const TransferSingle = JSON.parse(TransferSingleFragment.format(utils.FormatTypes.json));
+export const TransferSingleSigHash = TransferSingleFragment.format(utils.FormatTypes.sighash);
+export const TransferSingleTopic = IERC1155Interface.getEventTopic("TransferSingle");
 
-export const TransferBatch = IERC1155.abi.find((a: any) => a.name === 'TransferBatch');
-export const TransferBatchFragment = utils.EventFragment.from(TransferBatch)
-export const TransferBatchTopic = TransferBatchFragment.format(utils.FormatTypes.sighash)
+export const TransferBatchFragment =
+    IERC1155Interface.events["TransferBatch(address,address,address,uint256[],uint256[])"];
+export const TransferBatch = JSON.parse(TransferBatchFragment.format(utils.FormatTypes.json));
+export const TransferBatchSigHash = TransferBatchFragment.format(utils.FormatTypes.sighash);
+export const TransferBatchTopic = IERC1155Interface.getEventTopic("TransferBatch");
 
-export const ApprovalForAll = IERC1155.abi.find((a: any) => a.name === 'ApprovalForAll');
-export const ApprovalForAllFragment = utils.EventFragment.from(ApprovalForAll)
-export const ApprovalForAllTopic = ApprovalForAllFragment.format(utils.FormatTypes.sighash)
+export const ApprovalForAllFragment = IERC1155Interface.events["ApprovalForAll(address,address,bool)"];
+export const ApprovalForAll = JSON.parse(ApprovalForAllFragment.format(utils.FormatTypes.json));
+export const ApprovalForAllSigHash = ApprovalForAllFragment.format(utils.FormatTypes.sighash);
+export const ApprovalForAllTopic = IERC1155Interface.getEventTopic("ApprovalForAll");

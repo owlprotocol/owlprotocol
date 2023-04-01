@@ -1,4 +1,4 @@
-import useConfig from './useConfig.js';
+import { useConfig } from "./useConfig.js";
 
 /**
  * @category Hooks
@@ -10,5 +10,3 @@ export function useAccount() {
     const account = config?.account;
     return [account, setAccount] as [typeof account, typeof setAccount];
 }
-
-export default useAccount;

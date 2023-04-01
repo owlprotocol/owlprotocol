@@ -15,14 +15,14 @@ sidebar_position: 2
 [ether.js]: https://github.com/ethers-io/ethers.js/
 [web3.js]: https://github.com/web3/web3.js
 
-[ERC1167Factory]: ../../owlprotocol-contracts/contracts/proxy/ERC1167/ERC1167Factory.sol
-[UpgradeableBeacon]: ../../owlprotocol-contracts/contracts/proxy/Beacon/UpgradeableBeacon.sol
-[BeaconProxy]: ../../owlprotocol-contracts/contracts/proxy/Beacon/BeaconProxy.sol
+[ERC1167Factory]: https://github.com/owlprotocol/owlprotocol/tree/main/packages/contracts/contracts/proxy/ERC1167/ERC1167Factory.sol
+[UpgradeableBeacon]: https://github.com/owlprotocol/owlprotocol/tree/main/packages/contracts/contracts/proxy/Beacon/UpgradeableBeacon.sol
+[BeaconProxy]: https://github.com/owlprotocol/owlprotocol/tree/main/packages/contracts/contracts/proxy/Beacon/BeaconProxy.sol
 
-[factories.ts]: ../../owlprotocol-contracts/src/ethers/factories.ts
-[deterministicFactories.ts]: ../../owlprotocol-contracts/src/ethers/deterministicFactories.ts
-[proxy1167Factories.ts]: ../../owlprotocol-contracts/src/ethers/proxy1167Factories.ts
-[beaconProxyFactories.ts]: ../../owlprotocol-contracts/src/ethers/beaconProxyFactories.ts
+[factories.ts]: https://github.com/owlprotocol/owlprotocol/tree/main/packages/contracts/src/ethers/factories.ts
+[deterministicFactories.ts]: https://github.com/owlprotocol/owlprotocol/tree/main/packages/contracts/src/ethers/deterministicFactories.ts
+[proxy1167Factories.ts]: https://github.com/owlprotocol/owlprotocol/tree/main/packages/contracts/src/ethers/proxy1167Factories.ts
+[beaconProxyFactories.ts]: https://github.com/owlprotocol/owlprotocol/tree/main/packages/contracts/src/ethers/beaconProxyFactories.ts
 
 Owl Protocol is designed to support the deployment of many smart contracts. As such we have designed 3 advanced deployment strategies to enable deterministic, cheap, and upgradeable smart contracts.
 
@@ -56,7 +56,7 @@ hh deploy --tags DeterministicDeployer --network <NETWORK>
 This contract designed by Owl Protocol, is meant to extend the capabilities of the [EIP-2470] Factory, by enabling additional security features:
 * Initialization: Our contracts are meant to be used by proxies and therefore use the [initializer](https://docs.openzeppelin.com/upgrades-plugins/1.x/writing-upgradeableinitializers) pattern with empty constructors. This presents the challenge however of having to atomically initialize the contract post-deployment. For this the [ERC1167Factory] supports a `initData` parameter that encodes arbitrary call data to be sent to the contract post deployment.
 * [EIP-1167] proxies: The factory can be used to deploy minimal proxies that DELEGATECALL to an implementation contract. This comes with a slight long-term transactional overhead due to the extra DELEGATECALL, but enables cheap repeat deployment for large contracts.
-* Salt Protection: Due to the usage of initalizers and proxies, an additional risk is introduced by the possibility of an attacker deploying "fake" clones of the contract at the same address on other EVM chains. To mitigate this, if initData, or a proxy implementation is specified, the CREATE2 salt MUST be determined by `keccak256` hash of the salt + additional data. This ensures that if 2 contracts have the same address, they MUST be initialized with the same data.
+* Salt Protection: Due to the usage of initalizers and proxies, an additional risk is introduced by the possibility of an attacker deploying "fake" clones of the contract at the same address on other EVM chains. To mitigate this, if initData, or a proxy implementation is specified, the CREATE2 salt MUST be determined by `keccak256` hash of the salt + additional data. This ensures that if two contracts have the same address, they MUST be initialized with the same data.
 * Salt Sender Protection: In additional to the initData, user's MAY optionally send a sender address parameter (which MUST match the `msg.sender`), which will be used as an additional salt to guarantee that ONLY the original sender can re-deploy the contract to the same address on a different blockchain.
 
 For deterministic deployment to work, the [ERC1167Factory] must itself be deployed at the same address on EVM chains. Therefore we use the EIP2470 Factory to deploy it. The [ERC1167Factory] is already deployed on most popular chains such as Ethereum and Polygon but you can deploy it with:
@@ -113,7 +113,7 @@ You may then deploy clone proxies to your chosing.
 
 ### Beacon Proxy
 This is the most complex form of deployment. Beacon proxies enable upgradability of smart contracts in a one to many fashion. This means the owner of the beacon, can upgrade ALL proxies that point to it.
-A beacon proxy relies on 2 other contracts, an `implementation` which stores the bytecode (similar to ERC1167), and a `beacon` which stores the address of the `implementation`. This beacon is then used by the proxy (aka beacon proxy), to query the current implementation address and DELEGATECALL to it.
+A beacon proxy relies on two other contracts, an `implementation` which stores the bytecode (similar to ERC1167), and a `beacon` which stores the address of the `implementation`. This beacon is then used by the proxy (aka beacon proxy), to query the current implementation address and DELEGATECALL to it.
 We use the following contracts:
 * `implementation`: Any contract
 * `beacon`: [UpgradeableBeacon](./contracts/proxy/Beacon/UpgradeableBeacon.sol)
@@ -122,12 +122,12 @@ We use the following contracts:
 This dependency can be visualized as:
 `proxy` -> `beacon` -> `implementation`
 
-The beacon proxy enables upgradeability in 2 ways:
+The beacon proxy enables upgradeability in two ways:
 * Upgrade `beacon` -> `implementation`: Managed by the `admin` of the beacon. Changes the `implementation` for ALL proxies that point to it.
 * Upgrade `proxy` -> `beacon`: Managed by the `admin` of the proxy. Changes the `beacon` that the `proxy` points to.
 
 **Implementation**
-This can be any contract. However, we find it important to have a brief discussion on initialization. Because the `BeaconProxy` is initializable itself, our implementation contracts have 2 types of initialization. Regular `initialize(memory data)` with the `initializer` modifer, and `proxyInitialize(memory data)` with the `onlyInitializing` modifier. The `onlyInitializing` modifier enables calling the initializer white the `BeaconProxy` is itself initializing.
+This can be any contract. However, we find it important to have a brief discussion on initialization. Because the `BeaconProxy` is initializable itself, our implementation contracts have two types of initialization. Regular `initialize(memory data)` with the `initializer` modifer, and `proxyInitialize(memory data)` with the `onlyInitializing` modifier. The `onlyInitializing` modifier enables calling the initializer white the `BeaconProxy` is itself initializing.
 
 **Beacon Initialization**
 The beacon is initialized by setting the admin and implementation address.
