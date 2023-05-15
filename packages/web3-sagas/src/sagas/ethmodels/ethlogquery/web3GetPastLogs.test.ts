@@ -38,7 +38,7 @@ describe(`${EthLogQueryName}/web3GetPastLogs.test.ts`, () => {
                 action.meta.ts
             );
             //const expected = call(web3GetPastLogRawSaga, a);
-            //console.debug(expected)
+            //log.debug(expected)
             */
             testSaga(eventGetPastSaga, action)
                 .next()

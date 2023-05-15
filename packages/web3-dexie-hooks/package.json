@@ -58,7 +58,8 @@
     "lodash-es": "4.17.21",
     "@owlprotocol/crud-dexie-hooks": "workspace:*",
     "@owlprotocol/web3-dexie": "workspace:*",
-    "@owlprotocol/web3-models": "workspace:*"
+    "@owlprotocol/web3-models": "workspace:*",
+    "loglevel": "^1.8.1"
   },
   "peerDependencies": {
     "dexie-react-hooks": "^1.1.1",

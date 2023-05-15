@@ -1,9 +1,8 @@
-//@ts-nocheck
 import { create, IPFSHTTPClient } from 'ipfs-http-client';
 import { Buffer } from 'buffer';
 import { readFileSync } from 'fs';
 
-import { NFTGenerativeTraitImageClass } from '../classes/index.js';
+import { NFTGenerativeTraitBaseClass, NFTGenerativeTraitImageClass } from '../classes/index.js';
 import { NFTGenerativeCollectionClass } from '../classes/NFTGenerativeCollection/NFTGenerativeCollectionClass.js';
 
 async function main() {
@@ -32,8 +31,12 @@ async function main() {
     });
     const cid = await collection.uploadIPFS(ipfs);
 
-    const imageTraits = collection.traits.filter(
-        (trait) => trait instanceof NFTGenerativeTraitImageClass,
+    // (Nate) this is a workaround for:
+    // Type 'NFTGenerativeTraitBaseInterface' has no call signatures.ts(2349)
+    //
+    const collectionTraits = collection.traits as unknown as Array<any>;
+    const imageTraits = collectionTraits.filter(
+        (trait: NFTGenerativeTraitBaseClass) => trait instanceof NFTGenerativeTraitImageClass,
     ) as NFTGenerativeTraitImageClass[];
     imageTraits.forEach((trait) => {
         trait.options.forEach((option) => {

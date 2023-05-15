@@ -178,7 +178,7 @@ export async function postWriteBulkDBEthLog(items: EthLog[]) {
                     interfaceId = interfaceHash;
                 }
 
-                //console.debug({ networkId, address: implementer, interfaceId, x: x++ });
+                //log.debug({ networkId, address: implementer, interfaceId, x: x++ });
 
                 //New contract with known interface
                 ContractUpserts.push({ networkId, address: implementer, interfaceCheckedAt: Date.now() });

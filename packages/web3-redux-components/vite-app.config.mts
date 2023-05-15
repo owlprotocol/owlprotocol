@@ -14,7 +14,11 @@ const overrideConfig = {
     commonjsOptions: {
         transformMixedEsModules: false,
     },
-    build: {},
+    build: {
+        rollupOptions: {
+            external: ["fs/promises"],
+        },
+    }
 };
 const finalConfig = mergeConfig(config, overrideConfig);
 

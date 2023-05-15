@@ -54,22 +54,23 @@
     "lint:fix": "eslint --fix 'src/**/*.ts'"
   },
   "dependencies": {
-    "lodash-es": "4.17.21",
-    "dexie": "4.0.1-alpha.8",
     "@owlprotocol/contracts": "workspace:*",
     "@owlprotocol/crud-dexie": "workspace:*",
-    "@owlprotocol/web3-models": "workspace:*",
     "@owlprotocol/utils": "workspace:*",
-    "ethers": "5.7.2"
+    "@owlprotocol/web3-models": "workspace:*",
+    "dexie": "4.0.1-alpha.8",
+    "ethers": "5.7.2",
+    "lodash-es": "4.17.21",
+    "loglevel": "^1.8.1"
   },
   "devDependencies": {
     "@owlprotocol/esbuild-config": "workspace:*",
     "@owlprotocol/eslint-config": "workspace:*",
     "@owlprotocol/prettier-config": "workspace:*",
     "@types/chai": "^4.3.3",
+    "@types/dotenv": "^8.2.0",
     "@types/mocha": "^9.1.1",
     "@types/node": "^16.11.26",
-    "@types/dotenv": "^8.2.0",
     "chai": "^4.3.6",
     "cross-env": "^7.0.3",
     "dotenv": "^16.0.3",

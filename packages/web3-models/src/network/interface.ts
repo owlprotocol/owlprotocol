@@ -17,6 +17,7 @@ export interface NetworkId {
 export interface Network extends NetworkId {
     /** Human readable name for the network */
     readonly name?: string;
+    readonly testnet?: boolean;
     /** Latest block number */
     /** Average blockTime in seconds */
     readonly blockTime?: number;

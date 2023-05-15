@@ -2,6 +2,7 @@ import { mapValues, zipObject } from "../../lodash.js";
 import { logDeployment, RunTimeEnvironment } from "../utils.js";
 import { getFactories } from "../../ethers/factories.js";
 import { getDeterministicFactories } from "../../ethers/deterministicFactories.js";
+import log from "loglevel";
 
 /**
  * Deployment is always the same regardless of contract.
@@ -44,7 +45,7 @@ export const ImplementationsDeploy = async ({ provider, signers, network }: RunT
     mapValues(results, ({ address, error, deployed }, name) => {
         if (error) {
             logDeployment(network.name, name, address, "implementation", "failed");
-            console.error(error);
+            log.error(error);
         } else {
             logDeployment(network.name, name, address, "implementation", deployed ? "deployed" : "exists");
         }

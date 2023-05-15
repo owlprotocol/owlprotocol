@@ -10,7 +10,7 @@ import { interfaces } from "@owlprotocol/contracts";
 import { ContractName, NetworkWithObjects } from "@owlprotocol/web3-models";
 import { NetworkCRUDActions, ContractCRUDActions, ConfigCRUDActions } from "@owlprotocol/web3-actions";
 import { getTestNetwork } from "@owlprotocol/web3-sagas";
-import { ContractDexie, ERC165Dexie, ContractDexieHelpers } from "@owlprotocol/web3-dexie";
+import { ContractDexie, ERC165Dexie, ContractDexieHelpers, NetworkDexie } from "@owlprotocol/web3-dexie";
 import { createStore, StoreType } from "../store.js";
 
 //@ts-expect-error
@@ -155,6 +155,7 @@ describe(`${ContractName}/sagas/dbChange.ts`, () => {
         });
 
         it("ERC1820 - Past", async () => {
+            await NetworkDexie.update({ networkId, syncContracts: true });
             //Past Event trigger
             ERC721Mintable = await ERC721MintableFactory.deploy(
                 ...Contracts.Utils.ERC721Mintable.flattenInitArgsERC721Mintable(token),
@@ -213,6 +214,7 @@ describe(`${ContractName}/sagas/dbChange.ts`, () => {
         });
 
         it("ERC1820 - Subscribe", async () => {
+            await NetworkDexie.update({ networkId, syncContracts: true });
             //Add ERC1820 Contract, detect the registration event from ImplementerSet
             store.dispatch(
                 ContractCRUDActions.actions.create({
@@ -272,6 +274,7 @@ describe(`${ContractName}/sagas/dbChange.ts`, () => {
         });
 
         it("Account Asset Transfer - Past", async () => {
+            await NetworkDexie.update({ networkId, syncContracts: true });
             ERC721Mintable = await ERC721MintableFactory.deploy(
                 ...Contracts.Utils.ERC721Mintable.flattenInitArgsERC721Mintable(token),
             );
@@ -327,6 +330,7 @@ describe(`${ContractName}/sagas/dbChange.ts`, () => {
         });
 
         it("Account Asset Transfer - Subscribe", async () => {
+            await NetworkDexie.update({ networkId, syncContracts: true });
             ERC721Mintable = await ERC721MintableFactory.deploy(
                 ...Contracts.Utils.ERC721Mintable.flattenInitArgsERC721Mintable(token),
             );

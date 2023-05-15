@@ -3,6 +3,7 @@ import axios from "axios";
 import moxios from "moxios";
 import { sleep } from "@owlprotocol/utils";
 import { utils } from "ethers";
+import log from "loglevel"
 
 //Actions
 import { fetchEthCallAbiAction, ConfigCRUDActions } from "@owlprotocol/web3-actions";
@@ -58,7 +59,7 @@ describe(`${EthCallAbiName}/fetch.test.ts`, () => {
 
     it("fetch()", async () => {
         const config = ConfigSelectors.selectByIdSingle(store.getState(), "0");
-        console.debug({ client: !!config?._4byteClient });
+        log.debug({ client: !!config?._4byteClient });
         store.dispatch(fetchEthCallAbiAction({ methodSighash: ApproveSignature }));
         await sleep(100);
 

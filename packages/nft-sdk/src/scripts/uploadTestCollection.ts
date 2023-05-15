@@ -1,4 +1,3 @@
-//@ts-nocheck
 // import { Buffer } from 'buffer';
 import { create } from 'ipfs-http-client';
 

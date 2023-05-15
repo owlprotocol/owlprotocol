@@ -34,7 +34,7 @@ export const createStore = (options?: CreateStoreOptions) => {
     //Broadcast channel dispatch
     /*
     channel.onmessage = (e) => {
-        console.debug(e);
+        log.debug(e);
         store.dispatch(e);
     };
     */

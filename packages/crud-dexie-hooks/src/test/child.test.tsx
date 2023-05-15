@@ -1,10 +1,12 @@
 import { assert } from "chai";
 import { renderHook } from "@testing-library/react-hooks";
 import { omit } from "lodash-es";
-import { Child, ChildId, ChildDexie } from "@owlprotocol/crud-dexie/test";
-import { ChildDexieHooks } from "./child.js";
+import { Child, ChildId, getChildDexie, createTestDexie } from "@owlprotocol/crud-dexie/test";
+import {  getChildDexieHooks } from "./child.js";
 
 describe(`hook.test.tsx`, () => {
+    const ChildDexie = getChildDexie(createTestDexie());
+    const ChildDexieHooks = getChildDexieHooks(ChildDexie)
     const id0: ChildId = { firstName: "John", lastName: "Doe" };
     const item0: Child = { ...id0, age: 42 };
 

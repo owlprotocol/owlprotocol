@@ -1,6 +1,8 @@
 import { NodeResolvePlugin } from '@esbuild-plugins/node-resolve';
 import * as glob from 'glob';
 import * as esbuild from 'esbuild';
+import { existsSync, mkdirSync, writeFileSync } from 'fs';
+import { join } from 'path';
 
 const files = glob.default.sync('src/**/*.{ts,tsx,json}');
 
@@ -112,8 +114,19 @@ export const distConfigs = [
 export const configs = [...libConfigs, ...distConfigs]
 
 export const buildLib = async () => {
-    const promises = libConfigs.map((c) => esbuild.build(c))
-    return Promise.all(promises)
+    const packagePromises = libConfigs.map(async (c) => {
+        const dir = c.outdir;
+        if (!existsSync(dir)) {
+            mkdirSync(dir, { recursive: true });
+        }
+        const p = join(dir, 'package.json')
+        if (!existsSync(p)) {
+            const type = c.format === "esm" ? "module" : "commonjs"
+            writeFileSync(p, JSON.stringify({ type }), "utf-8")
+        }
+    })
+    const buildPromises = libConfigs.map((c) => esbuild.build(c))
+    return Promise.all([...packagePromises, ...buildPromises])
 }
 
 export const buildDist = async () => {

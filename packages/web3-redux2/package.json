@@ -60,7 +60,8 @@
     "@owlprotocol/web3-redux-orm-hooks": "workspace:*",
     "@owlprotocol/utils": "workspace:*",
     "ethers": "5.7.2",
-    "redux": "4.1.2"
+    "redux": "4.1.2",
+    "loglevel": "^1.8.1"
   },
   "devDependencies": {
     "@owlprotocol/esbuild-config": "workspace:*",

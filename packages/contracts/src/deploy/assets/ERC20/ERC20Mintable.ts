@@ -9,6 +9,7 @@ import {
 import { ERC20MintableInitializeArgs, flattenInitArgsERC20Mintable } from "../../../utils/ERC20Mintable.js";
 import { getBeaconProxyFactories } from "../../../ethers/beaconProxyFactories.js";
 import { ERC1167FactoryAddress } from "../../../utils/ERC1167Factory/index.js";
+import log from "loglevel";
 
 interface Params extends RunTimeEnvironment {
     tokens: number;
@@ -98,7 +99,7 @@ export const ERC20MintableDeploy = async ({ provider, signers, network, tokens, 
     return mapValues(results, (r, k) => {
         if (r.error) {
             logDeployment(network.name, k, r.address, "beacon-proxy", "failed");
-            console.error(r.error);
+            log.error(r.error);
         } else {
             logDeployment(network.name, k, r.address, "beacon-proxy", r.deployed ? "deployed" : "exists");
         }

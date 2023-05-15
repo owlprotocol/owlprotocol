@@ -1,4 +1,4 @@
-export {};
+export { };
 /*
 import { assert } from "chai";
 import type { Contract as Web3Contract } from "web3-eth-contract";
@@ -159,7 +159,7 @@ describe(`${ContractName}/sagas/call.ts`, () => {
                     to: address,
                     methodSignature: "getValue()",
                 });
-                console.debug(ethCall);
+                log.debug(ethCall);
                 //assert.equal(rpcBatch - rpcBatchInitial, 0, 'rpc_batch rpc calls != expected');
                 //assert.equal(ethCall - ethCallInitial, 1, 'eth_call rpc calls != expected');
             });

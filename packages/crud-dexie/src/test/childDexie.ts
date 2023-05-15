@@ -1,25 +1,29 @@
 import { ChildName, Child, validateChild, toPrimaryKeyChild } from "@owlprotocol/crud-models/test";
 import { pick } from "lodash-es";
-import { TestDexie } from "./db.js";
+import { createTestDexie } from "./db.js";
 import { ChildKeyId, ChildKeyIdEq, ChildKeyIdx, ChildKeyIdxEq, ChildKeyIdxEqAny, ChildTable } from "./childTable.js";
 import type { CRUDDexie } from "../table.js";
 import { createCRUDDB } from "../createCRUDDB.js";
 
-const ChildDexieNoPost = createCRUDDB<
-    typeof ChildName,
-    Child,
-    ChildKeyId,
-    ChildKeyIdEq,
-    ChildKeyIdx,
-    ChildKeyIdxEq,
-    ChildKeyIdxEqAny
->(TestDexie, TestDexie[ChildName], {
-    validateId: validateChild,
-    toPrimaryKey: toPrimaryKeyChild,
-    preWriteBulkDB: (items) => Promise.resolve(items),
-    postWriteBulkDB: () => Promise.resolve(),
-});
+export function getChildDexieNoPost(db: CRUDDexie<ChildTable> & { [ChildName]: ChildTable }) {
+    return createCRUDDB<
+        typeof ChildName,
+        Child,
+        ChildKeyId,
+        ChildKeyIdEq,
+        ChildKeyIdx,
+        ChildKeyIdxEq,
+        ChildKeyIdxEqAny
+    >(db, db[ChildName], {
+        validateId: validateChild,
+        toPrimaryKey: toPrimaryKeyChild,
+        preWriteBulkDB: (items) => Promise.resolve(items),
+        postWriteBulkDB: () => Promise.resolve(),
+    });
+}
+
 export async function preWriteBulkDB(items: Child[]): Promise<Child[]> {
+    const ChildDexieNoPost = getChildDexieNoPost(createTestDexie());
     //Get Relatives
     const relativesAll = await ChildDexieNoPost.anyOf(
         "lastName",
@@ -38,6 +42,7 @@ export async function preWriteBulkDB(items: Child[]): Promise<Child[]> {
     return result;
 }
 export async function postWriteBulkDB(items: Child[]): Promise<any> {
+    const ChildDexieNoPost = getChildDexieNoPost(createTestDexie());
     //Get Relatives
     const relativesAll = await ChildDexieNoPost.anyOf(
         "lastName",
@@ -75,5 +80,3 @@ export function getChildDexie(db: CRUDDexie<ChildTable> & { [ChildName]: ChildTa
         postWriteBulkDB,
     });
 }
-
-export const ChildDexie = getChildDexie(TestDexie);

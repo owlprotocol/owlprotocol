@@ -1,8 +1,10 @@
 import { Child, ChildId } from "@owlprotocol/crud-models/test";
 import { assert } from "chai";
-import { ChildDexie, preWriteBulkDB } from "./childDexie.js";
+import { getChildDexie, preWriteBulkDB } from "./childDexie.js";
+import { createTestDexie } from "./db.js";
 
 describe(`db.test.js`, () => {
+    const ChildDexie = getChildDexie(createTestDexie());
     const id0: ChildId = { firstName: "John", lastName: "Doe" };
     const item0: Child = { ...id0, age: 42 };
 

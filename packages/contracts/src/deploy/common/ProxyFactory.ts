@@ -35,9 +35,9 @@ export const ProxyFactoryDeploy = async ({ provider, signers, network }: RunTime
 
     //Deploy contract
     await tx.wait(1);
-    //console.debug(response.from);
+    //log.debug(response.from);
     //const receipt = await response.wait(1);
-    //console.debug(receipt);
+    //log.debug(receipt);
 
     if ((await provider.getCode(cloneFactory.address)) == "0x") throw new Error(`${name} deployment failed`);
 

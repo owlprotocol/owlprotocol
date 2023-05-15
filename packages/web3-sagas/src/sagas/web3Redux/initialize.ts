@@ -14,7 +14,7 @@ export function* initializeSaga(): Generator<any, any, any> {
 
     //Networks
     //Create default networks
-    const networksCreate = Object.values(defaultNetworks()) as Network[];
+    const networksCreate = Object.values(defaultNetworks) as Network[];
     yield* put(NetworkCRUDActions.actions.createBatched(networksCreate));
 
     //TODO: Config gets overriden by defaults

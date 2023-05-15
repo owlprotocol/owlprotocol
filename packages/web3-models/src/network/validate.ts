@@ -19,7 +19,7 @@ export function toPrimaryKeyNetwork({ networkId }: NetworkId): string {
  */
 export function validateNetwork(network: Network): Network {
     const networkId = network.networkId;
-    const defaultNetworkForId = defaultNetworks()[networkId];
+    const defaultNetworkForId = defaultNetworks[networkId];
     const name = network.name ?? defaultNetworkForId?.name;
     const explorerUrl = network.explorerUrl ?? defaultNetworkForId?.explorerUrl;
     const explorerApiUrl = network.explorerApiUrl ?? defaultNetworkForId?.explorerApiUrl;

@@ -1,5 +1,4 @@
 import { Box, ChakraProps } from "@chakra-ui/react";
-import classnames from "classnames";
 
 // Tokens
 import { ReactComponent as BCHIcon } from "./tokens/BCHIcon.svg";
@@ -80,17 +79,18 @@ import { ReactComponent as AddRounded } from "./functions/add-rounded.svg";
 import { ReactComponent as Grid } from "./functions/grid.svg";
 import { ReactComponent as Rows } from "./functions/rows.svg";
 import { ReactComponent as Refresh } from "./functions/refresh.svg";
+import { ReactComponent as BrokenImage } from "./functions/broken-img-icon.svg";
 
 // Signs
 import { ReactComponent as ExclamationMark } from "./signs/ExclamationMark.svg";
 import { ReactComponent as FlowCheckMark } from "./signs/FlowCheckMark.svg";
 import { ReactComponent as QuestionMark } from "./signs/QuestionMark.svg";
+import { ReactComponent as Tag } from "./signs/Tag.svg";
 
 // Currencies
 import { ReactComponent as USDCurrency } from "./currencies/usd.svg";
 
-// @ts-ignore
-export const ICONS = {
+export const ICONS: any = {
     BCH: <BCHIcon />,
     BTC: <BTCIcon />,
     DOCE: <DOCEIcon />,
@@ -148,6 +148,7 @@ export const ICONS = {
     ExclamationMark: <ExclamationMark />,
     FlowCheckMark: <FlowCheckMark />,
     QuestionMark: <QuestionMark />,
+    Tag: <Tag />,
     QR: <QR />,
     QRHover: <QRHover />,
     QRSelected: <QRSelected />,
@@ -160,26 +161,25 @@ export const ICONS = {
     Grid: <Grid />,
     Rows: <Rows />,
     Refresh: <Refresh />,
+    BrokenImage: <BrokenImage />,
 };
 
-// @ts-ignore
 const IconSelect = (icon: string | undefined) => ICONS[icon || "ETH"];
 
 export interface Props extends ChakraProps {
     icon: string | undefined;
     size?: number | undefined;
-    className?: string;
 }
 
 const Icon = (props: Props) => {
-    const { icon, size = 23, className } = props;
-    const classNames = classnames("icon", icon, className);
+    const { icon, size = 23 } = props;
 
     return (
-        <Box {...props} boxSize={`${size}px`} className={classNames}>
+        <Box {...props} boxSize={`${size}px`}>
             {IconSelect(icon)}
         </Box>
     );
 };
 
 export default Icon;
+export { Icon };

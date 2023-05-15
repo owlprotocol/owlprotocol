@@ -1,4 +1,3 @@
-//@ts-nocheck
 import {
     Box,
     Button,
@@ -43,8 +42,9 @@ export const ERC1167FactoryForm = ({
     const [account] = Config.hooks.useAccount();
 
     //User selects implementation, we use this for the factory and to generate the initializer form
-    const [implementationAddress, setImplementationAddress] =
-        useState<string | undefined>();
+    const [implementationAddress, setImplementationAddress] = useState<
+        string | undefined
+    >();
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const factoryContract = Contract.hooks.useContract(
         networkId,

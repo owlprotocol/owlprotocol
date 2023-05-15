@@ -3,6 +3,7 @@ import { sleep } from "@owlprotocol/utils";
 import { getBlockNumberAction, NetworkActions } from "@owlprotocol/web3-actions";
 import { NetworkName } from "@owlprotocol/web3-models";
 import { getTestNetwork } from "@owlprotocol/web3-sagas";
+import log from "loglevel"
 
 import { NetworkDexie } from "@owlprotocol/web3-dexie";
 import { createStore, StoreType } from "../store.js";
@@ -27,7 +28,7 @@ describe(`${NetworkName}/getBlockNumber.test.ts`, () => {
             await sleep(400);
 
             const selected0 = await NetworkDexie.get({ networkId });
-            console.debug({ selected0 });
+            log.debug({ selected0 });
             assert.equal(selected0?.latestBlockNumber, await web3?.eth.getBlockNumber());
         });
     });

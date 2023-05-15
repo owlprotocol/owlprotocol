@@ -1,9 +1,10 @@
 import type { HardhatRuntimeEnvironment } from "hardhat/types";
 import { ERC1820Deploy } from "../../deploy/common/ERC1820.js";
 import { IERC1820Registry } from "../../artifacts.js";
-import { PRIVATE_KEY_0 } from "../../environment.js";
+import { PRIVATE_KEY_0 } from "@owlprotocol/envvars";
 
 const deploy = async ({ ethers, network, deployments }: HardhatRuntimeEnvironment) => {
+    if (!PRIVATE_KEY_0) throw new Error(`PRIVATE_KEY_0 ${PRIVATE_KEY_0}`)
     const wallet = new ethers.Wallet(PRIVATE_KEY_0, ethers.provider);
     const { address } = await ERC1820Deploy({
         provider: ethers.provider,

@@ -1,5 +1,5 @@
 import {
-    ChildDexie,
+    getChildDexie,
     Child,
     ChildKeyId,
     ChildKeyIdx,
@@ -9,11 +9,8 @@ import {
 } from "@owlprotocol/crud-dexie/test";
 import { createCRUDDexieHooks } from "../createCRUDDexieHooks.js";
 
-export const ChildDexieHooks = createCRUDDexieHooks<
-    Child,
-    ChildKeyId,
-    ChildKeyIdx,
-    ChildKeyIdEq,
-    ChildKeyIdxEq,
-    ChildKeyIdxEqAny
->(ChildDexie);
+export function getChildDexieHooks(childDexie: ReturnType<typeof getChildDexie>) {
+    return createCRUDDexieHooks<Child, ChildKeyId, ChildKeyIdx, ChildKeyIdEq, ChildKeyIdxEq, ChildKeyIdxEqAny>(
+        childDexie,
+    );
+}

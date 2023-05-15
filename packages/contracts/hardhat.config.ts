@@ -12,7 +12,16 @@ import 'solidity-coverage';
 
 import { ethers } from 'ethers';
 import lodash from 'lodash';
-import { PRIVATE_KEY_0, PRIVATE_KEY_1 } from './src/environment';
+import {
+    ANVIL_RPC,
+    GANACHE_RPC,
+    MAINNET_RPC, MAINNET_EXPLORER_API_KEY,
+    ARBITRUM_RPC, ARBITRUM_EXPLORER, ARBITRUM_EXPLORER_API, ARBITRUM_EXPLORER_API_KEY,
+    POLYGON_RPC, POLYGON_EXPLORER, POLYGON_EXPLORER_API, POLYGON_EXPLORER_API_KEY,
+    OPTIMISM_RPC, OPTIMISM_EXPLORER, OPTIMISM_EXPLORER_API, OPTIMISM_EXPLORER_API_KEY,
+    BSC_RPC, BSC_EXPLORER, BSC_EXPLORER_API, BSC_EXPLORER_API_KEY,
+    PRIVATE_KEY_0, PRIVATE_KEY_1
+} from '@owlprotocol/envvars'
 
 const { mapValues } = lodash;
 const baseNetwork = {
@@ -52,39 +61,30 @@ const config = {
         templates: './docs-templates/',
     },
     networks: {
-        hardhat: {
-            chainId: 1337,
-        },
-        localhost: {
-            url: 'http://127.0.0.1:8545/',
-        },
         ganache: {
-            url: 'http://127.0.0.1:8545',
+            url: GANACHE_RPC,
         },
         anvil: {
             chainId: 31337,
-            url: 'http://127.0.0.1:8545/',
-        },
-        rinkeby: {
-            url: process.env.RINKEBY_URL || 'https://rinkeby.infura.io/v3/feexxx',
+            url: ANVIL_RPC,
         },
         mainnet: {
-            url: process.env.MAINNET_URL || 'https://eth-mainnet.public.blastapi.io',
+            url: MAINNET_RPC || 'https://eth-mainnet.public.blastapi.io',
         },
         polygon: {
-            url: process.env.POLYGON_URL || 'https://matic-mainnet.chainstacklabs.com',
+            url: POLYGON_RPC || 'https://matic-mainnet.chainstacklabs.com',
             chainId: 137,
             maxFeePerGas: ethers.utils.parseUnits('0', 'gwei').toNumber(),
             maxPriorityFeePerGas: ethers.utils.parseUnits('80', 'gwei').toNumber(),
         },
         binance: {
-            url: process.env.BINANCE_URL || 'https://rpc-bsc.bnb48.club',
+            url: BSC_RPC || 'https://rpc-bsc.bnb48.club',
         },
         arbitrum: {
-            url: process.env.ARBITRUM_URL || 'https://arb1.arbitrum.io/rpc',
+            url: ARBITRUM_RPC || 'https://arb1.arbitrum.io/rpc',
         },
         optimism: {
-            url: process.env.OPTIMISM_URL || 'https://mainnet.optimism.io',
+            url: OPTIMISM_RPC || 'https://mainnet.optimism.io',
         },
         avalanche: {
             url: process.env.AVALANCHE_URL || 'https://ava-mainnet.public.blastapi.io/ext/bc/C/rpc',
@@ -119,12 +119,11 @@ const config = {
     },
     etherscan: {
         apiKey: {
-            mainnet: process.env.MAINNET_API_KEY!,
-            rinkeby: process.env.MAINNET_API_KEY!,
-            polygon: process.env.POLYGON_API_KEY!,
-            bsc: process.env.BINANCE_API_KEY!,
-            arbitrumOne: process.env.ARBITRUM_API_KEY!,
-            optimisticEthereum: process.env.OPTIMISM_API_KEY!,
+            mainnet: MAINNET_EXPLORER_API_KEY,
+            polygon: POLYGON_EXPLORER_API_KEY,
+            bsc: BSC_EXPLORER_API_KEY,
+            arbitrumOne: ARBITRUM_EXPLORER_API_KEY,
+            optimisticEthereum: OPTIMISM_EXPLORER_API_KEY,
             avalanche: process.env.AVAX_API_KEY!,
             opera: process.env.FANTOM_API_KEY!,
             aurora: process.env.AURORA_API_KEY!,
@@ -137,32 +136,32 @@ const config = {
                 network: 'polygon',
                 chainId: 137,
                 urls: {
-                    apiURL: 'https://api.polygonscan.com/',
-                    browserURL: 'https://polygonscan.com',
+                    apiURL: POLYGON_EXPLORER_API,
+                    browserURL: POLYGON_EXPLORER,
                 },
             },
             {
                 network: 'binance',
                 chainId: 56,
                 urls: {
-                    apiURL: 'https://api.bscscan.com/',
-                    browserURL: 'https://bscscan.com/',
+                    apiURL: BSC_EXPLORER_API,
+                    browserURL: BSC_EXPLORER,
                 },
             },
             {
                 network: 'arbitrum',
                 chainId: 42161,
                 urls: {
-                    apiURL: 'https://api.arbiscan.com/',
-                    browserURL: 'https://arbiscan.io/',
+                    apiURL: ARBITRUM_EXPLORER_API,
+                    browserURL: ARBITRUM_EXPLORER,
                 },
             },
             {
                 network: 'optimism',
                 chainId: 10,
                 urls: {
-                    apiURL: 'https://api-optimistic.etherscan.io',
-                    browserURL: 'https://optimistic.etherscan.io/',
+                    apiURL: OPTIMISM_EXPLORER_API,
+                    browserURL: OPTIMISM_EXPLORER,
                 },
             },
             {

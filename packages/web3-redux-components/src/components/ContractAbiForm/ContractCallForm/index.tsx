@@ -1,9 +1,8 @@
-//@ts-nocheck
-import { Box, useTheme, FormControl, FormErrorMessage } from '@chakra-ui/react';
-import { Config, Contract } from '@owlprotocol/web3-redux';
-import { useForm } from 'react-hook-form';
-import { AbiInputType } from '../AbiInput/AbiInput/index.js';
-import { AbiInputList } from '../AbiInput/AbiInputList/index.js';
+import { Box, useTheme, FormControl, FormErrorMessage } from "@chakra-ui/react";
+import { Config, Contract } from "@owlprotocol/web3-redux";
+import { useForm } from "react-hook-form";
+import { AbiInputType } from "../AbiInput/AbiInput/index.js";
+import { AbiInputList } from "../AbiInput/AbiInputList/index.js";
 
 export interface ContractCallFormProps {
     networkId: string;
@@ -16,22 +15,40 @@ export interface ContractCallFormProps {
     }[];
 }
 
-export const ContractCallForm = ({ networkId, address, namePrefix = '', name, inputs = [] }: ContractCallFormProps) => {
+export const ContractCallForm = ({
+    networkId,
+    address,
+    namePrefix = "",
+    name,
+    inputs = [],
+}: ContractCallFormProps) => {
     const { themes } = useTheme();
 
-    const { setValue, setError, clearErrors, getFieldState, formState, watch } = useForm();
+    const { setValue, setError, clearErrors, getFieldState, formState, watch } =
+        useForm();
     const { errors } = formState;
     const inputErrors = Object.values(errors);
     const args = watch(inputs.map((i) => i.name));
-    const argsDefined = args.length > 0 ? args.reduce((acc, curr) => acc && !!curr, !!args[0]) : true;
+    const argsDefined =
+        args.length > 0
+            ? args.reduce((acc, curr) => acc && !!curr, !!args[0])
+            : true;
     const noInputErrors =
-        inputErrors.length > 0 ? inputErrors.reduce((acc, curr) => acc && !curr, !inputErrors[0]) : true;
+        inputErrors.length > 0
+            ? inputErrors.reduce((acc, curr) => acc && !curr, !inputErrors[0])
+            : true;
     const validArgs = argsDefined && noInputErrors;
 
-    const [returnValue, { error: callError }] = Contract.hooks.useContractCall(networkId, address, name, args, {
-        //@ts-expect-error
-        sync: validArgs ? 'once' : false,
-    });
+    const [returnValue, { error: callError }] = Contract.hooks.useContractCall(
+        networkId,
+        address,
+        name,
+        args,
+        {
+            //@ts-expect-error
+            sync: validArgs ? "once" : false,
+        }
+    );
 
     console.debug({ returnValue, callError, inputErrors, args, validArgs });
 
@@ -49,8 +66,19 @@ export const ContractCallForm = ({ networkId, address, namePrefix = '', name, in
                 <b>{name}</b>&nbsp;
             </Box>
             <FormControl isInvalid={isError}>
-                <AbiInputList inputs={inputs} {...{ setValue, setError, clearErrors, getFieldState, formState }} />
-                {isError && <FormErrorMessage>Error: {error?.message}</FormErrorMessage>}
+                <AbiInputList
+                    inputs={inputs}
+                    {...{
+                        setValue,
+                        setError,
+                        clearErrors,
+                        getFieldState,
+                        formState,
+                    }}
+                />
+                {isError && (
+                    <FormErrorMessage>Error: {error?.message}</FormErrorMessage>
+                )}
                 {resultText}
             </FormControl>
         </Box>

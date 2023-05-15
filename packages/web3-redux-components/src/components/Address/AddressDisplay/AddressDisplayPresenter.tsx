@@ -39,8 +39,7 @@ export const AddressDisplayPresenter = ({
     controls = ["qr", "copy", "favorite", "edit", "icon"],
     containerStyles,
 }: AddressDisplayPresenterProps) => {
-    const theme = useTheme();
-    const themes = theme.themes ?? {};
+    const { themes } = useTheme();
 
     const [editLabelText, setEditLabelText] = useState("");
     const [editLabel, setEditLabel] = useState(false);
@@ -162,7 +161,8 @@ export const AddressDisplayPresenter = ({
                 <Flex alignItems={"center"} justifyContent={"space-between"}>
                     {controls.includes("copy") && (
                         <IconButton
-                            bg={"transparent"}
+                            mx={2}
+                            variant="cube"
                             onClick={handleCopy}
                             aria-label={"copy to clipboard"}
                             icon={<Icon icon="copy" size={20} />}
@@ -170,7 +170,8 @@ export const AddressDisplayPresenter = ({
                     )}
                     {controls.includes("favorite") && (
                         <IconButton
-                            bg={"transparent"}
+                            mx={2}
+                            variant="cube"
                             onClick={toggleFavorite}
                             aria-label={"mark as favorite"}
                             icon={
@@ -182,7 +183,8 @@ export const AddressDisplayPresenter = ({
                     )}
                     {controls.includes("edit") && (
                         <IconButton
-                            bg={"transparent"}
+                            mx={2}
+                            variant="cube"
                             onClick={handleEditOnClick}
                             aria-label={"click to edit"}
                             icon={<Icon icon="pencil" />}

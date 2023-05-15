@@ -70,7 +70,7 @@ export async function postWriteBulkDBERC165(items: ERC165[]): Promise<any> {
         ),
     );
 
-    //console.debug({ ContractUpserts })
+    //log.debug({ ContractUpserts })
 
     return Promise.all([ContractCRUD.db.bulkPutUnchained(ContractUpserts)]);
     */

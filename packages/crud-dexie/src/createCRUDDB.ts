@@ -1,6 +1,7 @@
 import { compact } from "lodash-es";
-import { Dexie, PromiseExtended } from "dexie";
+import { Dexie, liveQuery, Observable, PromiseExtended } from "dexie";
 import { CRUDDexie, CRUDTable } from "./table.js";
+import log from "loglevel";
 
 /**
  *
@@ -29,6 +30,10 @@ export function createCRUDDB<U extends string, T, TKeyId, TKeyIdEq, TKeyIdx, TKe
         return db.transaction("r?", table, () => {
             return table.get(toPrimaryKey(id));
         });
+    };
+
+    const getLiveQuery = function (id: TKeyIdEq): Observable<T | undefined> {
+        return liveQuery(() => get(id));
     };
 
     const bulkGet = function (ids: TKeyIdEq[]): PromiseExtended<(T | undefined)[]> {
@@ -143,7 +148,7 @@ export function createCRUDDB<U extends string, T, TKeyId, TKeyIdEq, TKeyIdx, TKe
                     }),
                 )
                 .catch(Dexie.BulkError, (e) => {
-                    console.error(e.message);
+                    log.error(e.message);
                 });
         });
     };
@@ -177,7 +182,7 @@ export function createCRUDDB<U extends string, T, TKeyId, TKeyIdEq, TKeyIdx, TKe
                     }),
                 )
                 .catch(Dexie.BulkError, (e) => {
-                    console.error(e.message);
+                    log.error(e.message);
                 });
         });
     };
@@ -213,7 +218,7 @@ export function createCRUDDB<U extends string, T, TKeyId, TKeyIdEq, TKeyIdx, TKe
             });
         return db.transaction("rw?", table, () => {
             return table.bulkUpdate(updates).catch(Dexie.BulkError, (e) => {
-                console.error(e.message);
+                log.error(e.message);
             });
         });
     };
@@ -284,6 +289,7 @@ export function createCRUDDB<U extends string, T, TKeyId, TKeyIdEq, TKeyIdx, TKe
         db,
         table,
         get,
+        getLiveQuery,
         bulkGet,
         all,
         where,

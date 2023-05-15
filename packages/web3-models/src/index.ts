@@ -10,7 +10,5 @@ export * from "./ipfscache/index.js";
 export * from "./network/index.js";
 
 export * from "./data.js";
-export * from "./environment.js";
-
 export * from "./common.js";
 export * from "./utils/index.js";

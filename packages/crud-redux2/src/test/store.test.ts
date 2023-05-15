@@ -1,13 +1,14 @@
 import { assert } from "chai";
 import { omit } from "lodash-es";
 import { ChildCRUDActions } from "@owlprotocol/crud-actions/test";
-import { ChildDexie } from "@owlprotocol/crud-dexie/test";
+import { createTestDexie, getChildDexie } from "@owlprotocol/crud-dexie/test";
 import { Child, ChildId } from "@owlprotocol/crud-models/test";
 import { sleep } from "@owlprotocol/utils";
 import { createTestStore, TestStoreType } from "./store.js";
 
 describe(`store.test.js`, () => {
     describe("store", () => {
+        const ChildDexie = getChildDexie(createTestDexie());
         let store: TestStoreType;
         const id0: ChildId = { firstName: "John", lastName: "Doe" };
         const item0: Child = { ...id0, age: 42 };

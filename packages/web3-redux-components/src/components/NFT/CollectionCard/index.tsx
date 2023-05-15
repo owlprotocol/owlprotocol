@@ -1,5 +1,7 @@
-import { useTheme, Box, Text, Image, HStack } from "@chakra-ui/react";
+import { useTheme, Box, Text, Image, HStack, Center } from "@chakra-ui/react";
 import { ReactComponent as VerifiedIcon } from "./assets/verified.svg";
+import Icon from "../../Icon";
+import NetworkIcon from "../../NetworkIcon";
 
 export interface CollectionCardProps {
     networkId: number;
@@ -25,7 +27,6 @@ const CollectionCardPresenter = ({
     assetPreviewSrc,
 }: CollectionCardProps) => {
     const { themes } = useTheme();
-    console.log(networkId);
 
     return (
         <Box
@@ -44,6 +45,11 @@ const CollectionCardPresenter = ({
                         w={"100%"}
                         src={assetPreviewSrc}
                         objectFit={"scale-down"}
+                        fallback={
+                            <Center w={"100%"} h={"100%"} bg={themes.color6}>
+                                <Icon icon="BrokenImage" size={80} />
+                            </Center>
+                        }
                     />
                 </Box>
                 <Box
@@ -86,30 +92,49 @@ const CollectionCardPresenter = ({
             </Box>
 
             <HStack px={3} justify={"space-between"}>
-                <Box>
-                    <Text fontWeight={600} mb={1}>
-                        Recipe
-                    </Text>
-                    <Text fontWeight={800} color={themes.color7} fontSize={18}>
-                        {recipeNumber}
-                    </Text>
-                </Box>
-                <Box>
-                    <Text fontWeight={600} mb={1}>
-                        Floor Price
-                    </Text>
-                    <Text fontWeight={800} color={themes.color7} fontSize={18}>
-                        {floorPrice}
-                    </Text>
-                </Box>
-                <Box>
-                    <Text fontWeight={600} mb={1}>
-                        Volume
-                    </Text>
-                    <Text fontWeight={800} color={themes.color7} fontSize={18}>
-                        {volume}
-                    </Text>
-                </Box>
+                {networkId && <NetworkIcon networkId={networkId} />}
+                {recipeNumber && (
+                    <Box>
+                        <Text fontWeight={600} mb={1}>
+                            Recipe
+                        </Text>
+                        <Text
+                            fontWeight={800}
+                            color={themes.color7}
+                            fontSize={18}
+                        >
+                            {recipeNumber}
+                        </Text>
+                    </Box>
+                )}
+                {floorPrice && (
+                    <Box>
+                        <Text fontWeight={600} mb={1}>
+                            Floor Price
+                        </Text>
+                        <Text
+                            fontWeight={800}
+                            color={themes.color7}
+                            fontSize={18}
+                        >
+                            {floorPrice}
+                        </Text>
+                    </Box>
+                )}
+                {volume && (
+                    <Box>
+                        <Text fontWeight={600} mb={1}>
+                            Volume
+                        </Text>
+                        <Text
+                            fontWeight={800}
+                            color={themes.color7}
+                            fontSize={18}
+                        >
+                            {volume}
+                        </Text>
+                    </Box>
+                )}
             </HStack>
         </Box>
     );

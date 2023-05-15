@@ -1,4 +1,3 @@
-//@ts-nocheck
 import { Box, SimpleGrid } from "@chakra-ui/react";
 import { NFTGenerativeItemId } from "@owlprotocol/web3-redux/src/nftgenerativeitem/model/interface.js";
 import { ERC721GenerativeInstance } from "./ERC721GenerativeInstance.js";

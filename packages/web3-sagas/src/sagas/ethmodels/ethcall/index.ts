@@ -16,3 +16,5 @@ export function* ethCallSaga() {
         takeEvery(WEB3_CALL, wrapSagaWithErrorHandler<Web3CallAction>(web3CallSaga)),
     ]);
 }
+
+export * from "./web3Call.js";

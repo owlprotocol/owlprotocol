@@ -55,7 +55,8 @@
   },
   "dependencies": {
     "lodash-es": "4.17.21",
-    "@owlprotocol/utils": "workspace:*"
+    "@owlprotocol/utils": "workspace:*",
+    "loglevel": "^1.8.1"
   },
   "devDependencies": {
     "@owlprotocol/esbuild-config": "workspace:*",

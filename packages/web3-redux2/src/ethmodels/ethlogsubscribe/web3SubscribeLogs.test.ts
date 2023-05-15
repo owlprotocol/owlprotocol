@@ -2,6 +2,7 @@ import { assert } from "chai";
 import Web3 from "web3";
 import type { Contract as Web3Contract } from "web3-eth-contract";
 import * as Contracts from "@owlprotocol/contracts";
+import log from "loglevel"
 
 import { utils } from "ethers";
 import { sleep } from "@owlprotocol/utils";
@@ -102,7 +103,7 @@ describe(`${EthLogSubscribeName}/sagas/web3SubscribeLogs.test.ts`, () => {
                 eventFormatFull,
             });
             const eventsAll = await EthLogDexie.all();
-            console.debug(eventsAll);
+            log.debug(eventsAll);
             assert.deepEqual(events1, expectedEvents);
         });
     });

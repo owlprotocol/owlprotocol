@@ -1,6 +1,5 @@
 import { useTheme, Box, Image, Flex, Center, Checkbox } from "@chakra-ui/react";
 import Icon from "../Icon/index.js";
-import { ReactComponent as BrokenImgIcon } from "./assets/broken-img-icon.svg";
 
 export interface NFTItemCardProps {
     tokenId?: number;
@@ -59,9 +58,7 @@ export const NFTItemCard = ({
                     src={assetPreviewSrc}
                     fallback={
                         <Center w={"100%"} h={"100%"}>
-                            <Box boxSize={20}>
-                                <BrokenImgIcon />
-                            </Box>
+                            <Icon icon="BrokenImage" size={80} />
                         </Center>
                     }
                 />

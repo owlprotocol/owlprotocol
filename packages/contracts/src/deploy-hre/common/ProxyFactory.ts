@@ -1,8 +1,9 @@
 import type { HardhatRuntimeEnvironment } from "hardhat/types";
 import { ProxyFactoryDeploy } from "../../deploy/common/ProxyFactory.js";
-import { PRIVATE_KEY_0 } from "../../environment.js";
+import { PRIVATE_KEY_0 } from "@owlprotocol/envvars";
 
 const deploy = async ({ ethers, network, deployments }: HardhatRuntimeEnvironment) => {
+    if (!PRIVATE_KEY_0) throw new Error(`PRIVATE_KEY_0 ${PRIVATE_KEY_0}`)
     const wallet = new ethers.Wallet(PRIVATE_KEY_0, ethers.provider);
     const { abi } = await deployments.getExtendedArtifact("ERC1167Factory");
 

@@ -1,6 +1,7 @@
 import { Dexie } from "dexie";
 import { Concat, isStrings } from "@owlprotocol/utils";
 import { CRUDTable } from "./table.js";
+import log from "loglevel";
 
 export type DexieIndexMultiEntry<T extends string = string> = { key: T; multiEntry: true };
 export type DexieIndex = string | string[] | DexieIndexMultiEntry;
@@ -60,7 +61,7 @@ export function createCRUDDexie<Tables extends Record<any, CRUDTable<any, any, a
     name: string,
     stores: Record<keyof Tables, string>,
 ) {
-    //console.debug({ indexedDB: !!Dexie.dependencies.indexedDB });
+    log.debug({ indexedDB: !!Dexie.dependencies.indexedDB, name });
     const db = new Dexie(name) as Dexie & Tables & { clear(): Promise<any> };
     db.version(1).stores(stores);
     db.clear = () => {
@@ -69,6 +70,15 @@ export function createCRUDDexie<Tables extends Record<any, CRUDTable<any, any, a
         });
         return Promise.all(promises);
     };
+    db.on("ready", () => {
+        log.debug(`Database ${name} ready`);
+    });
+    db.on("blocked", () => {
+        log.debug(`Database ${name} upgrading was blocked`);
+    });
+    db.on("close", () => {
+        log.debug(`Database ${name} closed`);
+    });
 
     return db;
 }

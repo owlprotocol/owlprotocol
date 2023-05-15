@@ -1,5 +1,6 @@
 import { Ethers, interfaces, Utils } from "@owlprotocol/contracts";
-import { CRUDDexie, createCRUDDexie } from "@owlprotocol/crud-dexie";
+import { CRUDDexie, createCRUDDexie, indexedDBShimMemory, indexedDBShimSQLite } from "@owlprotocol/crud-dexie";
+import { isClient } from "@owlprotocol/utils";
 import {
     ConfigName,
     EthBlockName,
@@ -32,11 +33,13 @@ import {
     defaultNetworks,
     Network,
     Contract,
-    ERC165
+    ERC165,
 } from "@owlprotocol/web3-models";
 import { Dexie } from "dexie";
 import { utils } from "ethers";
 import { flatten } from "lodash-es";
+import log from "loglevel";
+import { homedir } from "os";
 import {
     AssetRouterInputBasketIdx,
     AssetRouterInputBasketTable,
@@ -151,41 +154,47 @@ const stores = {
 };
 
 export function createWeb3Dexie() {
+    /* IndexedDBShim Type
+        - Client        : IndexedDB
+        - NodeJS Testing: In-memory
+        - NodeJS        : SQLite
+    */
+    if (!isClient()) {
+        if (process.env.NODE_ENV === "test") {
+            indexedDBShimMemory("Web3Dexie");
+        } else {
+            const home = homedir();
+            const path = `${home}/owlprotocol`;
+            indexedDBShimSQLite(path);
+        }
+    }
+
     const db = createCRUDDexie<Web3Tables>("Web3Dexie", stores);
     db.on("ready", async () => {
         //Insert default interfaces
-        console.debug(`Web3 Database ready`);
         await initData(db);
-        console.debug(`Web3 Init Data inserted`);
+        log.debug(`Web3 Init Data inserted`);
     });
 
-    db.on("close", () => {
-        console.debug(`Web3 Database closed`);
-    });
     return db;
 }
 
 export function initNetwork(db: Web3Tables) {
-    const networks: Network[] = Object.entries(defaultNetworks()).map(([k, v]) => {
-        return {
-            networkId: v?.networkId!,
-            syncContracts: true
-        };
-    });
+    const networks: Network[] = Object.values(defaultNetworks);
     const txNetwork = db.Network.bulkAdd(networks).catch(Dexie.BulkError, (e) => {
-        console.error(e.message);
+        log.error(e.message);
     });
-    return txNetwork
+    return txNetwork;
 }
 
 export function initContract(db: Web3Tables) {
-    const contract: Contract[][] = Object.entries(defaultNetworks()).map(([k, v]) => {
-        const networkId = v?.networkId!
+    const contract: Contract[][] = Object.entries(defaultNetworks).map(([k, v]) => {
+        const networkId = v?.networkId!;
         //Interface is marked as checked
         const contractsImplementation = Object.entries(Ethers.implementationFactories).map(([k, f]) => {
             return {
                 networkId,
-                address: f.getAddress(),
+                address: f.getAddress().toLowerCase(),
                 label: `${k}Implementation`,
                 tags: ["Implementation"],
                 interfaceCheckedAt: Number.MAX_SAFE_INTEGER,
@@ -194,50 +203,52 @@ export function initContract(db: Web3Tables) {
         const contracts = [
             {
                 networkId,
-                address: Utils.ERC1820.registryAddress,
-                interfaceCheckedAt: Number.MAX_SAFE_INTEGER
+                address: Utils.ERC1820.registryAddress.toLowerCase(),
+                interfaceCheckedAt: Number.MAX_SAFE_INTEGER,
+                label: "ERC1820",
             },
             {
                 networkId,
-                address: Utils.ERC1167Factory.ERC1167FactoryAddress,
+                address: Utils.ERC1167Factory.ERC1167FactoryAddress.toLowerCase(),
                 interfaceCheckedAt: Number.MAX_SAFE_INTEGER,
+                label: "ERC1167Factory",
             },
             ...contractsImplementation,
         ];
 
-        return contracts
+        return contracts;
     });
 
     const txContract = db.Contract.bulkAdd(flatten(contract)).catch(Dexie.BulkError, (e) => {
-        console.error(e.message);
+        log.error(e.message);
     });
-    return txContract
+    return txContract;
 }
 
 export function initERC165(db: Web3Tables) {
-    const erc165: ERC165[][] = Object.entries(defaultNetworks()).map(([k, v]) => {
-        const networkId = v?.networkId!
+    const erc165: ERC165[][] = Object.entries(defaultNetworks).map(([k, v]) => {
+        const networkId = v?.networkId!;
         //Interface is marked as checked
         const erc165ForNetwork = [
             {
                 networkId,
-                address: Utils.ERC1820.registryAddress,
-                interfaceId: interfaces.IERC1820.interfaceId
+                address: Utils.ERC1820.registryAddress.toLowerCase(),
+                interfaceId: interfaces.IERC1820.interfaceId,
             },
             {
                 networkId,
-                address: Utils.ERC1167Factory.ERC1167FactoryAddress,
-                interfaceId: interfaces.IERC1167Factory.interfaceId
+                address: Utils.ERC1167Factory.ERC1167FactoryAddress.toLowerCase(),
+                interfaceId: interfaces.IERC1167Factory.interfaceId,
             },
         ];
 
-        return erc165ForNetwork
+        return erc165ForNetwork;
     });
 
     const txERC165 = db.ERC165.bulkAdd(flatten(erc165)).catch(Dexie.BulkError, (e) => {
-        console.error(e.message);
+        log.error(e.message);
     });
-    return txERC165
+    return txERC165;
 }
 
 export function initERC165Abi(db: Web3Tables) {
@@ -249,9 +260,9 @@ export function initERC165Abi(db: Web3Tables) {
         };
     });
     const txERC165Abi = db.ERC165Abi.bulkAdd(erc165abi).catch(Dexie.BulkError, (e) => {
-        console.error(e.message);
+        log.error(e.message);
     });
-    return txERC165Abi
+    return txERC165Abi;
 }
 
 export function initEthLogAbi(db: Web3Tables) {
@@ -266,9 +277,9 @@ export function initEthLogAbi(db: Web3Tables) {
         }),
     );
     const txEthLogAbi = db.EthLogAbi.bulkAdd(ethlogabi).catch(Dexie.BulkError, (e) => {
-        console.error(e.message);
+        log.error(e.message);
     });
-    return txEthLogAbi
+    return txEthLogAbi;
 }
 export function initEthCallAbi(db: Web3Tables) {
     const ethcallabi: EthCallAbi[] = flatten(
@@ -283,9 +294,9 @@ export function initEthCallAbi(db: Web3Tables) {
     );
 
     const txEthCallAbi = db.EthCallAbi.bulkAdd(ethcallabi).catch(Dexie.BulkError, (e) => {
-        console.error(e.message);
+        log.error(e.message);
     });
-    return txEthCallAbi
+    return txEthCallAbi;
 }
 
 export function initData(db: Web3Tables) {
@@ -295,10 +306,9 @@ export function initData(db: Web3Tables) {
         initEthCallAbi(db),
         initNetwork(db),
         initContract(db),
-        initERC165(db)
+        initERC165(db),
     ]);
 }
-
 
 export const Web3Dexie = createWeb3Dexie() as CRUDDexie<
     | ConfigTable

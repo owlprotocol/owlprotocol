@@ -2,6 +2,7 @@ import { useState } from "react";
 import { Box, Select, useTheme } from "@chakra-ui/react";
 import NetworkIcon from "../NetworkIcon/index.js";
 
+const DEF_LABEL = "Select a Network";
 const DEFAULT_CHAINS = [
     "Ethereum",
     "Arbitrum",
@@ -15,9 +16,15 @@ const DEFAULT_CHAINS = [
 export interface Props {
     options?: string[];
     handleChange?: any;
+    label?: string;
     bg?: string;
 }
-export const NetworkDropdown = ({ options = [], handleChange, bg }: Props) => {
+export const NetworkDropdown = ({
+    options = [],
+    label = DEF_LABEL,
+    handleChange,
+    bg,
+}: Props) => {
     const { themes } = useTheme();
     const [selectedNetwork, setSelectedNetwork] = useState("1");
     const _options = [...DEFAULT_CHAINS, ...options];
@@ -41,10 +48,11 @@ export const NetworkDropdown = ({ options = [], handleChange, bg }: Props) => {
                 <NetworkIcon networkId={selectedNetwork} size={20} />
             </Box>
             <Select
+                w={label ? "auto" : 10}
                 border={0}
                 bg={"transparent"}
                 color={themes.color8}
-                placeholder="Select a Network"
+                placeholder={label}
                 onChange={({ target }: any) => _onChange(target.value)}
             >
                 {_options.map((item, key) => (

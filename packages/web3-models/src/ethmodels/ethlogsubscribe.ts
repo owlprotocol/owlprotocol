@@ -91,7 +91,7 @@ export function validateWithReduxEthLogSubscribe(
         sess.EthLogSubscribe.withId(
             toReduxOrmId(toPrimaryKeyEthLogSubcribe(item))
         );
-    //console.debug({ item, itemORM })
+    //log.debug({ item, itemORM })
 
     if (!item.active) {
         //Unsubscribe and return as regular

@@ -51,4 +51,4 @@ export const ContractSagaHelpers = mapValues(interfaces, (iface) => {
         [K in keyof typeof interfaces]: ReturnType<typeof contractSagaHelpersFactory<(typeof interfaces)[K]["contract"]>>;
     };
 
-//console.debug(ContractActionHelpers.IERC20);
+//log.debug(ContractActionHelpers.IERC20);

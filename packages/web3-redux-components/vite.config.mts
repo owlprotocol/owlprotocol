@@ -51,6 +51,7 @@ const build = {
             'classnames',
             'copy-to-clipboard',
             'ethereum-qr-code',
+            'fs/promises',
             'framer-motion',
             'ipfs-http-client',
             'js-base64',

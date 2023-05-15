@@ -1,8 +1,6 @@
-//@ts-nocheck
+// import { Contract } from "@owlprotocol/web3-redux";
 import { useTheme, Box, HStack } from "@chakra-ui/react";
-import { Contract } from "@owlprotocol/web3-redux";
-
-import { NFTGenerativeItemId } from "@owlprotocol/web3-redux/src/nftgenerativeitem/model/interface.js";
+import { NFTGenerativeItemId } from "@owlprotocol/nft-sdk";
 import {
     ERC721GenerativeImage,
     ERC721GenerativeImageProps,
@@ -27,11 +25,13 @@ export const ERC721GenerativeInstance = ({
     onSelected,
     InstanceMenu = null,
 }: ERC721GenerativeInstanceProps) => {
-    const [rootOwner] = Contract.hooks.useERC721TopDownRootOwnerOf(
-        networkId,
-        address,
-        [tokenId]
-    );
+    // no such function under hooks;
+
+    // const [rootOwner] = Contract.hooks.useERC721TopDownRootOwnerOf(
+    //     networkId,
+    //     address,
+    //     [tokenId]
+    // );
 
     const onClickDefined = onSelected ?? console.debug;
 

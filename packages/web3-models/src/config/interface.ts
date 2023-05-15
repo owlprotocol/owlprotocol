@@ -14,6 +14,8 @@ export interface Config extends ConfigId {
      * See [chainlist](https://chainlist.org/) for a list of networks.
      */
     readonly networkId?: string | undefined | null;
+    /** Show testnets */
+    readonly showTestnets?: boolean;
     /* Selected account */
     readonly account?: string | undefined | null;
     /* API URLs */

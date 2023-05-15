@@ -56,7 +56,8 @@
   "dependencies": {
     "lodash-es": "4.17.21",
     "@owlprotocol/crud-models": "workspace:*",
-    "@owlprotocol/crud-redux-orm": "workspace:*"
+    "@owlprotocol/crud-redux-orm": "workspace:*",
+    "loglevel": "^1.8.1"
   },
   "peerDependencies": {
     "dexie-react-hooks": "^1.1.1",

@@ -20,6 +20,7 @@ export const Main = Template.bind({});
 
 const args: Props = {
     options: [],
+    label: "",
 };
 
 Main.args = args;

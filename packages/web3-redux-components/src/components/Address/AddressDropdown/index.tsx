@@ -70,6 +70,8 @@ export const AddressDropdown = ({
                 pr={1}
             >
                 <IconButton
+                    mx={3}
+                    variant="cube"
                     aria-label="click to copy address"
                     onClick={() => handleCopy(selectedAddress)}
                     icon={<Icon icon="copy" size={20} />}

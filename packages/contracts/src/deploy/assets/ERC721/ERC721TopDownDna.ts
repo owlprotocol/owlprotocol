@@ -9,6 +9,7 @@ import {
 import { ERC721TopDownDnaInitializeArgs, flattenInitArgsERC721TopDownDna } from "../../../utils/ERC721TopDownDna.js";
 import { getBeaconProxyFactories } from "../../../ethers/beaconProxyFactories.js";
 import { ERC1167FactoryAddress } from "../../../utils/ERC1167Factory/index.js";
+import log from "loglevel";
 
 export interface ERC721TopDownDnaDeployParams extends RunTimeEnvironment {
     tokens: {
@@ -120,7 +121,7 @@ export const ERC721TopDownDnaDeploy = async ({
     return mapValues(results, (r, k) => {
         if (r.error) {
             logDeployment(network.name, k, r.address, "beacon-proxy", "failed");
-            console.error(r.error);
+            log.error(r.error);
         } else {
             logDeployment(network.name, k, r.address, "beacon-proxy", r.deployed ? "deployed" : "exists");
         }

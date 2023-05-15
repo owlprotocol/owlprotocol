@@ -1,15 +1,29 @@
-import { ComponentStory, ComponentMeta } from '@storybook/react';
-import AddressDisplayPresenter, { AddressDisplayPresenterProps } from './AddressDisplayPresenter.js';
-import { addressArgType, networkIdArgType } from '../../../test/storybookArgs.js';
+import { ComponentStory, ComponentMeta } from "@storybook/react";
+import AddressDisplayPresenter, {
+    AddressDisplayPresenterProps,
+} from "./AddressDisplayPresenter.js";
+import {
+    addressArgType,
+    networkIdArgType,
+} from "../../../test/storybookArgs.js";
+import { AddressDisplayTiny } from "./AddressDisplayTiny.js";
+import { Box } from "@chakra-ui/react";
 
-const Template: ComponentStory<typeof AddressDisplayPresenter> = (args: any) => <AddressDisplayPresenter {...args} />;
+const Template: ComponentStory<typeof AddressDisplayPresenter> = (
+    args: any
+) => <AddressDisplayPresenter {...args} />;
+
+const TinyTemplate: ComponentStory<typeof AddressDisplayPresenter> = (
+    args: any
+) => <AddressDisplayTiny {...args} />;
 export const Main = Template.bind({});
-export const Alt = Template.bind({});
+export const CustomHeight = Template.bind({});
+export const Tiny = TinyTemplate.bind({});
 
 const Args: AddressDisplayPresenterProps = {
     networkId: networkIdArgType.options[0],
     address: addressArgType.options[0],
-    label: 'Main',
+    label: "Main",
     isFavorite: false,
 };
 
@@ -20,15 +34,19 @@ Main.argTypes = {
 
 const AltArgs: AddressDisplayPresenterProps = {
     address: addressArgType.options[0],
-    networkId: '1',
-    controls: ['copy', 'icon'],
+    networkId: "1",
+    controls: ["copy", "icon"],
     containerStyles: {
-        h: '30px',
+        h: "33px",
     },
 };
-Alt.args = AltArgs;
+CustomHeight.args = AltArgs;
+
+Tiny.args = {
+    address: addressArgType.options[0],
+};
 
 export default {
-    title: 'Address/AddressDisplayPresenter',
+    title: "Address/AddressDisplayPresenter",
     component: AddressDisplayPresenter,
 } as ComponentMeta<typeof AddressDisplayPresenter>;

@@ -1,9 +1,10 @@
 import { utils } from "ethers";
 import type { HardhatRuntimeEnvironment } from "hardhat/types";
 import { DeterministicDeployerDeploy } from "../../deploy/common/DeterministicDeployer.js";
-import { PRIVATE_KEY_0, PRIVATE_KEY_ANVIL } from "../../environment.js";
+import { PRIVATE_KEY_0, PRIVATE_KEY_ANVIL } from "@owlprotocol/envvars";
 
 const deploy = async ({ ethers, network, deployments }: HardhatRuntimeEnvironment) => {
+    if (!PRIVATE_KEY_0) throw new Error(`PRIVATE_KEY_0 ${PRIVATE_KEY_0}`)
     const wallet = new ethers.Wallet(PRIVATE_KEY_0, ethers.provider);
     const walletAddress = await wallet.getAddress();
 

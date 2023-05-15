@@ -14,6 +14,7 @@ const Box = (CURRENT_THEME: string) => {
                 minH: "50px",
                 bg: box_grad_bg,
                 p: 6,
+                spacing: 6,
                 border: `1px solid ${theme.color6}`,
                 borderRadius: 12,
                 boxShadow: "md",

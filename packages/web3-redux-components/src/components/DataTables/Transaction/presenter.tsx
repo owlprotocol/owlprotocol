@@ -6,7 +6,7 @@ import {
     flexRender,
 } from "@tanstack/react-table";
 import { makeData, Item } from "./dataFaker";
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import {
     Badge,
     Box,
@@ -26,7 +26,7 @@ import {
 import { TableWrapper } from "@owlprotocol/owl-theme";
 import NetworkIcon from "../../NetworkIcon";
 
-const TransactionTablePresenter = () => {
+const TransactionTablePresenter = ({ items = [] }) => {
     const columns = useMemo<ColumnDef<Item>[]>(
         () => [
             {
@@ -79,16 +79,17 @@ const TransactionTablePresenter = () => {
     );
 
     const [data, setData] = useState(() => makeData(50000));
+    useEffect(() => {
+        if (items.length > 0) setData(items);
+    });
 
     return (
-        <Box p={4}>
-            <Table
-                {...{
-                    data,
-                    columns,
-                }}
-            />
-        </Box>
+        <Table
+            {...{
+                data,
+                columns,
+            }}
+        />
     );
 };
 

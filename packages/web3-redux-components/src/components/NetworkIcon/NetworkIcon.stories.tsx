@@ -22,3 +22,7 @@ const Template: ComponentStory<typeof NetworkIcon> = (args: any) => (
     <NetworkIcon {...args} />
 );
 export const Main = Template.bind({});
+
+Main.args = {
+    label: true,
+};

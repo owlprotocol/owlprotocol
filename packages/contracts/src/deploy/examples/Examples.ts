@@ -1,6 +1,7 @@
 import { mapValues, zipObject } from "../../lodash.js";
 import { logDeployment, RunTimeEnvironment } from "../utils.js";
-import { getDeterministicFactories, getExamples } from '../../ethers';
+import { getDeterministicFactories, getExamples } from "../../ethers/index.js";
+import log from "loglevel";
 
 export const ExamplesDeploy = async ({ provider, signers, network }: RunTimeEnvironment) => {
     const signer = signers[0];
@@ -39,7 +40,7 @@ export const ExamplesDeploy = async ({ provider, signers, network }: RunTimeEnvi
     mapValues(results, ({ address, error, deployed }, name) => {
         if (error) {
             logDeployment(network.name, name, address, "example", "failed");
-            console.error(error);
+            log.error(error);
         } else {
             logDeployment(network.name, name, address, "example", deployed ? "deployed" : "exists");
         }

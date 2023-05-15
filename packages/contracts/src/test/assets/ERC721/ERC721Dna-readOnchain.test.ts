@@ -14,13 +14,14 @@ import {
 import { factories, Factories, getFactories } from "../../../ethers/factories.js";
 import { getDeterministicInitializeFactories, InitializeFactories } from "../../../ethers/deterministicFactories.js";
 import { ERC1167FactoryAddress } from "../../../utils/ERC1167Factory/index.js";
+import log from "loglevel";
 
 const cloneFactory = factories.ERC1167Factory.attach(ERC1167FactoryAddress);
 
 /**
  * WIP
  */
-describe("ERC721Dna-readOnChain", function (){
+describe("ERC721Dna-readOnChain", function () {
 
     let signers: SignerWithAddress[];
     let factories: Factories;
@@ -48,7 +49,7 @@ describe("ERC721Dna-readOnChain", function (){
     });
 
     it('Should deploy a NFT Dna to tokenId 3', async () => {
-        console.debug('TODO');
+        log.debug('TODO');
         expect(true).to.be.true;
     });
 });

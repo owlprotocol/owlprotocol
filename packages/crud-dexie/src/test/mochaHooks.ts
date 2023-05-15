@@ -1,18 +1,18 @@
-import { TestDexie } from "./db.js";
+import log from "loglevel";
 
 //TODO: Stop using in-memory db
 const beforeAll = async () => { };
 
 const beforeEach = async () => {
-    await TestDexie.clear();
+    //await TestDexie.clear();
 };
 
 const afterAll = async () => {
-    console.debug("Tests finished.");
+    log.debug("Tests finished.");
 };
 
 const afterEach = async () => {
-    await TestDexie.clear();
+    //await TestDexie.clear();
 };
 
 export const mochaHooks = {

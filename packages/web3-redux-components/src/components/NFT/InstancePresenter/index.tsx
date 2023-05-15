@@ -7,6 +7,7 @@ import {
     HStack,
     Image,
     Tooltip,
+    Center,
 } from "@chakra-ui/react";
 import { ReactComponent as ImageIcon } from "./assets/img-icon.svg";
 import { ReactComponent as XIcon } from "./assets/x-icon.svg";
@@ -99,6 +100,13 @@ export const NFTInstancePresenter = ({
                             h={"196px"}
                             alt={imageAlt}
                             objectFit={"scale-down"}
+                            fallback={
+                                <Center w={"100%"} h={"100%"}>
+                                    <Box boxSize={20}>
+                                        <Icon icon="BrokenImage" />
+                                    </Box>
+                                </Center>
+                            }
                         />
                     ) : (
                         editable && (

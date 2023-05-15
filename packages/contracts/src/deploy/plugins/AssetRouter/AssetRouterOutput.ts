@@ -10,6 +10,7 @@ import { getBeaconProxyFactories } from "../../../ethers/beaconProxyFactories.js
 import { ERC1167FactoryAddress } from "../../../utils/ERC1167Factory/index.js";
 import { MINTER_ROLE } from "../../../utils/IAccessControl.js";
 import { validateAssetBasketOutput } from "../../../utils/AssetLib.js";
+import log from "loglevel";
 
 export interface AssetRouterOutputDeployParams extends RunTimeEnvironment {
     routers: Pick<AssetRouterOutputInitializeArgs, "outputBaskets" | "routers">[];
@@ -126,7 +127,7 @@ export const AssetRouterOutputDeploy = async ({
                 return b.erc1155Mint.map(async (a) => {
                     const contract = factories.ERC1155Mintable.attach(a.contractAddr);
                     const allowed = await contract.hasRole(MINTER_ROLE, result.address);
-                    console.debug(`hasRole(${MINTER_ROLE},${result.address}) = ${allowed}`);
+                    log.debug(`hasRole(${MINTER_ROLE},${result.address}) = ${allowed}`);
                     if (!allowed) {
                         return contract.grantRole(MINTER_ROLE, result.address, { nonce: nonce++, gasLimit: 10e6 });
                     }
@@ -140,7 +141,7 @@ export const AssetRouterOutputDeploy = async ({
     return mapValues(results, (r, k) => {
         if (r.error) {
             logDeployment(network.name, k, r.address, "beacon-proxy", "failed");
-            console.error(r.error);
+            log.error(r.error);
         } else {
             logDeployment(network.name, k, r.address, "beacon-proxy", r.deployed ? "deployed" : "exists");
         }

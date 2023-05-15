@@ -1,4 +1,5 @@
 import { Web3Dexie } from "@owlprotocol/web3-dexie";
+import log from "loglevel";
 
 const beforeAll = async () => { };
 
@@ -7,7 +8,7 @@ const beforeEach = async () => {
 };
 
 const afterAll = async () => {
-    console.debug("Tests finished.");
+    log.debug("Tests finished.");
 };
 
 const afterEach = async () => {

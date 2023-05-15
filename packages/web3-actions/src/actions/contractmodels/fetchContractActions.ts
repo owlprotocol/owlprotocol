@@ -22,7 +22,7 @@ export function fetchContractActions(
     account: string | undefined | null,
     interfaceName: InterfaceName,
 ): AnyAction[] {
-    //console.debug({ interfaceNamesSet })
+    //log.debug({ interfaceNamesSet })
     const actions: AnyAction[] = [];
 
     //Handle interface
