@@ -25,7 +25,7 @@
     "types": [
       "node",
       "react",
-      "jest",
+      // "jest",
       "vite-plugin-svgr/client"
     ]
   },

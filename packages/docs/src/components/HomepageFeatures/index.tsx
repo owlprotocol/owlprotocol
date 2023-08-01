@@ -15,22 +15,11 @@ import {
 type FeatureItem = {
     title: string;
     image: string;
-    link: string;
+    link?: string;
     description: JSX.Element;
 };
 
 const FeatureList: FeatureItem[] = [
-    {
-        title: "Web3 Redux",
-        link: "web3-redux",
-        image: "/img/web3-redux-no-text.jpg",
-        description: (
-            <>
-                A Redux library designed to efficiently sync and normalize
-                blockchain data synced using web3.js and redux
-            </>
-        ),
-    },
     {
         title: "Dynamic NFT Contracts",
         link: "contracts",
@@ -40,6 +29,16 @@ const FeatureList: FeatureItem[] = [
                 Owl Protocol is creating a set of open source smart contracts,
                 standards, and APIs for creators and developers to easily create
                 Dynamic NFTs
+            </>
+        ),
+    },
+    {
+        title: "Web3 Redux - Coming Soon",
+        image: "/img/web3-redux-no-text.jpg",
+        description: (
+            <>
+                A Redux library designed to efficiently sync and normalize
+                blockchain data synced using web3.js and redux
             </>
         ),
     },
@@ -60,7 +59,7 @@ function Feature({ title, image, description, link }: FeatureItem) {
                 transform: "scale(1.1)",
             }}
         >
-            <Link href={link}>
+            {(link ? <Link href={link}>
                 <Center boxSize={200} mx={"auto"} mb={10} bg={'black'} p={4} borderRadius={'5%'}>
                     <Image alt={title} src={useBaseUrl(image)} borderRadius={12} />
                 </Center>
@@ -70,7 +69,18 @@ function Feature({ title, image, description, link }: FeatureItem) {
                     </Heading>
                     <Text>{description}</Text>
                 </Box>
-            </Link>
+            </Link> :
+            <div style={{cursor: 'not-allowed'}}>
+                <Center boxSize={200} mx={"auto"} mb={10} bg={'black'} p={4} borderRadius={'5%'}>
+                    <Image alt={title} src={useBaseUrl(image)} borderRadius={12} />
+                </Center>
+                    <Box textAlign={"center"} mx={"auto"} px={"10%"}>
+                        <Heading size={"md"} mb={6}>
+                            {title}
+                        </Heading>
+                        <Text>{description}</Text>
+                    </Box>
+            </div>)}
         </Box>
     );
 }

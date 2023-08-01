@@ -49,11 +49,9 @@ contract ERC20Mintable is OwlBase, ERC20BurnableUpgradeable, IERC20Mintable {
 
     function __ERC20Mintable_init_unchained(address _minterRole) internal {
         _grantRole(MINTER_ROLE, _minterRole);
-        if (AddressUpgradeable.isContract(ERC1820_REGISTRY)) {
-            registry.updateERC165Cache(address(this), type(IERC20Upgradeable).interfaceId);
-            registry.updateERC165Cache(address(this), type(IERC20Mintable).interfaceId);
-            registry.setInterfaceImplementer(address(this), type(IERC20Upgradeable).interfaceId | ONE, address(this));
-            registry.setInterfaceImplementer(address(this), type(IERC20Mintable).interfaceId | ONE, address(this));
+        if (_registryExists()) {
+            _registerInterface(type(IERC20Upgradeable).interfaceId);
+            _registerInterface(type(IERC20Mintable).interfaceId);
         }
     }
 
@@ -74,19 +72,5 @@ contract ERC20Mintable is OwlBase, ERC20BurnableUpgradeable, IERC20Mintable {
 
     function _msgData() internal view virtual override(OwlBase, ContextUpgradeable) returns (bytes calldata) {
         return OwlBase._msgData();
-    }
-
-    /**
-     * @dev ERC165 Support
-     * @param interfaceId hash of the interface testing for
-     * @return bool whether interface is supported
-     */
-    function supportsInterface(bytes4 interfaceId) public view virtual override returns (bool) {
-        return
-            interfaceId == type(IERC165Upgradeable).interfaceId ||
-            interfaceId == type(IERC20Upgradeable).interfaceId ||
-            interfaceId == type(IAccessControlUpgradeable).interfaceId ||
-            interfaceId == type(IRouterReceiver).interfaceId ||
-            interfaceId == type(IContractURI).interfaceId;
     }
 }

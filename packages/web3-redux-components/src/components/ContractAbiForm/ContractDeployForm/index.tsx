@@ -6,7 +6,7 @@ import {
     FormErrorMessage,
 } from "@chakra-ui/react";
 import {
-    Config,
+    ConfigHelpers,
     Contract,
     EthSendStatus as ContractSendStatus,
 } from "@owlprotocol/web3-redux";
@@ -47,7 +47,7 @@ const ContractDeployForm = ({
 }: ContractDeployFormProps) => {
     const dispatch = useDispatch();
 
-    const [from] = Config.hooks.useAccount();
+    const [from] = ConfigHelpers.useAccount();
 
     const { themes } = useTheme();
     const constructor = abi.find((f) => {

@@ -86,6 +86,7 @@ const build = {
                 'copy-to-clipboard': 'copy-to-clipboard',
                 'ethereum-qr-code': 'ethereum-qr-code',
                 'framer-motion': 'framer-motion',
+                'ganache': 'ganache',
                 'js-base64': 'js-base64',
                 'rc-pagination': 'rc-pagination',
                 'react-hooks-compose': 'react-hooks-compose',

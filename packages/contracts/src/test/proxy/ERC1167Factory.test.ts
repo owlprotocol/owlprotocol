@@ -1,13 +1,15 @@
+//@ts-nocheck
 import { assert } from "chai";
 
 import "@nomiclabs/hardhat-ethers";
 import hre, { ethers } from "hardhat";
 import { SignerWithAddress } from "@nomiclabs/hardhat-ethers/signers";
+import { constants } from "ethers";
 import {
     ERC1167Factory,
     ERC721MintableAutoId as ERC721MintableAutoIdContract,
     ERC721MintableAutoId__factory,
-} from "../../ethers/types.js";
+} from "../../typechain/ethers/index.js";
 import { proxy1167Factory } from "../../utils/ERC1167Factory/getContractFactory.js";
 import deployProxyNick from "../../deploy-hre/common/DeterministicDeployer.js";
 import ProxyFactoryDeploy from "../../deploy-hre/common/ProxyFactory.js";
@@ -20,8 +22,9 @@ import {
     InitializeFactories,
     NoInitFactories,
 } from "../../ethers/deterministicFactories.js";
-import { cloneDeterministicAddress } from "../../utils/ERC1167Factory/getAddress.js";
-import { ERC721MintableAutoId } from "../../utils/index.js";
+import { ERC1167FactoryAddress, cloneDeterministicAddress } from "../../utils/ERC1167Factory/getAddress.js";
+import { ERC721MintableAutoId as ERC721MintableAutoIdUtils } from "../../utils/index.js";
+import { ERC721MintableAutoIdInterface } from "../../ethers/interfaces.js";
 
 describe("ERC1167Factory.sol", function () {
     const salt = DEFAULT_SALT;
@@ -32,7 +35,7 @@ describe("ERC1167Factory.sol", function () {
 
     let cloneFactory: ERC1167Factory;
 
-    let token: ERC721MintableAutoId.ERC721MintableAutoIdInitializeArgs;
+    let token: ERC721MintableAutoIdUtils.ERC721MintableAutoIdInitializeArgs;
 
     before(async () => {
         await deployProxyNick(hre as any);
@@ -43,7 +46,7 @@ describe("ERC1167Factory.sol", function () {
         const signerAddress = signer.address;
 
         factories = getFactories(signer);
-        deterministicFactories = getDeterministicFactories(factories);
+        deterministicFactories = getDeterministicFactories(factories, ERC1167FactoryAddress);
         proxyFactories = getProxy1167InitializeFactories(deterministicFactories, signerAddress);
 
         cloneFactory = await ProxyFactoryDeploy(hre as any);
@@ -52,18 +55,16 @@ describe("ERC1167Factory.sol", function () {
             admin: signers[0].address,
             name: "test",
             symbol: "TEST",
-            initBaseURI: "",
+            tokenRoyaltyProvider: constants.AddressZero,
+            tokenUriProvider: constants.AddressZero,
         };
     });
 
     it("cloneDeterministicAddress - Typescript", async () => {
-        const initializerArgs = ERC721MintableAutoId.flattenInitArgsERC721MintableAutoId(token);
+        const initializerArgs = ERC721MintableAutoIdUtils.initializeUtil(token);
         const implementationAddress = proxyFactories.ERC721MintableAutoId.getAddress(...initializerArgs);
 
-        const initData = ERC721MintableAutoId.ERC721MintableAutoIdInterface.encodeFunctionData(
-            "initialize",
-            initializerArgs,
-        );
+        const initData = ERC721MintableAutoIdInterface.encodeFunctionData("initialize", initializerArgs);
 
         const result = await cloneFactory.cloneDeterministicAddress(
             implementationAddress,
@@ -73,7 +74,7 @@ describe("ERC1167Factory.sol", function () {
         );
         const expected = cloneDeterministicAddress<ERC721MintableAutoIdContract, "initialize">({
             implementationAddress,
-            contractInterface: ERC721MintableAutoId.ERC721MintableAutoIdInterface,
+            contractInterface: ERC721MintableAutoIdInterface,
             salt,
             cloneFactoryAddress: cloneFactory.address,
             msgSender: signers[0].address,
@@ -87,7 +88,7 @@ describe("ERC1167Factory.sol", function () {
     });
 
     it("proxyFactory", async () => {
-        const initializerArgs = ERC721MintableAutoId.flattenInitArgsERC721MintableAutoId(token);
+        const initializerArgs = ERC721MintableAutoIdUtils.initializeUtil(token);
         const implementationAddress = proxyFactories.ERC721MintableAutoId.getAddress(...initializerArgs);
         const contractFactory = factories.ERC721MintableAutoId;
 
@@ -106,7 +107,7 @@ describe("ERC1167Factory.sol", function () {
             salt,
             cloneFactoryAddress: cloneFactory.address,
             msgSender: signers[0].address,
-            contractInterface: ERC721MintableAutoId.ERC721MintableAutoIdInterface,
+            contractInterface: ERC721MintableAutoIdInterface,
             initOptions: {
                 initSignature: "initialize",
                 initArgs: initializerArgs,

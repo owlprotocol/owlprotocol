@@ -1,0 +1,75 @@
+# See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
+
+cache/
+
+# dependencies
+node_modules
+.pnp
+.pnp.js
+
+# testing
+coverage
+
+# build outputs
+.next/
+out/
+build
+.build
+.esbuild
+dist
+dist-ssr
+lib
+.serverless
+
+# misc
+.DS_Store
+*.pem
+.idea
+
+# debug
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+.pnpm-debug.log*
+logs
+*.log
+
+# local env files
+.env.local
+.env.development
+.env.test
+.env.production
+.env
+
+# turbo
+.turbo
+
+# local
+*.local
+
+# ipfs
+.ipfs
+.datastore
+.datastore_fs
+.datastore_level
+.datastore_s3
+
+# hardhat
+typechain
+cache
+factory
+/src/typechain
+/src/artifacts
+/docs-contracts-reference/*
+!/docs-contracts-reference/index.md
+/scripts
+traceOutputDir
+#src/deployments
+
+# forge
+forge-cache/
+out/
+soljson-v*.js
+.openzeppelin/unknown-*.json
+*.py
+!.env.example

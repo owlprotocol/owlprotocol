@@ -1,33 +1,21 @@
 //SPDX-License-Identifier: MIT
 pragma solidity ^0.8.0;
 
-import {IERC20Upgradeable} from "@openzeppelin/contracts-upgradeable/token/ERC20/IERC20Upgradeable.sol";
-import {IERC721Upgradeable} from "@openzeppelin/contracts-upgradeable/token/ERC721/IERC721Upgradeable.sol";
-import {IERC1155Upgradeable} from "@openzeppelin/contracts-upgradeable/token/ERC1155/IERC1155Upgradeable.sol";
+import {IERC721ReceiverUpgradeable} from "@openzeppelin/contracts-upgradeable/interfaces/IERC721ReceiverUpgradeable.sol";
+import {IERC1155ReceiverUpgradeable} from "@openzeppelin/contracts-upgradeable/interfaces/IERC1155ReceiverUpgradeable.sol";
 
 import {ERC721HolderUpgradeable} from "@openzeppelin/contracts-upgradeable/token/ERC721/utils/ERC721HolderUpgradeable.sol";
 import {ERC1155HolderUpgradeable} from "@openzeppelin/contracts-upgradeable/token/ERC1155/utils/ERC1155HolderUpgradeable.sol";
 import {ERC1155ReceiverUpgradeable} from "@openzeppelin/contracts-upgradeable/token/ERC1155/utils/ERC1155ReceiverUpgradeable.sol";
 
-import {AddressUpgradeable} from "@openzeppelin/contracts-upgradeable/utils/AddressUpgradeable.sol";
-import {SafeERC20Upgradeable} from "@openzeppelin/contracts-upgradeable/token/ERC20/utils/SafeERC20Upgradeable.sol";
-
 import {OwlBase} from "../../common/OwlBase.sol";
-
 import {AssetBasketOutput, AssetOutputLib} from "./AssetOutputLib.sol";
 import {IAssetRouterInput} from "./IAssetRouterInput.sol";
 import {IAssetRouterOutput} from "./IAssetRouterOutput.sol";
 
-import {IERC165Upgradeable} from "@openzeppelin/contracts-upgradeable/utils/introspection/IERC165Upgradeable.sol";
-import {IERC1155ReceiverUpgradeable} from "@openzeppelin/contracts-upgradeable/interfaces/IERC1155ReceiverUpgradeable.sol";
-import {IAccessControlUpgradeable} from "@openzeppelin/contracts-upgradeable/access/IAccessControlUpgradeable.sol";
-import {IRouterReceiver} from "../../common/IRouterReceiver.sol";
-import {IContractURI} from "../../common/IContractURI.sol";
-
 /**
  * @dev Abstract contract with types and utilities that will be used by many (if
  * not all) Plugins contracts
- *
  *
  */
 contract AssetRouterOutput is ERC721HolderUpgradeable, ERC1155HolderUpgradeable, OwlBase, IAssetRouterOutput {
@@ -86,9 +74,10 @@ contract AssetRouterOutput is ERC721HolderUpgradeable, ERC1155HolderUpgradeable,
             _grantRole(ASSET_ROUTER_INPUT, _routers[i]);
         }
         //Registry
-        if (AddressUpgradeable.isContract(ERC1820_REGISTRY)) {
-            registry.updateERC165Cache(address(this), type(IAssetRouterOutput).interfaceId);
-            registry.setInterfaceImplementer(address(this), type(IAssetRouterOutput).interfaceId | ONE, address(this));
+        if (_registryExists()) {
+            _registerInterface(type(IERC721ReceiverUpgradeable).interfaceId);
+            _registerInterface(type(IERC1155ReceiverUpgradeable).interfaceId);
+            _registerInterface(type(IAssetRouterOutput).interfaceId);
         }
 
         //Emit events for indexing
@@ -133,12 +122,9 @@ contract AssetRouterOutput is ERC721HolderUpgradeable, ERC1155HolderUpgradeable,
         emit UpdateBasket(basketIdx, -int256(amount));
     }
 
-    /**
-     * inheritdoc OwlBase
-     */
     function supportsInterface(
         bytes4 interfaceId
-    ) public view virtual override(OwlBase, ERC1155ReceiverUpgradeable) returns (bool) {
-        return interfaceId == type(IAssetRouterOutput).interfaceId || super.supportsInterface(interfaceId);
+    ) public view virtual override(ERC1155ReceiverUpgradeable, OwlBase) returns (bool) {
+        return OwlBase.supportsInterface(interfaceId);
     }
 }

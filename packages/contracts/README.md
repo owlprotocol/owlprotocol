@@ -35,3 +35,6 @@ Temporarily not imported, though some tests do work directly (with some commonjs
 We use a somewhat complicated system of interlaced proxies in order to optimize for low-gas deployments and easily-upgradeable contracts. This comes at the cost of a small uptick in gas used per transaction.
 
 See [OWLArchitecture](OWLArchitecture.svg) for more info on what's going on under the hood.
+
+## Development
+See [contract-structure.md](../docs/docs-contracts/advanced/contract-structure.md) for more info.

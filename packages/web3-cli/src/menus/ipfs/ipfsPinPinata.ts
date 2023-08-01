@@ -2,12 +2,13 @@ import inquirer from "inquirer";
 import { existsSync, lstatSync, readFileSync } from "fs"
 import { readFile } from "fs/promises"
 import pinataSDK, { PinataPinResponse } from "@pinata/sdk";
-import { walkDir, asyncGeneratorToArray } from "@owlprotocol/utils";
+import { asyncGeneratorToArray } from "@owlprotocol/utils";
 import { PINATA_JWT } from "@owlprotocol/envvars"
 import Spinnies from "spinnies"
 import { clearTerminal } from "../../utils/index.js";
-import { IPFSCacheDexie } from "@owlprotocol/web3-redux-2";
+import { IPFSCacheDexie } from "@owlprotocol/web3-redux";
 import { zip } from "lodash-es";
+import { walkDir } from "../../utils/walkDir.js";
 
 
 export async function ipfsPinPinataMenu(): Promise<string> {

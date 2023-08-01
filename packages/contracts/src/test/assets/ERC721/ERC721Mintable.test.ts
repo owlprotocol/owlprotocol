@@ -1,12 +1,13 @@
+//@ts-nocheck
 import { SignerWithAddress } from "@nomiclabs/hardhat-ethers/signers";
 import hre, { ethers } from "hardhat";
 import { expect, assert } from "chai";
 import { zip } from "lodash";
-import { ERC721Mintable } from "../../../ethers/types.js";
+import { ERC721Mintable } from "../../../typechain/ethers/index.js";;
 import deployProxyNick from "../../../deploy-hre/common/DeterministicDeployer.js";
 import ProxyFactoryDeploy from "../../../deploy-hre/common/ProxyFactory.js";
 import ERC1820Deploy from "../../../deploy-hre/common/ERC1820.js";
-import { ERC721MintableInitializeArgs, flattenInitArgsERC721Mintable } from "../../../utils/ERC721Mintable.js";
+import { ERC721MintableInitializeArgs, initializeUtil } from "../../../utils/initializeUtils/ERC721Mintable.js";
 import { Factories, getFactories } from "../../../ethers/factories.js";
 import { getDeterministicInitializeFactories, InitializeFactories } from "../../../ethers/deterministicFactories.js";
 import {
@@ -48,7 +49,7 @@ describe("ERC721Mintable", function () {
         const signerAddress = signer.address;
 
         factories = getFactories(signer);
-        const cloneFactory = factories.ERC1167Factory.attach(ERC1167FactoryAddress);
+        const cloneFactory = factories.ERC1167Factory.attach(ERC1167FactoryAddressLocal);
         deterministicFactories = getDeterministicInitializeFactories(factories, cloneFactory, signerAddress);
         ERC721MintableFactory = deterministicFactories.ERC721Mintable;
     });
@@ -63,7 +64,7 @@ describe("ERC721Mintable", function () {
             initBaseURI: `token.${tokenName}.com/token`,
             feeReceiver: signers[0].address,
         };
-        const initializerArgs = flattenInitArgsERC721Mintable(token);
+        const initializerArgs = initializeUtil(token);
         ERC721Mintable = await ERC721MintableFactory.deploy(...initializerArgs);
 
         tokenName++;
@@ -77,11 +78,6 @@ describe("ERC721Mintable", function () {
     it("symbol", async () => {
         const result = await ERC721Mintable.symbol();
         expect(result).to.be.eq(token.symbol);
-    });
-
-    it("baseURI", async () => {
-        const result = await ERC721Mintable.baseURI();
-        expect(result).to.be.eq(token.initBaseURI);
     });
 
     it("balanceOf", async () => {

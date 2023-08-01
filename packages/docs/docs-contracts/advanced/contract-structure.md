@@ -23,6 +23,8 @@ sidebar_position: 3
 [esbuild]: https://github.com/evanw/esbuild
 [hardhat-shorthand]: https://github.com/NomicFoundation/hardhat/tree/main/packages/hardhat-shorthand
 [@typechain/hardhat]: https://www.npmjs.com/package/@typechain/hardhat
+[hardhat]: https://hardhat.org/
+[mocha]: https://mochajs.org/
 
 [OwlBase]: https://github.com/owlprotocol/owlprotocol/tree/main/packages/contracts/contracts/common/OwlBase.sol
 [ContractURI]: https://github.com/owlprotocol/owlprotocol/tree/main/packages/contracts/contracts/common/ContractURI.sol
@@ -62,8 +64,19 @@ sidebar_position: 3
 Owl Protocol contracts are designed to be re-usable as much as possible and avoid code duplication where possible to reduce attack surface. As such, all of our contract share a similar structure and also come with pre-configured utilities to enable easier integration in projects.
 
 ## TL;DR
-All contracts share the following
+Developing a contract consists of:
+* Develop `IMyContract.sol`
+* Implement `MyContract.sol`
+* Generate artifacts with [hardhat]
+* Generate types with [Typechain]
+* Create [ethers.js] interfaces for detecting `IMyContract.sol` with ERC165
+* Create [ether.js] factories for deploying `MyContract.sol`
+* Create utils to validate or add default values to function parameters (eg. address parameter defaults to 0)
+* Create [hardhat] deploy script (see below section to enable non-[HRE] deployment)
+* Create [mocha] tests that use factories / deploy scripts and test contract
 
+
+All contracts share the following structure:
 **Solidity**
 * Solidity sourced stored under [contracts/]
 * An `IMyContract.sol` counterpart to the implementation, that only defines the interface. Documentation for `external` functions, is usually written in the `IMyContract.sol` and functions that implement the interface will use `@inheritdoc` tags to avoid duplicate documentation (except where necessary).

@@ -7,7 +7,7 @@ import {
 } from "@chakra-ui/react";
 import {
     Contract,
-    Config,
+    ConfigHelpers,
     EthSendStatus as ContractSendStatus,
 } from "@owlprotocol/web3-redux";
 import { useCallback, useState } from "react";
@@ -39,7 +39,7 @@ export const ERC1167FactoryForm = ({
     implementationInitializer = "initialize",
 }: Props) => {
     const { themes } = useTheme();
-    const [account] = Config.hooks.useAccount();
+    const [account] = ConfigHelpers.useAccount();
 
     //User selects implementation, we use this for the factory and to generate the initializer form
     const [implementationAddress, setImplementationAddress] = useState<

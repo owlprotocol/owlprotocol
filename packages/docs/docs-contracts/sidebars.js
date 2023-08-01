@@ -116,6 +116,7 @@ const sidebars = {
                 }
             ]
         },
+        /*
         {
             type: 'html',
             value: '<span class="sidebar-divider" />',
@@ -144,6 +145,7 @@ const sidebars = {
                 }
             ]
         },
+         */
         {
             type: 'html',
             value: '<span class="sidebar-divider" />',

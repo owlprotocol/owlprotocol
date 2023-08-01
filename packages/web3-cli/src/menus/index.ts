@@ -1,4 +1,4 @@
-import { ConfigDexie } from "@owlprotocol/web3-redux-2";
+import { ConfigDexie } from "@owlprotocol/web3-redux";
 import UrlPattern from "url-pattern";
 import { accountsMenu } from "./accounts.js";
 import { accountsAddMenu } from "./accountsAdd.js";

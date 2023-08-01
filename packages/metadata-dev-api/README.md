@@ -1,25 +1,20 @@
-# Typescript Starter
+# Metadata Dev API
+API to test contract and token metadata and images.
 
-Typescript starter project.
+## Run
+`pnpm run build && pnpm run start`
 
-## package.json
-Exports are defined as below
-```json
-{
-  "type": "module",
-  "main": "./lib/cjs/index.cjs",
-  "module": "./lib/esm/index.mjs",
-  "types": "./lib/types/index.d.ts",
-  "exports": {
-    ".": {
-      "types": "./lib/types/index.d.ts",
-      "require": "./lib/cjs/index.js",
-      "import": "./lib/esm/index.js"
-    }
-}
+## Endpoints
+
+* Contract metadata: `http://localhost:3020/:networkId/:contractName/:contractId/contract-metadata`
+* Contract image: `http://localhost:3020/:networkId/:contractName/:contractId/contract-image`
+* Token metadata: `http://localhost:3020/:networkId/:contractName/:contractId/token-metadata/:tokenId`
+* Token image: `http://localhost:3020/:networkId/:contractName/:contractId/token-image/:tokenId`
+
+## Examples
 ```
-* `type: "module"`: By default we use ESM Modules
-* `lib/esm`: ESM built output
-* `lib/cjs`: CJS build output
-* `lib/types`: Typescript types
-* No minified bundles are provided as these are left to frameworks to bundle.
+http://localhost:3020/31337/ERC721/1/contract-image
+http://localhost:3020/31337/ERC721/1/contract-metadata
+http://localhost:3020/31337/ERC721/1/token-metadata/1
+http://localhost:3020/31337/ERC721/1/token-image/1
+```

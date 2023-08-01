@@ -12,7 +12,7 @@ const { announcementConfig } = require("./config/announcement");
 const config = {
     title: "Owl Protocol",
     tagline: "Dynamic NFT Standards & Smart Contract Tooling",
-    url: "https://docs.owlprotocol.xyz",
+    url: "https://dev.owlprotocol.xyz",
     baseUrl: "/",
     headTags: [
         {
@@ -78,10 +78,10 @@ const config = {
     favicon: "img/favicon.ico",
     organizationName: "owlprotocol", // Usually your GitHub org/user name.
     plugins: [
-        //@ts-expect-error
         webPackPlugin,
         ["docusaurus-plugin-sass", {}],
         //https://github.com/tgreyuk/typedoc-plugin-markdown/tree/master/packages/docusaurus-plugin-typedoc
+        /*
         [
             "docusaurus-plugin-typedoc",
             {
@@ -164,6 +164,7 @@ const config = {
                 sidebarPath: require.resolve("./sidebars.js"),
             },
         ],
+         */
         [
             "@docusaurus/plugin-content-docs",
             {
@@ -199,6 +200,7 @@ const config = {
                     src: "img/logo_on_purple.svg",
                 },
                 items: [
+                    /*
                     {
                         type: "doc",
                         docsPluginId: "web3-redux",
@@ -206,6 +208,7 @@ const config = {
                         position: "left",
                         label: "Web3 Redux",
                     },
+                     */
                     {
                         type: "doc",
                         docsPluginId: "contracts",
@@ -237,10 +240,12 @@ const config = {
                     {
                         title: "Projects",
                         items: [
+                            /*
                             {
                                 label: "Web3 Redux",
                                 to: "/web3-redux",
                             },
+                             */
                             {
                                 label: "Dynamic NFT Contracts",
                                 to: "/contracts",

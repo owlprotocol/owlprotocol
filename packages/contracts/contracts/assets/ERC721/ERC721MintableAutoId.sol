@@ -1,7 +1,10 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.9;
 
-import {ERC721MintableAutoIdBase} from "./ERC721MintableAutoIdBase.sol";
+import {CountersUpgradeable} from "@openzeppelin/contracts-upgradeable/utils/CountersUpgradeable.sol";
+
+import {IERC721MintableAutoId} from "./IERC721MintableAutoId.sol";
+import {ERC721Abstract} from "./ERC721Abstract.sol";
 
 /**
  * @dev This implements the standard OwlProtocol `ERC721` contract that is an
@@ -9,33 +12,26 @@ import {ERC721MintableAutoIdBase} from "./ERC721MintableAutoIdBase.sol";
  * happens through initializers for compatibility with a EIP1167 minimal-proxy
  * deployment strategy.
  */
-contract ERC721MintableAutoId is ERC721MintableAutoIdBase {
-    constructor() {}
+contract ERC721MintableAutoId is ERC721Abstract, IERC721MintableAutoId {
+    using CountersUpgradeable for CountersUpgradeable.Counter;
+
+    bytes32 internal constant MINTER_ROLE = keccak256("MINTER_ROLE");
+
+    // Auto-incrementing tokenIds
+    CountersUpgradeable.Counter private nextId; //1 slot
 
     /**********************
         Initialization
     **********************/
 
-    /**
-     * @dev Initializes an ERC721MintableAutoId contract
-     * @param _admin admin for contract
-     * @param _initContractURI uri for contract metadata description
-     * @param _gsnForwarder GSN Trusted forwarder
-     * @param _name name for contract
-     * @param _symbol symbol for contract
-     * @param _initBaseURI base URI for contract
-     * @param _feeReceiver address of receiver of royalty fees
-     * @param _feeNumerator numerator of royalty fee percentage (numerator / 10000)
-     */
     function initialize(
         address _admin,
-        string calldata _initContractURI,
+        string memory _initContractURI,
         address _gsnForwarder,
-        string calldata _name,
-        string calldata _symbol,
-        string calldata _initBaseURI,
-        address _feeReceiver,
-        uint96 _feeNumerator
+        string memory _name,
+        string memory _symbol,
+        address _tokenUriProvider,
+        address _tokenRoyaltyProvider
     ) external virtual initializer {
         __ERC721MintableAutoId_init(
             _admin,
@@ -43,9 +39,8 @@ contract ERC721MintableAutoId is ERC721MintableAutoIdBase {
             _gsnForwarder,
             _name,
             _symbol,
-            _initBaseURI,
-            _feeReceiver,
-            _feeNumerator
+            _tokenUriProvider,
+            _tokenRoyaltyProvider
         );
     }
 
@@ -55,18 +50,89 @@ contract ERC721MintableAutoId is ERC721MintableAutoIdBase {
         address _gsnForwarder,
         string memory _name,
         string memory _symbol,
-        string memory _initBaseURI,
-        address _feeReceiver,
-        uint96 _feeNumerator
+        address _tokenUriProvider,
+        address _tokenRoyaltyProvider
     ) internal {
         __ContractURI_init_unchained(_admin, _initContractURI);
         __RouterReceiver_init_unchained(_gsnForwarder);
         __OwlBase_init_unchained(_admin);
 
         __ERC721_init_unchained(_name, _symbol);
-        __BaseURI_init_unchained(_admin, _initBaseURI);
-        __ERC2981Setter_init_unchained(_admin, _feeReceiver, _feeNumerator);
-        __ERC721Base_init_unchained();
-        __ERC721MintableAutoIdBase_init_unchained(_admin);
+        __TokenURIConsumerAbstract_init_unchained(_admin, _tokenUriProvider);
+        __ERC2981ConsumerAbstract_init_unchained(_admin, _tokenRoyaltyProvider);
+        __ERC721Abstract_init_unchained();
+        __ERC721MintableAutoIdAbstract_init_unchained(_admin);
+    }
+
+    function __ERC721MintableAutoIdAbstract_init_unchained(address _minterRole) internal {
+        _grantRole(MINTER_ROLE, _minterRole);
+        if (_registryExists()) {
+            _registerInterface(type(IERC721MintableAutoId).interfaceId);
+        }
+
+        //Start at 1
+        nextId.increment();
+    }
+
+    /**
+     * @inheritdoc IERC721MintableAutoId
+     */
+    function mint(address to) external virtual onlyRole(MINTER_ROLE) returns (uint256) {
+        uint256 tokenId = nextId.current();
+        nextId.increment();
+
+        _mint(to, tokenId);
+
+        return tokenId;
+    }
+
+    /**
+     * @inheritdoc IERC721MintableAutoId
+     */
+    function mintBatch(address[] memory to) external virtual onlyRole(MINTER_ROLE) returns (uint256[] memory) {
+        uint256 startId = nextId.current();
+        unchecked {
+            nextId._value += to.length;
+        }
+
+        uint256[] memory tokenIds = new uint256[](to.length);
+        for (uint256 i; i < to.length; i++) {
+            uint256 tokenId = startId + i;
+            tokenIds[i] = tokenId;
+            _mint(to[i], tokenId);
+        }
+
+        return tokenIds;
+    }
+
+    /**
+     * @inheritdoc IERC721MintableAutoId
+     */
+    function safeMint(address to) external virtual onlyRole(MINTER_ROLE) returns (uint256) {
+        uint256 tokenId = nextId.current();
+        nextId.increment();
+
+        _safeMint(to, tokenId, "");
+
+        return tokenId;
+    }
+
+    /**
+     * @inheritdoc IERC721MintableAutoId
+     */
+    function safeMintBatch(address[] memory to) external virtual onlyRole(MINTER_ROLE) returns (uint256[] memory) {
+        uint256 startId = nextId.current();
+        unchecked {
+            nextId._value += to.length;
+        }
+
+        uint256[] memory tokenIds = new uint256[](to.length);
+        for (uint256 i; i < to.length; i++) {
+            uint256 tokenId = startId + i;
+            tokenIds[i] = tokenId;
+            _safeMint(to[i], tokenId);
+        }
+
+        return tokenIds;
     }
 }

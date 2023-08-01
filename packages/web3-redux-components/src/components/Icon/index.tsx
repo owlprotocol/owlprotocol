@@ -74,6 +74,7 @@ import { ReactComponent as Heart } from "./functions/Heart.svg";
 import { ReactComponent as HeartActive } from "./functions/Heart.active.svg";
 import { ReactComponent as Copy } from "./functions/copy.svg";
 import { ReactComponent as Pencil } from "./functions/pencil.svg";
+import { ReactComponent as PencilAlt } from "./functions/pencil-alt.svg";
 import { ReactComponent as Search } from "./functions/search.svg";
 import { ReactComponent as AddRounded } from "./functions/add-rounded.svg";
 import { ReactComponent as Grid } from "./functions/grid.svg";
@@ -144,6 +145,7 @@ export const ICONS: any = {
     view: <View />,
     copy: <Copy />,
     pencil: <Pencil />,
+    "pencil.alt": <PencilAlt />,
     search: <Search />,
     ExclamationMark: <ExclamationMark />,
     FlowCheckMark: <FlowCheckMark />,

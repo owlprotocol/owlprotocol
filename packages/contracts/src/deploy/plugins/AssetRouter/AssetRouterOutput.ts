@@ -1,16 +1,11 @@
+import log from "loglevel";
+import { getFactoriesWithSigner } from "@owlprotocol/contracts-proxy";
+import { factories } from "../../../ethers/factories.js";
 import { getContractURIs, logDeployment, RunTimeEnvironment } from "../../utils.js";
 import { mapValues } from "../../../lodash.js";
-import { getFactories } from "../../../ethers/factories.js";
-import {
-    getDeterministicFactories,
-    getDeterministicInitializeFactories,
-} from "../../../ethers/deterministicFactories.js";
-import { AssetRouterOutputInitializeArgs, flattenInitArgsAssetRouterOutput } from "../../../utils/AssetRouterOutput.js";
-import { getBeaconProxyFactories } from "../../../ethers/beaconProxyFactories.js";
-import { ERC1167FactoryAddress } from "../../../utils/ERC1167Factory/index.js";
+import { AssetRouterOutputInitializeArgs, initializeUtil } from "../../../utils/initializeUtils/AssetRouterOutput.js";
 import { MINTER_ROLE } from "../../../utils/IAccessControl.js";
 import { validateAssetBasketOutput } from "../../../utils/AssetLib.js";
-import log from "loglevel";
 
 export interface AssetRouterOutputDeployParams extends RunTimeEnvironment {
     routers: Pick<AssetRouterOutputInitializeArgs, "outputBaskets" | "routers">[];
@@ -27,22 +22,7 @@ export const AssetRouterOutputDeploy = async ({
     const signerAddress = await signer.getAddress();
     let nonce = await provider.getTransactionCount(signerAddress);
 
-    const factories = getFactories(signer);
-    const cloneFactory = factories.ERC1167Factory.attach(ERC1167FactoryAddress);
-    const deterministicFactories = getDeterministicFactories(factories);
-    const deterministicInitializeFactories = getDeterministicInitializeFactories(
-        factories,
-        cloneFactory,
-        signerAddress,
-    );
-    const beaconFactory = deterministicInitializeFactories.UpgradeableBeacon;
-    const beconProxyFactories = getBeaconProxyFactories(
-        deterministicFactories,
-        cloneFactory,
-        beaconFactory,
-        signerAddress,
-    );
-    const AssetRouterOutputFactory = beconProxyFactories.AssetRouterOutput;
+    const AssetRouterOutputFactory = getFactoriesWithSigner(factories, signer).factoriesBeaconProxies.AssetRouterOutput;
 
     const { chainId } = network.config;
 
@@ -61,7 +41,7 @@ export const AssetRouterOutputDeploy = async ({
 
     //Deploy
     const promises = mapValues(deployments, async (initArgs) => {
-        const args = flattenInitArgsAssetRouterOutput(initArgs);
+        const args = initializeUtil(initArgs);
         const address = AssetRouterOutputFactory.getAddress(...args);
 
         try {
@@ -88,7 +68,7 @@ export const AssetRouterOutputDeploy = async ({
 
     //Mint Permissions
     const outputPermissionsAndTransfers = mapValues(deployments, async (d) => {
-        const args = flattenInitArgsAssetRouterOutput(d);
+        const args = initializeUtil(d);
         const address = AssetRouterOutputFactory.getAddress(...args);
         return Promise.all(
             d.outputBaskets.map((b) => {

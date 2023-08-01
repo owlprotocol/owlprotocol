@@ -1,82 +1,82 @@
 {
-    "name": "@owlprotocol/nft-sdk-cli",
-    "version": "1.2.2",
-    "license": "MIT",
-    "type": "module",
-    "main": "./lib/cjs/index.cjs",
-    "module": "./lib/esm/index.mjs",
-    "types": "./lib/types/index.d.ts",
-    "exports": {
-        ".": {
-            "types": "./lib/types/index.d.ts",
-            "require": "./lib/cjs/index.js",
-            "import": "./lib/esm/index.js"
-        }
-    },
-    "files": [
-        "dist/*",
-        "lib/*",
-        "src/*",
-        "LICENSE",
-        "README.md"
-    ],
-    "engines": {
-        "node": "^18.0.0"
-    },
-    "scripts": {
-        "test": "mocha 'lib/esm/**/*.test.js'",
-        "build": "npm-run-all -p tsc esbuild build:projects",
-        "build:watch": "npm-run-all -p tsc:watch esbuild:watch",
-        "build:projects": "tsc --project tsconfig.projects.json",
-        "esbuild": "node esbuild.config.mjs",
-        "esbuild:watch": "ESBUILD_WATCH=true node esbuild.config.mjs",
-        "tsc": "tsc",
-        "tsc:watch": "tsc -w",
-        "clean": "npm-run-all -p clean:build clean:projects",
-        "clean:build": "rimraf lib dist",
-        "clean:projects": "rm -f projects/**/*.js && rm -f projects/**/*.d.ts",
-        "prepublishOnly": "pnpm run test",
-        "publish": "pnpm publish --no-git-checks --access public",
-        "madge": "madge src/index.ts -c",
-        "lint": "eslint",
-        "lint:fix": "eslint --fix",
-        "prettier": "prettier --write src && prettier --write projects",
-        "ganache": "ganache --wallet.seed myCustomSeed"
-    },
-    "dependencies": {
-        "@owlprotocol/contracts": "workspace:*",
-        "@owlprotocol/nft-sdk": "workspace:*",
-        "@owlprotocol/utils": "workspace:*",
-        "@types/check-types": "^7.3.4",
-        "check-types": "^11.2.2",
-        "cross-env": "^7.0.3",
-        "dotenv": "^16.0.3",
-        "ethers": "5.7.2",
-        "fetch-retry": "^5.0.4",
-        "lodash": "4.17.21",
-        "moment": "^2.29.4"
-    },
-    "devDependencies": {
-        "@owlprotocol/esbuild-config": "workspace:*",
-        "@owlprotocol/eslint-config": "workspace:*",
-        "@typechain/ethers-v5": "10.2.0",
-        "@types/chai": "^4.3.0",
-        "@types/dotenv": "^8.2.0",
-        "@types/mocha": "^9.1.0",
-        "@types/node": "^16.11.26",
-        "@types/yargs": "^17.0.22",
-        "chai": "^4.3.6",
-        "eslint": "^7.32.0",
-        "eslint-config-prettier": "^8.3.0",
-        "eslint-plugin-import": "^2.25.4",
-        "eslint-plugin-prettier": "^3.4.1",
-        "ganache": "^7.5.0",
-        "madge": "^5.0.1",
-        "mocha": "^9.2.2",
-        "npm-run-all": "^4.1.5",
-        "prettier": "^2.8.4",
-        "rimraf": "^3.0.2",
-        "typescript": "4.9.5",
-        "yargs": "^17.6.2"
+  "name": "@owlprotocol/nft-sdk-cli",
+  "version": "1.2.2",
+  "license": "MIT",
+  "type": "module",
+  "main": "./lib/cjs/index.cjs",
+  "module": "./lib/esm/index.mjs",
+  "types": "./lib/types/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./lib/types/index.d.ts",
+      "require": "./lib/cjs/index.js",
+      "import": "./lib/esm/index.js"
+    }
+  },
+  "files": [
+    "dist/*",
+    "lib/*",
+    "src/*",
+    "LICENSE",
+    "README.md"
+  ],
+  "engines": {
+    "node": "^18.0.0"
+  },
+  "scripts": {
+    "test": "mocha 'lib/esm/**/*.test.js'",
+    "build": "npm-run-all -p tsc esbuild build:projects",
+    "build:watch": "npm-run-all -p tsc:watch esbuild:watch",
+    "build:projects": "tsc --project tsconfig.projects.json",
+    "esbuild": "node esbuild.config.mjs",
+    "esbuild:watch": "ESBUILD_WATCH=true node esbuild.config.mjs",
+    "tsc": "tsc",
+    "tsc:watch": "tsc -w",
+    "clean": "npm-run-all -p clean:build clean:projects",
+    "clean:build": "rimraf lib dist",
+    "clean:projects": "rm -f projects/**/*.js && rm -f projects/**/*.d.ts",
+    "prepublishOnly": "pnpm run test",
+    "publish": "pnpm publish --no-git-checks --access public",
+    "madge": "madge src/index.ts -c",
+    "lint": "eslint",
+    "lint:fix": "eslint --fix",
+    "prettier": "prettier --write src && prettier --write projects",
+    "ganache": "ganache --wallet.seed myCustomSeed"
+  },
+  "dependencies": {
+    "@owlprotocol/contracts": "workspace:*",
+    "@owlprotocol/nft-sdk": "workspace:*",
+    "@owlprotocol/utils": "workspace:*",
+    "@types/check-types": "^7.3.4",
+    "check-types": "^11.2.2",
+    "cross-env": "^7.0.3",
+    "dotenv": "^16.0.3",
+    "ethers": "5.7.2",
+    "fetch-retry": "^5.0.4",
+    "lodash": "4.17.21",
+    "moment": "^2.29.4"
+  },
+  "devDependencies": {
+    "@owlprotocol/esbuild-config": "workspace:*",
+    "@owlprotocol/eslint-config": "workspace:*",
+    "@typechain/ethers-v5": "11.0.0",
+    "@types/chai": "^4.3.0",
+    "@types/dotenv": "^8.2.0",
+    "@types/mocha": "^9.1.0",
+    "@types/node": "^16.11.26",
+    "@types/yargs": "^17.0.22",
+    "chai": "^4.3.6",
+    "eslint": "^7.32.0",
+    "eslint-config-prettier": "^8.3.0",
+    "eslint-plugin-import": "^2.25.4",
+    "eslint-plugin-prettier": "^3.4.1",
+    "ganache": "^7.5.0",
+    "madge": "^5.0.1",
+    "mocha": "^9.2.2",
+    "npm-run-all": "^4.1.5",
+    "prettier": "^2.8.4",
+    "rimraf": "^3.0.2",
+    "typescript": "4.9.5",
+    "yargs": "^17.6.2"
   }
 }

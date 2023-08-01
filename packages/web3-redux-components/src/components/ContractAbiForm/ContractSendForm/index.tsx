@@ -6,7 +6,7 @@ import {
     FormErrorMessage,
 } from "@chakra-ui/react";
 import {
-    Config,
+    ConfigHelpers,
     Contract,
     EthSendStatus as ContractSendStatus,
 } from "@owlprotocol/web3-redux";
@@ -43,7 +43,7 @@ export const ContractSendForm = ({
     const inputErrors = Object.values(errors);
     const args = watch(inputs.map((i) => i.name));
 
-    const [configAccount] = Config.hooks.useAccount();
+    const [configAccount] = ConfigHelpers.useAccount();
     const from = account ?? configAccount;
 
     const argsDefined =

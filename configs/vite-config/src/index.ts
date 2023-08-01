@@ -14,6 +14,7 @@ import ReactPlugin from '@vitejs/plugin-react';
 import CheckerPlugin from 'vite-plugin-checker';
 import SVGRPlugin from 'vite-plugin-svgr';
 import DTSPlugin from 'vite-dts';
+import { nodePolyfills as vitePolyfills } from 'vite-plugin-node-polyfills'
 
 const NODE_ENV = process.env.NODE_ENV ?? 'development' /// process.env.MODE
 export const define = {
@@ -24,6 +25,7 @@ export const define = {
 }
 
 export const plugins = [
+    vitePolyfills(),
     ReactPlugin(),
     SVGRPlugin({
         svgrOptions: {
@@ -32,7 +34,7 @@ export const plugins = [
     }),
     DTSPlugin(),
     CheckerPlugin({
-        typescript: false, //TODO: Disable for now
+        typescript: true, //TODO: Disable for now
         overlay: true,
         /*
         eslint: {

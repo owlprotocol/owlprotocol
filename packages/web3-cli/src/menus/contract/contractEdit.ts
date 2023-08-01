@@ -1,5 +1,5 @@
 import inquirer from "inquirer";
-import { ConfigDexie, ContractDexie, getERC165Abi, NetworkDexie } from "@owlprotocol/web3-redux-2";
+import { ConfigDexie, ContractDexie, getERC165Abi, NetworkDexie } from "@owlprotocol/web3-redux";
 import { utils } from "ethers";
 import { back, deleteDisplay, home, pageSize, quit } from "../constants.js";
 import { clearTerminal } from "../../utils/index.js";

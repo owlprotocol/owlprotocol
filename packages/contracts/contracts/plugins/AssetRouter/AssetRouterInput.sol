@@ -4,8 +4,6 @@ pragma solidity ^0.8.0;
 import {IERC721ReceiverUpgradeable} from "@openzeppelin/contracts-upgradeable/token/ERC721/IERC721ReceiverUpgradeable.sol";
 import {IERC1155ReceiverUpgradeable} from "@openzeppelin/contracts-upgradeable/token/ERC1155/IERC1155ReceiverUpgradeable.sol";
 
-import {AddressUpgradeable} from "@openzeppelin/contracts-upgradeable/utils/AddressUpgradeable.sol";
-
 import {OwlBase} from "../../common/OwlBase.sol";
 
 import {AssetBasketInput, AssetInputLib} from "./AssetInputLib.sol";
@@ -22,7 +20,7 @@ contract AssetRouterInput is OwlBase, IAssetRouterInput, IERC721ReceiverUpgradea
     // mapping from contract address to tokenId to nUsed
     mapping(uint256 => mapping(address => mapping(uint256 => uint256))) erc721NTime;
     // Array of inputs in this configurations
-    AssetBasketInput[] private inputBaskets;
+    AssetBasketInput[] internal inputBaskets;
 
     //https://docs.openzeppelin.com/contracts/4.x/upgradeable#storage_gaps
     uint256[48] private __gap;
@@ -64,21 +62,10 @@ contract AssetRouterInput is OwlBase, IAssetRouterInput, IERC721ReceiverUpgradea
 
     function __AssetRouterInput_init_unchained(AssetBasketInput[] memory _inputBaskets) internal {
         //Registry
-        if (AddressUpgradeable.isContract(ERC1820_REGISTRY)) {
-            registry.updateERC165Cache(address(this), type(IERC721ReceiverUpgradeable).interfaceId);
-            registry.updateERC165Cache(address(this), type(IERC1155ReceiverUpgradeable).interfaceId);
-            registry.updateERC165Cache(address(this), type(IAssetRouterInput).interfaceId);
-            registry.setInterfaceImplementer(
-                address(this),
-                type(IERC721ReceiverUpgradeable).interfaceId | ONE,
-                address(this)
-            );
-            registry.setInterfaceImplementer(
-                address(this),
-                type(IERC1155ReceiverUpgradeable).interfaceId | ONE,
-                address(this)
-            );
-            registry.setInterfaceImplementer(address(this), type(IAssetRouterInput).interfaceId | ONE, address(this));
+        if (_registryExists()) {
+            _registerInterface(type(IERC721ReceiverUpgradeable).interfaceId);
+            _registerInterface(type(IERC1155ReceiverUpgradeable).interfaceId);
+            _registerInterface(type(IAssetRouterInput).interfaceId);
         }
 
         //Emit events for indexing
@@ -214,13 +201,5 @@ contract AssetRouterInput is OwlBase, IAssetRouterInput, IERC721ReceiverUpgradea
         //Route call
         IAssetRouterOutput(target).output(from, amount, outputBasketId);
         return IERC1155ReceiverUpgradeable.onERC1155Received.selector;
-    }
-
-    function supportsInterface(bytes4 interfaceId) public view virtual override returns (bool) {
-        return
-            interfaceId == type(IAssetRouterInput).interfaceId ||
-            interfaceId == type(IERC721ReceiverUpgradeable).interfaceId ||
-            interfaceId == type(IERC1155ReceiverUpgradeable).interfaceId ||
-            super.supportsInterface(interfaceId);
     }
 }

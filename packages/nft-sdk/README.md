@@ -15,13 +15,13 @@ Off-chain decoding enables users to actually render various attributes of an NFT
 ### `NFTGenerativeTrait`
 A generative attribute defines encoding/decoding from binary data to a user facing rendering. The abstract `NFTGenerativeTraitClass` defines basic shared features but various kinds of attributes exists:
 
-* `Color`: Defines an [8-bit color](https://en.wikipedia.org/wiki/8-bit_color). To actually render, into a color, the color must go through **quantization** through a colormap that maps 8-bit colors to 24-bit RGB. This is done through `color.rgb(gene: number, colormap: RGB[])`. The actual color is then `colormap[gene]` where `gene` is simply the decoded binary data that can range from 0-255. Color is therefore similar to `Number` but with a fixed range.
+* `Color`: an [8-bit color](https://en.wikipedia.org/wiki/8-bit_color). To render it, the color must go through **quantization** through a colormap that maps 8-bit colors to 24-bit RGB. This is done through `color.rgb(gene: number, colormap: RGB[])`. The actual color is then `colormap[gene]` where `gene` is the decoded binary data that can range from 0 to 255. Color is therefore similar to `Number` but with a fixed range.
 
-* `Colormap`: Defines a colormap with 256 colors. Requires 8bits.
+* `Colormap`: a colormap with 256 colors. Requires 8 bits.
 
-* `Enum`: Defines a string value that user picks from `enum.options[gene]`. Can have an arbitrary number of options. Up to 32bits.
-* `Image`: Defines an image layer that the user picks from `image.options[gene]`. This is similar to `Enum` bit includes additional convenience functions for rendering & querying the base image.
-* `Number`: Defines a number that can range from `n.min - n.max` where `n.min >= 0`. Gene is therefore offset by `n.min` to map binary data to rendered value.
+* `Enum`: a string value that user picks from `enum.options[gene]`. Can have an arbitrary number of options. Up to 32bits.
+* `Image`: an image layer that the user picks from `image.options[gene]`. This is similar to `Enum` but includes additional convenience functions for rendering and querying the base image.
+* `Number`: a number that can range from `n.min - n.max` where `n.min >= 0`. The gene is therefore offset by `n.min` to map binary data to the rendered value.
 
 
 ### `NFT Item`

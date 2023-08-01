@@ -12,10 +12,14 @@ interface IERC721MintableAutoId {
      */
     function mint(address to) external returns (uint256);
 
+    function mintBatch(address[] memory to) external returns (uint256[] memory);
+
     /**
      * @notice Must have MINTER_ROLE
      * @dev Allows caller to mint NFTs (safeMint)
      * @param to address to
      */
     function safeMint(address to) external returns (uint256);
+
+    function safeMintBatch(address[] memory to) external returns (uint256[] memory);
 }

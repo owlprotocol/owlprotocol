@@ -1,16 +1,17 @@
 //SPDX-License-Identifier: MIT
 pragma solidity ^0.8.0;
 
-import {AccessControlUpgradeable} from '@openzeppelin/contracts-upgradeable/access/AccessControlUpgradeable.sol';
-import {IContractURI} from './IContractURI.sol';
-import {StorageSlotString} from '../utils/StorageSlotString.sol';
+import {AccessControlUpgradeable} from "@openzeppelin/contracts-upgradeable/access/AccessControlUpgradeable.sol";
+import {ERC1820RegistryConsumer} from "./ERC1820/ERC1820RegistryConsumer.sol";
+import {IContractURI} from "./IContractURI.sol";
+import {StorageSlotString} from "../utils/StorageSlotString.sol";
 
 /**
  * @dev Implements contract uri getter/setter
  */
-contract ContractURI is AccessControlUpgradeable, IContractURI {
-    bytes32 internal constant CONTRACT_URI_ROLE = keccak256('CONTRACT_URI_ROLE');
-    bytes32 internal constant _CONTRACT_URI_SLOT = keccak256('CONTRACT_URI');
+contract ContractURI is AccessControlUpgradeable, ERC1820RegistryConsumer, IContractURI {
+    bytes32 internal constant CONTRACT_URI_ROLE = keccak256("CONTRACT_URI_ROLE");
+    bytes32 internal constant _CONTRACT_URI_SLOT = keccak256("CONTRACT_URI");
 
     /**
      * @dev ContractURI chained initialization
@@ -28,7 +29,11 @@ contract ContractURI is AccessControlUpgradeable, IContractURI {
      */
     function __ContractURI_init_unchained(address _contractUriRole, string memory _initContractURI) internal {
         _grantRole(CONTRACT_URI_ROLE, _contractUriRole);
-        StorageSlotString.getStringSlot(_CONTRACT_URI_SLOT).value = _initContractURI;
+        _setContractURI(_initContractURI);
+
+        if (_registryExists()) {
+            _registerInterface(type(IContractURI).interfaceId);
+        }
     }
 
     /**
@@ -42,15 +47,16 @@ contract ContractURI is AccessControlUpgradeable, IContractURI {
      * @dev Set contract uri
      */
     function setContractURI(string memory uri) external onlyRole(CONTRACT_URI_ROLE) {
+        _setContractURI(uri);
+    }
+
+    function _setContractURI(string memory uri) internal {
         StorageSlotString.getStringSlot(_CONTRACT_URI_SLOT).value = uri;
     }
 
-    /**
-     * @dev ERC165 Support
-     * @param interfaceId XOR of the external functions of the interface
-     * @return bool whether interface is supported
-     */
-    function supportsInterface(bytes4 interfaceId) public view virtual override returns (bool) {
-        return interfaceId == type(IContractURI).interfaceId;
+    function supportsInterface(
+        bytes4 interfaceId
+    ) public view virtual override(AccessControlUpgradeable, ERC1820RegistryConsumer) returns (bool) {
+        return ERC1820RegistryConsumer.supportsInterface(interfaceId);
     }
 }

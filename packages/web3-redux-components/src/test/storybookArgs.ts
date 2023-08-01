@@ -1,3 +1,4 @@
+/*
 import { TestData } from '@owlprotocol/web3-redux';
 const {
     VITALIK,
@@ -147,3 +148,4 @@ export const transactionHashArgType = {
     options: ['0x54cd74ed523ba9757a9c521f75a9669709c55546f5c3302cd9f04604b1caa9ea'],
     control: { type: 'select' },
 };
+*/

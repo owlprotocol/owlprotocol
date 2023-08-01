@@ -1,15 +1,10 @@
+import log from "loglevel";
+import { getFactoriesWithSigner } from "@owlprotocol/contracts-proxy";
+import { factories } from "../../../ethers/factories.js";
 import { getContractURIs, logDeployment, RunTimeEnvironment } from "../../utils.js";
 import { mapValues } from "../../../lodash.js";
-import { getFactories } from "../../../ethers/factories.js";
-import {
-    getDeterministicFactories,
-    getDeterministicInitializeFactories,
-} from "../../../ethers/deterministicFactories.js";
-import { AssetRouterInputInitializeArgs, flattenInitArgsAssetRouterInput } from "../../../utils/AssetRouterInput.js";
-import { getBeaconProxyFactories } from "../../../ethers/beaconProxyFactories.js";
-import { ERC1167FactoryAddress } from "../../../utils/ERC1167Factory/index.js";
+import { AssetRouterInputInitializeArgs, initializeUtil } from "../../../utils/initializeUtils/AssetRouterInput.js";
 import { validateAssetBasketInput } from "../../../utils/AssetLib.js";
-import log from "loglevel";
 
 export interface AssetRouterInputDeployParams extends RunTimeEnvironment {
     routers: Pick<AssetRouterInputInitializeArgs, "inputBaskets">[];
@@ -21,22 +16,7 @@ export const AssetRouterInputDeploy = async ({ provider, signers, network, route
     const signerAddress = await signer.getAddress();
     let nonce = await provider.getTransactionCount(signerAddress);
 
-    const factories = getFactories(signer);
-    const cloneFactory = factories.ERC1167Factory.attach(ERC1167FactoryAddress);
-    const deterministicFactories = getDeterministicFactories(factories);
-    const deterministicInitializeFactories = getDeterministicInitializeFactories(
-        factories,
-        cloneFactory,
-        signerAddress,
-    );
-    const beaconFactory = deterministicInitializeFactories.UpgradeableBeacon;
-    const beconProxyFactories = getBeaconProxyFactories(
-        deterministicFactories,
-        cloneFactory,
-        beaconFactory,
-        signerAddress,
-    );
-    const AssetRouterInputFactory = beconProxyFactories.AssetRouterInput;
+    const AssetRouterInputFactory = getFactoriesWithSigner(factories, signer).factoriesBeaconProxies.AssetRouterInput;
 
     const { chainId } = network.config;
 
@@ -53,7 +33,7 @@ export const AssetRouterInputDeploy = async ({ provider, signers, network, route
     });
 
     const promises = mapValues(deployments, async (initArgs) => {
-        const args = flattenInitArgsAssetRouterInput(initArgs);
+        const args = initializeUtil(initArgs);
         const address = AssetRouterInputFactory.getAddress(...args);
 
         try {

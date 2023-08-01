@@ -1,6 +1,6 @@
 // import { WalletConnect } from "../../index.js";
 import { Button } from "@chakra-ui/react";
-import { Config } from "@owlprotocol/web3-redux";
+import { ConfigHelpers } from "@owlprotocol/web3-redux";
 import { add, zip } from "lodash-es";
 import { useCallback, useState } from "react";
 import { useDispatch } from "react-redux";
@@ -20,7 +20,7 @@ export const ERC721GenerativeEquipment = ({
     tokenId,
 }: ERC721GenerativeEquipmentProps) => {
     const dispatch = useDispatch();
-    const [account] = Config.hooks.useAccount();
+    const [account] = ConfigHelpers.useAccount();
 
     // const [collection] = NFTGenerativeCollection.hooks.useFetch({
     //     networkId,
@@ -144,11 +144,11 @@ export const ERC721GenerativeEquipment = ({
                                     token={
                                         childTokenId
                                             ? {
-                                                  networkId,
-                                                  address: childAddress,
-                                                  tokenId: childTokenId,
-                                                  status: "onchain" as const,
-                                              }
+                                                networkId,
+                                                address: childAddress,
+                                                tokenId: childTokenId,
+                                                status: "onchain" as const,
+                                            }
                                             : undefined
                                     }
                                     //Test data
@@ -193,11 +193,11 @@ export const ERC721GenerativeEquipment = ({
                                     token={
                                         childTokenId
                                             ? {
-                                                  networkId,
-                                                  address: childAddress,
-                                                  tokenId: childTokenId,
-                                                  status: "onchain" as const,
-                                              }
+                                                networkId,
+                                                address: childAddress,
+                                                tokenId: childTokenId,
+                                                status: "onchain" as const,
+                                            }
                                             : undefined
                                     }
                                     //Test data
@@ -250,11 +250,11 @@ export const ERC721GenerativeEquipment = ({
                                     token={
                                         childTokenId
                                             ? {
-                                                  networkId,
-                                                  address: childAddress,
-                                                  tokenId: childTokenId,
-                                                  status: "onchain" as const,
-                                              }
+                                                networkId,
+                                                address: childAddress,
+                                                tokenId: childTokenId,
+                                                status: "onchain" as const,
+                                            }
                                             : undefined
                                     }
                                     //Test data

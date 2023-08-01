@@ -1,0 +1,149 @@
+# yaml-language-server: $schema=https://spec.openapis.org/oas/3.0/schema/latest
+openapi: 3.0.3
+info:
+  title: "Owl Contract API"
+  version: 0.0.1
+  description: "Specification for our API focused on contract interactions"
+  contact:
+    email: "info@owlprotocol.xyz"
+servers:
+  - url: http://contracts.owlprotocol.xyz/api
+  - url: http://localhost:3001
+tags:
+  - name: contract
+    description: Single contract interactions
+  - name: deployment
+    description: Interactions on a collection of contracts, for dynamic NFTs and crafting recipes
+paths:
+  /contract:
+    post:
+      tags:
+        - contract
+      summary: Deploy a contract
+      requestBody:
+        $ref: "#/components/requestBodies/ContractRequest"
+      responses:
+        "200":
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Contract"
+        "405":
+          description: Invalid input
+  /contract/{address}:
+    get:
+      tags:
+        - contract
+      summary: Get contract by address
+      description: Returns contract information
+      parameters:
+        - $ref: "#/components/parameters/Address"
+      responses:
+        "200":
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Contract"
+        "400":
+          description: Invalid contract address provided
+        "404":
+          description: Contract not found
+  /deployment/collection:
+    post:
+      tags:
+        - deployment
+      summary: Create an Owl NFT collection deployment
+      description: Creates a deployment of Owl contracts for an NFT collection
+      responses:
+        "200":
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Collection"
+  /deployment/collection/{address}:
+    get:
+      tags:
+        - deployment
+      summary: Get collection deployment
+      description: Gets collection deployment information. Address must be a contract deployed by Owl
+      parameters:
+        - $ref: "#/components/parameters/Address"
+      responses:
+        "200":
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Collection"
+        "404":
+          description: Collection not found
+  /deployment/collection/{address}/dependents:
+    get:
+      tags:
+        - deployment
+      summary: Get dependent Owl contracts
+      description: Gets dependent Owl contracts. Address must be a contract deployed by Owl
+      parameters:
+        - $ref: "#/components/parameters/Address"
+      responses:
+        "200":
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/DependentContracts"
+        "404":
+          description: Collection not found
+
+components:
+  schemas:
+    ContractAddress:
+      type: string
+      pattern: "0x([a-zA-Z0-9]){40}"
+      description: An ethereum address
+      example: "0xBC4CA0EdA7647A8aB7C2061c2E118A18a936f13D"
+    ContractType:
+      type: string
+      enum:
+        - ERC721
+        - ERC721AutoId
+        - ERC1155
+      description: The NFT contract type
+      example: "ERC721"
+    DependentContracts:
+      type: object
+      additionalProperties: { "$ref": "#/components/schemas/ContractAddress" }
+      example:
+        {
+          "ERC721Minter": "0x7777777777777777777777777777777777777777",
+          "TokenURI": "0xAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+        }
+
+    Contract:
+      type: object
+      properties:
+        address: { "$ref": "#/components/schemas/ContractAddress" }
+        contractType: { "$ref": "#/components/schemas/ContractType" }
+    Collection:
+      type: object
+  requestBodies:
+    ContractRequest:
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              contractType: { "$ref": "#/components/schemas/ContractType" }
+            required:
+              - contractType
+  parameters:
+    Address:
+      name: address
+      in: path
+      description: Address of contract
+      required: true
+      schema:
+        $ref: "#/components/schemas/ContractAddress"

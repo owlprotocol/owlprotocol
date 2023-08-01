@@ -1,0 +1,41 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/lalcebo/json-schema/master/serverless/reference.json
+org: oscbacon
+app: serverless-contracts-api
+service: serverless-contracts-api
+frameworkVersion: '3'
+
+provider:
+  name: aws
+  runtime: nodejs16.x
+  environment:
+    ANVIL_RPC: http://localhost:8545
+
+functions:
+  openApiJson:
+    handler: handler.openApiJson
+    events:
+      - httpApi:
+          path: /api/openapi.json
+          method: GET
+  trpcApi:
+    handler: handler.trpcHandler
+    events:
+      - httpApi:
+          path: /api/trpc/{trpc+}
+          method: any
+  openApi:
+    handler: handler.trpcOpenApiHandler
+    events:
+      - httpApi:
+          path: /api/{trpc+}
+          method: any
+
+custom:
+  packager: npm
+
+plugins:
+  # - serverless-esbuild
+  - serverless-plugin-typescript
+  - serverless-offline
+
+configValidationMode: off

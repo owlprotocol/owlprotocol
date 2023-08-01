@@ -4,7 +4,9 @@ pragma solidity ^0.8.0;
 import {IERC721ReceiverUpgradeable} from "@openzeppelin/contracts-upgradeable/token/ERC721/IERC721ReceiverUpgradeable.sol";
 import {IERC1155ReceiverUpgradeable} from "@openzeppelin/contracts-upgradeable/token/ERC1155/IERC1155ReceiverUpgradeable.sol";
 
-import {AddressUpgradeable} from "@openzeppelin/contracts-upgradeable/utils/AddressUpgradeable.sol";
+import {ERC721HolderUpgradeable} from "@openzeppelin/contracts-upgradeable/token/ERC721/utils/ERC721HolderUpgradeable.sol";
+import {ERC1155HolderUpgradeable} from "@openzeppelin/contracts-upgradeable/token/ERC1155/utils/ERC1155HolderUpgradeable.sol";
+import {ERC1155ReceiverUpgradeable} from "@openzeppelin/contracts-upgradeable/token/ERC1155/utils/ERC1155ReceiverUpgradeable.sol";
 
 import {OwlBase} from "../../common/OwlBase.sol";
 
@@ -16,17 +18,16 @@ import {IAssetRouterCraft} from "./IAssetRouterCraft.sol";
  * @dev Abstract contract with types and utilities that will be used by many (if
  * not all) Plugins contracts
  *
- *
  */
-contract AssetRouterCraft is OwlBase, IAssetRouterCraft, IERC721ReceiverUpgradeable {
+contract AssetRouterCraft is ERC721HolderUpgradeable, ERC1155HolderUpgradeable, OwlBase, IAssetRouterCraft {
     bytes32 internal constant DEPOSIT_ROLE = keccak256("DEPOSIT_ROLE");
     bytes32 internal constant WITHDRAW_ROLE = keccak256("WITHDRAW_ROLE");
 
     // mapping from contract address to tokenId to nUsed
     mapping(uint256 => mapping(address => mapping(uint256 => uint256))) erc721NTime;
     // Array of inputs in this configurations
-    AssetBasketInput[] private inputBaskets;
-    AssetBasketOutput[] private outputBaskets;
+    AssetBasketInput[] internal inputBaskets;
+    AssetBasketOutput[] internal outputBaskets;
 
     //https://docs.openzeppelin.com/contracts/4.x/upgradeable#storage_gaps
     uint256[47] private __gap;
@@ -78,21 +79,10 @@ contract AssetRouterCraft is OwlBase, IAssetRouterCraft, IERC721ReceiverUpgradea
         _grantRole(WITHDRAW_ROLE, _withdrawRole);
 
         //Registry
-        if (AddressUpgradeable.isContract(ERC1820_REGISTRY)) {
-            registry.updateERC165Cache(address(this), type(IERC721ReceiverUpgradeable).interfaceId);
-            registry.updateERC165Cache(address(this), type(IERC1155ReceiverUpgradeable).interfaceId);
-            registry.updateERC165Cache(address(this), type(IAssetRouterCraft).interfaceId);
-            registry.setInterfaceImplementer(
-                address(this),
-                type(IERC721ReceiverUpgradeable).interfaceId | ONE,
-                address(this)
-            );
-            registry.setInterfaceImplementer(
-                address(this),
-                type(IERC1155ReceiverUpgradeable).interfaceId | ONE,
-                address(this)
-            );
-            registry.setInterfaceImplementer(address(this), type(IAssetRouterCraft).interfaceId | ONE, address(this));
+        if (_registryExists()) {
+            _registerInterface(type(IERC721ReceiverUpgradeable).interfaceId);
+            _registerInterface(type(IERC1155ReceiverUpgradeable).interfaceId);
+            _registerInterface(type(IAssetRouterCraft).interfaceId);
         }
 
         //Emit events for indexing
@@ -164,7 +154,7 @@ contract AssetRouterCraft is OwlBase, IAssetRouterCraft, IERC721ReceiverUpgradea
         address from,
         uint256 tokenId,
         bytes memory data
-    ) external override returns (bytes4) {
+    ) public override returns (bytes4) {
         //User deposit
         (
             uint256 basketId,
@@ -207,10 +197,10 @@ contract AssetRouterCraft is OwlBase, IAssetRouterCraft, IERC721ReceiverUpgradea
     function onERC1155BatchReceived(
         address,
         address from,
-        uint256[] calldata,
-        uint256[] calldata,
-        bytes calldata data
-    ) external returns (bytes4) {
+        uint256[] memory,
+        uint256[] memory,
+        bytes memory data
+    ) public override returns (bytes4) {
         //User deposit
         (
             uint256 basketId,
@@ -259,11 +249,9 @@ contract AssetRouterCraft is OwlBase, IAssetRouterCraft, IERC721ReceiverUpgradea
         emit UpdateBasket(basketIdx, -int256(amount));
     }
 
-    function supportsInterface(bytes4 interfaceId) public view virtual override returns (bool) {
-        return
-            interfaceId == type(IAssetRouterCraft).interfaceId ||
-            interfaceId == type(IERC721ReceiverUpgradeable).interfaceId ||
-            interfaceId == type(IERC1155ReceiverUpgradeable).interfaceId ||
-            super.supportsInterface(interfaceId);
+    function supportsInterface(
+        bytes4 interfaceId
+    ) public view virtual override(ERC1155ReceiverUpgradeable, OwlBase) returns (bool) {
+        return OwlBase.supportsInterface(interfaceId);
     }
 }

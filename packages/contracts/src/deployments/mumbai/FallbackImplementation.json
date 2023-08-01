@@ -1,0 +1,10 @@
+{
+  "address": "0x626b144912fA871d1A1e79611204344E66Be2D2B",
+  "abi": [
+    {
+      "stateMutability": "nonpayable",
+      "type": "fallback"
+    }
+  ],
+  "numDeployments": 1
+}

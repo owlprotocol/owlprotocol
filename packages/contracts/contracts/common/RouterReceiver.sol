@@ -1,14 +1,15 @@
 //SPDX-License-Identifier: MIT
 pragma solidity ^0.8.0;
 
-import {AccessControlUpgradeable} from '@openzeppelin/contracts-upgradeable/access/AccessControlUpgradeable.sol';
-import {IRouterReceiver} from './IRouterReceiver.sol';
+import {AccessControlUpgradeable} from "@openzeppelin/contracts-upgradeable/access/AccessControlUpgradeable.sol";
+import {ERC1820RegistryConsumer} from "./ERC1820/ERC1820RegistryConsumer.sol";
+import {IRouterReceiver} from "./IRouterReceiver.sol";
 
 /**
  * @dev Implements OpenGSN Config
  */
-contract RouterReceiver is AccessControlUpgradeable, IRouterReceiver {
-    bytes32 internal constant ROUTER_ROLE = keccak256('ROUTER_ROLE');
+contract RouterReceiver is AccessControlUpgradeable, ERC1820RegistryConsumer, IRouterReceiver {
+    bytes32 internal constant ROUTER_ROLE = keccak256("ROUTER_ROLE");
 
     /**
      * @dev RouterReceiver chained initialization
@@ -26,13 +27,17 @@ contract RouterReceiver is AccessControlUpgradeable, IRouterReceiver {
         if (_router != address(0)) {
             _grantRole(ROUTER_ROLE, _router);
         }
+
+        if (_registryExists()) {
+            _registerInterface(type(IRouterReceiver).interfaceId);
+        }
     }
 
     /**
      * @dev Returns OpenGSN contract version (used for compatibility checks)
      */
     function versionRecipient() external pure virtual returns (string memory) {
-        return '2.2.6';
+        return "2.2.6";
     }
 
     /**
@@ -74,12 +79,9 @@ contract RouterReceiver is AccessControlUpgradeable, IRouterReceiver {
         }
     }
 
-    /**
-     * @dev ERC165 Support
-     * @param interfaceId XOR of the external functions of the interface
-     * @return bool whether interface is supported
-     */
-    function supportsInterface(bytes4 interfaceId) public view virtual override returns (bool) {
-        return interfaceId == type(IRouterReceiver).interfaceId || super.supportsInterface(interfaceId);
+    function supportsInterface(
+        bytes4 interfaceId
+    ) public view virtual override(AccessControlUpgradeable, ERC1820RegistryConsumer) returns (bool) {
+        return ERC1820RegistryConsumer.supportsInterface(interfaceId);
     }
 }
