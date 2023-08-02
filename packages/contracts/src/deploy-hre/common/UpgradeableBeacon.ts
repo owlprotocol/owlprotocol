@@ -11,19 +11,12 @@ const deploy = async ({ ethers, network, deployments }: HardhatRuntimeEnvironmen
         network,
     });
 
-    const promises = mapValues(results, async ({ address, contract }, k) => {
-        if (address && contract?.interface) {
-            //TODO: For verification, verify as beacon
-            const { abi } = await deployments.getExtendedArtifact(k);
-
-            const submission = await getOrNull(k + "Beacon");
-            if (submission?.address != address) {
-                return save(k + "Beacon", {
-                    address,
-                    //args: [],
-                    abi,
-                });
-            }
+    const promises = mapValues(results, async (v, k) => {
+        const subName = k + "Beacon";
+        const submission = await getOrNull(subName);
+        if (!!submission) await deployments.delete(subName);
+        if (!v.error && v.address) {
+            return save(subName, { address: v.address, abi: [] });
         }
     });
 

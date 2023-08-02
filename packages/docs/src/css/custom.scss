@@ -193,7 +193,6 @@ Internal Pages (Markdown)
 
     // strong
     strong {
-        color: #ad5dff;
         font-weight: 600;
     }
 
@@ -248,7 +247,6 @@ Internal Pages (Markdown)
 
             strong {
                 font-size: 1.5rem;
-                color: #ad5dff;
             }
 
             p {
@@ -293,10 +291,6 @@ html[data-theme="dark"] .markdown {
         color: var(--ifm-link-color) !important;
         text-decoration: underline;
         text-decoration-color: var(--ifm-alert-border-color);
-    }
-
-    strong {
-        color: #ad5dff;
     }
 
     .docusaurus-highlight-code-line {

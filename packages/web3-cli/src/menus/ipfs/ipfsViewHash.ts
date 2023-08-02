@@ -1,7 +1,7 @@
 import inquirer from "inquirer";
 import { back, home, pageSize, quit } from "../constants.js";
 import { clearTerminal } from "../../utils/index.js";
-import { IPFSCacheDexie } from "@owlprotocol/web3-redux-2";
+import { IPFSCacheDexie } from "@owlprotocol/web3-redux";
 
 export async function ipfsViewItemMenu(cid: string): Promise<string> {
     clearTerminal();

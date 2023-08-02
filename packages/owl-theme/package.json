@@ -28,8 +28,7 @@
     "madge": "madge src/index.ts -c"
   },
   "dependencies": {
-    "react": "^17.0.2",
-    "react-dom": "^17.0.2",
+    "@chakra-ui/anatomy": "^2.1.1",
     "@chakra-ui/react": "1.8.9",
     "@emotion/react": "^11",
     "@emotion/styled": "^11",
@@ -38,7 +37,9 @@
     "@fortawesome/react-fontawesome": "^0.1.18",
     "chakra-react-select": "^3.3.7",
     "classnames": "^2.3.1",
-    "framer-motion": "^6.0.0"
+    "framer-motion": "^6.0.0",
+    "react": "^17.0.2",
+    "react-dom": "^17.0.2"
   },
   "devDependencies": {
     "@babel/core": "^7.17.5",

@@ -8,7 +8,7 @@ import {
 } from "@chakra-ui/react";
 import type { AbiType, StateMutabilityType } from "web3-utils";
 import {
-    Config,
+    ConfigHelpers,
     Contract,
     EthSendStatus as ContractSendStatus,
 } from "@owlprotocol/web3-redux";
@@ -47,8 +47,8 @@ export const AbiItemForm = ({
     const { themes } = useTheme();
     //const dispatch = useDispatch();
 
-    const [configAccount] = Config.hooks.useAccount();
-    const [configNetworkId] = Config.hooks.useNetworkId();
+    const [configAccount] = ConfigHelpers.useAccount();
+    const [configNetworkId] = ConfigHelpers.useNetworkId();
     account = account ?? configAccount;
     networkId = networkId ?? configNetworkId;
 

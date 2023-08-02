@@ -1,5 +1,5 @@
 import inquirer from "inquirer";
-import { Config, ConfigDexie, NetworkDexie } from "@owlprotocol/web3-redux-2";
+import { Config, ConfigDexie, NetworkDexie } from "@owlprotocol/web3-redux";
 import { add, back, home, quit } from "../constants.js";
 import { clearTerminal } from "../../utils/index.js";
 

@@ -1,7 +1,7 @@
 import { inquireAbiInputList } from "@owlprotocol/web3-prompt"
 import { clearTerminal } from "../../utils/index.js";
 import { utils } from "ethers";
-import { EthCallDexie, NetworkActions, NetworkDexie, NetworkSelectors, store, web3CallAction } from "@owlprotocol/web3-redux-2";
+import { EthCallDexie, NetworkActions, NetworkDexie, NetworkSelectors, store, web3CallAction } from "@owlprotocol/web3-redux";
 import Spinnies from "spinnies"
 import log from "loglevel";
 

@@ -22,7 +22,6 @@ export * from "./components/FileUpload/index.js";
 export * from "./components/IPFS/index.js";
 export * as Hooks from "./hooks/index.js";
 export * as HOC from "./hoc/index.js";
-export * as StorybookArgs from "./test/storybookArgs.js";
 export * from "./components/NFT/index.js";
 
 //Address

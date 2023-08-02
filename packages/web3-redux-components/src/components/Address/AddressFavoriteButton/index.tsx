@@ -1,23 +1,18 @@
 import { IconButton } from "@chakra-ui/react";
-import { useFavorite } from "./useFavorite.js";
-import { Address } from "../../../interfaces/Address.js";
+import { useAddressHasTag } from "@owlprotocol/web3-redux";
 import Icon from "../../Icon/index.js";
-
-export type AddressFavoriteButtonProps = Address;
 
 export const AddressFavoriteButton = ({
     networkId,
     address,
-}: AddressFavoriteButtonProps) => {
-    const [isFavorite, { toggleFavorite }] = useFavorite(networkId, address);
+}: { networkId: string, address: string }) => {
+    const [isFavorite, { toggleLabel }] = useAddressHasTag(networkId, address, "Favorite");
     return (
         <IconButton
             variant="cube"
-            onClick={toggleFavorite}
+            onClick={toggleLabel}
             aria-label={"mark as favorite"}
             icon={<Icon icon={isFavorite ? "heart.active" : "heart"} />}
         />
     );
 };
-
-export { useFavorite };

@@ -1,21 +1,28 @@
+//@ts-nocheck
 import type { SignerWithAddress } from "@nomiclabs/hardhat-ethers/signers";
 import hre, { ethers } from "hardhat";
 import "@nomicfoundation/hardhat-chai-matchers";
 import { expect } from "chai";
 
-import { AssetRouterInput, ERC20Mintable, ERC721Mintable, ERC1155Mintable, Fallback } from "../../../ethers/types.js";
+import {
+    AssetRouterInput,
+    ERC20Mintable,
+    ERC721Mintable,
+    ERC1155Mintable,
+    Fallback,
+} from "../../../typechain/ethers/index.js";
 import deployProxyNick from "../../../deploy-hre/common/DeterministicDeployer.js";
 import ProxyFactoryDeploy from "../../../deploy-hre/common/ProxyFactory.js";
-import { ERC20MintableInitializeArgs, flattenInitArgsERC20Mintable } from "../../../utils/ERC20Mintable.js";
-import { ERC721MintableInitializeArgs, flattenInitArgsERC721Mintable } from "../../../utils/ERC721Mintable.js";
-import { ERC1155MintableInitializeArgs, flattenInitArgsERC1155Mintable } from "../../../utils/ERC1155Mintable.js";
+import { ERC20MintableInitializeArgs, initializeUtil } from "../../../utils/initializeUtils/ERC20Mintable.js";
+import { ERC721MintableInitializeArgs, initializeUtil } from "../../../utils/initializeUtils/ERC721Mintable.js";
+import { ERC1155MintableInitializeArgs, initializeUtil } from "../../../utils/initializeUtils/ERC1155Mintable.js";
 import { Factories, getFactories } from "../../../ethers/factories.js";
 import {
     getDeterministicFactories,
     getDeterministicInitializeFactories,
     InitializeFactories,
 } from "../../../ethers/deterministicFactories.js";
-import { AssetRouterInputInitializeArgs, flattenInitArgsAssetRouterInput } from "../../../utils/AssetRouterInput.js";
+import { AssetRouterInputInitializeArgs, initializeUtil } from "../../../utils/initializeUtils/AssetRouterInput.js";
 import { ERC1167FactoryAddress } from "../../../utils/ERC1167Factory/index.js";
 
 describe("AssetRouterInput", function () {
@@ -40,8 +47,8 @@ describe("AssetRouterInput", function () {
         const signerAddress = signer.address;
 
         factories = getFactories(signer);
-        const cloneFactory = factories.ERC1167Factory.attach(ERC1167FactoryAddress);
-        const deterministicFactories = getDeterministicFactories(factories);
+        const cloneFactory = factories.ERC1167Factory.attach(ERC1167FactoryAddressLocal);
+        const deterministicFactories = getDeterministicFactories(factories, ERC1167FactoryAddressLocal);
         deterministicInitFactories = getDeterministicInitializeFactories(factories, cloneFactory, signerAddress);
 
         Fallback = await deterministicFactories.Fallback.deploy();
@@ -53,8 +60,7 @@ describe("AssetRouterInput", function () {
             assetRouterInput = {
                 admin: signers[0].address,
                 contractUri: `assetRouterInput.${assetRouterInputName}.com`,
-                gsnForwarder: ethers.constants.AddressZero,
-                inputBaskets: [
+                                inputBaskets: [
                     {
                         burnAddress: signers[1].address,
                         erc20Unaffected: [],
@@ -69,7 +75,7 @@ describe("AssetRouterInput", function () {
                 ],
             };
             assetRouterInputName++;
-            const assetRouterInitArgs = flattenInitArgsAssetRouterInput(assetRouterInput);
+            const assetRouterInitArgs = initializeUtil(assetRouterInput);
             AssetRouterInput = await AssetRouterInputFactory.deploy(...assetRouterInitArgs);
         });
 
@@ -90,11 +96,10 @@ describe("AssetRouterInput", function () {
             token = {
                 admin: signers[0].address,
                 contractUri: `token.${tokenName}.com`,
-                gsnForwarder: ethers.constants.AddressZero,
-                name: `Token ${tokenName}`,
+                                name: `Token ${tokenName}`,
                 symbol: `TK${tokenName}`,
             };
-            const tokenInitArgs = flattenInitArgsERC20Mintable(token);
+            const tokenInitArgs = initializeUtil(token);
             ERC20Mintable = await ERC20MintableFactory.deploy(...tokenInitArgs);
             tokenName++;
         });
@@ -104,8 +109,7 @@ describe("AssetRouterInput", function () {
                 assetRouterInput = {
                     admin: signers[0].address,
                     contractUri: `assetRouterInput.${assetRouterInputName}.com`,
-                    gsnForwarder: ethers.constants.AddressZero,
-                    inputBaskets: [
+                                        inputBaskets: [
                         {
                             burnAddress: signers[1].address,
                             erc20Unaffected: [{ contractAddr: ERC20Mintable.address, amount: 1 }],
@@ -120,7 +124,7 @@ describe("AssetRouterInput", function () {
                     ],
                 };
                 assetRouterInputName++;
-                const assetRouterInitArgs = flattenInitArgsAssetRouterInput(assetRouterInput);
+                const assetRouterInitArgs = initializeUtil(assetRouterInput);
                 AssetRouterInput = await AssetRouterInputFactory.deploy(...assetRouterInitArgs);
             });
 
@@ -142,8 +146,7 @@ describe("AssetRouterInput", function () {
                 assetRouterInput = {
                     admin: signers[0].address,
                     contractUri: `assetRouterInput.${assetRouterInputName}.com`,
-                    gsnForwarder: ethers.constants.AddressZero,
-                    inputBaskets: [
+                                        inputBaskets: [
                         {
                             burnAddress: signers[1].address,
                             erc20Unaffected: [],
@@ -158,7 +161,7 @@ describe("AssetRouterInput", function () {
                     ],
                 };
                 assetRouterInputName++;
-                const assetRouterInitArgs = flattenInitArgsAssetRouterInput(assetRouterInput);
+                const assetRouterInitArgs = initializeUtil(assetRouterInput);
                 AssetRouterInput = await AssetRouterInputFactory.deploy(...assetRouterInitArgs);
             });
 
@@ -190,13 +193,12 @@ describe("AssetRouterInput", function () {
             token = {
                 admin: signers[0].address,
                 contractUri: `token.${tokenName}.com`,
-                gsnForwarder: ethers.constants.AddressZero,
-                name: `Token ${tokenName}`,
+                                name: `Token ${tokenName}`,
                 symbol: `TK${tokenName}`,
                 initBaseURI: `token.${tokenName}.com/token`,
                 feeReceiver: signers[0].address,
             };
-            const tokenInitArgs = flattenInitArgsERC721Mintable(token);
+            const tokenInitArgs = initializeUtil(token);
             ERC721Mintable = await ERC721MintableFactory.deploy(...tokenInitArgs);
             tokenName++;
         });
@@ -206,8 +208,7 @@ describe("AssetRouterInput", function () {
                 assetRouterInput = {
                     admin: signers[0].address,
                     contractUri: `assetRouterInput.${assetRouterInputName}.com`,
-                    gsnForwarder: ethers.constants.AddressZero,
-                    inputBaskets: [
+                                        inputBaskets: [
                         {
                             burnAddress: signers[1].address,
                             erc20Unaffected: [],
@@ -222,7 +223,7 @@ describe("AssetRouterInput", function () {
                     ],
                 };
                 assetRouterInputName++;
-                const assetRouterInitArgs = flattenInitArgsAssetRouterInput(assetRouterInput);
+                const assetRouterInitArgs = initializeUtil(assetRouterInput);
                 AssetRouterInput = await AssetRouterInputFactory.deploy(...assetRouterInitArgs);
             });
 
@@ -247,8 +248,7 @@ describe("AssetRouterInput", function () {
                 assetRouterInput = {
                     admin: signers[0].address,
                     contractUri: `assetRouterInput.${assetRouterInputName}.com`,
-                    gsnForwarder: ethers.constants.AddressZero,
-                    inputBaskets: [
+                                        inputBaskets: [
                         {
                             burnAddress: signers[1].address,
                             erc20Unaffected: [],
@@ -263,7 +263,7 @@ describe("AssetRouterInput", function () {
                     ],
                 };
                 assetRouterInputName++;
-                const assetRouterInitArgs = flattenInitArgsAssetRouterInput(assetRouterInput);
+                const assetRouterInitArgs = initializeUtil(assetRouterInput);
                 AssetRouterInput = await AssetRouterInputFactory.deploy(...assetRouterInitArgs);
             });
 
@@ -290,8 +290,7 @@ describe("AssetRouterInput", function () {
                 assetRouterInput = {
                     admin: signers[0].address,
                     contractUri: `assetRouterAssetRouterInput.${assetRouterInputName}.com`,
-                    gsnForwarder: ethers.constants.AddressZero,
-                    inputBaskets: [
+                                        inputBaskets: [
                         {
                             burnAddress: signers[1].address,
                             erc20Unaffected: [],
@@ -306,7 +305,7 @@ describe("AssetRouterInput", function () {
                     ],
                 };
                 assetRouterInputName++;
-                const assetRouterInitArgs = flattenInitArgsAssetRouterInput(assetRouterInput);
+                const assetRouterInitArgs = initializeUtil(assetRouterInput);
                 AssetRouterInput = await AssetRouterInputFactory.deploy(...assetRouterInitArgs);
             });
 
@@ -345,11 +344,10 @@ describe("AssetRouterInput", function () {
             token = {
                 admin: signers[0].address,
                 contractUri: `token.${tokenName}.com`,
-                gsnForwarder: ethers.constants.AddressZero,
-                uri: `token.${tokenName}.com/token`,
+                                uri: `token.${tokenName}.com/token`,
                 feeReceiver: signers[0].address,
             };
-            const tokenInitArgs = flattenInitArgsERC1155Mintable(token);
+            const tokenInitArgs = initializeUtil(token);
             ERC1155Mintable = await ERC1155MintableFactory.deploy(...tokenInitArgs);
             tokenName++;
         });
@@ -359,8 +357,7 @@ describe("AssetRouterInput", function () {
                 assetRouterInput = {
                     admin: signers[0].address,
                     contractUri: `assetRouterInput.${assetRouterInputName}.com`,
-                    gsnForwarder: ethers.constants.AddressZero,
-                    inputBaskets: [
+                                        inputBaskets: [
                         {
                             burnAddress: signers[1].address,
                             erc20Unaffected: [],
@@ -375,7 +372,7 @@ describe("AssetRouterInput", function () {
                     ],
                 };
                 assetRouterInputName++;
-                const assetRouterInitArgs = flattenInitArgsAssetRouterInput(assetRouterInput);
+                const assetRouterInitArgs = initializeUtil(assetRouterInput);
                 AssetRouterInput = await AssetRouterInputFactory.deploy(...assetRouterInitArgs);
             });
 
@@ -400,8 +397,7 @@ describe("AssetRouterInput", function () {
                 assetRouterInput = {
                     admin: signers[0].address,
                     contractUri: `assetRouterInput.${assetRouterInputName}.com`,
-                    gsnForwarder: ethers.constants.AddressZero,
-                    inputBaskets: [
+                                        inputBaskets: [
                         {
                             burnAddress: signers[1].address,
                             erc20Unaffected: [],
@@ -416,7 +412,7 @@ describe("AssetRouterInput", function () {
                     ],
                 };
                 assetRouterInputName++;
-                const assetRouterInitArgs = flattenInitArgsAssetRouterInput(assetRouterInput);
+                const assetRouterInitArgs = initializeUtil(assetRouterInput);
                 AssetRouterInput = await AssetRouterInputFactory.deploy(...assetRouterInitArgs);
             });
 

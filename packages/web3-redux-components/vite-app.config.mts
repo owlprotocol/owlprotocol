@@ -11,12 +11,17 @@ const overrideConfig = {
             '@remix-run/router': 'node_modules/@remix-run/router/dist/router.js',
         },
     },
+    optimizeDeps: {
+        exclude: [
+            "ganache"
+        ]
+    },
     commonjsOptions: {
         transformMixedEsModules: false,
     },
     build: {
         rollupOptions: {
-            external: ["fs/promises"],
+            external: ["ganache"],
         },
     }
 };

@@ -1,4 +1,5 @@
-import { Contract, Config } from "@owlprotocol/web3-redux";
+//@ts-nocheck
+import { ConfigHelpers, ContractHelpers } from "@owlprotocol/web3-redux";
 
 /**
  * Hook that uses the ProxyFactory.sol smart contract to
@@ -13,7 +14,7 @@ export function useProxyFactory(
     initMethodName: string,
     initArgs: any[]
 ) {
-    const [account] = Config.hooks.useAccount();
+    const [account] = ConfigHelpers.useAccount();
     console.debug({
         networkId,
         factoryAddress,

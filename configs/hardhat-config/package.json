@@ -1,0 +1,50 @@
+{
+  "name": "@owlprotocol/hardhat-config",
+  "private": true,
+  "version": "1.2.0",
+  "type": "commonjs",
+  "types": "./dist/index.d.ts",
+  "main": "./lib/index.cjs",
+  "module": "./lib/index.mjs",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./lib/index.mjs",
+      "require": "./lib/index.cjs"
+    }
+  },
+  "files": [
+    "src",
+    "dist",
+    "lib",
+    "LICENSE",
+    "README.md"
+  ],
+  "scripts": {
+    "build": "npm-run-all -p tsc esbuild",
+    "build:watch": "npm-run-all -p tsc:watch esbuild:watch",
+    "esbuild": "node esbuild.config.mjs",
+    "esbuild:watch": "ESBUILD_WATCH=true node esbuild.config.mjs",
+    "tsc": "tsc",
+    "tsc:watch": "tsc -w",
+    "clean": "rimraf dist lib"
+  },
+  "dependencies": {
+    "@nomiclabs/hardhat-ethers": "^2.0.5",
+    "@nomiclabs/hardhat-web3": "^2.0.0",
+    "@nomicfoundation/hardhat-verify": "^1.0.0",
+    "@owlprotocol/envvars": "workspace:*",
+    "ethers": "5.7.2",
+    "hardhat-deploy": "^0.11.10",
+    "hardhat-deploy-ethers": "^0.3.0-beta.13",
+    "lodash": "4.17.21",
+    "solidity-coverage": "^0.7.21",
+    "solidity-docgen": "^0.6.0-beta.29"
+  },
+  "devDependencies": {
+    "@owlprotocol/esbuild-config": "workspace:*",
+    "@types/node": "^17.0.45",
+    "@types/lodash": "4.14.188",
+    "npm-run-all": "^4.1.5"
+  }
+}

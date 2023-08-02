@@ -1,15 +1,9 @@
-import { mapValues, omit, zipObject } from "../../lodash.js";
+import log from "loglevel";
+import { connectFactories } from "@owlprotocol/contracts-proxy";
+import { mapValues, zipObject } from "../../lodash.js";
 
 import { logDeployment, RunTimeEnvironment } from "../utils.js";
-import { getFactories } from "../../ethers/factories.js";
-import {
-    getDeterministicFactories,
-    getDeterministicInitializeFactories,
-    NoInitFactories,
-} from "../../ethers/deterministicFactories.js";
-import { ERC1167FactoryAddress } from "../../utils/ERC1167Factory/index.js";
-import log from "loglevel";
-import { BEACON_ADMIN } from "@owlprotocol/envvars";
+import { factoriesBeacons } from "../../ethers/factories.js";
 
 /**
  * Deployment is always the same regardless of contract.
@@ -20,40 +14,24 @@ export const UpgradeableBeaconDeploy = async ({ provider, signers, network }: Ru
     const signerAddress = await signer.getAddress();
     let nonce = await provider.getTransactionCount(signerAddress);
 
-    const factories = getFactories(signer);
-    const cloneFactory = factories.ERC1167Factory.attach(ERC1167FactoryAddress);
-    const deterministicFactories = getDeterministicFactories(factories);
-    const deterministicInitializeFactories = getDeterministicInitializeFactories(
-        factories,
-        cloneFactory,
-        signerAddress,
-    );
-    const UpgradeableBeaconFactory = deterministicInitializeFactories.UpgradeableBeacon;
-    const implementationFactories = omit(
-        deterministicFactories,
-        "UpgradeableBeacon",
-        "BeaconProxy",
-        "Multicall2",
-    ) as NoInitFactories;
-
-    const promises = mapValues(implementationFactories, async (factory) => {
-        const implementationAddress = factory.getAddress();
-        const address = UpgradeableBeaconFactory.getAddress(BEACON_ADMIN, implementationAddress);
+    const promises = mapValues(connectFactories(factoriesBeacons, signer), async (factory) => {
+        const address = factory.getAddress();
 
         try {
-            if (await UpgradeableBeaconFactory.exists(BEACON_ADMIN, implementationAddress)) {
+            //Compute Deployment Address
+            if (await factory.exists()) {
                 return {
                     address,
-                    contract: UpgradeableBeaconFactory.attach(address),
+                    contract: factory.attach(address),
                     deployed: false,
                 };
             } else {
                 return {
                     address,
-                    contract: await UpgradeableBeaconFactory.deploy(BEACON_ADMIN, implementationAddress, {
+                    contract: await factory.deploy({
                         nonce: nonce++,
+                        type: (network.config.eip1559 as boolean) ? 2 : 0,
                         gasLimit: 10e6,
-                        type: 2,
                     }),
                     deployed: true,
                 };

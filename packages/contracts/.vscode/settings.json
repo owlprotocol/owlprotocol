@@ -1,0 +1,42 @@
+{
+  "editor.codeActionsOnSave": {
+    "source.fixAll.eslint": false
+  },
+  "editor.formatOnSave": true,
+  "files.watcherExclude": {
+    "**/dist/**": true,
+    "**/dist-ssr/**": true,
+    "**/build/**": true,
+    "**/lib/**": true,
+    "**/storybook-static/**": true,
+    "**/node_modules/**": true,
+    "**/coverage/**": true,
+    ".turbo": true
+  },
+  "search.exclude": {
+    "**/dist/**": true,
+    "**/dist-ssr/**": true,
+    "**/build/**": true,
+    "**/lib/**": true,
+    "**/storybook-static/**": true,
+    "**/node_modules/**": true,
+    "**/coverage/**": true,
+    ".turbo": true
+  },
+  "search.followSymlinks": false,
+  "[json]": {
+    "editor.defaultFormatter": "vscode.json-language-features"
+  },
+  "[typescript]": {
+    "editor.defaultFormatter": "vscode.typescript-language-features"
+  },
+  "[solidity]": {
+    "editor.defaultFormatter": "JuanBlanco.solidity"
+  },
+  "solidity.remappings": [
+    "@openzeppelin/=node_modules/@openzeppelin/"
+  ],
+  "typescript.updateImportsOnFileMove.enabled": "always",
+  "javascript.updateImportsOnFileMove.enabled": "always",
+  "solidity.defaultCompiler": "remote"
+}

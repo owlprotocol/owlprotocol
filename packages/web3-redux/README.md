@@ -1,3 +1,31 @@
+[ether.js]: https://github.com/ethers-io/ethers.js/
+[web3.js]: https://github.com/web3/web3.js
+[Typechain]: https://github.com/dethcrypto/TypeChain
+[HRE]: https://hardhat.org/hardhat-runner/docs/advanced/hardhat-runtime-environment
+[ts-node]: https://github.com/TypeStrong/ts-node
+[esbuild]: https://github.com/evanw/esbuild
+[hardhat-shorthand]: https://github.com/NomicFoundation/hardhat/tree/main/packages/hardhat-shorthand
+[@typechain/hardhat]: https://www.npmjs.com/package/@typechain/hardhat
+[Leo Vigna]: https://github.com/leovigna
+[Dexie.js]: https://github.com/dexie/Dexie.js
+[Redux]: https://github.com/reduxjs/redux
+[Redux ORM]: https://redux-orm.github.io/redux-orm/
+[Redux Sagas]: https://redux-saga.js.org/
+[IndexedDB]: https://developer.mozilla.org/en-US/docs/Web/API/IndexedDB_API
+[Hooks]: https://react.dev/reference/react
+
+[web3-models-npm]: https://img.shields.io/npm/v/@owlprotocol/web3-models.svg
+[web3-dexie-npm]: https://img.shields.io/npm/v/@owlprotocol/web3-dexie.svg
+[web3-dexie-hooks-npm]: https://img.shields.io/npm/v/@owlprotocol/web3-dexie-hooks.svg
+[web3-actions-npm]: https://img.shields.io/npm/v/@owlprotocol/web3-actions.svg
+[web3-redux-orm-npm]: https://img.shields.io/npm/v/@owlprotocol/web3-redux-orm.svg
+[web3-redux-orm-hooks-npm]: https://img.shields.io/npm/v/@owlprotocol/web3-redux-orm-hooks.svg
+[web3-sagas-npm]: https://img.shields.io/npm/v/@owlprotocol/web3-sagas.svg
+[web3-redux-npm]: https://img.shields.io/npm/v/@owlprotocol/web3-redux.svg
+
+[web3-redux]: ./packages/web3-redux
+[web3-redux-npm]: https://img.shields.io/npm/v/@owlprotocol/web3-redux.svg
+
 # Web3 Redux
 Core Redux Library. See [README.md](../../README.md) for more info.
 
@@ -14,40 +42,14 @@ These models have a single id as a primary key.
 * `Network`: `networkId`
 * `Sync`
 
-### Compound Primary Key
-These models use a compound primary key that is computed based on multiple properties.
-* `Block`: `[networkId+blockNumber]`
-* `Contract`: `[networkId+address]`
-* `ContractEvent`: `[networkId+blockNumber+logIndex]`
-* `EthCall`: `[networkId+to+data]`
-* `Transaction`: `[networkId+hash]`
-
-## IndexedDB
-### Compound Index
-https://dexie.org/docs/Compound-Index
-https://stackoverflow.com/questions/23806635/searching-for-compound-indexes-in-indexeddb
-https://stackoverflow.com/questions/16501459/javascript-searching-indexeddb-using-multiple-indexes
-### MultiEntry Index
-https://dexie.org/docs/MultiEntry-Index
-
-### IndexedDB Limitations
-https://dexie.org/docs/The-Main-Limitations-of-IndexedDB
-
-## Adding Model
-- Copy an existing base template (eg. nftgenerativeitem)
-- Replace all instances of `NFTGenerativeItem` with `MyClass`
-- Update interface, index, and validation in `myclass/model/inteface.ts`
-- Update redux-orm model `myclass/model/orm.ts` (optional, only required if model uses hydration)
-- Update `sagas.ts`
-- Update `db.ts`
-- Update `reducer.ts` (optional, only required if model uses hydration)
-- Update `orm.ts` (optional, only required if model uses hydration)
-- Update `index.ts` to export model
-- Update `state.ts` redux state type (optional, only if using hydration, and only for convenience)
-## TODO
-* getBalance/getNonce... hook tests
-* useEvents hook test
-* useEvents pagination
-* component integrations (table, display)
-* ContractEvent getPastEvents query cache
-
+## Packages
+| Package  | Version |  Description |
+| ---------|---------|----------- |
+| [`web3-redux`](./web3-redux) | ![web3-redux-npm] | Combines all packages. |
+| [`web3-models`](./web3-models) | ![web3-models-npm] | Web3 models with validation  |
+| [`web3-dexie`](./web3-dexie) | ![web3-dexie-npm] | [Dexie.js] model for storing data in [IndexedDB] |
+| [`web3-dexie-hooks`](./web3-dexie-hooks) | ![web3-dexie-hooks-npm] | React [Hooks] wrapper for [Dexie.js] model |
+| [`web3-actions`](./web3-actions) | ![web3-actions-npm] | [Redux] actions for model |
+| [`web3-redux-orm`](./web3-redux-orm) | ![web3-redux-orm-npm] | [Redux ORM] model |
+| [`web3-redux-orm-hooks`](./web3-redux-orm-hooks) | ![web3-redux-orm-hooks-npm] | React [Hooks] wrapper for [Redux ORM] model  |
+| [`web3-sagas`](./web3-sagas) | ![web3-sagas-npm] | [Redux Sagas] for model  |

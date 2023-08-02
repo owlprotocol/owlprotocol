@@ -31,11 +31,11 @@ const CollectionCardPresenter = ({
     return (
         <Box
             p={2}
-            w={288}
+            w={"100%"}
+            minW={288}
             h={407}
             borderRadius={8}
-            bg={themes.color5}
-            background={`linear-gradient(143.93deg, rgba(28, 28, 36, 0.6) 0%, rgba(45, 45, 54, 0.6) 50%, rgba(28, 28, 36, 0.6) 100%)`}
+            bg={`linear-gradient(143.93deg, rgba(28, 28, 36, 0.6) 0%, rgba(45, 45, 54, 0.6) 50%, rgba(28, 28, 36, 0.6) 100%)`}
             color={themes.color8}
             boxShadow={"md"}
         >
@@ -77,11 +77,12 @@ const CollectionCardPresenter = ({
                         fontSize={16}
                         my={2}
                         width={"auto"}
+                        noOfLines={1}
                     >
                         {title}
                     </Text>
                     {isVerified && (
-                        <Box boxSize={5}>
+                        <Box boxSize={"20px"} flexShrink={0}>
                             <VerifiedIcon />
                         </Box>
                     )}

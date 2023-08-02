@@ -13,3 +13,5 @@ export const SUPPLIER_ROLE = utils.keccak256(utils.toUtf8Bytes("SUPPLIER_ROLE"))
 
 export const DEPOSIT_ROLE = utils.keccak256(utils.toUtf8Bytes("DEPOSIT_ROLE"));
 export const WITHDRAW_ROLE = utils.keccak256(utils.toUtf8Bytes("WITHDRAW_ROLE"));
+
+//TODO: Add roles

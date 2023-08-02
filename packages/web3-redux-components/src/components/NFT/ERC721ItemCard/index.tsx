@@ -1,6 +1,6 @@
 import { ERC721 } from "@owlprotocol/web3-redux";
 import composeHooks from "react-hooks-compose";
-import ItemCardPresenter from "../ItemCardPresenter/index.js";
+import { NFTItemCardPresenter } from "../ItemCardPresenter/index.js";
 
 export interface useERC721ItemCardProps {
     networkId: string;
@@ -14,8 +14,14 @@ export const useERC721ItemCard = ({
     address,
     tokenId,
 }: useERC721ItemCardProps) => {
-    const [token] = ERC721.hooks.useERC721({networkId, address, tokenId});
-    const metadata = token?.metadata
+    let token;
+    try {
+        [token] = ERC721.hooks.useERC721({ networkId, address, tokenId });
+    } catch (error) {
+        console.log(error);
+    }
+
+    const metadata = token?.metadata;
 
     return {
         itemName: metadata?.name,
@@ -25,7 +31,7 @@ export const useERC721ItemCard = ({
 
 const ERC721ItemCard = composeHooks((props: useERC721ItemCardProps) => ({
     useERC721ItemCard: () => useERC721ItemCard(props),
-}))(ItemCardPresenter) as (props: useERC721ItemCardProps) => JSX.Element;
+}))(NFTItemCardPresenter) as (props: useERC721ItemCardProps) => JSX.Element;
 
 //@ts-expect-error
 ERC721ItemCard.displayName = "ERC721ItemCard";

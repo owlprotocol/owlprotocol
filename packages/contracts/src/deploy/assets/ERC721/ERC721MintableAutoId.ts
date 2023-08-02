@@ -1,64 +1,46 @@
 import { TransactionReceipt } from "@ethersproject/providers";
+import log from "loglevel";
+import { getFactoriesWithSigner } from "@owlprotocol/contracts-proxy";
+import { factories } from "../../../ethers/factories.js";
 import { getContractURIs, logDeployment, RunTimeEnvironment } from "../../utils.js";
 import { mapValues } from "../../../lodash.js";
-import { getFactories } from "../../../ethers/factories.js";
-import {
-    getDeterministicFactories,
-    getDeterministicInitializeFactories,
-} from "../../../ethers/deterministicFactories.js";
 import {
     ERC721MintableAutoIdInitializeArgs,
-    flattenInitArgsERC721MintableAutoId,
-} from "../../../utils/ERC721MintableAutoId.js";
-import { getBeaconProxyFactories } from "../../../ethers/beaconProxyFactories.js";
-import { ERC1167FactoryAddress } from "../../../utils/ERC1167Factory/index.js";
-import log from "loglevel";
+    initializeUtil,
+} from "../../../utils/initializeUtils/ERC721MintableAutoId.js";
 
 interface Params extends RunTimeEnvironment {
-    tokens: number;
+    instances: Omit<ERC721MintableAutoIdInitializeArgs, "admin" | "name" | "symbol">[];
     balanceTarget: number;
 }
-export const ERC721MintableAutoIdDeploy = async ({ provider, signers, network, tokens, balanceTarget }: Params) => {
+export const ERC721MintableAutoIdDeploy = async ({ provider, signers, network, instances, balanceTarget }: Params) => {
     const { awaitAllObj } = await import("@owlprotocol/utils");
+
     const signer = signers[0];
     const signerAddress = await signer.getAddress();
     let nonce = await provider.getTransactionCount(signerAddress);
 
-    const factories = getFactories(signer);
-    const cloneFactory = factories.ERC1167Factory.attach(ERC1167FactoryAddress);
-    const deterministicFactories = getDeterministicFactories(factories);
-    const deterministicInitializeFactories = getDeterministicInitializeFactories(
-        factories,
-        cloneFactory,
-        signerAddress,
-    );
-    const beaconFactory = deterministicInitializeFactories.UpgradeableBeacon;
-    const beconProxyFactories = getBeaconProxyFactories(
-        deterministicFactories,
-        cloneFactory,
-        beaconFactory,
-        signerAddress,
-    );
-    const ERC721MintableAutoIdFactory = beconProxyFactories.ERC721MintableAutoId;
+    const ERC721MintableAutoIdFactory = getFactoriesWithSigner(factories, signer).factoriesBeaconProxies
+        .ERC721MintableAutoId;
 
     const { chainId } = network.config;
 
     //Contracts
     const deployments: { [key: string]: ERC721MintableAutoIdInitializeArgs } = {};
-    for (let i = 0; i < tokens; i++) {
+    for (let i = 0; i < instances.length; i++) {
         const name = `ERC721MintableAutoId-${i}`;
 
         deployments[name] = {
             admin: signerAddress,
             name,
             symbol: `NFT${i}`,
-            initBaseURI: getContractURIs({ chainId, name, tokenId: i }).tokenUri,
             contractUri: getContractURIs({ chainId, name }).contractUri,
+            ...instances[i],
         };
     }
 
     const promises = mapValues(deployments, async (initArgs) => {
-        const args = flattenInitArgsERC721MintableAutoId(initArgs);
+        const args = initializeUtil(initArgs);
         const address = ERC721MintableAutoIdFactory.getAddress(...args);
 
         try {
@@ -119,4 +101,11 @@ export const ERC721MintableAutoIdDeploy = async ({ provider, signers, network, t
 };
 
 ERC721MintableAutoIdDeploy.tags = ["ERC721MintableAutoId"];
-ERC721MintableAutoIdDeploy.dependencies = ["Implementations", "ERC1820", "UpgradeableBeacon"];
+ERC721MintableAutoIdDeploy.dependencies = [
+    "Implementations",
+    "UpgradeableBeacon",
+    "ERC2981Setter",
+    "ERC721MintableAutoId",
+    "ERC721MintableAutoIdBaseURI",
+    "ERC721MintableAutoIdDna",
+];

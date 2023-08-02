@@ -1,120 +1,120 @@
 {
-  "name": "web3-cli",
-  "version": "1.2.0",
-  "private": false,
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/owlprotocol/owlprotocol.git"
-  },
-  "homepage": "https://github.com/owlprotocol/owlprotocol/tree/main/packages/web3-cli",
-  "copyright": "Copyright 2023 Owl Protocol",
-  "author": {
-    "name": "Leo Vigna",
-    "email": "leo.vigna@gmail.com",
-    "url": "https://github.com/owlprotocol"
-  },
-  "description": "Owl Protocol Web3 CLI",
-  "bin": {
-    "web3-cli": "./bin/run.js"
-  },
-  "license": "MIT",
-  "type": "module",
-  "main": "./lib/cjs/index.cjs",
-  "module": "./lib/esm/index.mjs",
-  "types": "./lib/types/index.d.ts",
-  "exports": {
-    ".": {
-      "types": "./lib/types/index.d.ts",
-      "require": "./lib/cjs/index.js",
-      "import": "./lib/esm/index.js"
-    }
-  },
-  "files": [
-    "dist/*",
-    "lib/*",
-    "src/*",
-    "LICENSE",
-    "README.md",
-    "bin/*",
-    "/npm-shrinkwrap.json",
-    "/oclif.manifest.json"
-  ],
-  "engines": {
-    "node": "^16.0.0"
-  },
-  "scripts": {
-    "build": "npm-run-all -p tsc esbuild",
-    "build:watch": "npm-run-all -p tsc:watch esbuild:watch",
-    "esbuild": "node esbuild.config.mjs",
-    "esbuild:watch": "ESBUILD_WATCH=true node esbuild.config.mjs",
-    "tsc": "tsc",
-    "tsc:watch": "tsc -w",
-    "clean": "rimraf lib dist",
-    "postpack": "shx rm -f oclif.manifest.json",
-    "posttest": "npm run lint",
-    "prepack": "npm run build && oclif manifest && oclif readme",
-    "test": "mocha --forbid-only \"test/**/*.test.ts\"",
-    "version": "oclif readme && git add README.md",
-    "lint": "eslint 'src/**/*.ts'",
-    "lint:fix": "eslint --fix 'src/**/*.ts'"
-  },
-  "dependencies": {
-    "@oclif/core": "^2.8.0",
-    "@oclif/plugin-help": "^5",
-    "@oclif/plugin-plugins": "^2.4.3",
-    "@owlprotocol/envvars": "workspace:*",
-    "@owlprotocol/utils": "workspace:*",
-    "@owlprotocol/web3-prompt": "workspace:*",
-    "@owlprotocol/web3-redux-2": "workspace:*",
-    "@pinata/sdk": "^2.1.0",
-    "chalk": "4.1.2",
-    "dexie": "4.0.1-alpha.8",
-    "ethers": "5.7.2",
-    "indexeddbshim": "^10.0.0",
-    "inquirer": "^8.1.2",
-    "ipfs-http-client": "^60.0.0",
-    "lodash-es": "4.17.21",
-    "loglevel": "^1.8.1",
-    "spinnies": "^0.5.1",
-    "url-pattern": "1.0.3"
-  },
-  "devDependencies": {
-    "@oclif/test": "^2.3.13",
-    "@owlprotocol/esbuild-config": "workspace:*",
-    "@owlprotocol/eslint-config": "workspace:*",
-    "@owlprotocol/prettier-config": "workspace:*",
-    "@types/chai": "^4",
-    "@types/lodash-es": "4.17.6",
-    "@types/mocha": "^9.0.0",
-    "@types/node": "^16.18.23",
-    "chai": "^4",
-    "eslint": "^7.32.0",
-    "eslint-config-oclif": "^4",
-    "eslint-config-oclif-typescript": "^1.0.3",
-    "mocha": "^9",
-    "oclif": "^3",
-    "shx": "^0.3.3",
-    "ts-node": "^10.9.1",
-    "tslib": "^2.5.0",
-    "typescript": "^4.9.5"
-  },
-  "oclif": {
-    "bin": "./bin/run.js",
-    "dirname": "web3-cli",
-    "commands": "./lib/esm/commands",
-    "plugins": [
-      "@oclif/plugin-help",
-      "@oclif/plugin-plugins"
+    "name": "web3-cli",
+    "version": "1.2.0",
+    "private": false,
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/owlprotocol/owlprotocol.git"
+    },
+    "homepage": "https://github.com/owlprotocol/owlprotocol/tree/main/packages/web3-cli",
+    "copyright": "Copyright 2023 Owl Protocol",
+    "author": {
+        "name": "Leo Vigna",
+        "email": "leo.vigna@gmail.com",
+        "url": "https://github.com/owlprotocol"
+    },
+    "description": "Owl Protocol Web3 CLI",
+    "bin": {
+        "web3-cli": "./bin/run.js"
+    },
+    "license": "MIT",
+    "type": "module",
+    "main": "./lib/cjs/index.cjs",
+    "module": "./lib/esm/index.mjs",
+    "types": "./lib/types/index.d.ts",
+    "exports": {
+        ".": {
+            "types": "./lib/types/index.d.ts",
+            "require": "./lib/cjs/index.js",
+            "import": "./lib/esm/index.js"
+        }
+    },
+    "files": [
+        "dist/*",
+        "lib/*",
+        "src/*",
+        "LICENSE",
+        "README.md",
+        "bin/*",
+        "/npm-shrinkwrap.json",
+        "/oclif.manifest.json"
     ],
-    "topicSeparator": " ",
-    "topics": {
-      "hello": {
-        "description": "Say hello to the world and others"
-      }
-    }
-  },
-  "bugs": "https://github.com/owlprotocol/owlprotocol/issues",
-  "keywords": [
-    "oclif"
-  ]
+    "engines": {
+        "node": "^16.0.0"
+    },
+    "scripts": {
+        "build": "npm-run-all -p tsc esbuild",
+        "build:watch": "npm-run-all -p tsc:watch esbuild:watch",
+        "esbuild": "node esbuild.config.mjs",
+        "esbuild:watch": "ESBUILD_WATCH=true node esbuild.config.mjs",
+        "tsc": "tsc",
+        "tsc:watch": "tsc -w",
+        "clean": "rimraf lib dist",
+        "postpack": "shx rm -f oclif.manifest.json",
+        "posttest": "npm run lint",
+        "prepack": "npm run build && oclif manifest && oclif readme",
+        "test": "mocha --forbid-only \"test/**/*.test.ts\"",
+        "version": "oclif readme && git add README.md",
+        "lint": "eslint 'src/**/*.ts'",
+        "lint:fix": "eslint --fix 'src/**/*.ts'"
+    },
+    "dependencies": {
+        "@oclif/core": "^2.8.0",
+        "@oclif/plugin-help": "^5",
+        "@oclif/plugin-plugins": "^2.4.3",
+        "@owlprotocol/envvars": "workspace:*",
+        "@owlprotocol/utils": "workspace:*",
+        "@owlprotocol/web3-prompt": "workspace:*",
+        "@owlprotocol/web3-redux": "workspace:*",
+        "@pinata/sdk": "^2.1.0",
+        "chalk": "4.1.2",
+        "dexie": "4.0.1-alpha.8",
+        "ethers": "5.7.2",
+        "indexeddbshim": "^10.0.0",
+        "inquirer": "^8.1.2",
+        "ipfs-http-client": "^60.0.0",
+        "lodash-es": "4.17.21",
+        "loglevel": "^1.8.1",
+        "spinnies": "^0.5.1",
+        "url-pattern": "1.0.3"
+    },
+    "devDependencies": {
+        "@oclif/test": "^2.3.13",
+        "@owlprotocol/esbuild-config": "workspace:*",
+        "@owlprotocol/eslint-config": "workspace:*",
+        "@owlprotocol/prettier-config": "workspace:*",
+        "@types/chai": "^4",
+        "@types/lodash-es": "4.17.6",
+        "@types/mocha": "^9.0.0",
+        "@types/node": "^16.18.23",
+        "chai": "^4",
+        "eslint": "^7.32.0",
+        "eslint-config-oclif": "^4",
+        "eslint-config-oclif-typescript": "^1.0.3",
+        "mocha": "^9",
+        "oclif": "^3",
+        "shx": "^0.3.3",
+        "ts-node": "^10.9.1",
+        "tslib": "^2.5.0",
+        "typescript": "^4.9.5"
+    },
+    "oclif": {
+        "bin": "./bin/run.js",
+        "dirname": "web3-cli",
+        "commands": "./lib/esm/commands",
+        "plugins": [
+            "@oclif/plugin-help",
+            "@oclif/plugin-plugins"
+        ],
+        "topicSeparator": " ",
+        "topics": {
+            "hello": {
+                "description": "Say hello to the world and others"
+            }
+        }
+    },
+    "bugs": "https://github.com/owlprotocol/owlprotocol/issues",
+    "keywords": [
+        "oclif"
+    ]
 }

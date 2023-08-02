@@ -1,15 +1,10 @@
 import inquirer from "inquirer";
 import { existsSync, lstatSync, readFileSync } from "fs"
-import { readFile } from "fs/promises"
-import { walkDir, asyncGeneratorToArray, sleep } from "@owlprotocol/utils";
+import { sleep } from "@owlprotocol/utils";
 import { INFURA_IPFS_PROJECT_ID, INFURA_IPFS_PROJECT_SECRET } from "@owlprotocol/envvars"
 import Spinnies from "spinnies"
 import { clearTerminal } from "../../utils/index.js";
-import { IPFSCacheDexie } from "@owlprotocol/web3-redux-2";
-import { zip } from "lodash-es";
 import { create as createIPFSClient } from "ipfs-http-client"
-import { join } from "path";
-
 
 export async function ipfsPinMenu(): Promise<string> {
     clearTerminal();

@@ -1,8 +1,8 @@
 //SPDX-License-Identifier: MIT
 pragma solidity ^0.8.0;
 
-import {IAssetRouter} from './IAssetRouter.sol';
-import {AssetBasketOutput} from './AssetOutputLib.sol';
+import {IAssetRouter} from "./IAssetRouter.sol";
+import {AssetBasketOutput} from "./AssetOutputLib.sol";
 
 /**
  * @dev [IAssetRouterOutput.sol] defines a contract that outputs assets.
@@ -60,9 +60,5 @@ interface IAssetRouterOutput is IAssetRouter {
      * @param amount How many times to craft
      * @param basketIdx Index of selected output basket
      */
-    function output(
-        address to,
-        uint256 amount,
-        uint256 basketIdx
-    ) external;
+    function output(address to, uint256 amount, uint256 basketIdx) external;
 }

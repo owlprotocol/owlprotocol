@@ -13,6 +13,8 @@ interface IERC721Mintable {
      */
     function mint(address to, uint256 tokenId) external;
 
+    function mintBatch(address[] memory to, uint256[] memory tokenId) external;
+
     /**
      * @notice Must have MINTER_ROLE
      * @dev Allows caller to mint NFTs (safeMint)
@@ -20,4 +22,6 @@ interface IERC721Mintable {
      * @param tokenId tokenId value
      */
     function safeMint(address to, uint256 tokenId) external;
+
+    function safeMintBatch(address[] memory to, uint256[] memory tokenId) external;
 }

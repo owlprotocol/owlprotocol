@@ -1,5 +1,5 @@
 import { ComponentStory, ComponentMeta } from "@storybook/react";
-import { Button, HStack } from "@chakra-ui/react";
+import { Button, HStack, Stack } from "@chakra-ui/react";
 
 export default {
     title: "Atoms/Button",
@@ -13,11 +13,18 @@ export default {
 } as ComponentMeta<typeof Button>;
 
 const Template: ComponentStory<typeof Button> = (args: any) => (
-    <HStack>
-        <Button>Regular Button</Button>
-        <Button {...args}>Variants Button</Button>
-        <Button variant="cube">&times;</Button>
-    </HStack>
+    <Stack spacing={10}>
+        <HStack>
+            <Button>Regular Button</Button>
+            <Button variant="hollow">Hollow Button</Button>
+            <Button variant="cube">&times;</Button>
+            <Button variant="grad-1">Gradient 1</Button>
+        </HStack>
+        <div>
+            <div>variant controled button</div>
+            <Button {...args}>Variants Button</Button>
+        </div>
+    </Stack>
 );
 export const Main = Template.bind({});
 

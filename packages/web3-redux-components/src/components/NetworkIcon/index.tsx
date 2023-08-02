@@ -42,6 +42,7 @@ export const NetworkIcon = ({
                 return <MoonbeamIcon />;
             case "moonriver":
                 return <MoonriverIcon />;
+            case "56":
             case "binance":
                 return <BNBIcon />;
             case "31337":

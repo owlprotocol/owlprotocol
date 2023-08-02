@@ -1,8 +1,8 @@
+import log from "loglevel";
+import { connectFactories } from "@owlprotocol/contracts-proxy";
 import { mapValues, zipObject } from "../../lodash.js";
 import { logDeployment, RunTimeEnvironment } from "../utils.js";
-import { getFactories } from "../../ethers/factories.js";
-import { getDeterministicFactories } from "../../ethers/deterministicFactories.js";
-import log from "loglevel";
+import { factoriesImplementations } from "../../ethers/factories.js";
 
 /**
  * Deployment is always the same regardless of contract.
@@ -12,10 +12,9 @@ export const ImplementationsDeploy = async ({ provider, signers, network }: RunT
     const signer = signers[0];
     let nonce = await provider.getTransactionCount(await signer.getAddress());
 
-    const factories = getFactories(signer);
-    const deterministicFactories = getDeterministicFactories(factories);
 
-    const promises = mapValues(deterministicFactories, async (factory) => {
+
+    const promises = mapValues(connectFactories(factoriesImplementations, signer), async (factory) => {
         const address = factory.getAddress();
 
         try {
@@ -29,7 +28,11 @@ export const ImplementationsDeploy = async ({ provider, signers, network }: RunT
             } else {
                 return {
                     address,
-                    contract: await factory.deploy({ nonce: nonce++, type: 2, gasLimit: 10e6 }),
+                    contract: await factory.deploy({
+                        nonce: nonce++,
+                        type: (network.config.eip1559 as boolean) ? 2 : 0,
+                        gasLimit: 10e6,
+                    }),
                     deployed: true,
                 };
             }
@@ -39,7 +42,7 @@ export const ImplementationsDeploy = async ({ provider, signers, network }: RunT
     });
 
     const results = zipObject(Object.keys(promises), await Promise.all(Object.values(promises))) as {
-        [K in keyof typeof promises]: Awaited<(typeof promises)[K]>;
+        [K in keyof typeof promises]: Awaited<typeof promises[K]>;
     };
 
     mapValues(results, ({ address, error, deployed }, name) => {

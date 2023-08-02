@@ -1,7 +1,7 @@
 import inquirer from "inquirer";
 import { add, back, home, pageSize, quit } from "../constants.js";
 import { clearTerminal } from "../../utils/index.js";
-import { ContractDexie, ERC165Dexie, NetworkDexie } from "@owlprotocol/web3-redux-2";
+import { ContractDexie, ERC165Dexie, NetworkDexie } from "@owlprotocol/web3-redux";
 import { compact } from "lodash-es";
 
 export async function contractMenu(networkId: string, interfaceId: string): Promise<string> {

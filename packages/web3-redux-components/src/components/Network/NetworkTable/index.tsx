@@ -1,4 +1,4 @@
-import { Network, NetworkData } from "@owlprotocol/web3-redux";
+import { NetworkHelpers, Network } from "@owlprotocol/web3-redux";
 import {
     Button,
     Table,
@@ -24,7 +24,7 @@ import { useDispatch } from "react-redux";
 import { omit } from "lodash-es";
 import { TableWrapper } from "@owlprotocol/owl-theme";
 
-interface NetworkCell extends NetworkData {
+interface NetworkCell extends Network {
     edit?: boolean;
 }
 
@@ -111,7 +111,7 @@ const columns: ColumnDef<NetworkCell, any>[] = [
 export const NetworkTable = () => {
     const { themes } = useTheme();
     const dispatch = useDispatch();
-    const [networks] = Network.hooks.useAll();
+    const [networks] = NetworkHelpers.useAll();
     //Temp copy storing edited values
     const [networksEdit, setNetworksEdit] = useState<
         Record<string, NetworkCell>
@@ -146,7 +146,7 @@ export const NetworkTable = () => {
                     [networkId]: { ...networksEdit[networkId], edit: false },
                 };
                 setNetworksEdit(newEdit);
-                dispatch(Network.actions.update(omit(network, ["edit"])));
+                dispatch(NetworkHelpers.actions.update(omit(network, ["edit"])));
             },
         },
     });
@@ -163,10 +163,10 @@ export const NetworkTable = () => {
                                         {header.isPlaceholder
                                             ? null
                                             : flexRender(
-                                                  header.column.columnDef
-                                                      .header,
-                                                  header.getContext()
-                                              )}
+                                                header.column.columnDef
+                                                    .header,
+                                                header.getContext()
+                                            )}
                                     </Th>
                                 ))}
                             </Tr>
@@ -195,10 +195,10 @@ export const NetworkTable = () => {
                                         {header.isPlaceholder
                                             ? null
                                             : flexRender(
-                                                  header.column.columnDef
-                                                      .footer,
-                                                  header.getContext()
-                                              )}
+                                                header.column.columnDef
+                                                    .footer,
+                                                header.getContext()
+                                            )}
                                     </Th>
                                 ))}
                             </Tr>

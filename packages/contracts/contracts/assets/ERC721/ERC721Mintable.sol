@@ -1,7 +1,8 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.9;
 
-import {ERC721MintableBase} from "./ERC721MintableBase.sol";
+import {IERC721Mintable} from "./IERC721Mintable.sol";
+import {ERC721Abstract} from "./ERC721Abstract.sol";
 
 /**
  * @dev This implements the standard OwlProtocol `ERC721` contract that is an
@@ -9,64 +10,78 @@ import {ERC721MintableBase} from "./ERC721MintableBase.sol";
  * happens through initializers for compatibility with a EIP1167 minimal-proxy
  * deployment strategy.
  */
-contract ERC721Mintable is ERC721MintableBase {
-    constructor() {}
+contract ERC721Mintable is ERC721Abstract, IERC721Mintable {
+    bytes32 internal constant MINTER_ROLE = keccak256("MINTER_ROLE");
 
     /**********************
         Initialization
     **********************/
 
-    /**
-     * @dev Initializes an ERC721Mintable contract
-     * @param _admin admin for contract
-     * @param _initContractURI uri for contract metadata description
-     * @param _gsnForwarder GSN Trusted forwarder
-     * @param _name name for contract
-     * @param _symbol symbol for contract
-     * @param _initBaseURI base URI for contract
-     * @param _feeReceiver address of receiver of royalty fees
-     * @param _feeNumerator numerator of royalty fee percentage (numerator / 10000)
-     */
     function initialize(
         address _admin,
-        string calldata _initContractURI,
-        address _gsnForwarder,
-        string calldata _name,
-        string calldata _symbol,
-        string calldata _initBaseURI,
-        address _feeReceiver,
-        uint96 _feeNumerator
+        string memory _initContractURI,
+        string memory _name,
+        string memory _symbol,
+        address _tokenUriProvider,
+        address _tokenRoyaltyProvider
     ) external virtual initializer {
-        __ERC721Mintable_init(
-            _admin,
-            _initContractURI,
-            _gsnForwarder,
-            _name,
-            _symbol,
-            _initBaseURI,
-            _feeReceiver,
-            _feeNumerator
-        );
+        __ERC721Mintable_init(_admin, _initContractURI, _name, _symbol, _tokenUriProvider, _tokenRoyaltyProvider);
     }
 
     function __ERC721Mintable_init(
         address _admin,
         string memory _initContractURI,
-        address _gsnForwarder,
         string memory _name,
         string memory _symbol,
-        string memory _initBaseURI,
-        address _feeReceiver,
-        uint96 _feeNumerator
+        address _tokenUriProvider,
+        address _tokenRoyaltyProvider
     ) internal {
         __ContractURI_init_unchained(_admin, _initContractURI);
-        __RouterReceiver_init_unchained(_gsnForwarder);
         __OwlBase_init_unchained(_admin);
 
         __ERC721_init_unchained(_name, _symbol);
-        __BaseURI_init_unchained(_admin, _initBaseURI);
-        __ERC2981Setter_init_unchained(_admin, _feeReceiver, _feeNumerator);
-        __ERC721Base_init_unchained();
-        __ERC721MintableBase_init_unchained(_admin);
+        __TokenURIConsumerAbstract_init_unchained(_admin, _tokenUriProvider);
+        __ERC2981ConsumerAbstract_init_unchained(_admin, _tokenRoyaltyProvider);
+        __ERC721Abstract_init_unchained();
+        __ERC721Mintable_init_unchained(_admin);
+    }
+
+    function __ERC721Mintable_init_unchained(address _minterRole) internal {
+        _grantRole(MINTER_ROLE, _minterRole);
+        if (_registryExists()) {
+            _registerInterface(type(IERC721Mintable).interfaceId);
+        }
+    }
+
+    /**
+     * @inheritdoc IERC721Mintable
+     */
+    function mint(address to, uint256 tokenId) external virtual onlyRole(MINTER_ROLE) {
+        _mint(to, tokenId);
+    }
+
+    /**
+     * @inheritdoc IERC721Mintable
+     */
+    function mintBatch(address[] memory to, uint256[] memory tokenId) external virtual onlyRole(MINTER_ROLE) {
+        for (uint256 i = 0; i < to.length; i++) {
+            _mint(to[i], tokenId[i]);
+        }
+    }
+
+    /**
+     * @inheritdoc IERC721Mintable
+     */
+    function safeMint(address to, uint256 tokenId) external virtual onlyRole(MINTER_ROLE) {
+        _safeMint(to, tokenId);
+    }
+
+    /**
+     * @inheritdoc IERC721Mintable
+     */
+    function safeMintBatch(address[] memory to, uint256[] memory tokenId) external virtual onlyRole(MINTER_ROLE) {
+        for (uint256 i = 0; i < to.length; i++) {
+            _safeMint(to[i], tokenId[i]);
+        }
     }
 }

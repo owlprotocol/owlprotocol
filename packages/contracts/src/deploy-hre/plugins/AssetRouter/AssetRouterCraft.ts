@@ -1,6 +1,5 @@
 import { utils } from "ethers";
 import type { HardhatRuntimeEnvironment } from "hardhat/types";
-import { IAssetRouterCraft } from "../../../artifacts.js";
 import { ADDRESS_ONE } from "../../../constants.js";
 import {
     AssetRouterCraftDeploy,
@@ -114,7 +113,7 @@ const deploy = async ({ ethers, network, deployments }: HardhatRuntimeEnvironmen
         Object.entries(results).map(async ([k, v]) => {
             const submission = await getOrNull(k);
             if (submission?.address != v.address) {
-                return save(k, { address: v.address, abi: IAssetRouterCraft.abi });
+                return save(k, { address: v.address, abi: [] });
             }
         }),
     );

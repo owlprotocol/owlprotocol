@@ -11,27 +11,26 @@ const deploy = async ({ ethers, network, deployments }: HardhatRuntimeEnvironmen
         network,
     });
 
-    const promises = mapValues(results, async ({ address, contract }, k) => {
-        if (address && contract?.interface) {
-            const { abi } = await deployments.getExtendedArtifact(k);
+    const promises = mapValues(results, async (v, k) => {
+        const subName = k + "Implementation";
+        const submission = await getOrNull(subName);
+        if (!!submission) await deployments.delete(subName);
 
-            const submission = await getOrNull(k + "Implementation");
-            if (submission?.address != address) {
-                //Bloat
-                return save(k + "Implementation", {
-                    address,
-                    //args: [],
-                    abi,
-                    /*
-                    bytecode
-                    deployedBytecode,
-                    devdoc,
-                    solcInputHash,
-                    metadata,
-                    storageLayout,
-                    */
-                });
-            }
+        if (!v.error && v.address) {
+            //const { abi } = await deployments.getExtendedArtifact(k);
+            return save(subName, {
+                address: v.address,
+                abi: [],
+                /*
+                args: [],
+                bytecode
+                deployedBytecode,
+                devdoc,
+                solcInputHash,
+                metadata,
+                storageLayout,
+                */
+            });
         }
     });
 

@@ -22,6 +22,7 @@ export interface PresenterProps {
     networkId?: string;
     price?: string;
     isSelected?: boolean;
+    isLegendary?: boolean;
     isFavorite?: boolean;
     handleFavorite?: any;
     imageSrc?: string;
@@ -34,7 +35,7 @@ export interface PresenterProps {
     contentId?: string | undefined;
     editable?: boolean | undefined;
     preMint?: boolean | undefined;
-    isLegendary?: boolean | undefined;
+    imageHeight?: number;
 }
 
 export const NFTInstancePresenter = ({
@@ -43,13 +44,14 @@ export const NFTInstancePresenter = ({
     ownerOf,
     price,
     isSelected,
+    isLegendary,
     isFavorite,
     handleFavorite,
     imageSrc,
     imageAlt = "",
     editable = false,
     preMint = false,
-    isLegendary = false,
+    imageHeight = 200,
 }: PresenterProps) => {
     const { themes } = useTheme();
     const [previewUrl, setPreviewUrl] = useState<any>(null);
@@ -64,10 +66,7 @@ export const NFTInstancePresenter = ({
 
     return (
         <Box
-            w={"100%"}
-            maxW={264}
             p={"2px"}
-            h={"100%"}
             borderRadius={12}
             bg={
                 isLegendary
@@ -88,7 +87,7 @@ export const NFTInstancePresenter = ({
                     bg={themes.color6}
                     mb={4}
                     borderRadius={16}
-                    h={"196px"}
+                    h={imageHeight}
                     overflow={"hidden"}
                     justify={"center"}
                     pos={"relative"}
@@ -97,7 +96,6 @@ export const NFTInstancePresenter = ({
                         <Image
                             src={previewUrl}
                             borderRadius={16}
-                            h={"196px"}
                             alt={imageAlt}
                             objectFit={"scale-down"}
                             fallback={
