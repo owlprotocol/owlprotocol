@@ -91,7 +91,6 @@ describe(`${ContractName}/sagas/dbChange.ts`, () => {
             token = {
                 admin: from,
                 contractUri: `token.${tokenName}.com`,
-                gsnForwarder: ethers.constants.AddressZero,
                 name: `Token ${tokenName}`,
                 symbol: `TK${tokenName}`,
             };

@@ -16,22 +16,19 @@ contract ERC721Minter is ERC721MinterAbstract, OwlBase, IERC721Minter {
     function initialize(
         address _admin,
         string memory _contractUri,
-        address _gsnForwarder,
         address _minterRole,
         address _token
     ) external initializer {
-        __ERC721Minter_init(_admin, _contractUri, _gsnForwarder, _minterRole, _token);
+        __ERC721Minter_init(_admin, _contractUri, _minterRole, _token);
     }
 
     function __ERC721Minter_init(
         address _admin,
         string memory _contractUri,
-        address _gsnForwarder,
         address _minterRole,
         address _token
     ) internal {
         __ContractURI_init_unchained(_admin, _contractUri);
-        __RouterReceiver_init_unchained(_gsnForwarder);
         __OwlBase_init_unchained(_admin);
 
         __TokenConsumerAbstract_init_unchained(_admin, _token);
@@ -59,20 +56,6 @@ contract ERC721Minter is ERC721MinterAbstract, OwlBase, IERC721Minter {
 
     function safeMintBatch(address[] memory to, uint256[] memory tokenId) external virtual onlyRole(MINTER_ROLE) {
         _safeMintBatch(to, tokenId);
-    }
-
-    /**
-     * @inheritdoc OwlBase
-     */
-    function _msgSender() internal view override(OwlBase, ContextUpgradeable) returns (address) {
-        return OwlBase._msgSender();
-    }
-
-    /**
-     * @inheritdoc OwlBase
-     */
-    function _msgData() internal view override(OwlBase, ContextUpgradeable) returns (bytes calldata) {
-        return OwlBase._msgData();
     }
 
     function supportsInterface(

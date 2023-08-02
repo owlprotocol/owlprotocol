@@ -18,11 +18,10 @@ contract TokenURIBaseURI is TokenURIBaseURIAbstract, OwlBase {
     function initialize(
         address _admin,
         string memory _contractUri,
-        address _gsnForwarder,
         address _baseUriRole,
         string memory _baseUri
     ) external initializer {
-        __TokenURIBaseURI_init(_admin, _contractUri, _gsnForwarder, _baseUriRole, _baseUri);
+        __TokenURIBaseURI_init(_admin, _contractUri, _baseUriRole, _baseUri);
     }
 
     /**
@@ -31,29 +30,13 @@ contract TokenURIBaseURI is TokenURIBaseURIAbstract, OwlBase {
     function __TokenURIBaseURI_init(
         address _admin,
         string memory _contractUri,
-        address _gsnForwarder,
         address _baseUriRole,
         string memory _baseUri
     ) internal {
         __ContractURI_init_unchained(_admin, _contractUri);
-        __RouterReceiver_init_unchained(_gsnForwarder);
         __OwlBase_init_unchained(_admin);
 
         __TokenURIBaseURIAbstract_init_unchained(_baseUriRole, _baseUri);
-    }
-
-    /**
-     * @inheritdoc OwlBase
-     */
-    function _msgSender() internal view override(OwlBase, ContextUpgradeable) returns (address) {
-        return OwlBase._msgSender();
-    }
-
-    /**
-     * @inheritdoc OwlBase
-     */
-    function _msgData() internal view override(OwlBase, ContextUpgradeable) returns (bytes calldata) {
-        return OwlBase._msgData();
     }
 
     function supportsInterface(

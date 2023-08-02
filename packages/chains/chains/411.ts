@@ -1,4 +1,4 @@
-import type { Chain } from "../src/types";
+import type { Chain } from "../src/types.js";
 export default {
   "name": "Pepe Chain Mainnet",
   "chain": "PC",

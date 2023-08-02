@@ -27,34 +27,23 @@ contract ERC721MintableAutoId is ERC721Abstract, IERC721MintableAutoId {
     function initialize(
         address _admin,
         string memory _initContractURI,
-        address _gsnForwarder,
         string memory _name,
         string memory _symbol,
         address _tokenUriProvider,
         address _tokenRoyaltyProvider
     ) external virtual initializer {
-        __ERC721MintableAutoId_init(
-            _admin,
-            _initContractURI,
-            _gsnForwarder,
-            _name,
-            _symbol,
-            _tokenUriProvider,
-            _tokenRoyaltyProvider
-        );
+        __ERC721MintableAutoId_init(_admin, _initContractURI, _name, _symbol, _tokenUriProvider, _tokenRoyaltyProvider);
     }
 
     function __ERC721MintableAutoId_init(
         address _admin,
         string memory _initContractURI,
-        address _gsnForwarder,
         string memory _name,
         string memory _symbol,
         address _tokenUriProvider,
         address _tokenRoyaltyProvider
     ) internal {
         __ContractURI_init_unchained(_admin, _initContractURI);
-        __RouterReceiver_init_unchained(_gsnForwarder);
         __OwlBase_init_unchained(_admin);
 
         __ERC721_init_unchained(_name, _symbol);

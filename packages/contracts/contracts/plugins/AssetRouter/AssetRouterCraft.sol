@@ -38,17 +38,15 @@ contract AssetRouterCraft is ERC721HolderUpgradeable, ERC1155HolderUpgradeable, 
      * @dev Initializes contract (replaces constructor in proxy pattern)
      * @param _admin owner, can control outputs on contract
      * @param _initContractURI contract uri
-     * @param _gsnForwarder trusted forwarder address for openGSN
      * @param _inputBaskets input baskets
      */
     function initialize(
         address _admin,
         string memory _initContractURI,
-        address _gsnForwarder,
         AssetBasketInput[] calldata _inputBaskets,
         AssetBasketOutput[] calldata _outputBaskets
     ) external initializer {
-        __AssetRouterCraft_init(_admin, _initContractURI, _gsnForwarder, _inputBaskets, _outputBaskets);
+        __AssetRouterCraft_init(_admin, _initContractURI, _inputBaskets, _outputBaskets);
     }
 
     /**
@@ -58,12 +56,10 @@ contract AssetRouterCraft is ERC721HolderUpgradeable, ERC1155HolderUpgradeable, 
     function __AssetRouterCraft_init(
         address _admin,
         string memory _initContractURI,
-        address _gsnForwarder,
         AssetBasketInput[] memory _inputBaskets,
         AssetBasketOutput[] memory _outputBaskets
     ) internal {
         __ContractURI_init_unchained(_admin, _initContractURI);
-        __RouterReceiver_init_unchained(_gsnForwarder);
         __OwlBase_init_unchained(_admin);
 
         __AssetRouterCraft_init_unchained(_inputBaskets, _outputBaskets, _admin, _admin);
@@ -125,7 +121,7 @@ contract AssetRouterCraft is ERC721HolderUpgradeable, ERC1155HolderUpgradeable, 
         uint256[][] calldata erc721TokenIdsBurned,
         uint256 outBasketIdx
     ) external override {
-        address msgSender = _msgSender();
+        address msgSender = msg.sender;
 
         //Consume inputs
         AssetInputLib.input(

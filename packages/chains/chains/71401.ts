@@ -1,4 +1,4 @@
-import type { Chain } from "../src/types";
+import type { Chain } from "../src/types.js";
 export default {
   "name": "Godwoken Testnet v1",
   "chain": "GWT",

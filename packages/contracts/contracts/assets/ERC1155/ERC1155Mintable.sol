@@ -15,22 +15,19 @@ contract ERC1155Mintable is ERC1155Abstract, IERC1155Mintable {
     function initialize(
         address _admin,
         string memory _initContractURI,
-        address _gsnForwarder,
         address _tokenUriProvider,
         address _tokenRoyaltyProvider
     ) external virtual initializer {
-        __ERC1155Mintable_init(_admin, _initContractURI, _gsnForwarder, _tokenUriProvider, _tokenRoyaltyProvider);
+        __ERC1155Mintable_init(_admin, _initContractURI, _tokenUriProvider, _tokenRoyaltyProvider);
     }
 
     function __ERC1155Mintable_init(
         address _admin,
         string memory _initContractURI,
-        address _gsnForwarder,
         address _tokenUriProvider,
         address _tokenRoyaltyProvider
     ) internal {
         __ContractURI_init_unchained(_admin, _initContractURI);
-        __RouterReceiver_init_unchained(_gsnForwarder);
         __OwlBase_init_unchained(_admin);
 
         __TokenURIConsumerAbstract_init_unchained(_admin, _tokenUriProvider);

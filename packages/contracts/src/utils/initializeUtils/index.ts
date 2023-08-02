@@ -10,3 +10,4 @@ export * as TokenDna from "./TokenDna.js";
 export * as TokenURI from "./TokenURI.js";
 export * as TokenURIBaseURI from "./TokenURIBaseURI.js";
 export * as TokenURIDna from "./TokenURIDna.js";
+export * as ChainlinkAnyApiClient from "./ChainlinkAnyApiClient.js";

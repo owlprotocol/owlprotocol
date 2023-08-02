@@ -1,4 +1,4 @@
-import type { Chain } from "../src/types";
+import type { Chain } from "../src/types.js";
 export default {
   "name": "Boba BNB Testnet",
   "chain": "Boba BNB Testnet",

@@ -24,7 +24,8 @@ export const factoryClasses =  {
     TokenDna: contracts.plugins.tokenDna.TokenDna__factory,
     AssetRouterCraft: contracts.plugins.assetRouter.AssetRouterCraft__factory,
     AssetRouterInput: contracts.plugins.assetRouter.AssetRouterInput__factory,
-    AssetRouterOutput: contracts.plugins.assetRouter.AssetRouterOutput__factory
+    AssetRouterOutput: contracts.plugins.assetRouter.AssetRouterOutput__factory,
+    ChainlinkAnyApiClient: contracts.chainlink.ChainlinkAnyApiClient__factory
 } as const
 
 export const factories = mapValues(factoryClasses, (f) => new f()) as {
@@ -51,6 +52,7 @@ export const TokenDnaFactory = factories.TokenDna;
 export const AssetRouterCraftFactory = factories.AssetRouterCraft;
 export const AssetRouterInputFactory = factories.AssetRouterInput;
 export const AssetRouterOutputFactory = factories.AssetRouterOutput;
+export const ChainlinkAnyApiClient = factories.ChainlinkAnyApiClient;
 
 //Can't deploy with these but useful for getting addresses
 const factories2 = getFactoriesWithSigner(factories);
@@ -82,6 +84,7 @@ const factoriesWithInitializeUtils = {
     AssetRouterCraft: { factory: AssetRouterCraftFactory, initializeUtil: Utils.AssetRouterCraft.initializeUtil },
     AssetRouterInput: { factory: AssetRouterInputFactory, initializeUtil: Utils.AssetRouterInput.initializeUtil },
     AssetRouterOutput: { factory: AssetRouterOutputFactory, initializeUtil: Utils.AssetRouterOutput.initializeUtil },
+    ChainlinkAnyApiClient: { factory: ChainlinkAnyApiClient, initializeUtil: Utils.ChainlinkAnyApiClient.initializeUtil }
 } as const;
 
 export const factoriesAll = mapValues(factoriesWithInitializeUtils, ({ factory, initializeUtil }) => {

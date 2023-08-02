@@ -1,4 +1,4 @@
-import type { Chain } from "../src/types";
+import type { Chain } from "../src/types.js";
 export default {
   "name": "WEMIX3.0 Testnet",
   "chain": "TWEMIX",

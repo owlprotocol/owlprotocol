@@ -21,11 +21,10 @@ contract TokenURI is OwlBase, ITokenURI {
     function initialize(
         address _admin,
         string memory _contractUri,
-        address _gsnForwarder,
         address _uriRole,
         string memory _uri
     ) external initializer {
-        __TokenURI_init(_admin, _contractUri, _gsnForwarder, _uriRole, _uri);
+        __TokenURI_init(_admin, _contractUri, _uriRole, _uri);
     }
 
     /**
@@ -34,12 +33,10 @@ contract TokenURI is OwlBase, ITokenURI {
     function __TokenURI_init(
         address _admin,
         string memory _contractUri,
-        address _gsnForwarder,
         address _uriRole,
         string memory _uri
     ) internal {
         __ContractURI_init_unchained(_admin, _contractUri);
-        __RouterReceiver_init_unchained(_gsnForwarder);
         __OwlBase_init_unchained(_admin);
 
         __TokenURI_init_unchained(_uriRole, _uri);

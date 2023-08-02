@@ -1,4 +1,4 @@
-import type { Chain } from "../src/types";
+import type { Chain } from "../src/types.js";
 export default {
   "name": "BitTorrent Chain Testnet",
   "chain": "BTTC",

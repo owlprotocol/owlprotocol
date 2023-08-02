@@ -122,7 +122,7 @@ abstract contract ERC721TopDownBase is ERC721Abstract, IERC721TopDown, IERC721Re
         uint256[][] calldata childTokenIds1155Add
     ) external {
         //attach MUST be done by rootOwner
-        address spender = _msgSender();
+        address spender = msg.sender;
         {
             address rootOwner = rootOwnerOf(tokenId);
             if (spender != rootOwner) revert Unauthorized(spender, address(this), tokenId);

@@ -4,19 +4,17 @@ import type { ERC721Mintable } from "../../typechain/ethers/contracts/assets/ERC
 export interface ERC721MintableInitializeArgs {
     admin: Parameters<ERC721Mintable["initialize"]>[0];
     contractUri?: Parameters<ERC721Mintable["initialize"]>[1];
-    gsnForwarder?: Parameters<ERC721Mintable["initialize"]>[2];
-    name: Parameters<ERC721Mintable["initialize"]>[3];
-    symbol: Parameters<ERC721Mintable["initialize"]>[4];
-    tokenUriProvider?: Parameters<ERC721Mintable["initialize"]>[5];
-    tokenRoyaltyProvider?: Parameters<ERC721Mintable["initialize"]>[6];
+    name: Parameters<ERC721Mintable["initialize"]>[2];
+    symbol: Parameters<ERC721Mintable["initialize"]>[3];
+    tokenUriProvider?: Parameters<ERC721Mintable["initialize"]>[4];
+    tokenRoyaltyProvider?: Parameters<ERC721Mintable["initialize"]>[5];
 }
 
 export function initializeUtil(args: ERC721MintableInitializeArgs) {
-    const { admin, contractUri, gsnForwarder, name, symbol, tokenUriProvider, tokenRoyaltyProvider } = args;
+    const { admin, contractUri, name, symbol, tokenUriProvider, tokenRoyaltyProvider } = args;
     return [
         admin,
         contractUri ?? "",
-        gsnForwarder ?? constants.AddressZero,
         name,
         symbol,
         tokenUriProvider ?? constants.AddressZero,
@@ -28,6 +26,5 @@ export function initializeUtil(args: ERC721MintableInitializeArgs) {
             Parameters<ERC721Mintable["initialize"]>[3],
             Parameters<ERC721Mintable["initialize"]>[4],
             Parameters<ERC721Mintable["initialize"]>[5],
-            Parameters<ERC721Mintable["initialize"]>[6],
         ]
 }

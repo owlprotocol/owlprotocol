@@ -98,8 +98,7 @@ describe("AssetRouterOutput", function () {
             token = {
                 admin: signers[0].address,
                 contractUri: `token.${tokenName}.com`,
-                gsnForwarder: ethers.constants.AddressZero,
-                name: `Token ${tokenName}`,
+                                name: `Token ${tokenName}`,
                 symbol: `TK${tokenName}`,
             };
             const tokenInitArgs = initializeUtil(token);
@@ -154,8 +153,7 @@ describe("AssetRouterOutput", function () {
             token = {
                 admin: signers[0].address,
                 contractUri: `token.${tokenName}.com`,
-                gsnForwarder: ethers.constants.AddressZero,
-                name: `Token ${tokenName}`,
+                                name: `Token ${tokenName}`,
                 symbol: `TK${tokenName}`,
                 initBaseURI: `token.${tokenName}.com/token`,
                 feeReceiver: signers[0].address,
@@ -212,8 +210,7 @@ describe("AssetRouterOutput", function () {
             token = {
                 admin: signers[0].address,
                 contractUri: `token.${tokenName}.com`,
-                gsnForwarder: ethers.constants.AddressZero,
-                uri: `token.${tokenName}.com/token`,
+                                uri: `token.${tokenName}.com/token`,
                 feeReceiver: signers[0].address,
             };
             const tokenInitArgs = initializeUtil(token);

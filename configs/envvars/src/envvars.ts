@@ -23,7 +23,9 @@ declare global {
             readonly PUBLIC_ADDRESS_0_LOCAL?: string;
             readonly PUBLIC_ADDRESS_1_LOCAL?: string;
             readonly PINATA_JWT?: string;
-            readonly INFURA_API_KEY?: string
+            readonly INFURA_API_KEY?: string;
+            readonly THIRDWEB_API_KEY?: string;
+            readonly ANKR_API_KEY?: string;
             readonly INFURA_IPFS_PROJECT_ID?: string;
             readonly INFURA_IPFS_PROJECT_SECRET?: string;
             readonly IPFS_URL?: string;
@@ -147,6 +149,8 @@ declare global {
         readonly VITE_PUBLIC_ADDRESS_0_LOCAL?: string;
         readonly VITE_PUBLIC_ADDRESS_1_LOCAL?: string;
         readonly VITE_INFURA_API_KEY?: string;
+        readonly VITE_THIRDWEB_API_KEY?: string;
+        readonly VITE_ANKR_API_KEY?: string;
         readonly VITE_INFURA_IPFS_PROJECT_ID?: string;
         readonly VITE_INFURA_IPFS_PROJECT_SECRET?: string;
         readonly VITE_PINATA_JWT?: string;
@@ -280,6 +284,9 @@ export const CORS_PROXY = import.meta.env ? import.meta.env.VITE_CORS_PROXY : pr
 export const INFURA_API_KEY_PUBLIC = "f47a5c2dfc1f4c4385f6372fade38618"
 export const INFURA_IPFS_PROJECT_ID_PUBLIC = "2OAhenU1T1fxTGyQMTTFDwdyW5p"
 export const INFURA_IPFS_PROJECT_SECRET_PUBLIC = "8ffddfdc95f32ea7aa43ee3ba9d2d603"
+export const THIRDWEB_API_KEY_PUBLIC = "50072e65e03dfde6c855d89392bad2b6"
+export const ANKR_API_KEY_PUBLIC = undefined;
+
 export const PINATA_JWT_PUBLIC = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySW5mb3JtYXRpb24iOnsiaWQiOiJlMzMxZDljZC05MDk4LTRkOTctOGI4Zi03ODY3NTFkZTQxYjgiLCJlbWFpbCI6Imxlby52aWduYUBnbWFpbC5jb20iLCJlbWFpbF92ZXJpZmllZCI6dHJ1ZSwicGluX3BvbGljeSI6eyJyZWdpb25zIjpbeyJpZCI6IkZSQTEiLCJkZXNpcmVkUmVwbGljYXRpb25Db3VudCI6MX1dLCJ2ZXJzaW9uIjoxfSwibWZhX2VuYWJsZWQiOmZhbHNlLCJzdGF0dXMiOiJBQ1RJVkUifSwiYXV0aGVudGljYXRpb25UeXBlIjoic2NvcGVkS2V5Iiwic2NvcGVkS2V5S2V5IjoiNzZmYTgwY2I2ZWRmMTkxNTVjODUiLCJzY29wZWRLZXlTZWNyZXQiOiI2YTM1MTkxYThjOTMxMzU3MGFmOGU3NGEyZWQzZmVhYWYxYjFhZDUxY2FkY2ZkNGFhZTc1YjNjMmQ0YzQwMWI3IiwiaWF0IjoxNjgxMDk1ODM3fQ.As9jjfv7BoPF9pTY_Lqj67iMWZXp9EIoGs50zcXaF5Y"
 export const BEACON_ADMIN_PUBLIC = "0xad839Bc20a349b2502468c9d6ba47531f435491f"
 
@@ -318,6 +325,11 @@ export const PUBLIC_ADDRESS_1_LOCAL = (import.meta.env ? import.meta.env.VITE_PU
  * Used to defive default Infura connection uri. */
 //Default "Public" Infura Key
 export const INFURA_API_KEY = (import.meta.env ? import.meta.env.VITE_INFURA_API_KEY : process.env.INFURA_API_KEY) ?? INFURA_API_KEY_PUBLIC
+export const THIRDWEB_API_KEY = (import.meta.env ? import.meta.env.VITE_THIRDWEB_API_KEY: process.env.THIRDWEB_API_KEY) ?? THIRDWEB_API_KEY_PUBLIC
+export const ANKR_API_KEY = (import.meta.env ? import.meta.env.VITE_ANKR_API_KEY: process.env.ANKR_API_KEY) ?? ANKR_API_KEY_PUBLIC
+export const ALCHEMY_API_KEY = undefined
+
+
 //Infura uses Basic Auth for IPFS
 //https://infura.io/docs/ipfs#section/Getting-Started/Create-your-Infura-IPFS-project
 //TODO: Add basic auth support

@@ -1,4 +1,4 @@
-import type { Chain } from "../src/types";
+import type { Chain } from "../src/types.js";
 export default {
   "name": "Bandai Namco Research Verse Mainnet",
   "chain": "Bandai Namco Research Verse",

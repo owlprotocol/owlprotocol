@@ -9,11 +9,9 @@ import {AccessControlUpgradeable} from "@openzeppelin/contracts-upgradeable/acce
 import {IERC1820RegistryUpgradeable} from "@openzeppelin/contracts-upgradeable/utils/introspection/IERC1820RegistryUpgradeable.sol";
 
 import {ContractURI} from "./ContractURI.sol";
-import {RouterReceiver} from "./RouterReceiver.sol";
 import {ERC1820RegistryConsumer} from "./ERC1820/ERC1820RegistryConsumer.sol";
 
 import {IOwlBase} from "./IOwlBase.sol";
-import {IRouterReceiver} from "./IRouterReceiver.sol";
 import {IContractURI} from "./IContractURI.sol";
 
 /**
@@ -26,14 +24,7 @@ import {IContractURI} from "./IContractURI.sol";
  * - Consistent access control
  * - UUPS contract upgrade support
  */
-contract OwlBase is
-    ContextUpgradeable,
-    AccessControlUpgradeable,
-    ERC1820RegistryConsumer,
-    ContractURI,
-    RouterReceiver,
-    IOwlBase
-{
+contract OwlBase is AccessControlUpgradeable, ERC1820RegistryConsumer, ContractURI, IOwlBase {
     // Consistent version across all contracts
     string internal constant _version = "v0.1";
 
@@ -48,11 +39,10 @@ contract OwlBase is
     /**
      * @dev OwlBase chained initialization
      * @param _admin address to assign owner rights
-     * @param _forwarder OpenGSN forwarder address (if desired).
+     * @param _initContractURI URI for storing metadata
      */
-    function __OwlBase_init(address _admin, string memory _initContractURI, address _forwarder) internal {
+    function __OwlBase_init(address _admin, string memory _initContractURI) internal {
         __ContractURI_init_unchained(_admin, _initContractURI);
-        __RouterReceiver_init_unchained(_forwarder);
 
         __OwlBase_init_unchained(_admin);
     }
@@ -77,24 +67,9 @@ contract OwlBase is
         return _version;
     }
 
-    /** Overrides */
-    function _msgSender() internal view virtual override(RouterReceiver, ContextUpgradeable) returns (address) {
-        return RouterReceiver._msgSender();
-    }
-
-    function _msgData() internal view virtual override(RouterReceiver, ContextUpgradeable) returns (bytes calldata) {
-        return RouterReceiver._msgData();
-    }
-
     function supportsInterface(
         bytes4 interfaceId
-    )
-        public
-        view
-        virtual
-        override(AccessControlUpgradeable, ERC1820RegistryConsumer, ContractURI, RouterReceiver)
-        returns (bool)
-    {
+    ) public view virtual override(AccessControlUpgradeable, ERC1820RegistryConsumer, ContractURI) returns (bool) {
         return ERC1820RegistryConsumer.supportsInterface(interfaceId);
     }
 }

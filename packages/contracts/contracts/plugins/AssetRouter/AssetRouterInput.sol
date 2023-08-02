@@ -31,16 +31,14 @@ contract AssetRouterInput is OwlBase, IAssetRouterInput, IERC721ReceiverUpgradea
      * @dev Initializes contract (replaces constructor in proxy pattern)
      * @param _admin owner, can control outputs on contract
      * @param _initContractURI contract uri
-     * @param _gsnForwarder trusted forwarder address for openGSN
      * @param _inputBaskets input baskets
      */
     function initialize(
         address _admin,
         string memory _initContractURI,
-        address _gsnForwarder,
         AssetBasketInput[] calldata _inputBaskets
     ) external initializer {
-        __AssetRouterInput_init(_admin, _initContractURI, _gsnForwarder, _inputBaskets);
+        __AssetRouterInput_init(_admin, _initContractURI, _inputBaskets);
     }
 
     /**
@@ -50,11 +48,9 @@ contract AssetRouterInput is OwlBase, IAssetRouterInput, IERC721ReceiverUpgradea
     function __AssetRouterInput_init(
         address _admin,
         string memory _initContractURI,
-        address _gsnForwarder,
         AssetBasketInput[] memory _inputBaskets
     ) internal {
         __ContractURI_init_unchained(_admin, _initContractURI);
-        __RouterReceiver_init_unchained(_gsnForwarder);
         __OwlBase_init_unchained(_admin);
 
         __AssetRouterInput_init_unchained(_inputBaskets);
@@ -103,7 +99,7 @@ contract AssetRouterInput is OwlBase, IAssetRouterInput, IERC721ReceiverUpgradea
         uint256[][] calldata erc721TokenIdsBurned,
         uint256 outBasketIdx
     ) external override {
-        address msgSender = _msgSender();
+        address msgSender = msg.sender;
 
         //Consume inputs
         AssetInputLib.input(

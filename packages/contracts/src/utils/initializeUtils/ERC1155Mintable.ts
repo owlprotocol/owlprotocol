@@ -4,17 +4,15 @@ import type { ERC1155Mintable } from "../../typechain/ethers/contracts/assets/ER
 export interface ERC1155MintableInitializeArgs {
     admin: Parameters<ERC1155Mintable["initialize"]>[0];
     contractUri?: Parameters<ERC1155Mintable["initialize"]>[1];
-    gsnForwarder?: Parameters<ERC1155Mintable["initialize"]>[2];
-    tokenUriProvider?: Parameters<ERC1155Mintable["initialize"]>[3];
-    tokenRoyaltyProvider?: Parameters<ERC1155Mintable["initialize"]>[4];
+    tokenUriProvider?: Parameters<ERC1155Mintable["initialize"]>[2];
+    tokenRoyaltyProvider?: Parameters<ERC1155Mintable["initialize"]>[3];
 }
 
 export function initializeUtil(args: ERC1155MintableInitializeArgs) {
-    const { admin, contractUri, gsnForwarder, tokenUriProvider, tokenRoyaltyProvider } = args;
+    const { admin, contractUri, tokenUriProvider, tokenRoyaltyProvider } = args;
     return [
         admin,
         contractUri ?? "",
-        gsnForwarder ?? constants.AddressZero,
         tokenUriProvider ?? constants.AddressZero,
         tokenRoyaltyProvider ?? constants.AddressZero,
     ] as [
@@ -22,6 +20,5 @@ export function initializeUtil(args: ERC1155MintableInitializeArgs) {
             Parameters<ERC1155Mintable["initialize"]>[1],
             Parameters<ERC1155Mintable["initialize"]>[2],
             Parameters<ERC1155Mintable["initialize"]>[3],
-            Parameters<ERC1155Mintable["initialize"]>[4],
         ];
 }

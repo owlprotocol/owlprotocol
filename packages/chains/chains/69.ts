@@ -1,4 +1,4 @@
-import type { Chain } from "../src/types";
+import type { Chain } from "../src/types.js";
 export default {
   "name": "Optimism Kovan",
   "title": "Optimism Testnet Kovan",

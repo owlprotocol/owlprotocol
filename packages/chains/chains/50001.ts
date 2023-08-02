@@ -1,4 +1,4 @@
-import type { Chain } from "../src/types";
+import type { Chain } from "../src/types.js";
 export default {
   "name": "Liveplex OracleEVM",
   "chain": "Liveplex OracleEVM Network",

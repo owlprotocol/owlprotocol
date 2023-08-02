@@ -42,14 +42,12 @@ abstract contract ERC721Abstract is
     function __ERC721Abstract_init(
         address _admin,
         string memory _initContractURI,
-        address _gsnForwarder,
         string memory _name,
         string memory _symbol,
         address _tokenUriProvider,
         address _tokenRoyaltyProvider
     ) internal {
         __ContractURI_init_unchained(_admin, _initContractURI);
-        __RouterReceiver_init_unchained(_gsnForwarder);
         __OwlBase_init_unchained(_admin);
 
         __ERC721_init_unchained(_name, _symbol);
@@ -77,20 +75,6 @@ abstract contract ERC721Abstract is
 
     function tokenURI(uint256 tokenId) public view override returns (string memory) {
         return _tokenURI(tokenId);
-    }
-
-    /**
-     * @inheritdoc OwlBase
-     */
-    function _msgSender() internal view override(OwlBase, ContextUpgradeable) returns (address) {
-        return OwlBase._msgSender();
-    }
-
-    /**
-     * @inheritdoc OwlBase
-     */
-    function _msgData() internal view override(OwlBase, ContextUpgradeable) returns (bytes calldata) {
-        return OwlBase._msgData();
     }
 
     function supportsInterface(

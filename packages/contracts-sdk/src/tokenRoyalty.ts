@@ -11,8 +11,6 @@ export interface DeployContractArgs {
     readonly admin: string
     /** Contract Uri */
     readonly contractUri?: string,
-    /** GSN Forwarder */
-    readonly gsnForwarder?: string,
 }
 
 export interface DeployTokenRoyaltyContractArgs extends DeployContractArgs {

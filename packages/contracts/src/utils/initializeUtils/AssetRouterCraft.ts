@@ -1,4 +1,4 @@
-import { constants, utils } from "ethers";
+import { utils } from "ethers";
 import {
     AssetBasketInput,
     AssetBasketOutput,
@@ -11,17 +11,15 @@ import type { AssetRouterCraft } from "../../typechain/ethers/contracts/plugins/
 export interface AssetRouterCraftInitializeArgs {
     admin: Parameters<AssetRouterCraft["initialize"]>[0];
     contractUri?: Parameters<AssetRouterCraft["initialize"]>[1];
-    gsnForwarder?: Parameters<AssetRouterCraft["initialize"]>[2];
     inputBaskets: AssetBasketInput[];
     outputBaskets: AssetBasketOutput[];
 }
 
 export function initializeUtil(args: AssetRouterCraftInitializeArgs) {
-    const { admin, contractUri, gsnForwarder, inputBaskets, outputBaskets } = args;
+    const { admin, contractUri, inputBaskets, outputBaskets } = args;
     return [
         admin,
         contractUri ?? "",
-        gsnForwarder ?? constants.AddressZero,
         inputBaskets.map(validateAssetBasketInput),
         outputBaskets.map(validateAssetBasketOutput),
     ] as [
@@ -29,7 +27,6 @@ export function initializeUtil(args: AssetRouterCraftInitializeArgs) {
             Parameters<AssetRouterCraft["initialize"]>[1],
             Parameters<AssetRouterCraft["initialize"]>[2],
             Parameters<AssetRouterCraft["initialize"]>[3],
-            Parameters<AssetRouterCraft["initialize"]>[4],
         ]
 }
 

@@ -4,17 +4,15 @@ import type { TokenURIBaseURI } from "../../typechain/ethers/contracts/plugins/T
 export interface TokenURIBaseURIInitializeArgs {
     admin: Parameters<TokenURIBaseURI["initialize"]>[0];
     contractUri?: Parameters<TokenURIBaseURI["initialize"]>[1];
-    gsnForwarder?: Parameters<TokenURIBaseURI["initialize"]>[2];
-    baseUriRole?: Parameters<TokenURIBaseURI["initialize"]>[3];
-    baseUri?: Parameters<TokenURIBaseURI["initialize"]>[4];
+    baseUriRole?: Parameters<TokenURIBaseURI["initialize"]>[2];
+    baseUri?: Parameters<TokenURIBaseURI["initialize"]>[3];
 }
 
 export function initializeUtil(args: TokenURIBaseURIInitializeArgs) {
-    const { admin, contractUri, gsnForwarder, baseUriRole, baseUri } = args;
+    const { admin, contractUri, baseUriRole, baseUri } = args;
     return [
         admin,
         contractUri ?? "",
-        gsnForwarder ?? constants.AddressZero,
         baseUriRole ?? constants.AddressZero,
         baseUri ?? "",
     ] as [
@@ -22,6 +20,5 @@ export function initializeUtil(args: TokenURIBaseURIInitializeArgs) {
             Parameters<TokenURIBaseURI["initialize"]>[1],
             Parameters<TokenURIBaseURI["initialize"]>[2],
             Parameters<TokenURIBaseURI["initialize"]>[3],
-            Parameters<TokenURIBaseURI["initialize"]>[4],
         ];
 }

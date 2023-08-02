@@ -1,4 +1,4 @@
-import type { Chain } from "../src/types";
+import type { Chain } from "../src/types.js";
 export default {
   "name": "DoKEN Super Chain Mainnet",
   "chain": "DoKEN Super Chain",

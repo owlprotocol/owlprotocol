@@ -12,17 +12,16 @@ contract OwlBaseExample is OwlBase {
      *      Protected with `initializer` modifier.
      * Edit this if new initialization variables are added
      */
-    function initialize(address _admin, string memory _contractUri, address _gsnForwarder) external initializer {
-        __OwlBaseExample_init(_admin, _contractUri, _gsnForwarder);
+    function initialize(address _admin, string memory _contractUri) external initializer {
+        __OwlBaseExample_init(_admin, _contractUri);
     }
 
     /**
      * @dev OwlBaseExample chained initialization
      * Edit this if new initialization variables are added
      */
-    function __OwlBaseExample_init(address _admin, string memory _contractUri, address _gsnForwarder) internal {
+    function __OwlBaseExample_init(address _admin, string memory _contractUri) internal {
         __ContractURI_init_unchained(_admin, _contractUri);
-        __RouterReceiver_init_unchained(_gsnForwarder);
         __OwlBase_init_unchained(_admin);
 
         __OwlBaseExample_init_unchained();

@@ -109,9 +109,6 @@ export const defaultNetworks = {
         explorerUrl: MAINNET_EXPLORER,
         explorerApiUrl: MAINNET_EXPLORER_API,
         explorerApiKey: ETHERSCAN_API_KEY,
-        relayHub: "0x9e59Ea5333cD4f402dAc320a04fafA023fe3810D",
-        forwarder: "0xAa3E82b4c4093b4bA13Cb5714382C99ADBf750cA",
-        versionRegistry: "0x97B6ebd38f2000B6E446DE24D9805606b882A1C5",
     },
     "5": {
         networkId: "5",
@@ -130,10 +127,6 @@ export const defaultNetworks = {
         explorerUrl: POLYGON_EXPLORER,
         explorerApiUrl: POLYGON_EXPLORER_API,
         explorerApiKey: ETHERSCAN_API_KEY,
-        relayHub: "0x6C28AfC105e65782D9Ea6F2cA68df84C9e7d750d",
-        forwarder: "0xdA78a11FD57aF7be2eDD804840eA7f4c2A38801d",
-        versionRegistry: "0x4Fe8824c885D67613848c94a15dce7680897f33E",
-        paymaster: "0x9d47218ce8b8F123Efbb1Db3E0DdBe6490Cf77E1",
     },
     "80001": {
         networkId: "80001",
@@ -143,10 +136,6 @@ export const defaultNetworks = {
         explorerUrl: POLYGON_MUMBAI_EXPLORER,
         explorerApiUrl: POLYGON_MUMBAI_EXPLORER_API,
         explorerApiKey: ETHERSCAN_API_KEY,
-        relayHub: "0x6646cD15d33cE3a6933e36de38990121e8ba2806",
-        forwarder: "0x4d4581c01A457925410cd3877d17b2fd4553b2C5",
-        versionRegistry: "0x4Fe8824c885D67613848c94a15dce7680897f33E",
-        paymaster: "0xcA94aBEdcC18A10521aB7273B3F3D5ED28Cf7B8A",
         testnet: true,
     },
     "42161": {
@@ -163,10 +152,6 @@ export const defaultNetworks = {
         name: "Optimism",
         currency: ETHER,
         web3Rpc: OPTIMISM_RPC,
-        relayHub: "0x6f00F1A7BdB7E2E407385263B239090bCdb6b442",
-        forwarder: "0x67097a676FCb14dc0Ff337D0D1F564649aD94715",
-        versionRegistry: "0xD8Cf3315FFD1A3ec74Dc2B02908AF60e5E330472",
-        paymaster: "0x28E036dB9727a9d5ee9373DBAAe14B422D83a017",
     },
     "43114": {
         networkId: "43114",
@@ -176,9 +161,6 @@ export const defaultNetworks = {
         explorerUrls: AVALANCHE_EXPLORER,
         explorerApiUrls: AVALANCHE_EXPLORER_API,
         explorerApiKey: ETHERSCAN_API_KEY,
-        relayHub: "0xafAFDac90164e4b2D4e39a1ac3e9dBC635dbbEA5",
-        forwarder: "0x01a5a06C5Ba6E5f8FC9CB060492fae1b3d03c69d",
-        paymaster: "0x10E207898E76137bb27b31609a275b0635080632",
     },
     "56": {
         networkId: "56",
@@ -188,10 +170,6 @@ export const defaultNetworks = {
         explorerUrls: BSC_EXPLORER,
         explorerApiUrls: BSC_EXPLORER_API,
         explorerApiKey: ETHERSCAN_API_KEY,
-        relayHub: "0xAa3E82b4c4093b4bA13Cb5714382C99ADBf750cA",
-        forwarder: "0xeB230bF62267E94e657b5cbE74bdcea78EB3a5AB",
-        versionRegistry: "0x9e59Ea5333cD4f402dAc320a04fafA023fe3810D",
-        paymaster: "0x01a5a06C5Ba6E5f8FC9CB060492fae1b3d03c69d",
     },
     "100": {
         networkId: "100",
@@ -201,10 +179,6 @@ export const defaultNetworks = {
         explorerUrl: GNOSIS_EXPLORER,
         explorerApiUrl: GNOSIS_EXPLORER_API,
         explorerApiKey: ETHERSCAN_API_KEY,
-        relayHub: "0x727862794bdaa3b8Bc4E3705950D4e9397E3bAfd",
-        forwarder: "0x7eEae829DF28F9Ce522274D5771A6Be91d00E5ED",
-        versionRegistry: "0x7380D97dedf9B8EEe5bbE41422645aA19Cd4C8B3",
-        paymaster: "0x9e59Ea5333cD4f402dAc320a04fafA023fe3810D",
     },
     "61": {
         networkId: "1",
@@ -214,8 +188,5 @@ export const defaultNetworks = {
         explorerUrl: ETC_EXPLORER,
         explorerApiUrl: ETC_EXPLORER_API,
         explorerApiKey: ETHERSCAN_API_KEY,
-        relayHub: "0xDC8B38D05Be14818EE6d1cc4E5245Df6C52A684E",
-        forwarder: "0x0DEEF5a1e5bF8794A5145e052E24A852a081AF65",
-        versionRegistry: "0x581648Bb9dB7e36360B8B551Cdaf23c481f106c3",
     },
 } as { [networkId: string]: Network };

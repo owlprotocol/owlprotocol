@@ -1,4 +1,4 @@
-import type { Chain } from "../src/types";
+import type { Chain } from "../src/types.js";
 export default {
   "name": "Shardeum Sphinx DApp 1.X",
   "shortName": "Sphinx",

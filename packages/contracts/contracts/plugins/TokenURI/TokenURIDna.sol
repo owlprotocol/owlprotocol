@@ -26,13 +26,12 @@ contract TokenURIDna is TokenURIBaseURIAbstract, TokenDnaConsumerAbstract, OwlBa
     function initialize(
         address _admin,
         string memory _contractUri,
-        address _gsnForwarder,
         address _baseUriRole,
         string memory _baseUri,
         address _dnaProviderRole,
         address _dnaProvider
     ) external initializer {
-        __TokenURIDna_init(_admin, _contractUri, _gsnForwarder, _baseUriRole, _baseUri, _dnaProviderRole, _dnaProvider);
+        __TokenURIDna_init(_admin, _contractUri, _baseUriRole, _baseUri, _dnaProviderRole, _dnaProvider);
     }
 
     /**
@@ -41,14 +40,12 @@ contract TokenURIDna is TokenURIBaseURIAbstract, TokenDnaConsumerAbstract, OwlBa
     function __TokenURIDna_init(
         address _admin,
         string memory _contractUri,
-        address _gsnForwarder,
         address _baseUriRole,
         string memory _baseUri,
         address _dnaProviderRole,
         address _dnaProvider
     ) internal {
         __ContractURI_init_unchained(_admin, _contractUri);
-        __RouterReceiver_init_unchained(_gsnForwarder);
         __OwlBase_init_unchained(_admin);
 
         __TokenURIBaseURIAbstract_init_unchained(_baseUriRole, _baseUri);
@@ -61,20 +58,6 @@ contract TokenURIDna is TokenURIBaseURIAbstract, TokenDnaConsumerAbstract, OwlBa
         string memory dnaString = dnaRaw.encode();
 
         return bytes(uri).length > 0 ? string(abi.encodePacked(uri, dnaString)) : dnaString;
-    }
-
-    /**
-     * @inheritdoc OwlBase
-     */
-    function _msgSender() internal view override(OwlBase, ContextUpgradeable) returns (address) {
-        return OwlBase._msgSender();
-    }
-
-    /**
-     * @inheritdoc OwlBase
-     */
-    function _msgData() internal view override(OwlBase, ContextUpgradeable) returns (bytes calldata) {
-        return OwlBase._msgData();
     }
 
     function supportsInterface(

@@ -7,44 +7,44 @@ import path from "path";
 /** @typedef {import("../src/types").Chain} Chain */
 
 const combineMerge = (target, source) => {
-  let destination = target.slice();
+    let destination = target.slice();
 
-  source.forEach((item) => {
-    if (target.indexOf(item) === -1) {
-      destination = [item, ...destination];
-    }
-  });
-  return destination;
+    source.forEach((item) => {
+        if (target.indexOf(item) === -1) {
+            destination = [item, ...destination];
+        }
+    });
+    return destination;
 };
 
 /**
  * @param {Chain['explorers']} explorers
  */
 function sortExplorers(explorers = []) {
-  let etherscan = null;
-  let blockscout = null;
+    let etherscan = null;
+    let blockscout = null;
 
-  let restExplorers = [];
+    let restExplorers = [];
 
-  for (const explorer of explorers) {
-    if (explorer.name.includes("etherscan")) {
-      etherscan = explorer;
-    } else if (explorer.name.includes("blockscout")) {
-      blockscout = explorer;
-    } else {
-      restExplorers.push(explorer);
+    for (const explorer of explorers) {
+        if (explorer.name.includes("etherscan")) {
+            etherscan = explorer;
+        } else if (explorer.name.includes("blockscout")) {
+            blockscout = explorer;
+        } else {
+            restExplorers.push(explorer);
+        }
     }
-  }
 
-  const returnExplorers = [];
-  if (etherscan) {
-    returnExplorers.push(etherscan);
-  }
-  if (blockscout) {
-    returnExplorers.push(blockscout);
-  }
+    const returnExplorers = [];
+    if (etherscan) {
+        returnExplorers.push(etherscan);
+    }
+    if (blockscout) {
+        returnExplorers.push(blockscout);
+    }
 
-  return [...returnExplorers, ...restExplorers];
+    return [...returnExplorers, ...restExplorers];
 }
 
 /**
@@ -52,21 +52,21 @@ function sortExplorers(explorers = []) {
  * @param {(arg0: any) => void} valueChecker
  */
 function filterOutErroringValues(values, valueChecker) {
-  return values.filter((value) => {
-    try {
-      valueChecker(value);
-      return true;
-    } catch (e) {
-      return false;
-    }
-  });
+    return values.filter((value) => {
+        try {
+            valueChecker(value);
+            return true;
+        } catch (e) {
+            return false;
+        }
+    });
 }
 
 const chainsDir = "./chains";
 
 const chainsJsonUrl = "https://chainid.network/chains.json";
 const iconRoute =
-  "https://raw.githubusercontent.com/ethereum-lists/chains/master/_data/icons";
+    "https://raw.githubusercontent.com/ethereum-lists/chains/master/_data/icons";
 
 /** @type {Record<number, Partial<Chain>>} */
 let overrides = {};
@@ -75,11 +75,11 @@ let overrides = {};
 const overridesDir = path.join(process.cwd(), "./data/overrides");
 const overridesFiles = fs.readdirSync(overridesDir);
 for (const file of overridesFiles) {
-  // file:// is required for windows builds
-  const override = await import(path.join("file://", overridesDir, file));
-  // get file name without extension
-  const chainId = parseInt(file.split(".")[0]);
-  overrides[chainId] = override.default;
+    // file:// is required for windows builds
+    const override = await import(path.join("file://", overridesDir, file));
+    // get file name without extension
+    const chainId = parseInt(file.split(".")[0]);
+    overrides[chainId] = override.default;
 }
 
 // chains from remote src
@@ -95,89 +95,89 @@ chains = chains.filter((c) => c.chainId !== 1337);
 const additionalChainsDir = path.join(process.cwd(), "./data/additional");
 const additionalChainsFiles = fs.readdirSync(additionalChainsDir);
 for (const file of additionalChainsFiles) {
-  // file:// is required for windows builds
-  const additionalChain = await import(
-    path.join("file://", additionalChainsDir, file)
-  );
+    // file:// is required for windows builds
+    const additionalChain = await import(
+        path.join("file://", additionalChainsDir, file)
+    );
 
-  chains = chains.filter((c) => c.chainId !== additionalChain.default.chainId);
-  chains.push(additionalChain.default);
+    chains = chains.filter((c) => c.chainId !== additionalChain.default.chainId);
+    chains.push(additionalChain.default);
 }
 
 chains = chains
-  .filter((c) => c.status !== "deprecated")
-  .map((chain) => {
-    if (overrides[chain.chainId]) {
-      chain = merge(chain, overrides[chain.chainId], {
-        arrayMerge: combineMerge,
-      });
-    }
+    .filter((c) => c.status !== "deprecated")
+    .map((chain) => {
+        if (overrides[chain.chainId]) {
+            chain = merge(chain, overrides[chain.chainId], {
+                arrayMerge: combineMerge,
+            });
+        }
 
-    // apparently this is the best way to do this off of raw data
-    const testnet =
-      chain.testnet === false
-        ? false
-        : JSON.stringify(chain).toLowerCase().includes("test");
+        // apparently this is the best way to do this off of raw data
+        const testnet =
+            chain.testnet === false
+                ? false
+                : JSON.stringify(chain).toLowerCase().includes("test");
 
-    const resultChain = {
-      ...chain,
-      testnet,
-    };
-    // only add the explroers if they were there in the first place
-    if (resultChain.explorers) {
-      resultChain.explorers = sortExplorers(resultChain.explorers);
-      // check every key that *could* contain a url and validate it
-      resultChain.explorers = filterOutErroringValues(
-        resultChain.explorers,
-        (explorer) => new URL(explorer.url),
-      );
-    }
-    if (resultChain.faucets) {
-      resultChain.faucets = filterOutErroringValues(
-        resultChain.faucets,
-        (faucet) => new URL(faucet),
-      );
-    }
-    if (resultChain.rpc) {
-      resultChain.rpc = filterOutErroringValues(
-        resultChain.rpc,
-        (rpc) => new URL(rpc),
-      );
-    }
-    if (resultChain.infoURL) {
-      try {
-        new URL(resultChain.infoURL);
-      } catch (e) {
-        delete resultChain.infoURL;
-      }
-    }
+        const resultChain = {
+            ...chain,
+            testnet,
+        };
+        // only add the explroers if they were there in the first place
+        if (resultChain.explorers) {
+            resultChain.explorers = sortExplorers(resultChain.explorers);
+            // check every key that *could* contain a url and validate it
+            resultChain.explorers = filterOutErroringValues(
+                resultChain.explorers,
+                (explorer) => new URL(explorer.url),
+            );
+        }
+        if (resultChain.faucets) {
+            resultChain.faucets = filterOutErroringValues(
+                resultChain.faucets,
+                (faucet) => new URL(faucet),
+            );
+        }
+        if (resultChain.rpc) {
+            resultChain.rpc = filterOutErroringValues(
+                resultChain.rpc,
+                (rpc) => new URL(rpc),
+            );
+        }
+        if (resultChain.infoURL) {
+            try {
+                new URL(resultChain.infoURL);
+            } catch (e) {
+                delete resultChain.infoURL;
+            }
+        }
 
-    return resultChain;
-  });
+        return resultChain;
+    });
 
 /**
  * Sort RPCs in chain
  * @param {Chain} chain
  */
 function sortRPCs(chain) {
-  const thirdwebRPCs = [];
-  const alchemyRPCs = [];
-  const infuraRPCs = [];
-  const otherRPCs = [];
+    const thirdwebRPCs = [];
+    const alchemyRPCs = [];
+    const infuraRPCs = [];
+    const otherRPCs = [];
 
-  chain.rpc.forEach((rpc) => {
-    if (rpc.includes("${THIRDWEB_API_KEY}")) {
-      thirdwebRPCs.push(rpc);
-    } else if (rpc.includes("${ALCHEMY_API_KEY}")) {
-      alchemyRPCs.push(rpc);
-    } else if (rpc.includes("${INFURA_API_KEY}")) {
-      infuraRPCs.push(rpc);
-    } else {
-      otherRPCs.push(rpc);
-    }
-  });
+    chain.rpc.forEach((rpc) => {
+        if (rpc.includes("${THIRDWEB_API_KEY}")) {
+            thirdwebRPCs.push(rpc);
+        } else if (rpc.includes("${ALCHEMY_API_KEY}")) {
+            alchemyRPCs.push(rpc);
+        } else if (rpc.includes("${INFURA_API_KEY}")) {
+            infuraRPCs.push(rpc);
+        } else {
+            otherRPCs.push(rpc);
+        }
+    });
 
-  chain.rpc = [...thirdwebRPCs, ...infuraRPCs, ...alchemyRPCs, ...otherRPCs];
+    chain.rpc = [...thirdwebRPCs, ...infuraRPCs, ...alchemyRPCs, ...otherRPCs];
 }
 
 chains.forEach(sortRPCs);
@@ -192,70 +192,70 @@ const takenSlugs = {};
 const iconMetaMap = new Map();
 
 async function downloadIcon(icon) {
-  if (iconMetaMap.has(icon)) {
-    return iconMetaMap.get(icon);
-  }
-  const result = await axios.get(`${iconRoute}/${icon}.json`);
-  if (result.status == 200) {
-    const iconMeta = result.data[0];
+    if (iconMetaMap.has(icon)) {
+        return iconMetaMap.get(icon);
+    }
+    const result = await axios.get(`${iconRoute}/${icon}.json`);
+    if (result.status == 200) {
+        const iconMeta = result.data[0];
 
-    iconMetaMap.set(icon, iconMeta);
-    return iconMeta;
-  }
-  throw new Error(`Could not download icon for ${icon}`);
+        iconMetaMap.set(icon, iconMeta);
+        return iconMeta;
+    }
+    throw new Error(`Could not download icon for ${icon}`);
 }
 
 function findSlug(chain) {
-  let slug = chain.name
-    .toLowerCase()
-    .replace("mainnet", "")
-    .trim()
-    // replace all non alpha numeric characters with a dash
-    .replace(/[^a-z0-9]/g, "-")
-    .replaceAll(" - ", " ")
-    .replaceAll(" ", "-");
+    let slug = chain.name
+        .toLowerCase()
+        .replace("mainnet", "")
+        .trim()
+        // replace all non alpha numeric characters with a dash
+        .replace(/[^a-z0-9]/g, "-")
+        .replaceAll(" - ", " ")
+        .replaceAll(" ", "-");
 
-  if (takenSlugs[slug]) {
-    slug = `${slug}-${chain.shortName}`;
-  }
-  slug = slug.replaceAll("---", "-").replaceAll("--", "-");
+    if (takenSlugs[slug]) {
+        slug = `${slug}-${chain.shortName}`;
+    }
+    slug = slug.replaceAll("---", "-").replaceAll("--", "-");
 
-  if (slug.endsWith("-")) {
-    slug = slug.slice(0, -1);
-  }
-  // special cases for things that we already had in rpc.thirdweb.com
-  if (slug === "fantom-opera") {
-    slug = "fantom";
-  }
-  if (slug === "avalanche-c-chain") {
-    slug = "avalanche";
-  }
-  if (slug === "avalanche-fuji-testnet") {
-    slug = "avalanche-fuji";
-  }
-  if (slug === "optimism-goerli-testnet") {
-    slug = "optimism-goerli";
-  }
-  if (slug === "arbitrum-one") {
-    slug = "arbitrum";
-  }
-  if (slug === "bnb-smart-chain") {
-    slug = "binance";
-  }
-  if (slug === "bnb-smart-chain-testnet") {
-    slug = "binance-testnet";
-  }
-  if (slug === "base-goerli-testnet") {
-    slug = "base-goerli";
-  }
-  // optimisim rename handling
-  if (slug === "op") {
-    slug = "optimism";
-  }
-  // end special cases
+    if (slug.endsWith("-")) {
+        slug = slug.slice(0, -1);
+    }
+    // special cases for things that we already had in rpc.thirdweb.com
+    if (slug === "fantom-opera") {
+        slug = "fantom";
+    }
+    if (slug === "avalanche-c-chain") {
+        slug = "avalanche";
+    }
+    if (slug === "avalanche-fuji-testnet") {
+        slug = "avalanche-fuji";
+    }
+    if (slug === "optimism-goerli-testnet") {
+        slug = "optimism-goerli";
+    }
+    if (slug === "arbitrum-one") {
+        slug = "arbitrum";
+    }
+    if (slug === "bnb-smart-chain") {
+        slug = "binance";
+    }
+    if (slug === "bnb-smart-chain-testnet") {
+        slug = "binance-testnet";
+    }
+    if (slug === "base-goerli-testnet") {
+        slug = "base-goerli";
+    }
+    // optimisim rename handling
+    if (slug === "op") {
+        slug = "optimism";
+    }
+    // end special cases
 
-  takenSlugs[slug] = true;
-  return slug;
+    takenSlugs[slug] = true;
+    return slug;
 }
 
 const chainDir = `${chainsDir}`;
@@ -265,98 +265,99 @@ fs.rmdirSync(chainDir, { recursive: true });
 fs.mkdirSync(chainDir, { recursive: true });
 
 for (const chain of chains) {
-  try {
-    if ("icon" in chain) {
-      if (typeof chain.icon === "string") {
-        const iconMeta = await downloadIcon(chain.icon);
-        if (iconMeta) {
-          chain.icon = iconMeta;
-        }
-      }
-    }
-    if ("explorers" in chain && Array.isArray(chain.explorers)) {
-      for (const explorer of chain.explorers) {
-        if ("icon" in explorer) {
-          if (typeof explorer.icon === "string") {
-            const iconMeta = await downloadIcon(explorer.icon);
-            if (iconMeta) {
-              explorer.icon = iconMeta;
+    try {
+        if ("icon" in chain) {
+            if (typeof chain.icon === "string") {
+                const iconMeta = await downloadIcon(chain.icon);
+                if (iconMeta) {
+                    chain.icon = iconMeta;
+                }
             }
-          }
         }
-      }
+        if ("explorers" in chain && Array.isArray(chain.explorers)) {
+            for (const explorer of chain.explorers) {
+                if ("icon" in explorer) {
+                    if (typeof explorer.icon === "string") {
+                        const iconMeta = await downloadIcon(explorer.icon);
+                        if (iconMeta) {
+                            explorer.icon = iconMeta;
+                        }
+                    }
+                }
+            }
+        }
+    } catch (err) {
+        console.log(err.message);
     }
-  } catch (err) {
-    console.log(err.message);
-  }
 
-  // figure out a slug for the chain
+    // figure out a slug for the chain
 
-  const slug = findSlug(chain);
-  chain.slug = slug;
-  // if the chain has RPCs that we can use then prepend our RPC to the list
-  const chainHasHttpRpc = chain.rpc.some((rpc) => rpc.startsWith("http"));
-  // if the chain has RPCs that we can use then prepend our RPC to the list
-  // we're exlcuding localhost because we don't want to use our RPC for localhost
-  if (chainHasHttpRpc && chain.chainId !== 1337) {
-    chain.rpc = [
-      `https://${slug}.rpc.thirdweb.com/${"${THIRDWEB_API_KEY}"}`,
-      ...chain.rpc,
-    ];
-  }
-  // unique rpcs
-  chain.rpc = [...new Set(chain.rpc)];
+    const slug = findSlug(chain);
+    chain.slug = slug;
+    // if the chain has RPCs that we can use then prepend our RPC to the list
+    const chainHasHttpRpc = chain.rpc.some((rpc) => rpc.startsWith("http"));
+    // if the chain has RPCs that we can use then prepend our RPC to the list
+    // we're exlcuding localhost because we don't want to use our RPC for localhost
+    if (chainHasHttpRpc && chain.chainId !== 1337) {
+        chain.rpc = [
+            `https://${slug}.rpc.thirdweb.com/${"${THIRDWEB_API_KEY}"}`,
+            ...chain.rpc,
+        ];
+    }
+    // unique rpcs
+    chain.rpc = [...new Set(chain.rpc)];
 
-  fs.writeFileSync(
-    `${chainDir}/${chain.chainId}.ts`,
-    `import type { Chain } from "../src/types";
+    fs.writeFileSync(
+        `${chainDir}/${chain.chainId}.ts`,
+        `import type { Chain } from "../src/types.js";
 export default ${JSON.stringify(chain, null, 2)} as const satisfies Chain;`,
-  );
+    );
 
-  let exportName = slug
-    .split("-")
-    .map((s) => s[0].toUpperCase() + s.slice(1))
-    .join("");
+    let exportName = slug
+        .split("-")
+        .map((s) => s[0].toUpperCase() + s.slice(1))
+        .join("");
 
-  // if chainName starts with a number, prepend an underscore
-  if (exportName.match(/^[0-9]/)) {
-    exportName = `_${exportName}`;
-  }
+    // if chainName starts with a number, prepend an underscore
+    if (exportName.match(/^[0-9]/)) {
+        exportName = `_${exportName}`;
+    }
 
-  imports.push(`import c${chain.chainId} from "../chains/${chain.chainId}";`);
+    imports.push(`import c${chain.chainId} from "../chains/${chain.chainId}.js";`);
 
-  exports.push(
-    `export { default as ${exportName} } from "../chains/${chain.chainId}"`,
-  );
+    exports.push(
+        `export { default as ${exportName} } from "../chains/${chain.chainId}.js"`,
+    );
 
-  const key = `c${chain.chainId}`;
-  exportNames.push(key);
-  exportNameToChain[key] = chain;
+    const key = `c${chain.chainId}`;
+    exportNames.push(key);
+    exportNameToChain[key] = chain;
 }
 
 fs.writeFileSync(
-  `./src/index.ts`,
-  `${imports.join("\n")}
-import type { Chain } from "./types";
+    `./src/index.ts`,
+    `${imports.join("\n")}
+import type { Chain } from "./types.js";
 
 ${exports.join("\n")}
-export * from "./types";
-export * from "./utils";
+export * from "./types.js";
+export * from "./utils.js";
 export const defaultChains = [c1, c5, c8453, c84531, c137, c80001, c42161, c421613, c10, c420, c56, c97, c250, c4002, c43114, c43113, c1337];
 export const allChains: Chain[] = [${exportNames.join(", ")}];
+export * from "./chainWithData.js";
 
 type ChainsById = {
   ${exportNames
-    .map((n) => `${exportNameToChain[n].chainId}: typeof ${n}`)
-    .join(",\n")}
+        .map((n) => `${exportNameToChain[n].chainId}: typeof ${n}`)
+        .join(",\n")}
 };
 
 type ChainIdsBySlug = {
   ${exportNames
-    .map(
-      (n) => `"${exportNameToChain[n].slug}": ${exportNameToChain[n].chainId}`,
-    )
-    .join(",\n")}
+        .map(
+            (n) => `"${exportNameToChain[n].slug}": ${exportNameToChain[n].chainId}`,
+        )
+        .join(",\n")}
 };
 
 let _chainsById: Record<number, Chain>;

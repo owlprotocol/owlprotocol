@@ -1,4 +1,4 @@
-import type { Chain } from "../src/types";
+import type { Chain } from "../src/types.js";
 export default {
   "name": "QuarkChain Devnet Shard 3",
   "chain": "QuarkChain",

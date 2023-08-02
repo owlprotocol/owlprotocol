@@ -1,4 +1,4 @@
-import type { Chain } from "../src/types";
+import type { Chain } from "../src/types.js";
 export default {
   "name": "Harmony Testnet Shard 0",
   "chain": "Harmony",
@@ -21,7 +21,7 @@ export default {
   "explorers": [
     {
       "name": "Harmony Testnet Block Explorer",
-      "url": "https://explorer.pops.one",
+      "url": "https://explorer.testnet.harmony.one",
       "standard": "EIP3091"
     }
   ],

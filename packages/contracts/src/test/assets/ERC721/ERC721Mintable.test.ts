@@ -21,7 +21,6 @@ import {
     IERC721MetadataInterfaceId,
     IERC721MintableInterfaceId,
     interfaceIdNames,
-    IRouterReceiverInterfaceId,
 } from "../../../ethers/interfaces.js";
 import { registry as registryContract } from "../../../utils/ERC1820.js";
 import { sleep } from "../../utils/sleep.js";
@@ -58,8 +57,7 @@ describe("ERC721Mintable", function () {
         token = {
             admin: signers[0].address,
             contractUri: `token.${tokenName}.com`,
-            gsnForwarder: ethers.constants.AddressZero,
-            name: `Token ${tokenName}`,
+                        name: `Token ${tokenName}`,
             symbol: `TK${tokenName}`,
             initBaseURI: `token.${tokenName}.com/token`,
             feeReceiver: signers[0].address,
@@ -96,7 +94,6 @@ describe("ERC721Mintable", function () {
         const interfaceIdsExpected = [
             IERC165InterfaceId,
             IAccessControlInterfaceId,
-            IRouterReceiverInterfaceId,
             IContractURIInterfaceId,
             IBaseURIInterfaceId,
             IERC2981InterfaceId,
@@ -115,7 +112,6 @@ describe("ERC721Mintable", function () {
         const interfaceIds = [
             IERC165InterfaceId,
             IAccessControlInterfaceId,
-            IRouterReceiverInterfaceId,
             IContractURIInterfaceId,
             IBaseURIInterfaceId,
             IERC2981InterfaceId,
@@ -135,7 +131,6 @@ describe("ERC721Mintable", function () {
         const interfaceIds = [
             IERC165InterfaceId,
             IAccessControlInterfaceId,
-            IRouterReceiverInterfaceId,
             IContractURIInterfaceId,
             IBaseURIInterfaceId,
             IERC2981InterfaceId,

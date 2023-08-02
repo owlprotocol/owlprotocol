@@ -1,4 +1,4 @@
-import type { Chain } from "../src/types";
+import type { Chain } from "../src/types.js";
 export default {
   "name": "Nebula Mainnet",
   "chain": "green-giddy-denebola",

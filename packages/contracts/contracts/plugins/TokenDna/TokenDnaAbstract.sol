@@ -32,7 +32,7 @@ abstract contract TokenDnaAbstract is AccessControlUpgradeable, ERC1820RegistryC
     /**
      * inheritdoc ITokenDnaAbstract
      */
-    function setDna(uint256 tokenId, bytes memory dna) external virtual onlyRole(DNA_ROLE) {
+    function setDna(uint256 tokenId, bytes memory dna) public virtual onlyRole(DNA_ROLE) {
         mapping(uint256 => bytes) storage dnaStorage = _DNA_SLOT.getMapppingUInt256BytesSlot().value;
         dnaStorage[tokenId] = dna;
     }
@@ -40,7 +40,7 @@ abstract contract TokenDnaAbstract is AccessControlUpgradeable, ERC1820RegistryC
     /**
      * inheritdoc ITokenDnaAbstract
      */
-    function setDnaBatch(uint256[] memory tokenId, bytes[] memory dna) external virtual onlyRole(DNA_ROLE) {
+    function setDnaBatch(uint256[] memory tokenId, bytes[] memory dna) public virtual onlyRole(DNA_ROLE) {
         require(tokenId.length == dna.length, "tokenId.length != dna.length");
         mapping(uint256 => bytes) storage dnaStorage = _DNA_SLOT.getMapppingUInt256BytesSlot().value;
 

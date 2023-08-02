@@ -1,10 +1,10 @@
-import type { Chain } from "../src/types";
+import type { Chain } from "../src/types.js";
 export default {
   "name": "Base",
   "chain": "ETH",
   "rpc": [
     "https://base.rpc.thirdweb.com/${THIRDWEB_API_KEY}",
-    "https://developer-access-mainnet.base.org/"
+    "https://mainnet.base.org/"
   ],
   "faucets": [],
   "nativeCurrency": {

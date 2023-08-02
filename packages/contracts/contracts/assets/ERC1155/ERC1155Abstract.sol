@@ -32,12 +32,10 @@ abstract contract ERC1155Abstract is
     function __ERC1155Abstract_init(
         address _admin,
         string memory _initContractURI,
-        address _gsnForwarder,
         address _tokenUriProvider,
         address _tokenRoyaltyProvider
     ) internal {
         __ContractURI_init_unchained(_admin, _initContractURI);
-        __RouterReceiver_init_unchained(_gsnForwarder);
         __OwlBase_init_unchained(_admin);
 
         __TokenURIConsumerAbstract_init_unchained(_admin, _tokenUriProvider);
@@ -60,17 +58,6 @@ abstract contract ERC1155Abstract is
 
     function uri(uint256 tokenId) public view override returns (string memory) {
         return _tokenURI(tokenId);
-    }
-
-    /**
-     * @notice the following 3 functions are all required for OpenGSN integration
-     */
-    function _msgSender() internal view override(OwlBase, ContextUpgradeable) returns (address) {
-        return OwlBase._msgSender();
-    }
-
-    function _msgData() internal view override(OwlBase, ContextUpgradeable) returns (bytes calldata) {
-        return OwlBase._msgData();
     }
 
     function supportsInterface(

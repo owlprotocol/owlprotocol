@@ -30,7 +30,6 @@ contract ERC721TopDownDnaMintable is ERC721DnaBaseMintable, ERC721TopDownBase {
      *      Protected with `initializer` modifier.
      * @param _admin admin for contract
      * @param _initContractURI uri for contract metadata description
-     * @param _gsnForwarder GSN Trusted forwarder
      * @param _name name for contract
      * @param _symbol symbol for contract
      * @param _initBaseURI base URI for contract
@@ -42,7 +41,6 @@ contract ERC721TopDownDnaMintable is ERC721DnaBaseMintable, ERC721TopDownBase {
     function initialize(
         address _admin,
         string calldata _initContractURI,
-        address _gsnForwarder,
         string calldata _name,
         string calldata _symbol,
         string calldata _initBaseURI,
@@ -54,7 +52,6 @@ contract ERC721TopDownDnaMintable is ERC721DnaBaseMintable, ERC721TopDownBase {
         __ERC721TopDownDna_init(
             _admin,
             _initContractURI,
-            _gsnForwarder,
             _name,
             _symbol,
             _initBaseURI,
@@ -71,7 +68,6 @@ contract ERC721TopDownDnaMintable is ERC721DnaBaseMintable, ERC721TopDownBase {
     function __ERC721TopDownDna_init(
         address _admin,
         string memory _initContractURI,
-        address _gsnForwarder,
         string memory _name,
         string memory _symbol,
         string memory _initBaseURI,
@@ -81,7 +77,6 @@ contract ERC721TopDownDnaMintable is ERC721DnaBaseMintable, ERC721TopDownBase {
         address[] memory _childContract1155
     ) internal {
         __ContractURI_init_unchained(_admin, _initContractURI);
-        __RouterReceiver_init_unchained(_gsnForwarder);
         __OwlBase_init_unchained(_admin);
 
         __ERC721_init_unchained(_name, _symbol);

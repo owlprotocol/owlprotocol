@@ -9,7 +9,7 @@
   "homepage": "https://github.com/owlprotocol/owlprotocol.git",
   "copyright": "Copyright 2023 Owl Protocol",
   "license": "MIT",
-  "type": "module",
+  "type": "commonjs",
   "main": "./lib/cjs/index.cjs",
   "module": "./lib/esm/index.mjs",
   "types": "./lib/types/index.d.ts",

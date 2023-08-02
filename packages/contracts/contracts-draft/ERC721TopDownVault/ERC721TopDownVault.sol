@@ -127,7 +127,7 @@ contract ERC721TopDownVault is IERC721TopDownVault, IERC721ReceiverUpgradeable, 
         uint256[][] calldata childTokenIds1155Add
     ) external {
         //attach MUST be done by rootOwner
-        address spender = _msgSender();
+        address spender = msg.sender;
         {
             address rootOwner = rootOwnerOf(tokenId);
             if (spender != rootOwner) revert Unauthorized(spender, address(this), tokenId);
